@@ -1,0 +1,27 @@
+{{ block title }}
+Final vote
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    You have now reached the election.
+</p>
+
+<p>
+    Remaining campaign information budget: <strong>{{ budget_remaining }}</strong>
+</p>
+
+<p>
+    Please cast your vote between the two candidates below.
+</p>
+
+<div style="margin-top: 20px;">
+    {{ formfields }}
+</div>
+
+<div style="margin-top: 20px;">
+    {{ next_button }}
+</div>
+
+{{ endblock }}

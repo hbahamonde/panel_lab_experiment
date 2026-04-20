@@ -1,0 +1,123 @@
+{{ block title }}
+Wave 2: Campaign news board
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    You may open as many news items as you wish, as long as you can afford them.
+    Each new item costs <strong>{{ click_cost }}</strong> points to open.
+</p>
+
+<p>
+    Remaining campaign information budget:
+    <strong><span id="budget-remaining">{{ budget_remaining }}</span></strong>
+</p>
+
+<div style="display:none;">
+    {{ formfield player.wave2_news_opened_ids }}
+    {{ formfield player.wave2_news_spent }}
+    {{ formfield player.wave2_news_click_order }}
+    {{ formfield player.wave2_news_time_seconds }}
+</div>
+
+<div class="news-grid">
+    {{ for item in news_items }}
+    <div class="news-card" id="card-{{ item.id }}">
+        <div class="news-excerpt">
+            <strong>{{ item.title_excerpt }}</strong>
+        </div>
+
+        <div class="news-controls">
+            <button type="button" class="btn btn-outline-primary btn-sm" onclick="openNews('{{ item.id }}')">
+                Open (-{{ click_cost }} points)
+            </button>
+        </div>
+
+        <div class="news-full" id="full-{{ item.id }}" style="display:none; margin-top: 12px;">
+            <p><strong>{{ item.full_title }}</strong></p>
+            <p>{{ item.full_text }}</p>
+        </div>
+    </div>
+    {{ endfor }}
+</div>
+
+<div style="margin-top: 20px;">
+    {{ next_button }}
+</div>
+
+<style>
+    .news-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .news-card {
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        padding: 16px;
+        background: #fafafa;
+    }
+
+    .news-excerpt {
+        margin-bottom: 10px;
+    }
+
+    .news-card.opened {
+        background: #f2f8ff;
+        border-color: #9fc5ff;
+    }
+</style>
+
+<script>
+    const clickCost = {{ click_cost }};
+    let budgetRemaining = {{ budget_remaining }};
+    let totalSpent = 0;
+    let openedSet = new Set();
+    let clickOrder = [];
+    const pageStartTime = Date.now();
+
+    function syncHiddenFields() {
+        const elapsedSeconds = (Date.now() - pageStartTime) / 1000;
+
+        document.getElementById('id_wave2_news_opened_ids').value = Array.from(openedSet).join(',');
+        document.getElementById('id_wave2_news_spent').value = totalSpent;
+        document.getElementById('id_wave2_news_click_order').value = clickOrder.join(',');
+        document.getElementById('id_wave2_news_time_seconds').value = elapsedSeconds.toFixed(3);
+        document.getElementById('budget-remaining').textContent = budgetRemaining;
+    }
+
+    function openNews(itemId) {
+        const fullDiv = document.getElementById('full-' + itemId);
+        const cardDiv = document.getElementById('card-' + itemId);
+
+        if (openedSet.has(itemId)) {
+            fullDiv.style.display = 'block';
+            syncHiddenFields();
+            return;
+        }
+
+        if (budgetRemaining < clickCost) {
+            alert('You do not have enough budget remaining to open another news item.');
+            syncHiddenFields();
+            return;
+        }
+
+        openedSet.add(itemId);
+        clickOrder.push(itemId);
+        budgetRemaining -= clickCost;
+        totalSpent += clickCost;
+
+        fullDiv.style.display = 'block';
+        cardDiv.classList.add('opened');
+
+        syncHiddenFields();
+    }
+
+    setInterval(syncHiddenFields, 250);
+    syncHiddenFields();
+</script>
+
+{{ endblock }}
