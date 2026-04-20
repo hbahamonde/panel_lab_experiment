@@ -3,7 +3,7 @@ import json
 
 
 doc = """
-Wave 1: baseline preferences, mechanism measures, and prototype news board
+Wave 1: baseline preferences, mechanism measures, practice round, and news board
 """
 
 
@@ -14,6 +14,35 @@ class C(BaseConstants):
 
     TOTAL_NEWS_BUDGET = 50
     NEWS_CLICK_COST = 5
+
+    PRACTICE_CLICK_COST = 5
+    PRACTICE_BUDGET = 15
+
+    PRACTICE_VOTE_CHOICES = [
+        ['candidate_1', 'Candidate 1'],
+        ['candidate_2', 'Candidate 2'],
+    ]
+
+    PRACTICE_NEWS_ITEMS = [
+        dict(
+            id='p1',
+            title_excerpt='Economic pressures remain high',
+            full_title='Economic pressures remain high',
+            full_text='Recent reports suggest that economic pressures remain high and continue to affect public opinion.',
+        ),
+        dict(
+            id='p2',
+            title_excerpt='Candidate 1 supports rule-based reform',
+            full_title='Candidate 1 supports rule-based reform',
+            full_text='Candidate 1 argues that reform should proceed within democratic rules and institutional checks.',
+        ),
+        dict(
+            id='p3',
+            title_excerpt='Candidate 2 supports faster executive action',
+            full_title='Candidate 2 supports faster executive action',
+            full_text='Candidate 2 argues that faster executive action is needed to deliver targeted benefits quickly.',
+        ),
+    ]
 
     POLICY_CHOICES = [
         [1, 'Strongly favor option A'],
@@ -163,10 +192,23 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
     )
 
+    practice_opened_ids = models.LongStringField(blank=True)
+    practice_spent = models.IntegerField(initial=0)
+    practice_click_order = models.LongStringField(blank=True)
+    practice_time_seconds = models.FloatField(initial=0)
+
+    practice_vote = models.StringField(
+        choices=C.PRACTICE_VOTE_CHOICES,
+        widget=widgets.RadioSelect,
+        label='Practice vote: which candidate would you choose?',
+        blank=True,
+    )
+
     wave1_news_opened_ids = models.LongStringField(blank=True)
     wave1_news_spent = models.IntegerField(initial=0)
     wave1_news_click_order = models.LongStringField(blank=True)
     wave1_news_time_seconds = models.FloatField(initial=0)
+
 
 class Wave1Intro(Page):
     @staticmethod
@@ -269,6 +311,37 @@ class CollapseRiskPre(Page):
         player.participant.vars['collapse_risk_pre'] = player.collapse_risk_pre
 
 
+class PracticeIntro(Page):
+    pass
+
+
+class PracticeNewsBoard(Page):
+    form_model = 'player'
+    form_fields = [
+        'practice_opened_ids',
+        'practice_spent',
+        'practice_click_order',
+        'practice_time_seconds',
+    ]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            news_items=C.PRACTICE_NEWS_ITEMS,
+            click_cost=C.PRACTICE_CLICK_COST,
+            budget_remaining=C.PRACTICE_BUDGET,
+        )
+
+
+class PracticeVote(Page):
+    form_model = 'player'
+    form_fields = ['practice_vote']
+
+
+class PracticeComplete(Page):
+    pass
+
+
 class Wave1NewsBoard(Page):
     form_model = 'player'
     form_fields = [
@@ -304,7 +377,7 @@ class Wave1NewsBoard(Page):
         player.participant.vars['wave1_news_time_seconds'] = player.wave1_news_time_seconds
         player.participant.vars['news_spent_total'] = player.participant.vars.get('news_spent_total', 0) + player.wave1_news_spent
         player.participant.vars['news_budget_remaining'] = player.participant.vars.get('news_budget_remaining', C.TOTAL_NEWS_BUDGET) - player.wave1_news_spent
-        
+
 
 page_sequence = [
     Wave1Intro,
@@ -316,5 +389,9 @@ page_sequence = [
     WeightImmigration,
     InstCapacityPre,
     CollapseRiskPre,
+    PracticeIntro,
+    PracticeNewsBoard,
+    PracticeVote,
+    PracticeComplete,
     Wave1NewsBoard,
 ]

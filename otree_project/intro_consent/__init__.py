@@ -1,10 +1,32 @@
 from otree.api import *
-import json
+from datetime import datetime, timedelta
 
 
 doc = """
 Welcome, consent, instructions, and practice round
 """
+
+
+def study_schedule(session):
+    wave1 = datetime.fromisoformat(session.config['wave1_date']).date()
+    wave2 = datetime.fromisoformat(session.config['wave2_date']).date()
+    wave3 = datetime.fromisoformat(session.config['wave3_date']).date()
+
+    window_days = session.config['wave_window_days']
+
+    wave1_deadline = wave1 + timedelta(days=window_days - 1)
+    wave2_deadline = wave2 + timedelta(days=window_days - 1)
+    wave3_deadline = wave3 + timedelta(days=window_days - 1)
+
+    return dict(
+        wave_window_days=window_days,
+        wave1_date_display=wave1.strftime('%B %d, %Y'),
+        wave2_date_display=wave2.strftime('%B %d, %Y'),
+        wave3_date_display=wave3.strftime('%B %d, %Y'),
+        wave1_deadline_display=wave1_deadline.strftime('%B %d, %Y'),
+        wave2_deadline_display=wave2_deadline.strftime('%B %d, %Y'),
+        wave3_deadline_display=wave3_deadline.strftime('%B %d, %Y'),
+    )
 
 
 class C(BaseConstants):
@@ -61,26 +83,22 @@ class Player(BasePlayer):
         label='Do you agree to participate in this study?',
     )
 
-    practice_opened_ids = models.LongStringField(blank=True)
-    practice_spent = models.IntegerField(initial=0)
-    practice_click_order = models.LongStringField(blank=True)
-    practice_time_seconds = models.FloatField(initial=0)
 
-    practice_vote = models.StringField(
-        choices=C.PRACTICE_VOTE_CHOICES,
-        widget=widgets.RadioSelect,
-        label='Practice vote: which candidate would you choose?',
-        blank=True,
-    )
 
 
 class Welcome(Page):
-    pass
+    @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
 
 
 class Consent(Page):
     form_model = 'player'
     form_fields = ['consent']
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
@@ -98,48 +116,9 @@ class Instructions(Page):
     def is_displayed(player: Player):
         return player.consent == 'accept'
 
-
-class PracticeIntro(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.consent == 'accept'
-
-
-class PracticeNewsBoard(Page):
-    form_model = 'player'
-    form_fields = [
-        'practice_opened_ids',
-        'practice_spent',
-        'practice_click_order',
-        'practice_time_seconds',
-    ]
-
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.consent == 'accept'
-
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(
-            news_items=C.PRACTICE_NEWS_ITEMS,
-            click_cost=C.PRACTICE_CLICK_COST,
-            budget_remaining=C.PRACTICE_BUDGET,
-        )
-
-
-class PracticeVote(Page):
-    form_model = 'player'
-    form_fields = ['practice_vote']
-
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.consent == 'accept'
-
-
-class PracticeComplete(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.consent == 'accept'
+        return study_schedule(player.session)
 
 
 page_sequence = [
@@ -147,8 +126,4 @@ page_sequence = [
     Consent,
     Decline,
     Instructions,
-    PracticeIntro,
-    PracticeNewsBoard,
-    PracticeVote,
-    PracticeComplete,
 ]

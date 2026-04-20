@@ -1,11 +1,50 @@
 from otree.api import *
 import random
 import json
+from datetime import datetime, date, timedelta
 
 
 doc = """
 Wave 2: randomized discontinuity, post-treatment mechanisms, and news board
 """
+
+
+def study_schedule(session):
+    wave1 = datetime.fromisoformat(session.config['wave1_date']).date()
+    wave2 = datetime.fromisoformat(session.config['wave2_date']).date()
+    wave3 = datetime.fromisoformat(session.config['wave3_date']).date()
+
+    window_days = session.config['wave_window_days']
+
+    wave1_deadline = wave1 + timedelta(days=window_days - 1)
+    wave2_deadline = wave2 + timedelta(days=window_days - 1)
+    wave3_deadline = wave3 + timedelta(days=window_days - 1)
+
+    return dict(
+        wave_window_days=window_days,
+        wave1_date_display=wave1.strftime('%B %d, %Y'),
+        wave2_date_display=wave2.strftime('%B %d, %Y'),
+        wave3_date_display=wave3.strftime('%B %d, %Y'),
+        wave1_deadline_display=wave1_deadline.strftime('%B %d, %Y'),
+        wave2_deadline_display=wave2_deadline.strftime('%B %d, %Y'),
+        wave3_deadline_display=wave3_deadline.strftime('%B %d, %Y'),
+    )
+
+
+def wave_status(player, wave_key):
+    if not player.session.config.get('enable_wave_gates', False):
+        return 'open'
+
+    wave_date = datetime.fromisoformat(player.session.config[wave_key]).date()
+    window_days = player.session.config['wave_window_days']
+    wave_deadline = wave_date + timedelta(days=window_days - 1)
+    today = date.today()
+
+    if today < wave_date:
+        return 'early'
+    if today > wave_deadline:
+        return 'late'
+    return 'open'
 
 
 class C(BaseConstants):
@@ -151,6 +190,26 @@ class Player(BasePlayer):
     wave2_news_time_seconds = models.FloatField(initial=0)
 
 
+class Wave2LockedEarly(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return wave_status(player, 'wave2_date') == 'early'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
+
+
+class Wave2LockedLate(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return wave_status(player, 'wave2_date') == 'late'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
+
+
 class Wave2Intro(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
@@ -258,6 +317,8 @@ class Wave2NewsBoard(Page):
 
 
 page_sequence = [
+    Wave2LockedEarly,
+    Wave2LockedLate,
     Wave2Intro,
     TreatmentReveal,
     InstCapacityPost,

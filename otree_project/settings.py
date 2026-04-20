@@ -1,14 +1,18 @@
 from os import environ
 
 SESSION_CONFIGS = [
-
     dict(
         name='panel_lab_experiment',
         display_name='3-wave panel lab experiment',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity', 'wave3_election'],
-        ),
-    ]
+        wave1_date='2026-05-05',
+        wave2_date='2026-05-12',
+        wave3_date='2026-05-19',
+        wave_window_days=3,
+        enable_wave_gates=False,
+    )
+]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
 # in SESSION_CONFIGS, except those that explicitly override it.
@@ -35,5 +39,14 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
+
+ROOMS = [
+    dict(
+        name='panel_lab_room',
+        display_name='Panel Lab Experiment',
+        participant_label_file='_rooms/panel_lab_labels.txt',
+        use_secure_urls=True,
+    ),
+]
 
 SECRET_KEY = '4102785174378'
