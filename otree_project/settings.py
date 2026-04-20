@@ -1,13 +1,14 @@
 from os import environ
 
 SESSION_CONFIGS = [
+
     dict(
         name='panel_lab_experiment',
         display_name='3-wave panel lab experiment',
         num_demo_participants=1,
-        app_sequence=['wave1_threat', 'wave2_discontinuity', 'wave3_election'],
-    ),
-]
+        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity', 'wave3_election'],
+        ),
+    ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
 # in SESSION_CONFIGS, except those that explicitly override it.
