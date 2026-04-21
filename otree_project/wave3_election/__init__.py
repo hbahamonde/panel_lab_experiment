@@ -1,5 +1,6 @@
 from otree.api import *
 import json
+import random
 from datetime import datetime, date, timedelta
 
 
@@ -27,8 +28,20 @@ def study_schedule(session):
         wave1_deadline_display=wave1_deadline.strftime('%B %d, %Y'),
         wave2_deadline_display=wave2_deadline.strftime('%B %d, %Y'),
         wave3_deadline_display=wave3_deadline.strftime('%B %d, %Y'),
+        gates_enabled=session.config.get('enable_wave_gates', False),
     )
 
+def shuffled_items_once(player, field_name, items):
+    stored_order = player.field_maybe_none(field_name)
+
+    if stored_order:
+        stored_ids = [x for x in stored_order.split(',') if x]
+        item_map = {item['id']: item for item in items}
+        return [item_map[item_id] for item_id in stored_ids if item_id in item_map]
+
+    shuffled = random.sample(items, len(items))
+    setattr(player, field_name, ','.join(item['id'] for item in shuffled))
+    return shuffled
 
 def wave_status(player, wave_key):
     if not player.session.config.get('enable_wave_gates', False):
@@ -125,6 +138,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    wave3_news_display_order = models.LongStringField(blank=True)
     wave3_news_opened_ids = models.LongStringField(blank=True)
     wave3_news_spent = models.IntegerField(initial=0)
     wave3_news_click_order = models.LongStringField(blank=True)
@@ -158,7 +172,9 @@ class Wave3LockedLate(Page):
 
 
 class Wave3Intro(Page):
-    pass
+    @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
 
 
 class Wave3NewsBoard(Page):
@@ -172,9 +188,11 @@ class Wave3NewsBoard(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        ordered_items = shuffled_items_once(player, 'wave3_news_display_order', C.NEWS_ITEMS)
+
         return dict(
-            news_items=C.NEWS_ITEMS,
-            news_items_json=json.dumps(C.NEWS_ITEMS),
+            news_items=ordered_items,
+            news_items_json=json.dumps(ordered_items),
             click_cost=C.NEWS_CLICK_COST,
             budget_remaining=player.participant.vars.get('news_budget_remaining', 0),
         )
@@ -220,6 +238,7 @@ class VoteComplete(Page):
             final_vote_label=dict(C.CANDIDATE_CHOICES).get(player.final_vote, player.final_vote),
             budget_remaining=player.participant.vars.get('news_budget_remaining', 0),
             total_spent=player.participant.vars.get('news_spent_total', 0),
+            gates_enabled=player.session.config.get('enable_wave_gates', False),
         )
 
 

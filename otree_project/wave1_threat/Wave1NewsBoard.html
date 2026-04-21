@@ -4,15 +4,13 @@ Wave 1: Campaign news board
 
 {{ block content }}
 
-<p>
-    You may open as many news items as you wish, as long as you can afford them.
-    Each new item costs <strong>{{ click_cost }}</strong> points to open.
-</p>
+<p>You are now entering the first stage of an election campaign in a democratic society under strain.</p>
 
-<p>
-    Remaining campaign information budget:
-    <strong><span id="budget-remaining">{{ budget_remaining }}</span></strong>
-</p>
+<p>The country is facing a period of rising uncertainty, and many citizens believe that serious political and social problems are becoming harder to manage. As the campaign unfolds, candidates, institutions, and public voices offer competing interpretations of the threat and different ideas about how the country should respond. The news items below are part of that campaign environment.</p>
+
+<p>You may open as many news items as you wish, as long as you can afford them. Each new item costs <strong>{{ click_cost }}</strong> points to open.</p>
+
+<p>Remaining campaign information budget: <strong><span id="budget-remaining">{{ budget_remaining }}</span></strong></p>
 
 <div style="display:none;">
     {{ formfield player.wave1_news_opened_ids }}
@@ -20,13 +18,6 @@ Wave 1: Campaign news board
     {{ formfield player.wave1_news_click_order }}
     {{ formfield player.wave1_news_time_seconds }}
 </div>
-
-<p>
-    Debug opened IDs: <span id="debug-opened"></span><br>
-    Debug click order: <span id="debug-order"></span><br>
-    Debug total spent: <span id="debug-spent">0</span><br>
-    Debug time on page (seconds): <span id="debug-time">0</span>
-</p>
 
 <div class="news-grid">
     {{ for item in news_items }}
@@ -93,12 +84,7 @@ Wave 1: Campaign news board
         document.getElementById('id_wave1_news_spent').value = totalSpent;
         document.getElementById('id_wave1_news_click_order').value = clickOrder.join(',');
         document.getElementById('id_wave1_news_time_seconds').value = elapsedSeconds.toFixed(3);
-
         document.getElementById('budget-remaining').textContent = budgetRemaining;
-        document.getElementById('debug-opened').textContent = Array.from(openedSet).join(',');
-        document.getElementById('debug-order').textContent = clickOrder.join(',');
-        document.getElementById('debug-spent').textContent = totalSpent;
-        document.getElementById('debug-time').textContent = elapsedSeconds.toFixed(3);
     }
 
     function openNews(itemId) {

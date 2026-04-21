@@ -28,8 +28,20 @@ def study_schedule(session):
         wave1_deadline_display=wave1_deadline.strftime('%B %d, %Y'),
         wave2_deadline_display=wave2_deadline.strftime('%B %d, %Y'),
         wave3_deadline_display=wave3_deadline.strftime('%B %d, %Y'),
+        gates_enabled=session.config.get('enable_wave_gates', False),
     )
 
+def shuffled_items_once(player, field_name, items):
+    stored_order = player.field_maybe_none(field_name)
+
+    if stored_order:
+        stored_ids = [x for x in stored_order.split(',') if x]
+        item_map = {item['id']: item for item in items}
+        return [item_map[item_id] for item_id in stored_ids if item_id in item_map]
+
+    shuffled = random.sample(items, len(items))
+    setattr(player, field_name, ','.join(item['id'] for item in shuffled))
+    return shuffled
 
 def wave_status(player, wave_key):
     if not player.session.config.get('enable_wave_gates', False):
@@ -183,7 +195,7 @@ class Player(BasePlayer):
         choices=C.RISK_CHOICES,
         widget=widgets.RadioSelect,
     )
-
+    wave2_news_display_order = models.LongStringField(blank=True)
     wave2_news_opened_ids = models.LongStringField(blank=True)
     wave2_news_spent = models.IntegerField(initial=0)
     wave2_news_click_order = models.LongStringField(blank=True)
@@ -212,9 +224,12 @@ class Wave2LockedLate(Page):
 
 class Wave2Intro(Page):
     @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
+
+    @staticmethod
     def before_next_page(player: Player, timeout_happened):
         player.treatment = player.participant.vars['treatment']
-
 
 class TreatmentReveal(Page):
     @staticmethod
@@ -287,11 +302,13 @@ class Wave2NewsBoard(Page):
         else:
             treatment_items = C.NEWS_ITEMS_CONTROL
 
+
         all_items = C.NEWS_ITEMS_COMMON + treatment_items
+        ordered_items = shuffled_items_once(player, 'wave2_news_display_order', all_items)
 
         return dict(
-            news_items=all_items,
-            news_items_json=json.dumps(all_items),
+            news_items=ordered_items,
+            news_items_json=json.dumps(ordered_items),
             click_cost=C.NEWS_CLICK_COST,
             budget_remaining=player.participant.vars.get('news_budget_remaining', 0),
             treatment=treatment,
@@ -316,6 +333,12 @@ class Wave2NewsBoard(Page):
         player.participant.vars['news_budget_remaining'] = player.participant.vars.get('news_budget_remaining', 0) - player.wave2_news_spent
 
 
+class Wave2Complete(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        return study_schedule(player.session)
+
+
 page_sequence = [
     Wave2LockedEarly,
     Wave2LockedLate,
@@ -324,4 +347,5 @@ page_sequence = [
     InstCapacityPost,
     CollapseRiskPost,
     Wave2NewsBoard,
+    Wave2Complete,
 ]

@@ -1,12 +1,64 @@
 {{ block title }}
-Practice complete
+Practice outcome
 {{ endblock }}
 
 {{ block content }}
 
-<p>The practice round is complete.</p>
+<p><strong>{{ feedback_title }}</strong></p>
 
-<p>You will now continue to the main study.</p>
+<p>{{ feedback_text }}</p>
+
+<p>Your practice vote: <strong>{{ voted_candidate_label }}</strong></p>
+
+<p>Closer overall match in this practice example: <strong>{{ best_candidate_label }}</strong></p>
+
+<hr>
+
+<p><strong>Your earlier answers in this practice example</strong></p>
+
+<ul>
+    {{ for row in priority_summary }}
+        <li>{{ row.issue_label }}: you {{ row.preference_text }}, and this was {{ row.importance_text }} to you.</li>
+    {{ endfor }}
+</ul>
+
+<hr>
+
+<p><strong>How Candidate 1 matched your earlier answers</strong></p>
+
+<ul>
+    {{ for row in candidate_1_rows }}
+        <li>{{ row.issue_label }}: {{ row.fit_text }}.</li>
+    {{ endfor }}
+</ul>
+
+<p><strong>How Candidate 2 matched your earlier answers</strong></p>
+
+<ul>
+    {{ for row in candidate_2_rows }}
+        <li>{{ row.issue_label }}: {{ row.fit_text }}.</li>
+    {{ endfor }}
+</ul>
+
+<hr>
+
+<p><strong>Practice points summary</strong></p>
+
+<ul>
+    <li>Starting practice budget: <strong>{{ practice_budget_start }}</strong> points</li>
+    <li>Points spent on news: <strong>{{ practice_spent_on_news }}</strong> points</li>
+    <li>Points remaining after news reading: <strong>{{ practice_budget_remaining }}</strong> points</li>
+    <li>Practice vote bonus: <strong>{{ practice_vote_bonus }}</strong> points</li>
+    <li>Total practice outcome: <strong>{{ practice_net_points }}</strong> points</li>
+</ul>
+
+{{ if practice_vote_correct }}
+<p>Your practice vote earned the full practice vote bonus because it matched your earlier answers.</p>
+{{ else }}
+<p>Your practice vote did not earn the practice vote bonus in this example.</p>
+{{ endif }}
+
+<p>This practice round is only meant to show how the study connects your earlier answers, your information choices, and a later vote decision. The practice points shown here do not affect the main study.</p>
 
 {{ next_button }}
 

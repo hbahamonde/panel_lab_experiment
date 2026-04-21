@@ -1,0 +1,20 @@
+{{ block title }}
+Wave 1 complete
+{{ endblock }}
+
+{{ block content }}
+
+<p>Thank you. Your answers from Wave 1 have been recorded.</p>
+
+<p>Wave 2 is scheduled for <strong>{{ wave2_date_display }}</strong>.</p>
+
+<p>Please return on that date using the same personal study link.</p>
+
+{{ if gates_enabled }}
+<p>You may now close this window.</p>
+{{ else }}
+<p><em>Testing mode:</em> the gate system is currently off, so you may continue immediately.</p>
+{{ next_button }}
+{{ endif }}
+
+{{ endblock }}
