@@ -360,6 +360,15 @@ class Player(BasePlayer):
 
 class Wave1Intro(Page):
     @staticmethod
+    def vars_for_template(player: Player):
+        current_budget = player.participant.vars.get('news_budget_remaining', C.TOTAL_NEWS_BUDGET)
+        total_spent = player.participant.vars.get('news_spent_total', 0)
+        return dict(
+            current_budget=current_budget,
+            total_spent=total_spent,
+        )
+
+    @staticmethod
     def before_next_page(player: Player, timeout_happened):
         if 'news_budget_total' not in player.participant.vars:
             player.participant.vars['news_budget_total'] = C.TOTAL_NEWS_BUDGET
@@ -608,9 +617,20 @@ class Wave1NewsBoard(Page):
 class Wave1Complete(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        context = study_schedule(player.session)
+        wave1_spent = player.wave1_news_spent or 0
+        total_spent = player.participant.vars.get('news_spent_total', 0)
+        remaining_budget = player.participant.vars.get('news_budget_remaining', C.TOTAL_NEWS_BUDGET)
 
-        
+        context.update(
+            wave1_spent=wave1_spent,
+            total_spent=total_spent,
+            remaining_budget=remaining_budget,
+            initial_budget=C.TOTAL_NEWS_BUDGET,
+        )
+        return context
+
+
 page_sequence = [
     Wave1Intro,
     PrefRedistribution,

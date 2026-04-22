@@ -8,6 +8,15 @@ Wave 1 complete
 
 <p>Wave 2 is scheduled for <strong>{{ wave2_date_display }}</strong>.</p>
 
+<p><strong>Information summary after Wave 1</strong></p>
+
+<ul>
+    <li>Initial information budget: <strong>{{ initial_budget }}</strong> points</li>
+    <li>Points spent in Wave 1: <strong>{{ wave1_spent }}</strong> points</li>
+    <li>Cumulative points spent so far: <strong>{{ total_spent }}</strong> points</li>
+    <li>Remaining information budget: <strong>{{ remaining_budget }}</strong> points</li>
+</ul>
+
 <p>Please return on that date using the same personal study link.</p>
 
 {{ if gates_enabled }}

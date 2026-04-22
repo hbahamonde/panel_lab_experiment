@@ -225,7 +225,12 @@ class Wave2LockedLate(Page):
 class Wave2Intro(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        context = study_schedule(player.session)
+        context.update(
+            current_budget=player.participant.vars.get('news_budget_remaining', 0),
+            total_spent=player.participant.vars.get('news_spent_total', 0),
+        )
+        return context
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
@@ -336,7 +341,17 @@ class Wave2NewsBoard(Page):
 class Wave2Complete(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        context = study_schedule(player.session)
+        wave2_spent = player.wave2_news_spent or 0
+        total_spent = player.participant.vars.get('news_spent_total', 0)
+        remaining_budget = player.participant.vars.get('news_budget_remaining', 0)
+
+        context.update(
+            wave2_spent=wave2_spent,
+            total_spent=total_spent,
+            remaining_budget=remaining_budget,
+        )
+        return context
 
 
 page_sequence = [

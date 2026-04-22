@@ -4,14 +4,24 @@ Study complete
 
 {{ block content }}
 
-<p>Thank you. Your final vote and all of your study responses have been recorded.</p>
+<p>Thank you for completing the study.</p>
 
-<p>You selected: <strong>{{ final_vote_label }}</strong></p>
+<p>Your final vote and all of your study responses have been recorded.</p>
 
-<p>Total information budget spent across the campaign: <strong>{{ total_spent }}</strong></p>
+<p><strong>Final vote recorded:</strong> {{ final_vote_label }}</p>
 
-<p>Remaining information budget: <strong>{{ budget_remaining }}</strong></p>
+<hr>
 
-<p>You may now close this window.</p>
+<p><strong>Cumulative information summary across the full study</strong></p>
+
+<ul>
+    <li>Points spent in Wave 3: <strong>{{ wave3_spent }}</strong> points</li>
+    <li>Total points spent across all waves: <strong>{{ total_spent }}</strong> points</li>
+    <li>Remaining information budget at the end of the study: <strong>{{ budget_remaining }}</strong> points</li>
+</ul>
+
+<p>Your overall decision performance will be evaluated according to the study rules.</p>
+
+<p>Thank you again for your participation. You may now close this window.</p>
 
 {{ endblock }}

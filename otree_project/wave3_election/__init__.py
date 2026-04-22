@@ -174,7 +174,12 @@ class Wave3LockedLate(Page):
 class Wave3Intro(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        context = study_schedule(player.session)
+        context.update(
+            current_budget=player.participant.vars.get('news_budget_remaining', 0),
+            total_spent=player.participant.vars.get('news_spent_total', 0),
+        )
+        return context
 
 
 class Wave3NewsBoard(Page):
@@ -238,6 +243,7 @@ class VoteComplete(Page):
             final_vote_label=dict(C.CANDIDATE_CHOICES).get(player.final_vote, player.final_vote),
             budget_remaining=player.participant.vars.get('news_budget_remaining', 0),
             total_spent=player.participant.vars.get('news_spent_total', 0),
+            wave3_spent=player.wave3_news_spent or 0,
             gates_enabled=player.session.config.get('enable_wave_gates', False),
         )
 
