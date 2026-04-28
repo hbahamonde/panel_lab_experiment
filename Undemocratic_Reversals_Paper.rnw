@@ -1,0 +1,504 @@
+% !Rnw weave = knitr
+% !TeX program = pdflatex
+
+%========================
+% paper.tex
+%========================
+\documentclass[11pt]{article}
+
+%---- Page & fonts
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{2013}{--}   % en dash
+\DeclareUnicodeCharacter{2014}{---}  % em dash
+\DeclareUnicodeCharacter{2212}{-}    % unicode minus
+\usepackage{lmodern}
+\usepackage[american]{babel}
+\usepackage{microtype}
+\usepackage{authblk}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc,arrows.meta}
+
+%---- Math & symbols
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{bbm}          % for \mathbbm{1} indicator
+\usepackage{siunitx}
+\usepackage{dcolumn}   % needed for stargazer's D{.}{.}{-3} columns
+\usepackage{csquotes}  % recommended with biblatex (silences that warning)
+
+%---- Graphics, tables, floats
+\usepackage{graphicx}
+\graphicspath{{fig/}{figures/}{build/}} % adjust as needed
+\usepackage{booktabs, threeparttable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{tabularray}
+\usepackage{codehigh}
+\usepackage[normalem]{ulem}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+
+
+%---- % Allows abstract customization
+\usepackage{abstract} 
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+%\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+
+
+%---- Links & clever refs
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%---- Citations & bib
+\usepackage[backend=biber,style=authoryear,dashed=false,doi=false,isbn=false,url=false,arxiv=false,uniquename=false,uniquelist=false]{biblatex}
+\addbibresource{/Users/hectorbahamonde/Bibliografia_PoliSci/library.bib}  % your .bib file
+\addbibresource{/Users/hectorbahamonde/research/reslide/references.bib}  % your .bib file
+\addbibresource{/Users/hectorbahamonde/Bibliografia_PoliSci/Bahamonde_BibTex2013.bib}  % your .bib file
+
+
+
+
+
+%---- Custom macros (edit as you like)
+\newcommand{\govdist}{\texttt{Government distance}}
+\newcommand{\govclose}{\texttt{gov\_closeness\_w\_01}}
+\newcommand{\techno}{\texttt{Technocracy}}
+\newcommand{\demsat}{\texttt{Q8\_1}}      % democratic satisfaction
+\newcommand{\trustpol}{\texttt{Q9\_4}}    % trust in Finnish politicians
+\newcommand{\ind}[1]{\mathbbm{1}\!\left\{#1\right\}}
+
+%\title{Losers, Delegation, and the Ideological Valence of Expertise: Evidence from Finland}
+
+\vspace{-1cm}\title{\textbf{\input{title.txt}\unskip}} % Article title
+
+
+
+
+
+
+\author[1,2]{\textsc{Hector Bahamonde}\thanks{\href{mailto:hector.bahamonde@utu.fi}{hector.bahamonde@utu.fi}; \href{https://www.hectorbahamonde.com}{\texttt{https://www.hectorbahamonde.com}}}}
+
+\affil[1]{Senior Researcher, INVEST Research Flagship Centre, University of Turku, Finland}
+\affil[2]{Project Researcher, Social Science Research Institute, \AA bo Akademi University, Finland}
+
+
+
+
+
+\date{\today}
+
+\begin{document}
+
+
+\maketitle
+%\thispagestyle{empty}
+
+
+
+\begin{abstract}
+Democratic backsliding research has established that citizens can learn to tolerate norm violations when structural threats make such tolerance instrumentally attractive. This proposal asks whether that learning is reversible when those structural conditions improve. I implement a three-wave economic laboratory panel experiment structured as a hypothetical election campaign. Wave 1 induces a democratic threat environment (high inequality/crime and weak institutions) in which a rule-breaking candidate can credibly promise targeted benefits. Wave 2 introduces an experimentally randomized discontinuity: structural conditions either improve sharply (treatment) or persist (control), holding candidate rhetoric constant while changing what can be achieved and at what risk. Wave 3 culminates in an incentivized election. Voting is payoff-relevant: subjects face information acquisition costs and a voting cost to reduce cheap talk, and decision quality is evaluated using the correct-voting framework. Specifically, after the ballot, I reveal full information to compute each subject's utility-maximizing candidate and pay a candidate-neutral accuracy bonus when the vote matches that benchmark. The design is mixed: treatment assignment is between-subject, while mechanisms and outcomes are tracked within individuals across waves. I process-trace information search and belief updating by measuring institutional-capacity perceptions and democratic-collapse risk both at baseline (Wave 1) and post-discontinuity (end of Wave 2). The central outcomes are vote reversal away from the rule-breaking candidate and correct voting in the final election.
+\end{abstract}
+
+
+
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+
+\section{Reversing Undemocratic Learning}
+
+The most intriguing finding in recent democratic backsliding research is not that citizens tolerate norm violations \parencite{GRAHAM2020}. My claim is that they \textit{learn} to do so. As citizens secularly experience norm-violating leaders and accumulate information about non-democratic behaviors \parencite{Levitsky:2018aa}, they recalibrate expectations, adjust their definitions of democracy itself \parencite{Ananda2021}, and gradually become ``normalized'' to authoritarianism \parencite{78328}. Yet this learning process raises a critical question: \textbf{Can that undemocratic learning be reversed?} If citizens can learn authoritarian tolerance, can they \emph{un}-learn it when the institutional conditions and threats that gave rise to such undemocratic leaders change? And critically, which institutional conditions trigger such reversals? These questions are fundamental for democratic resilience, and importantly, for \emph{defending} democracy \parencite{Capoccia2007a}.
+
+
+%Finland is an important case at hand. \cite[p. 137]{0b3bf} show that ``satisfied rather than critical citizens are more likely to sanction'' democratic norm violations. In other words, politically satisfied citizens are more likely to \emph{punish} such transgressions, whereas the disaffected are more likely to act as passive bystanders. At the same time, their study also suggests that some citizens are willing to tolerate violations when ideological or policy congruence makes such trade-offs attractive. This raises a different question for my project: {\bf if antidemocratic tolerance is \emph{learned} under particular structural conditions, what happens when the \textit{structures} that made such learning rational fundamentally shift?} E.g., if a citizen \emph{learned} antidemocratic tolerance when inequality and crime were high, does a move toward greater equality and institutional consolidation trigger reversal? And critically, through what learning mechanisms?
+
+
+%This project directly tests whether democratic learning is \textit{reversible through structural change} by implementing experimental manipulations that mirror real-world structural reversals---e.g., shifts in inequality, institutional strength, and elite opportunity structures---while using {\bf (experimental) process tracing} \parencite{Lau2006,Gerring2004,Levy2008,Mahoney2009,Collier2011} to document the cognitive and attitudinal mechanisms through which citizens \emph{un}-learn antidemocratic attitudes.
+
+I implement a three-wave economic laboratory panel experiment structured as a hypothetical election campaign. The central purpose of using three waves is to induce, observe, and then test \emph{reversals} in antidemocratic tolerance under changing structural conditions, while explicitly modeling the role of memory in campaign learning and vote choice. The memory literature implies that persuasion and framing effects often decay quickly unless information remains accessible or is repeatedly refreshed, and that opinion formation can rely either on what is retrievable from memory at the moment of choice or on a more durable ``online'' tally \parencite{Hill2013,Lecheler2011}. This matters for democratic learning: if citizens rely disproportionately on \emph{recent} information or short-term recall, then support for (anti)democratic candidates may reflect what remains \emph{salient} in memory rather than \emph{stable} commitments. Thus, and consistent with political-economy experiments on short-term memory, limited memory can generate polarization because what voters recently recall shapes what they infer about the ``correct'' policy \parencite{Levy2025}.
+
+For the final wave (``voting day''), I will exploit the ``correct voting'' framework \parencite{Lau1997}: a vote is \emph{correct} if it matches the alternative the subject would select under conditions of full information given their own stated preferences. In practice, I operationalize this as a utility-maximization criterion, where the correct vote is the candidate with the highest subject-specific utility score once all relevant information is revealed. Thus, the design is explicitly incentive compatible: subjects face real utility tradeoffs and explicit costs for information search and voting to reduce cheap talk \parencite{Morton:2010ly}.
+
+
+These considerations motivate a \emph{panel} design rather than a one-shot experiment. First, ``correct voting'' is inherently a dynamic object in campaign contexts: information arrives \emph{sequentially} \parencite{Redlawsk2001}, voters search selectively, and decision quality reflects the joint influence of motivation, cognitive capacity, heuristics, and task demands over time \parencite{Lau1997,Lau2008}. Second, to evaluate \emph{reversal}, we must observe the same individuals before and after the Wave-2 discontinuity. Third, a panel design allows us to process-trace \parencite{Gerring2004,Levy2008,Mahoney2009,Collier2011} whether changes in vote choice are driven by (i) updated learning, or (ii) simple recency and accessibility effects (i.e., what is remembered at the moment of voting). This distinction is important because learning can fail to correct even with abundant feedback when subjects operate with incorrect information \parencite{Esponda2024}. Finally, my design is mixed: the Wave-2 discontinuity is a \emph{between-subject} treatment, while key outcomes and mechanisms are tracked \emph{within individuals} across waves, allowing me to estimate both cross-sectional treatment effects and within-subject updating trajectories.
+
+
+\section{Brief Theoretical Framework}
+
+My rationale is simple: if antidemocratic attitudes are learned under particular structural conditions, then changes in those conditions should also reshape the beliefs that sustain them. For example, \textcite{voelkel2024megastudy} find that antidemocratic attitudes can be reduced through cognitive shifts: citizens update misperceptions about opponents, revise assessments of democratic threat, and respond to cues that re-anchor democratic norms. I build on that insight by shifting the level of analysis. Rather than asking whether brief informational treatments can generate these updates, I ask whether (lab-simulated) structural reversals (changes in inequality, employment, immigration or other threats) can generate the same updates. 
+
+Importantly, the broader literature on democratic backsliding suggests that citizens tolerate norm-eroding behavior at least partly through affective polarization mechanisms \parencite{c4c9e}. Citizens with strong in-party attachment oppose particular constitutional protections when their party is in power, but support them when out of power---a dynamic Kingzette and colleagues term the ``cue-taking mechanism'' \parencite{7f36f}. What remains unexplored, however, is whether citizens can learn to \textit{reverse} this tolerance through experience with accumulating norm violations, and if so, \textit{which cognitive and institutional conditions} enable such unlearning. 
+
+
+\section{Methodological Design}
+
+
+\paragraph{Wave 1} represents the opening of a hypothetical campaign under a democratic shock (\autoref{fig:three_wave_campaign}). Subjects enter a simulated polity with high inequality/crime and weak institutional enforcement. They receive an initial information set describing (a) structural conditions, (b) candidate claims, and (c) uncertainty about candidate competence and intentions. Following the process-tracing logic of simulated campaign environments \parencite{Lau2006}, subjects access information through a scrolling ``news board'' of labeled information boxes (issues, performance signals, institutional statements). {\bf Clicking a box reveals content but incurs a small cost}; meanwhile, new boxes continue to appear, producing opportunity costs and forcing selective attention. Importantly, voters choose the kind of information they'd like to learn (self-selection). This mirrors the logic that campaign learning is shaped by constrained attention and endogenous information search \parencite{Lyons2016,Lau2013c}. Outcome measures in Wave 1 include: baseline candidate evaluations; perceived necessity of norm violations; perceived threat of democratic collapse; other standard batteries of democratic support can be asked. Crucially, Wave 1 also includes a baseline module that measures the same mechanism items later re-elicited after Wave 2 (e.g., perceived institutional capacity and perceived risk of democratic collapse), so that I can directly quantify within-subject belief updating following the discontinuity.
+
+\paragraph{Wave 2} implements an experimental discontinuity that enables me to devise a between-subject manipulation in the middle of the ``campaign.'' Subjects are randomly assigned to (i) a \textbf{structural reversal treatment} in which structural conditions improve sharply (i.e., the threat presented in Wave 1 softens; e.g., inequality and crime decline, institutions strengthen, enforcement becomes credible), or (ii) a \textbf{control} condition in which the adverse threat persists. The discontinuity is designed as an exogenous shock to the state of the world that alters the theoretical necessity of democratic rule-breaking. Critically, the candidates' \emph{rhetoric} remains constant across conditions, but the environment changes what can be credibly achieved and at what risk.
+
+
+\begin{figure}[!htbp]
+\centering
+\resizebox{0.7\textwidth}{!}{
+\begin{tikzpicture}[
+    font=\small,
+    >=Latex,
+    node distance=0.6cm and 0.7cm,
+    title/.style={font=\bfseries, align=center},
+    box/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        fill=white,
+        text width=10.2cm,
+        minimum height=0.95cm,
+        inner sep=4pt
+    },
+    smallbox/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        fill=white,
+        text width=4.8cm,
+        minimum height=0.95cm,
+        inner sep=4pt
+    },
+    line/.style={-Latex, thick}
+]
+
+% WAVE 1
+\node[title] (w1) {Wave 1: Threat};
+\node[box, below=0.35cm of w1] (w1a) {\textbf{Baseline + preferences + {\color{blue}mechanism module (pre; used for within-subject)}}\\
+Demographics; democratic attitudes; attribute weights; institutional capacity \& collapse risk};
+\node[box, below=0.40cm of w1a] (w1b) {\textbf{Costly information search}\\
+Weak institutions; high threat; ``news board'' (clicking costs)};
+\node[box, below=0.40cm of w1b] (w1c) {\textbf{Process tracing begins}\\
+Evaluations; threat/necessity of violations};
+
+% WAVE 2
+\node[title, below=0.75cm of w1c] (w2) {Wave 2: Discontinuity (randomized)};
+\node[box, below=0.35cm of w2] (assign) {\textbf{{\color{red}Between-subject assignment}}\\
+Structural reversal vs no reversal};
+\node[smallbox, below left=0.40cm and 0.45cm of assign] (treat) {\textbf{{\color{red}Reversal}}\\
+Threat softens};
+\node[smallbox, below right=0.40cm and 0.45cm of assign] (ctrl) {\textbf{{\color{red}No reversal}}\\
+Threat persists};
+\node[box, below=1.20cm of $(treat)!0.5!(ctrl)$] (w2c) {\textbf{Repeat search + continue process tracing}\\
+Same interface; updated beliefs and reasoning};
+\node[box, below=0.40cm of w2c] (mech) {\textbf{{\color{blue}Mechanism module, post (used for within-subject})}\\
+Institutional capacity \& collapse risk};
+
+% WAVE 3
+\node[title, below=0.75cm of mech] (w3) {Wave 3: Election day};
+\node[box, below=0.35cm of w3] (vote) {\textbf{Incentivized vote}\\
+Voting cost; (optional) abstention};
+\node[box, below=0.40cm of vote] (bench) {\textbf{Correct-vote benchmark}\\
+Post-vote full-info reveal; utility-maximizer computed};
+\node[box, below=0.40cm of bench] (pay) {\textbf{Outcomes}\\
+Candidate-neutral accuracy bonus; reversal vs persistence};
+
+% ARROWS
+\draw[line] (w1) -- (w1a);
+\draw[line] (w1a) -- (w1b);
+\draw[line] (w1b) -- (w1c);
+
+\draw[line] (w1c) -- (w2);
+\draw[line] (w2) -- (assign);
+\draw[line] (assign.south) |- (treat.north);
+\draw[line] (assign.south) |- (ctrl.north);
+\draw[line] (treat.south) |- (w2c.north);
+\draw[line] (ctrl.south) |- (w2c.north);
+
+\draw[line] (w2c) -- (mech);
+\draw[line] (mech) -- (w3);
+
+\draw[line] (w3) -- (vote);
+\draw[line] (vote) -- (bench);
+\draw[line] (bench) -- (pay);
+
+\end{tikzpicture}
+}
+\caption{Three-wave panel voting lab experiment: within and between-subjects design.}
+\label{fig:three_wave_campaign}
+\end{figure}
+
+\paragraph{Wave 3} represents election day at the end of the hypothetical campaign. Subjects pay a fixed voting cost to cast a ballot. Electoral abstention can be incorporated too by letting subjects choose not to pay, effectively excluding them from casting their ballots. In such case, a fixed probability for each electoral outcome can be introduced (i.e., candidate 1 or 2), for which there is a higher payoff if the hypothetical ``right'' candidate wins. Alternatively, an actual winning probability of winning the election can be introduced in Wave 1 too by running a small ``vote intention'' among participants.
+
+Subjects choose between two candidates: a \emph{pro-democratic} candidate who commits to institutional constraints and rule-of-law, and an \emph{anti-democratic} candidate who promises faster targeted benefits by bypassing constraints (e.g., executive shortcuts, weakened oversight). Each candidate is described along multiple attributes (e.g., redistribution, crime policy, immigration policy, institutional constraint). 
+
+In Wave 1, and before exposure to campaign information, subjects state (i) their preferred position on different attributes and (ii) importance weights. These inputs define the subject's utility function. Candidate utilities are then computed as weighted proximity between the subject's stated preferences and each candidate's attribute profile. This implements the key idea that correct voting is defined relative to the subject's own priorities but evaluated using an objective mapping from candidate positions to the voter's preferences \parencite{Lau2008,Lau2013c}.
+
+After voting, the experiment reveals the \emph{full information set} (candidate positions, competence signals, and the institutional consequences relevant to subject utility).\footnote{I reveal full information \emph{after} voting to address an identification problem: correct voting is defined relative to an \emph{unobserved counterfactual} (the choice the same subject would have made under full information; \cite{Lau2006}). The design therefore must create a full-information benchmark that is observed only \emph{after} the ballot is cast, so the benchmark can be used to classify the earlier, uncertainty-based vote rather than determine it. If full information were provided pre-vote, the design would collapse to a single fully informed choice and the ``correctness'' counterfactual would no longer be separately identifiable. Second, for incentives, withholding complete information preserves a realistic campaign decision problem in which information acquisition is costly and uncertainty remains, preventing the task from collapsing into cheap talk or a trivial maximization with guaranteed full knowledge before voting.} The subject-specific correct vote is computed as the argmax of full-information utility. The subject receives a substantial accuracy bonus if and only if their ballot matches the correct vote. This makes voting payoff-relevant, so subjects have a clear incentive to vote ``correctly'' \parencite{Lau1997,Lau2008}.\footnote{To avoid mechanically rewarding ``pro-democratic'' choices, the accuracy bonus is candidate-neutral: it is paid for selecting the subject's \emph{utility-maximizing} candidate, whichever candidate that is. Thus, ``correct voting'' captures preference-consistent decision quality rather than conformity to a particular democratic norm, while still reducing cheap talk by making the ballot payoff-relevant.} It also yields a direct behavioral test of democratic resilience: among subjects who endorsed the antidemocratic candidate under threat in Wave 1, do they stick with that choice, or do they switch to the pro-democratic candidate after the discontinuity changes the incentives and constraints they face?
+
+
+
+\begin{figure}[!htbp]
+\centering
+\scalebox{0.92}{
+\begin{tikzpicture}[
+    x=0.55cm,
+    y=0.75cm,
+    >=Latex,
+    task/.style={draw, rounded corners=2pt, minimum height=0.55cm, align=left, fill=gray!20},
+    monthlabel/.style={font=\bfseries},
+    rowlabel/.style={anchor=east, align=right, font=\small},
+    gridline/.style={gray!40, line width=0.2pt},
+    thickline/.style={black, line width=0.5pt}
+]
+
+% Timeline: May--Dec 2026 = 8 months = 16 half-month units (0..16)
+% Grid
+\foreach \x in {0,...,16} {
+    \draw[gridline] (\x,0) -- (\x,-9.5);
+}
+\foreach \y in {0,-1,...,-9} {
+    \draw[gridline] (0,\y) -- (16,\y);
+}
+
+% Border
+\draw[thickline] (0,0.8) -- (16,0.8);
+\draw[thickline] (0,0) -- (16,0);
+\draw[thickline] (0,-9.5) -- (16,-9.5);
+\draw[thickline] (0,0.8) -- (0,-9.5);
+\draw[thickline] (16,0.8) -- (16,-9.5);
+
+% Month labels (each month = 2 units)
+\node[monthlabel] at (1,0.4)  {May};
+\node[monthlabel] at (3,0.4)  {Jun};
+\node[monthlabel] at (5,0.4)  {Jul};
+\node[monthlabel] at (7,0.4)  {Aug};
+\node[monthlabel] at (9,0.4)  {Sep};
+\node[monthlabel] at (11,0.4) {Oct};
+\node[monthlabel] at (13,0.4) {Nov};
+\node[monthlabel] at (15,0.4) {Dec};
+
+% Year label
+\node[font=\bfseries] at (8,1.2) {2026};
+
+% Row labels
+\node[rowlabel] at (-0.2,-0.5) {Finalize design, materials,\\power and payoff calibration};
+\node[rowlabel] at (-0.2,-1.5) {Ethics + pre-registration};
+\node[rowlabel] at (-0.2,-2.5) {Programming + interface\\(news board, costs)};
+\node[rowlabel] at (-0.2,-3.5) {Pilot + parameter tuning};
+\node[rowlabel] at (-0.2,-4.5) {Recruitment + scheduling};
+\node[rowlabel] at (-0.2,-5.5) {Wave 1 (threat campaign)};
+\node[rowlabel] at (-0.2,-6.5) {Wave 2 (discontinuity)};
+\node[rowlabel] at (-0.2,-7.5) {Wave 3 (vote + benchmark)};
+\node[rowlabel] at (-0.2,-8.5) {Cleaning + analysis};
+
+% Tasks (x units are half-months; y rows are -0.8..)
+% May=0..2, Jun=2..4, Jul=4..6, Aug=6..8, Sep=8..10, Oct=10..12, Nov=12..14, Dec=14..16
+
+\draw[task] (0.2,-0.8) rectangle (4.2,-0.2);   % May--mid Jul
+\draw[task] (0.6,-1.8) rectangle (3.8,-1.2);   % mid May--end Jun
+\draw[task] (2.0,-2.8) rectangle (7.0,-2.2);   % Jun--mid Sep
+\draw[task] (6.4,-3.8) rectangle (8.6,-3.2);   % mid Aug--end Sep
+\draw[task] (8.2,-4.8) rectangle (10.8,-4.2);  % mid Sep--end Oct
+
+\draw[task] (10.6,-5.8) rectangle (11.2,-5.2); % late Oct (Wave 1)
+\draw[task] (12.2,-6.8) rectangle (12.8,-6.2); % mid Nov (Wave 2)
+\draw[task] (14.2,-7.8) rectangle (14.8,-7.2); % mid Dec (Wave 3)
+
+\draw[task] (11.4,-8.8) rectangle (16.0,-8.2); % Nov--Dec (analysis/write-up prep)
+
+% Milestones
+\filldraw (3,-1.5) circle (2pt);
+\node[font=\scriptsize, anchor=west] at (4.0,-1.5) {Ethics meet (2.6) + prereg};
+
+\filldraw (8.6,-3.5) circle (2pt);
+\node[font=\scriptsize, anchor=west] at (8.8,-3.5) {Pilot complete};
+
+\filldraw (14.8,-7.5) circle (2pt);
+\node[font=\scriptsize, anchor=west] at (15.0,-7.5) {All waves complete};
+
+\filldraw (16.0,-8.5) circle (2pt);
+\node[font=\scriptsize, anchor=west] at (16.2,-8.5) {Analysis memo};
+
+\end{tikzpicture}
+}
+\caption{Timeline (May--December 2026).}
+\label{fig:gantt_may_dec_2026}
+\end{figure}
+
+
+
+\paragraph{A note on implementation} The memory literature implies that the effect of Wave-1 threat information should decay unless it is refreshed or remains highly accessible, and that what subjects remember at Wave 3 may depend on whether they are engaging in memory-based evaluation or a more durable online tally process \parencite{Hill2013}. Likewise, framing effects can persist across delayed time points but vary systematically by political knowledge, underscoring why repeated measurement across waves is necessary rather than reliance on immediate post-treatment responses \parencite{Lecheler2011}. Wave 2 therefore repeats the same process-tracing information board (with costs) and re-measures via a mechanism module misperceptions  what institutions can deliver, threat reassessment and justifying norm tradeoffs. This also allows us to test whether subjects revise or instead persist in an incorrect status despite feedback from the changed environment \parencite{Esponda2024}.
+
+
+Because the theoretical object is \emph{learning and reversal in a campaign over time}, the waves must be separated enough to allow memory decay and differential accessibility to operate, rather than collapsing everything into an immediate post-treatment window. Accordingly, we run Wave 1, Wave 2, and Wave 3 as three short lab sessions separated by meaningful delays (e.g., 7 days between waves). This spacing is directly motivated by evidence that persuasion effects often decay rapidly and that observed effects reflect a mix of short-lived memory-based processing and more durable online processing \parencite{Hill2013}, and by evidence that framing effects can persist over delayed time points (days to weeks), which is precisely the temporal window relevant for campaign dynamics \parencite{Lecheler2011}. Spacing also increases the inferential leverage of process tracing: if reversals occur only when Wave-2 improvement is salient and remembered at Wave 3, that pattern is consistent with memory-based evaluation; if reversals persist despite delay, that is consistent with more durable updating (an online tally or revised mental model) \parencite{Hill2013,Esponda2024,Levy2025}. Substantively, this distinction matters for democratic resilience: {\bf if commitment to democratic norms depends on what remains cognitively accessible from recent events, then improvements may generate only fragile, short-lived} ``{\bf resilience},'' whereas persistence after delay suggests that citizens have internalized institutional constraints as part of their evaluative standard rather than merely reacting to transient campaign salience.
+
+
+\subsection*{Quantities of Interest}
+
+I exploit the experimental process tracing methodology \parencite{Lau2006} by linking (i) information search under cost, (ii) reversals in perceived institutional capacity and threat across waves ($\Delta M_i$; see below), and (iii) final vote correctness ($C_i$). The central estimand is the treatment effect of structural reversal on (a) support for the anti-democratic candidate (measured in wave 1), and (b) correct voting (wave 3)---including whether reversals are driven by updated beliefs about institutional capacity and threat or by changes in what information remains accessible in memory at election day.
+
+
+Define subject $i$'s vote in Wave 3 as $V_i \in \{0,1\}$, where $V_i=1$ denotes voting for the anti-democratic candidate and $V_i=0$ denotes voting for the pro-democratic candidate. Let $T_i \in \{0,1\}$ indicate assignment to the Wave-2 structural reversal discontinuity, with $T_i=1$ for the reversal (improvement) condition and $T_i=0$ for the no-reversal control. Let $A_{i1}\in\{0,1\}$ denote whether subject $i$ \emph{endorsed} the anti-democratic candidate in Wave 1 (our behavioral indicator that the subject ``learned'' antidemocratic tolerance under the initial threat environment).
+
+\paragraph{Reversal ($R_i$)} I operationalize \emph{reversal} as switching away from the anti-democratic option at the final vote (w3) among those who endorsed it under threat (w1). Formally, for subjects with $A_{i1}=1$, define
+\[
+R_i \equiv \mathbbm{1}\{V_i=0\},
+\]
+so $R_i=1$ indicates a reversal (a pro-democratic vote in Wave 3 conditional on anti-democratic endorsement in Wave 1), and $R_i=0$ indicates persistence.
+
+\paragraph{Correct voting ($C_i$)} Let $C_i\in\{0,1\}$ indicate whether subject $i$ casts a \emph{correct vote} in Wave 3: $C_i=1$ if the chosen candidate maximizes the subject's utility given their own stated values and priorities (elicited in Wave 1), and $C_i=0$ otherwise. In the lab, I operationalize correct voting by revealing full information after the Wave-3 ballot, computing the subject’s full-information utility-maximizing candidate $c_i^\star=\arg\max_{c} U_i(c)$ (where $U_i(c)$ is parameterized by the Wave-1 weights), and then coding $C_i=1$ if and only if the observed vote $V_i$ equals $c_i^\star$ (otherwise $C_i=0$). This allows me to incentivize correct voting with real payments while imposing explicit costs (information acquisition costs and a voting cost) to reduce cheap talk.
+
+
+\paragraph{Potential outcomes and main estimands} Let $R_i(1)$ and $R_i(0)$ denote the potential reversal outcomes under assignment to the reversal discontinuity and the no-reversal control, respectively. Likewise define $C_i(1)$ and $C_i(0)$ for correct voting. The primary causal estimand for reversals is the conditional average treatment effect among subjects who learned antidemocratic tolerance in Wave 1 ($A_{i1}=1$):
+
+\[
+\text{CATE}_R \equiv \mathbb{E}\!\left[R_i(1)-R_i(0)\mid A_{i1}=1\right].
+\]
+
+This estimand captures whether structural improvement (the Wave-2 discontinuity) induces citizens who previously endorsed antidemocratic governance under threat to reverse toward the pro-democratic alternative at the final vote.
+
+A co-primary estimand focuses on decision quality (correct voting):
+
+\[
+\text{ATE}_C \equiv \mathbb{E}\!\left[C_i(1)-C_i(0)\right],
+\qquad
+\text{and}\qquad
+\text{CATE}_C \equiv \mathbb{E}\!\left[C_i(1)-C_i(0)\mid A_{i1}=1\right],
+\]
+
+where $\text{ATE}_C$ measures whether the discontinuity improves correct voting overall, and $\text{CATE}_C$ measures whether it improves correct voting specifically among those who were initially willing to endorse antidemocratic governance.
+
+\paragraph{Process tracing estimands} To link structural change to cognitive updating, I estimate treatment effects on mechanism measures elicited twice: once in a baseline module in Wave 1 (pre-treatment) and again in a post-discontinuity module administered at the end of Wave 2, using the same incentives and costs to limit cheap talk. Key measures include: (i) perceived institutional capacity to deliver policy without norm violations (misperception correction) and (ii) perceived risk of democratic collapse (threat reassessment). Empirically, I operationalize updating as within-subject change between $M_i$ mechanisms (e.g., $\Delta M_i = M_{i,\text{post}} - M_{i,\text{pre}}$) and test whether the discontinuity shifts these changes and whether they predict reversal ($R_i$) and correct voting ($C_i$) in Wave 3, providing evidence on whether cognitive updating is a plausible channel linking structural change to behavior.
+
+\section{Statistical considerations and power} 
+
+Across published candidate-choice and conjoint experiments, norm violations and related cues shift support by anything from low single digits to the mid-teens (and, in some settings, substantially more). In Canada/US intra-party choice tasks, the penalty for an undemocratic candidate attribute can be as small as 1.6 points (ignoring unfavorable court decisions) \parencite[p.~20]{Gidengil2021}. In five-country conjoint evidence, undemocratic behavior reduces support by -0.06 to -0.20 on a five-point support scale \parencite[p.~1149]{Frederiksen2022}. In Finland, the design is powered to detect AMCE $\approx 0.03$, i.e., about a 3 percentage-point change in leader favorability \parencite[p.~6]{Saikkonen2022}. In the US donor/voter conjoint, co-partisan support drops from 84\% (no violations) to 62\% (three violations), with one violation reducing support to 74–80\% and donors exhibiting net decreases of 30–45 percentage points when moving from zero to three violations \parencite[p.~237]{Carey2022}. In Hungary, certain leader-profile attributes reduce selection probabilities by 7\%–7.5\% (openness to new influences), while subgroup differences in tolerance for two democratic attributes are about 2\% in each case \parencite[p.~924]{Wunsch2023}. In party-conditioned models, being in power increases support for norm-eroding policies by 2 percentage points and perceived out-group threat increases support by 4 percentage points \parencite[p.~1809]{Simonovits2022}. In candidate-choice evidence on polarization, undemocratic reforms carry an estimated 16.07\% electoral penalty and “candidates supporting undemocratic reforms” obtain about 5\% fewer votes \parencite[pp.~164–166]{Svolik2020}. Finally, when an illiberal candidate wins, support for an executive-led coup is 62\% among winners versus 31\% among losers (a 31 percentage-point gap) \parencite[p.~261]{Cohen2023}. {\bf Taken together, this heterogeneous evidence implies that both baseline endorsement rates and treatment effects can vary widely across institutional contexts, partisan environments, and the severity or accumulation of violations—which is precisely the scenario this design is built to study}.
+
+Anchoring power calculations in this literature, I use a planning value of $p(A_{i1}=1)\approx 0.40$ for Wave-1 anti-democratic endorsement (i.e., a 60/40 split between non-endorsers and endorsers, with a plausible range of 0.30–0.50; see \autoref{fig:arms_n_diagram}). The primary outcomes are binary: vote reversal ($R_i$) among Wave-1 endorsers ($A_{i1}=1$) and correct voting ($C_i$) in Wave 3. The main estimands will be estimated with logistic regression. With a two-sided $\alpha=0.05$ and $1-\beta=0.80$, a total sample of $N\approx 200$ (about $n\approx 100$ per arm) is powered only for relatively large differences in proportions: for Wave-3 binary outcomes with baseline rates around 0.40–0.60, $n\approx 100$ per arm detects effects on the order of roughly 18–20 percentage points. The more demanding estimand is reversal among Wave-1 endorsers: with $p(A_{i1}=1)\approx 0.40$, the effective sample for $R_i$ is about $n\approx 40$ endorsers per arm, which is only powered to detect very large reversal effects (roughly 30 percentage points). {\bf The resulting risk is twofold: if the true effect in this design is closer to the mid-teen range suggested by several studies above, the experiment will be underpowered for conventional hypothesis testing}, and if the realized endorsement rate is closer to the lower end of the plausible range (e.g., 0.30), power for $R_i$ will fall further. 
+
+\begin{figure}[!htbp]
+\centering
+\resizebox{0.88\textwidth}{!}{
+\begin{tikzpicture}[
+  font=\small,
+  >=Latex,
+  box/.style={draw, rounded corners=3pt, align=center, fill=white, text width=10.4cm, minimum height=1.0cm, inner sep=4pt},
+  arm/.style={draw, rounded corners=3pt, align=center, fill=white, text width=5.0cm, minimum height=1.15cm, inner sep=4pt},
+  line/.style={-Latex, thick}
+]
+
+\node[box] (n0) {\textbf{Recruitment}\\
+{\color{red}$N\approx 200$ participants}};
+
+\node[box, below=0.6cm of n0] (w1) {\textbf{Wave 1 (common)}\\
+Threat campaign + baseline mechanisms (pre) + costly search\\
+{\color{blue}Expected $p(A_{i1}=1)\approx 0.40$}};
+
+\node[box, below=0.6cm of w1] (rand) {\textbf{Wave 2 discontinuity (randomized; between-subject)}\\
+Equal assignment: $T_i=1$ (reversal) vs $T_i=0$ (control)};
+
+\node[arm, below left=0.55cm and 1.0cm of rand] (treat) {\textbf{Treatment arm ($T_i=1$)}\\
+{\color{red}$n\approx 100$}\\
+{\color{blue}Expected $A_{i1}=1$: $\approx 40$ }(and $A_{i1}=0$: $\approx 60$)};
+\node[arm, below right=0.55cm and 1.0cm of rand] (ctrl) {\textbf{Control arm ($T_i=0$)}\\
+{\color{red}$n\approx 100$}\\
+{\color{blue}Expected $A_{i1}=1$: $\approx 40$} (and $A_{i1}=0$: $\approx 60$)};
+
+\node[box, below=1.25cm of $(treat)!0.5!(ctrl)$] (w3) {\textbf{Wave 3 (common)}\\
+Election day: vote + correct-vote benchmark\\
+Outcomes: $C_i$ for all; $R_i$ for endorsers ($A_{i1}=1$)};
+
+\draw[line] (n0) -- (w1);
+\draw[line] (w1) -- (rand);
+\draw[line] (rand.south) |- (treat.north);
+\draw[line] (rand.south) |- (ctrl.north);
+\draw[line] (treat.south) |- (w3.north);
+\draw[line] (ctrl.south) |- (w3.north);
+
+\end{tikzpicture}
+}
+\caption{Planned sample allocation ($N\approx 200$) and expected Wave-1 endorsement subgroup sizes under $p(A_{i1}=1)\approx 0.40$.}
+\label{fig:arms_n_diagram}
+\end{figure}
+
+\section{Ethical Considerations and Mitigation}
+
+The design intentionally exposes participants to environments that make antidemocratic tolerance appear instrumentally reasonable before reversing those conditions. This creates ethical obligations, but it also makes the design scientifically valuable. Participants are informed that the study focuses on political attitudes and learning. The post-experimental debrief clarifies that shifts in participants' judgments are interpreted not as inconsistency, but as evidence of adaptive democratic learning.
+
+
+
+
+
+
+\FloatBarrier
+%\newpage
+
+
+
+%\clearpage
+%\newpage
+%\pagenumbering{roman}
+%\setcounter{page}{1}
+\printbibliography
+%\clearpage
+%\newpage
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WORD COUNT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+<<wordcount, echo=FALSE, cache=FALSE, warning = FALSE>>=
+library(knitr)
+
+comma <- function (x, ...) {
+  format(x, ..., big.mark = ",", scientific = FALSE, trim = TRUE)
+}
+
+# To dynamically extract name of the current file, use code below
+nameoffile <- current_input() # get name of file
+nof2 <-  strsplit(nameoffile,"\\.")[[1]][1] # extract name, drop extension
+noftex <- paste(nof2, ".tex", sep="") # add .tex extension
+systemcall <- paste("system('texcount -inc -incbib -total -sum ", noftex, "', intern=TRUE)", sep="") # paste together texcount system command
+texcount.out <- eval(parse(text=systemcall)) # run texcount on current last compiled .tex file
+
+sum.row <- grep("Sum count", texcount.out, value=TRUE) # extract row
+pattern <- "(\\d)+" # regex pattern for digits
+
+count <- regmatches(sum.row, regexpr(pattern, sum.row) )
+# extract digits
+
+count <- comma(as.numeric(count)) # add comma
+@
+
+
+\begin{center}
+\vspace*{\stretch{1}}
+\dotfill
+\dotfill {\huge {\bf Word count}: \Sexpr{count}} \dotfill
+\dotfill
+\vspace*{\stretch{1}}
+\end{center}
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WORD COUNT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\end{document}
+
+
