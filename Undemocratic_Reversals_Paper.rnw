@@ -383,7 +383,7 @@ where $\text{ATE}_C$ measures whether the discontinuity improves correct voting 
 
 Across published candidate-choice and conjoint experiments, norm violations and related cues shift support by anything from low single digits to the mid-teens (and, in some settings, substantially more). In Canada/US intra-party choice tasks, the penalty for an undemocratic candidate attribute can be as small as 1.6 points (ignoring unfavorable court decisions) \parencite[p.~20]{Gidengil2021}. In five-country conjoint evidence, undemocratic behavior reduces support by -0.06 to -0.20 on a five-point support scale \parencite[p.~1149]{Frederiksen2022}. In Finland, the design is powered to detect AMCE $\approx 0.03$, i.e., about a 3 percentage-point change in leader favorability \parencite[p.~6]{Saikkonen2022}. In the US donor/voter conjoint, co-partisan support drops from 84\% (no violations) to 62\% (three violations), with one violation reducing support to 74–80\% and donors exhibiting net decreases of 30–45 percentage points when moving from zero to three violations \parencite[p.~237]{Carey2022}. In Hungary, certain leader-profile attributes reduce selection probabilities by 7\%–7.5\% (openness to new influences), while subgroup differences in tolerance for two democratic attributes are about 2\% in each case \parencite[p.~924]{Wunsch2023}. In party-conditioned models, being in power increases support for norm-eroding policies by 2 percentage points and perceived out-group threat increases support by 4 percentage points \parencite[p.~1809]{Simonovits2022}. In candidate-choice evidence on polarization, undemocratic reforms carry an estimated 16.07\% electoral penalty and “candidates supporting undemocratic reforms” obtain about 5\% fewer votes \parencite[pp.~164–166]{Svolik2020}. Finally, when an illiberal candidate wins, support for an executive-led coup is 62\% among winners versus 31\% among losers (a 31 percentage-point gap) \parencite[p.~261]{Cohen2023}. {\bf Taken together, this heterogeneous evidence implies that both baseline endorsement rates and treatment effects can vary widely across institutional contexts, partisan environments, and the severity or accumulation of violations—which is precisely the scenario this design is built to study}.
 
-Anchoring power calculations in this literature, I use a planning value of $p(A_{i1}=1)\approx 0.40$ for Wave-1 anti-democratic endorsement (i.e., a 60/40 split between non-endorsers and endorsers, with a plausible range of 0.30–0.50; see \autoref{fig:arms_n_diagram}). The primary outcomes are binary: vote reversal ($R_i$) among Wave-1 endorsers ($A_{i1}=1$) and correct voting ($C_i$) in Wave 3. The main estimands will be estimated with logistic regression. With a two-sided $\alpha=0.05$ and $1-\beta=0.80$, a total sample of $N\approx 200$ (about $n\approx 100$ per arm) is powered only for relatively large differences in proportions: for Wave-3 binary outcomes with baseline rates around 0.40–0.60, $n\approx 100$ per arm detects effects on the order of roughly 18–20 percentage points. The more demanding estimand is reversal among Wave-1 endorsers: with $p(A_{i1}=1)\approx 0.40$, the effective sample for $R_i$ is about $n\approx 40$ endorsers per arm, which is only powered to detect very large reversal effects (roughly 30 percentage points). {\bf The resulting risk is twofold: if the true effect in this design is closer to the mid-teen range suggested by several studies above, the experiment will be underpowered for conventional hypothesis testing}, and if the realized endorsement rate is closer to the lower end of the plausible range (e.g., 0.30), power for $R_i$ will fall further. 
+Anchoring power calculations in this literature, I use a planning value of $p(A_{i1}=1)\approx 0.40$ for Wave-1 anti-democratic endorsement (i.e., a 60/40 split between non-endorsers and endorsers, with a plausible range of 0.30–0.50; see \autoref{fig:arms_n_diagram}). The primary outcomes are binary: vote reversal ($R_i$) among Wave-1 endorsers ($A_{i1}=1$) and correct voting ($C_i$) in Wave 3. The main estimands will be estimated with logistic regression. With a two-sided $\alpha=0.05$ and $1-\beta=0.80$, I will recruit $N\approx 350$ participants to obtain an expected final analytic sample of $N\approx 300$ after approximately 50 dropouts (about $n\approx 150$ per arm). For Wave-3 binary outcomes with baseline rates around 0.40--0.60, $n\approx 150$ per arm detects effects on the order of roughly 16 percentage points. The more demanding estimand is reversal among Wave-1 endorsers: with $p(A_{i1}=1)\approx 0.40$, the effective sample for $R_i$ is about $n\approx 60$ endorsers per arm, which is powered to detect large reversal effects (roughly 25 percentage points). {\bf The resulting risk is that if the true effect in this design is closer to the mid-teen range suggested by several studies above, the experiment may still be underpowered for conventional hypothesis testing}, and if the realized endorsement rate is closer to the lower end of the plausible range (e.g., 0.30), power for $R_i$ will fall further.
 
 \begin{figure}[!htbp]
 \centering
@@ -397,7 +397,7 @@ Anchoring power calculations in this literature, I use a planning value of $p(A_
 ]
 
 \node[box] (n0) {\textbf{Recruitment}\\
-{\color{red}$N\approx 200$ participants}};
+{\color{red}$N\approx 350$ recruited; expected final $N\approx 300$}};
 
 \node[box, below=0.6cm of n0] (w1) {\textbf{Wave 1 (common)}\\
 Threat campaign + baseline mechanisms (pre) + costly search\\
@@ -407,11 +407,11 @@ Threat campaign + baseline mechanisms (pre) + costly search\\
 Equal assignment: $T_i=1$ (reversal) vs $T_i=0$ (control)};
 
 \node[arm, below left=0.55cm and 1.0cm of rand] (treat) {\textbf{Treatment arm ($T_i=1$)}\\
-{\color{red}$n\approx 100$}\\
-{\color{blue}Expected $A_{i1}=1$: $\approx 40$ }(and $A_{i1}=0$: $\approx 60$)};
+{\color{red}$n\approx 150$}\\
+{\color{blue}Expected $A_{i1}=1$: $\approx 60$ }(and $A_{i1}=0$: $\approx 90$)};
 \node[arm, below right=0.55cm and 1.0cm of rand] (ctrl) {\textbf{Control arm ($T_i=0$)}\\
-{\color{red}$n\approx 100$}\\
-{\color{blue}Expected $A_{i1}=1$: $\approx 40$} (and $A_{i1}=0$: $\approx 60$)};
+{\color{red}$n\approx 150$}\\
+{\color{blue}Expected $A_{i1}=1$: $\approx 60$} (and $A_{i1}=0$: $\approx 90$)};
 
 \node[box, below=1.25cm of $(treat)!0.5!(ctrl)$] (w3) {\textbf{Wave 3 (common)}\\
 Election day: vote + correct-vote benchmark\\
@@ -426,7 +426,7 @@ Outcomes: $C_i$ for all; $R_i$ for endorsers ($A_{i1}=1$)};
 
 \end{tikzpicture}
 }
-\caption{Planned sample allocation ($N\approx 200$) and expected Wave-1 endorsement subgroup sizes under $p(A_{i1}=1)\approx 0.40$.}
+\caption{Planned sample allocation ($N\approx 350$ recruited; expected final $N\approx 300$ after approximately 50 dropouts) and expected Wave-1 endorsement subgroup sizes under $p(A_{i1}=1)\approx 0.40$.}
 \label{fig:arms_n_diagram}
 \end{figure}
 
