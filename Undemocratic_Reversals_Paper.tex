@@ -4,7 +4,7 @@
 %========================
 % paper.tex
 %========================
-\documentclass[11pt]{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
+\documentclass[11pt]{article}\usepackage[]{graphicx}\usepackage[dvipsnames]{xcolor}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -67,10 +67,10 @@
 \usepackage[american]{babel}
 \usepackage{microtype}
 \usepackage{authblk}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
 
 \usepackage{tikz}
-\usetikzlibrary{positioning,calc,arrows.meta}
+\usetikzlibrary{positioning,calc,arrows.meta,decorations.pathreplacing}
 
 \usepackage{todonotes}
 
@@ -159,7 +159,7 @@
 
 
 \begin{abstract}
-Democratic backsliding research has established that citizens can learn to tolerate norm violations when structural threats make such tolerance instrumentally attractive. This proposal asks whether that learning is reversible when those structural conditions improve. I implement a three-wave economic laboratory panel experiment structured as a hypothetical election campaign. Wave 1 induces a democratic threat environment in which a rule-breaking candidate can credibly promise targeted benefits. Wave 2 introduces an experimentally randomized discontinuity: structural conditions either improve sharply (treatment) or persist (control). Wave 3 culminates in an incentivized election. Voting is payoff-relevant: subjects face information acquisition costs and a voting cost to reduce cheap talk, and decision quality is evaluated using the correct-voting framework. Specifically, after the ballot, we are able to compute each subject's utility-maximizing candidate and pay an extra bonus when the vote matches that benchmark. The design is mixed: treatment assignment is between-subject, while mechanisms and outcomes are tracked within individuals across waves. I process-trace information search and belief updating by measuring institutional-capacity perceptions and democratic-collapse risk both at baseline (Wave 1) and post-discontinuity (end of Wave 2). The central outcomes are undemocratic reversal and correct voting in the final election.
+Democratic backsliding research has established that citizens can learn to tolerate norm violations when structural threats make such tolerance instrumentally attractive. This proposal asks whether that learning is reversible when those structural conditions improve. I implement a three-wave economic laboratory panel experiment structured as a hypothetical election campaign. Wave 1 induces a democratic threat environment in which a rule-breaking candidate can credibly promise targeted benefits. Wave 2 introduces an experimentally randomized discontinuity: structural conditions either improve sharply (treatment) or persist (control). Wave 3 culminates in an incentivized election. Voting is payoff-relevant: subjects face information acquisition costs and a voting cost to reduce cheap talk, and decision quality is evaluated using the correct-voting framework. Specifically, after the ballot, we are able to compute each subject's utility-maximizing candidate and pay an extra bonus when the vote matches that benchmark. The design is mixed: treatment assignment is between-subject, while mechanism-stage quantities are tracked within individuals across waves. The primary substantive outcome is Wave-3 democratic reversal: whether subjects who endorsed the antidemocratic option under the Wave-1 threat environment switch to the pro-democratic candidate in the final incentivized election. I process-trace the causal chain by measuring information search, institutional-capacity perceptions, and democratic-collapse risk before and after the Wave-2 discontinuity. Correct voting is used instrumentally as an incentive-compatible scoring rule: it makes information acquisition and final voting consequential by rewarding subjects when their Wave-3 vote matches their own full-information utility-maximizing choice. It is therefore part of the experimental architecture rather than a second substantive outcome.
 \end{abstract}
 
 
@@ -187,6 +187,8 @@ For the final wave (``voting day''), I will exploit the ``correct voting'' frame
 
 These considerations motivate a \emph{panel} design rather than a one-shot experiment. First, ``correct voting'' is inherently a dynamic object in campaign contexts: information arrives \emph{sequentially} \parencite{Redlawsk2001}, voters search selectively, and decision quality reflects the joint influence of motivation, cognitive capacity, heuristics, and task demands over time \parencite{Lau1997,Lau2008}. Second, to evaluate \emph{reversal}, we must observe the same individuals before and after the Wave-2 discontinuity. Third, a panel design allows us to process-trace \parencite{Gerring2004,Levy2008,Mahoney2009,Collier2011} whether changes in vote choice are driven by (i) updated learning, or (ii) simple recency and accessibility effects (i.e., what is remembered at the moment of voting). This distinction is important because learning can fail to correct even with abundant feedback when subjects operate with incorrect information \parencite{Esponda2024}. Finally, my design is mixed: the Wave-2 discontinuity is a \emph{between-subject} treatment, while key outcomes and mechanisms are tracked \emph{within individuals} across waves, allowing me to estimate both cross-sectional treatment effects and within-subject updating trajectories.
 
+This structure clarifies the status of the outcome variable. The proposal has a single primary substantive outcome: democratic reversal in the Wave-3 vote. The earlier measurements are not competing outcome variables. They are process-tracing observations that allow the design to evaluate whether the hypothesized causal chain is visible before the final behavioral endpoint is reached. Wave 1 identifies the initial state of the sequence: antidemocratic endorsement under threat. Wave 2 introduces the randomized structural discontinuity and measures whether the beliefs that made antidemocratic governance instrumentally attractive are updated when structural conditions change. Wave 3 then observes whether those intermediate updates culminate in final democratic reversal. In this sense, the panel design is not a sequence of repeated endpoints, but a temporally ordered test of a causal mechanism.
+
 
 \section{Brief Theoretical Framework}
 
@@ -197,10 +199,72 @@ Importantly, the broader literature on democratic backsliding suggests that citi
 
 \section{Methodological Design}
 
-Because the object of interest is reversal rather than static support for antidemocratic governance, the design observes the same construct at theoretically ordered moments in the campaign. The sequencing is central to the ``process-tracing logic'' \parencite{Collier2011}. The aim is to recover the causal chain rather than capturing the pre-post ``effects of causes'' \parencite{Pearl:2015}. Process tracing is especially appropriate here because it examines whether a hypothesized causal chain is visible in the sequence of \emph{intermediate observations} connecting treatment and outcome \parencite{Bennett:2014}. The final behavioral outcomes are Wave-3 reversal and correct voting; the earlier wave-specific measures provide causal leverage to the mechanism generating those outcomes, effectively showing if they operate as theorized.
+Because the object of interest is reversal rather than static support for antidemocratic governance, the design observes the same construct at theoretically ordered moments in the campaign. The sequencing is central to the ``process-tracing logic'' \parencite{Collier2011}. The aim is to recover the causal chain rather than capturing the pre-post ``effects of causes'' \parencite{Pearl:2015}. Process tracing is especially appropriate here because it examines whether a hypothesized causal chain is visible in the sequence of \emph{intermediate observations} connecting treatment and outcome \parencite{Bennett:2014}. The primary behavioral outcome is Wave-3 democratic reversal. Earlier wave-specific measures are mechanism-stage observations: they record the initial endorsement of antidemocratic governance under threat, subsequent belief updating after the structural discontinuity, and the information-search patterns that connect the two. Correct voting is not treated as a separate substantive outcome. It is used instrumentally as an incentive-compatible scoring rule that makes costly information search and the final vote consequential (see \autoref{fig:process_tracing_sequence}).
 
 
-\paragraph{Wave 1} begins by measuring several outcome measures (baseline candidate evaluations\todo{define}---used to later compute that subject's ``correct voting'' in Wave 3,  perceived necessity of norm violations, perceived threat of democratic collapse, other standard batteries of democratic support can be asked)\todo{define}. These questions are later asked in Wave 2 (to capture that subject's potential reversals/persistence). Next, as \autoref{fig:three_wave_campaign} suggests, subjects enter a simulated polity with some kind of institutional break \todo{define}. 
+\begin{figure}[!htbp]
+\centering
+\scalebox{0.80}{
+\begin{tikzpicture}[
+    >=Latex,
+    node distance=0.85cm,
+    stage/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        text width=6.2cm,
+        minimum height=0.85cm,
+        inner sep=5pt,
+        fill=white
+    },
+    arrow/.style={->, thick},
+    brace/.style={decorate, decoration={brace, amplitude=7pt}, thick},
+    bracetext/.style={align=center, font=\small, text width=3.8cm}
+]
+
+\node[stage] (s1) {\textbf{Structural threat}\\
+\vspace{2mm}{\scriptsize Initial institutional crisis}};
+
+\node[stage, below=of s1] (s2) {\textbf{Antidemocratic endorsement}\\
+\vspace{2mm}{\scriptsize $A_{i1}=1$ under threat}};
+
+\node[stage, below=of s2] (s3) {\textbf{Structural reversal}\\
+\vspace{2mm}{\scriptsize Wave-2 discontinuity: $T_i=1$}};
+
+\node[stage, below=of s3] (s4) {\textbf{Belief updating and threat reassessment}\\
+\vspace{2mm}{\scriptsize $\Delta M_i=M_{i,post}-M_{i,pre}$}};
+
+\node[stage, below=of s4] (s5) {\textbf{Wave-3 democratic reversal}\\
+\vspace{2mm}{\scriptsize $R_i=\mathbbm{1}\{V_i=0\mid A_{i1}=1\}$}};
+
+\draw[arrow] (s1) -- (s2);
+\draw[arrow] (s2) -- (s3);
+\draw[arrow] (s3) -- (s4);
+\draw[arrow] (s4) -- (s5);
+
+% Process-tracing brace
+\draw[brace] 
+    ([xshift=-0.45cm]s4.south west) -- 
+    ([xshift=-0.45cm]s1.north west)
+    node[midway, xshift=-2.65cm, bracetext]
+    {\textbf{Process-tracing evidence}\\
+    Identification of causal mechanism};
+
+% Outcome brace
+\draw[brace] 
+    ([xshift=-0.45cm]s5.south west) -- 
+    ([xshift=-0.45cm]s5.north west)    
+    node[midway, xshift=-2.65cm, bracetext]
+    {\textbf{Outcome variable}\\
+    Identification of dependent variable};
+
+\end{tikzpicture}
+}
+\caption{Process-tracing identification of the causal mechanism in the three-wave design.}
+\label{fig:process_tracing_sequence}
+\end{figure}
+
+\paragraph{Wave 1} establishes the initial state of the causal chain. Before exposure to campaign information, subjects report baseline preferences, attribute weights, perceived institutional capacity, perceived democratic-collapse risk, and standard democratic-support batteries\todo{define}. These measures serve three purposes. First, they parameterize the subject-specific utility function used by the incentive-compatible scoring rule in Wave 3 (``correct voting,'' see \cite{Lau2006}). Second, they provide pre-discontinuity mechanism measures against which later updating can be assessed (see \autoref{fig:three_wave_campaign}). Third, they identify whether the subject endorses the antidemocratic option under threat. After this baseline module, subjects enter a simulated polity characterized by institutional crisis. All subjects receive campaign information describing deteriorating structural conditions and candidate claims. The purpose of this common Wave-1 environment is to create the initial threat setting in which antidemocratic governance may become instrumentally attractive.
 
 
 In Wave 1 \emph{all} subjects receive an information stimuli describing an institutional crisis. The idea is to set the (fictitious) voting exercise (in Wave 3) within a context of institutional crisis.\todo{define} Accordingly, all subjects receive some information describing decaying structural conditions and candidate claims\todo{define election/candidate profiles}. Importantly, {\bf information-acquiring is not imposed but rather endogenous, costly and incentive-compatible}: {\bf subjects choose what kind of information buy to vote correctly} (if subjects vote correctly, they earn more points). Following the process-tracing logic of simulated campaign environments \parencite{Lau2006}, subjects access information through a scrolling ``news board'' of labeled information boxes (issues, performance signals, institutional statements\todo{define}). {\bf Clicking a box reveals content but incurs a small cost}; new boxes continue to appear, producing opportunity costs and forcing selective attention. Importantly, voters choose the kind of information they'd like to learn (self-selection). This mirrors the logic that campaign learning is shaped by constrained attention and endogenous information search \parencite{Lyons2016,Lau2013c}. 
@@ -214,6 +278,8 @@ In Wave 1 \emph{all} subjects receive an information stimuli describing an insti
 \end{figure}
 
 \paragraph{Wave 2} implements an experimental discontinuity that enables me to devise a between-subject manipulation in the middle of the ``campaign.'' Subjects are randomly assigned to (i) a \textbf{structural reversal treatment} in which structural conditions improve sharply (i.e., the threat presented in Wave 1 softens\todo{define}), or (ii) a \textbf{control} condition in which the adverse threat persists. The discontinuity is designed as an exogenous shock to the state of the world that {\bf alters the theoretical necessity of democratic rule-breaking}. Critically, the candidates' \emph{rhetoric} remains constant across conditions.
+
+Wave 2 is therefore the mechanism-observation stage of the design. It does not provide the final outcome. Instead, it tests whether the structural discontinuity shifts the beliefs that, according to the theory, sustain antidemocratic tolerance under threat. If structural improvement reduces perceived democratic-collapse risk or increases perceived institutional capacity to deliver policy without norm violations, the design observes the intermediate movement expected by the causal mechanism before the Wave-3 vote occurs.
 
 
 \begin{figure}[!htbp]
@@ -248,16 +314,16 @@ In Wave 1 \emph{all} subjects receive an information stimuli describing an insti
 % WAVE 1
 \node[title] (w1) {Wave 1};
 \node[box, below=0.35cm of w1] (w1a) {\textbf{Baseline + {\color{blue}mechanism module (within-subject)}}\\
-{\color{blue}Is antidemocratic governance endorsed? (pre-crisis)}; attribute weights (used to compute individual ``correct voting'' scores); demographics};
+{\color{blue}Is antidemocratic governance endorsed? (\underline{pre}-crisis)}; attribute weights (used to compute individual ``correct voting'' scores, see \cite{Lau2006}). {\color{Apricot}Candidates are introduced in (costly) ``news board'' (\autoref{fig:newsboard}) + voter sentiment}; demographics.};
 
 \node[box, below=0.40cm of w1a] (w1b) {\textbf{Institutional Crisis}\\
-Situates the campaign/election in a context of crisis};
+Situates the campaign/election in a context of crisis: {\color{Apricot}(costly) ``news board'' updates (newer information added; candidates platforms polarize)}};
 
 \node[box, below=0.40cm of w1b] (w1c) {\textbf{Process tracing begins}\\
 {\color{blue}Mechanism module (within-subject): is antidemocratic governance
-endorsed (post crisis)?}; costly information search in ``news board'' (see \autoref{fig:newsboard})\\
+endorsed (\underline{post} crisis)?}; {\color{Apricot} voter sentiment}\\
 \vspace{0.3cm}
-{\scriptsize $A_{i1}=1$: endorsed anti-democratic option post crisis}};
+{\scriptsize $A_{i1}=1$: endorsed anti-democratic option \underline{post} crisis}};
 
 % WAVE 2
 \node[title, below=0.75cm of w1c] (w2) {Wave 2};
@@ -277,10 +343,10 @@ Structural threat persists\\
 \vspace{0.3cm}
 {\scriptsize $T_i=0$}};
 
-\node[box, below=1.20cm of $(treat)!0.5!(ctrl)$] (w2c) {\textbf{Continue ``news board'' (\autoref{fig:newsboard})}\\
-New campaign information is added};
+\node[box, below=1.20cm of $(treat)!0.5!(ctrl)$] (w2c) {\textbf{Continue ``news board''}\\
+{\color{Apricot}(costly) ``news board'' updates (newer information added) + voter sentiment}};
 
-\node[box, below=0.40cm of w2c] (mech) {\textbf{{\color{blue}Mechanism module (updating)}}: whether structural improvement induces participants who previously endorsed antidemocratic governance under threat in W1 ($A_{i1}=1$) to reverse toward the pro-democratic alternative in W2 ($A_{i2}=0$)\\
+\node[box, below=0.40cm of w2c] (mech) {\textbf{{\color{blue}Mechanism module (last one; is antidemocratic governance endorsed?)}}: whether structural improvement induces participants who previously endorsed antidemocratic governance under threat in W1 ($A_{i1}=1$) to reverse toward the pro-democratic alternative in W2 ($A_{i2}=0$)\\
 \textbf{({\color{blue}within-subject})}};
 
 
@@ -296,11 +362,10 @@ Subjects cast their ballots; ``correct voting'' (e.g., \cite{Lau2013c})\\
 \node[box, below=0.40cm of vote] (bench) {\textbf{Post-vote full-info reveal}\\
 Correct voting is an \emph{unobserved counterfactual}: the choice the same subject would have made under full information (makes it more realistic; voting under uncertainty)};
 
-\node[box, below=0.40cm of bench] (pay) {\textbf{{\color{blue}Computing reversal mechanism}}\\
+\node[box, below=0.40cm of bench] (pay) {\textbf{{\color{blue}Computing primary outcome (reversal)}}\\
 \vspace{0.3cm}
-{\scriptsize $R_i=\mathbf{1}\{V_i=0\}\mid A_{i1}=1$;\quad
-$CATE_R=E[R_i(1)-R_i(0)\mid A_{i1}=1]$}\\
-\vspace{0.3cm}{\scriptsize $R_i$ defines reversal as a Wave-3 pro-democratic vote $(V_i=0)$ among those who endorsed the anti-democratic option in Wave 1 $(A_{i1}=1)$; $CATE_R$ is the expected effect of structural reversal $(T_i=1)$ versus no reversal $(T_i=0)$ on reversal among that Wave-1 endorsement subgroup $(A_{i1}=1)$.}};
+{\scriptsize $R_i = \mathbbm{1}\{V_i=0\mid A_{i1}=1\}$}\\
+\vspace{0.3cm}{\scriptsize $R_i$ defines reversal as a Wave-3 pro-democratic vote $(V_i=0)$ among those who endorsed the anti-democratic option in Wave 1 $(A_{i1}=1)$}};
 
 
 % ARROWS
@@ -328,11 +393,9 @@ $CATE_R=E[R_i(1)-R_i(0)\mid A_{i1}=1]$}\\
 \label{fig:three_wave_campaign}
 \end{figure}
 
-\paragraph{Wave 3} represents election day at the end of the hypothetical campaign. Subjects pay a fixed voting cost to cast a ballot\todo{discuss; consider costless mandatory voting}.\todo{discuss if win prob are fixed/consequential} Mechanically, subjects choose between two candidates\todo{discuss}: a \emph{pro-democratic} candidate who commits to institutional constraints and rule-of-law, and an \emph{anti-democratic} candidate who promises faster but undemocratic solutions to the current structural problems framed in the experiment. Each candidate is described along multiple attributes. 
+\paragraph{Wave 3} represents election day at the end of the hypothetical campaign and provides the primary substantive outcome. Subjects cast a final ballot between a pro-democratic candidate, who commits to institutional constraints and rule-of-law, and an antidemocratic candidate, who promises faster but norm-violating solutions to the structural problems framed in the experiment. The  outcome variable is democratic reversal among subjects who endorsed the antidemocratic option under the Wave-1 threat environment.  Thus, the key behavioral question is whether subjects who previously treated antidemocratic governance as instrumentally attractive ($A_{i1}=1$) switch to the pro-democratic candidate once the structural conditions that justified such tolerance have changed ($R_i=\mathbbm{1}\{V_i=0\mid A_{i1}=1\}$).
 
-In Wave 1, and before exposure to campaign information, subjects state (i) their preferred position on different attributes and (ii) importance weights. These inputs define the subject's utility function. Candidate utilities are then computed as weighted proximity between the subject's stated preferences and each candidate's attribute profile. This implements the key idea that correct voting is defined relative to the subject's own priorities but evaluated using an objective mapping from candidate positions to the voter's preferences \parencite{Lau2008,Lau2013c}.
-
-After voting, the experiment reveals the full information set (candidate positions, competence signals, and the institutional consequences relevant to subject utility).\footnote{I reveal full information \emph{after} voting to address an identification problem: correct voting is defined relative to an \emph{unobserved counterfactual} (the choice the same subject would have made under full information; \cite{Lau2006}). The design therefore must create a full-information benchmark that is observed only \emph{after} the ballot is cast, so the benchmark can be used to classify the earlier, uncertainty-based vote rather than determine it. If full information were provided pre-vote, the design would collapse to a single fully informed choice and the ``correctness'' counterfactual would no longer be separately identifiable. Second, for incentives, withholding complete information preserves a realistic campaign decision problem in which information acquisition is costly and uncertainty remains, preventing the task from collapsing into cheap talk or a trivial maximization with guaranteed full knowledge before voting.} The subject-specific correct vote is computed as the argmax of full-information utility. The subject receives a substantial accuracy bonus if and only if their ballot matches the correct vote. This makes voting payoff-relevant, so subjects have a clear incentive to vote ``correctly'' \parencite{Lau1997,Lau2008}.\footnote{To avoid mechanically rewarding ``pro-democratic'' choices, the accuracy bonus is candidate-neutral: it is paid for selecting the subject's \emph{utility-maximizing} candidate, whichever candidate that is. Thus, ``correct voting'' captures preference-consistent decision quality rather than conformity to a particular democratic norm.} It also yields a direct behavioral test of democratic resilience: among subjects who endorsed the antidemocratic candidate under threat in Wave 1, do they stick with that choice, or do they switch to the pro-democratic candidate after the discontinuity changes the incentives for voting for such candidate disappear?
+``Correct voting'' \parencite{Lau1997,Lau2006,Lau2008,Lau2013c} is used instrumentally to make the task incentive compatible. Before campaign exposure in Wave 1, subjects state their preferred positions on different attributes and the importance weights attached to those attributes. These inputs define the subject's utility function. After the Wave-3 ballot, the experiment reveals the full information set and computes the candidate that maximizes the subject's own utility under full information.\footnote{I reveal full information \emph{after} voting to address an identification problem: correct voting is defined relative to an \emph{unobserved counterfactual} (the choice the same subject would have made under full information; \cite{Lau2006}). The design therefore must create a full-information benchmark that is observed only \emph{after} the ballot is cast, so the benchmark can be used to classify the earlier, uncertainty-based vote rather than determine it. If full information were provided pre-vote, the design would collapse to a single fully informed choice and the ``correctness'' counterfactual would no longer be separately identifiable. Second, for incentives, withholding complete information preserves a realistic campaign decision problem in which information acquisition is costly and uncertainty remains, preventing the task from collapsing into cheap talk or a trivial maximization with guaranteed full knowledge before voting.} Subjects receive an accuracy bonus if and only if their Wave-3 ballot matches that utility-maximizing benchmark. This scoring rule does not make correct voting a second substantive outcome. Its purpose is to make information search and voting consequential, reduce cheap talk, and ensure that the final ballot is cast under real incentives.
 
 
 The design treats the laboratory as a controlled decision environment rather than as a physical location. This distinction matters because the experiment is designed to identify whether citizens revise antidemocratic tolerance when the structural conditions that made such tolerance instrumentally attractive are experimentally reversed. The relevant requirements are therefore not co-presence in a room, but control over assignment, information, timing, incentives, and payoff-relevant choice. This is precisely where online implementation is compatible with an economic laboratory logic. Online experiments can be ``just as valid---both internally and externally---as laboratory and field experiments'' when they preserve the conditions required for causal inference \parencite[399]{Horton2011}; even interactive designs can produce data whose quality is ``adequate and reliable'' when attrition, comprehension, and payment rules are properly managed \parencite[100]{Arechar2018}. More recent evidence comparing otherwise identical laboratory and online implementations reaches the same conclusion: \textcite[8]{Prisse2022} argue that ``lack of control is not an issue'' for several standard economic tasks. The proposed design therefore uses an online laboratory format to study a political-psychological process--learning, memory, and threat reassessment--under economic-experimental conditions: costly information acquisition, incentive-compatible voting, and a candidate-neutral payoff rule tied to subject-specific utility.
@@ -438,46 +501,47 @@ Spacing also increases the inferential leverage of process tracing: if reversals
 
 \subsection*{Quantities of Interest}
 
-I exploit the experimental process tracing methodology \parencite{Lau2006} by linking (i) information search under cost, (ii) reversals in perceived institutional capacity and threat across waves ($\Delta M_i$; see below), and (iii) final vote correctness ($C_i$). The central estimand is the treatment effect of structural reversal on (a) support for the anti-democratic candidate (measured in wave 1), and (b) correct voting (wave 3)---including whether reversals are driven by updated beliefs about institutional capacity and threat or by changes in what information remains accessible in memory at election day.
+The design distinguishes among three components: the primary substantive outcome, the instrumental scoring rule, and the process-tracing observations. The primary substantive outcome is Wave-3 democratic reversal among subjects who endorsed the antidemocratic option under the Wave-1 threat environment. Correct voting is not a second substantive outcome; it is an incentive-compatible scoring rule used to make information search and voting consequential. Wave-1 and Wave-2 measures are mechanism-stage observations used to trace the causal sequence leading to Wave-3 reversal.
 
+Define subject $i$'s final vote in Wave 3 as $V_i \in \{0,1\}$, where $V_i=1$ denotes voting for the antidemocratic candidate and $V_i=0$ denotes voting for the pro-democratic candidate. Let $T_i \in \{0,1\}$ indicate assignment to the Wave-2 structural discontinuity, with $T_i=1$ for the structural reversal condition and $T_i=0$ for the no-reversal control. Let $A_{i1} \in \{0,1\}$ denote whether subject $i$ endorsed the antidemocratic option in Wave 1 after exposure to the common threat environment. This quantity is not the final outcome. It identifies the initial state of the causal sequence and defines the subgroup for whom democratic reversal is theoretically meaningful.
 
-Define subject $i$'s vote in Wave 3 as $V_i \in \{0,1\}$, where $V_i=1$ denotes voting for the anti-democratic candidate and $V_i=0$ denotes voting for the pro-democratic candidate. Let $T_i \in \{0,1\}$ indicate assignment to the Wave-2 structural reversal discontinuity, with $T_i=1$ for the reversal (improvement) condition and $T_i=0$ for the no-reversal control. Let $A_{i1}\in\{0,1\}$ denote whether subject $i$ \emph{endorsed} the anti-democratic candidate in Wave 1 (our behavioral indicator that the subject ``learned'' antidemocratic tolerance under the initial threat environment).
-
-\paragraph{Reversal ($R_i$)} I operationalize \emph{reversal} as switching away from the anti-democratic option at the final vote (w3) among those who endorsed it under threat (w1). Formally, for subjects with $A_{i1}=1$, define
+\paragraph{Primary outcome: Wave-3 democratic reversal.}
+For subjects with $A_{i1}=1$, define
 \[
-R_i \equiv \mathbbm{1}\{V_i=0\},
+R_i \equiv \mathbbm{1}\{V_i=0\}.
 \]
-so $R_i=1$ indicates a reversal (a pro-democratic vote in Wave 3 conditional on anti-democratic endorsement in Wave 1), and $R_i=0$ indicates persistence.
-
-\paragraph{Correct voting ($C_i$)} Let $C_i\in\{0,1\}$ indicate whether subject $i$ casts a \emph{correct vote} in Wave 3: $C_i=1$ if the chosen candidate maximizes the subject's utility given their own stated values and priorities (elicited in Wave 1), and $C_i=0$ otherwise. In the lab, I operationalize correct voting by revealing full information after the Wave-3 ballot, computing the subject’s full-information utility-maximizing candidate $c_i^\star=\arg\max_{c} U_i(c)$ (where $U_i(c)$ is parameterized by the Wave-1 weights), and then coding $C_i=1$ if and only if the observed vote $V_i$ equals $c_i^\star$ (otherwise $C_i=0$). This allows me to incentivize correct voting with real payments while imposing explicit costs (information acquisition costs and a voting cost) to reduce cheap talk.
-
-
-\paragraph{Potential outcomes and main estimands} Let $R_i(1)$ and $R_i(0)$ denote the potential reversal outcomes under assignment to the reversal discontinuity and the no-reversal control, respectively. Likewise define $C_i(1)$ and $C_i(0)$ for correct voting. The primary causal estimand for reversals is the conditional average treatment effect among subjects who learned antidemocratic tolerance in Wave 1 ($A_{i1}=1$):
-
+Thus, $R_i=1$ indicates that a subject who endorsed the antidemocratic option under the Wave-1 threat environment casts a pro-democratic vote in Wave 3, while $R_i=0$ indicates persistence. Let $R_i(1)$ and $R_i(0)$ denote potential reversal outcomes under assignment to the structural reversal condition and the no-reversal control, respectively. The primary causal estimand is
 \[
-\text{CATE}_R \equiv \mathbb{E}\!\left[R_i(1)-R_i(0)\mid A_{i1}=1\right].
+CATE_R \equiv E\left[R_i(1)-R_i(0)\mid A_{i1}=1\right].
 \]
+This estimand captures whether structural improvement induces citizens who previously endorsed antidemocratic governance under threat to reverse toward the pro-democratic alternative at the final election.
 
-This estimand captures whether structural improvement (the Wave-2 discontinuity) induces citizens who previously endorsed antidemocratic governance under threat to reverse toward the pro-democratic alternative at the final vote.
-
-A co-primary estimand focuses on decision quality (correct voting):
-
+\paragraph{Instrumental scoring rule: correct voting.}
+Correct voting is used to incentivize consequential information search and voting. Let $c_i^\star$ denote the candidate that maximizes subject $i$'s own utility under full information:
 \[
-\text{ATE}_C \equiv \mathbb{E}\!\left[C_i(1)-C_i(0)\right],
-\qquad
-\text{and}\qquad
-\text{CATE}_C \equiv \mathbb{E}\!\left[C_i(1)-C_i(0)\mid A_{i1}=1\right],
+c_i^\star = \arg\max_c U_i(c),
 \]
+where $U_i(c)$ is parameterized by the preferences and attribute weights elicited before campaign exposure in Wave 1. After the Wave-3 ballot, the experiment reveals the full information set and computes $c_i^\star$. Subjects receive an accuracy bonus when their observed Wave-3 vote matches this benchmark:
+\[
+C_i = \mathbbm{1}\{V_i=c_i^\star\}.
+\]
+This quantity is used for payment and incentive compatibility. It is not the main dependent variable. Its function is to make information acquisition costly but potentially valuable, reduce cheap talk, and ensure that the final ballot is cast under a consequential decision environment.
 
-where $\text{ATE}_C$ measures whether the discontinuity improves correct voting overall, and $\text{CATE}_C$ measures whether it improves correct voting specifically among those who were initially willing to endorse antidemocratic governance.
-
-\paragraph{Process tracing estimands} To link structural change to cognitive updating, I estimate treatment effects on mechanism measures elicited twice: once in a baseline module in Wave 1 (pre-treatment) and again in a post-discontinuity module administered at the end of Wave 2, using the same incentives and costs to limit cheap talk. Key measures include: (i) perceived institutional capacity to deliver policy without norm violations (misperception correction) and (ii) perceived risk of democratic collapse (threat reassessment). Empirically, I operationalize updating as within-subject change between $M_i$ mechanisms (e.g., $\Delta M_i = M_{i,\text{post}} - M_{i,\text{pre}}$) and test whether the discontinuity shifts these changes and whether they predict reversal ($R_i$) and correct voting ($C_i$) in Wave 3, providing evidence on whether cognitive updating is a plausible channel linking structural change to behavior.
+\paragraph{Process-tracing observations.}
+The mechanism measures are elicited before and after the Wave-2 discontinuity to evaluate whether the hypothesized causal chain is empirically visible. Let $M_{i,pre}$ denote a mechanism measure observed before the discontinuity and $M_{i,post}$ the same measure observed after the discontinuity. Key mechanism measures include perceived institutional capacity to deliver policy without norm violations and perceived risk of democratic collapse. Updating is defined as
+\[
+\Delta M_i = M_{i,post}-M_{i,pre}.
+\]
+The process-tracing analysis asks whether $T_i$ shifts $\Delta M_i$ in the theoretically expected direction and whether these changes are associated with the primary Wave-3 outcome $R_i$. This evidence does not replace the outcome. It evaluates whether the treatment effect on final behavior is accompanied by the anticipated intermediate steps: structural improvement, belief updating, threat reassessment, and final democratic reversal.
 
 \section{Statistical considerations and power} 
 
 Across published candidate-choice and conjoint experiments, norm violations and related cues shift support by anything from low single digits to the mid-teens (and, in some settings, substantially more). In Canada/US intra-party choice tasks, the penalty for an undemocratic candidate attribute can be as small as 1.6 points (ignoring unfavorable court decisions) \parencite[p.~20]{Gidengil2021}. In five-country conjoint evidence, undemocratic behavior reduces support by -0.06 to -0.20 on a five-point support scale \parencite[p.~1149]{Frederiksen2022}. In Finland, the design is powered to detect AMCE $\approx 0.03$, i.e., about a 3 percentage-point change in leader favorability \parencite[p.~6]{Saikkonen2022}. In the US donor/voter conjoint, co-partisan support drops from 84\% (no violations) to 62\% (three violations), with one violation reducing support to 74–80\% and donors exhibiting net decreases of 30–45 percentage points when moving from zero to three violations \parencite[p.~237]{Carey2022}. In Hungary, certain leader-profile attributes reduce selection probabilities by 7\%–7.5\% (openness to new influences), while subgroup differences in tolerance for two democratic attributes are about 2\% in each case \parencite[p.~924]{Wunsch2023}. In party-conditioned models, being in power increases support for norm-eroding policies by 2 percentage points and perceived out-group threat increases support by 4 percentage points \parencite[p.~1809]{Simonovits2022}. In candidate-choice evidence on polarization, undemocratic reforms carry an estimated 16.07\% electoral penalty and “candidates supporting undemocratic reforms” obtain about 5\% fewer votes \parencite[pp.~164–166]{Svolik2020}. Finally, when an illiberal candidate wins, support for an executive-led coup is 62\% among winners versus 31\% among losers (a 31 percentage-point gap) \parencite[p.~261]{Cohen2023}. {\bf Taken together, this heterogeneous evidence implies that both baseline endorsement rates and treatment effects can vary widely across institutional contexts, partisan environments, and the severity or accumulation of violations—which is precisely the scenario this design is built to study}.
 
-Anchoring power calculations in this literature, I use a planning value of $p(A_{i1}=1)\approx 0.40$ for Wave-1 anti-democratic endorsement (i.e., a 60/40 split between non-endorsers and endorsers, with a plausible range of 0.30–0.50; see \autoref{fig:arms_n_diagram}). The primary outcomes are binary: vote reversal ($R_i$) among Wave-1 endorsers ($A_{i1}=1$) and correct voting ($C_i$) in Wave 3. The main estimands will be estimated with logistic regression. With a two-sided $\alpha=0.05$ and $1-\beta=0.80$, I will recruit $N\approx 350$ participants to obtain an expected final analytic sample of $N\approx 300$ after approximately 50 dropouts (about $n\approx 150$ per arm). For Wave-3 binary outcomes with baseline rates around 0.40--0.60, $n\approx 150$ per arm detects effects on the order of roughly 16 percentage points. The more demanding estimand is reversal among Wave-1 endorsers: with $p(A_{i1}=1)\approx 0.40$, the effective sample for $R_i$ is about $n\approx 60$ endorsers per arm, which is powered to detect large reversal effects (roughly 25 percentage points). {\bf The resulting risk is that if the true effect in this design is closer to the mid-teen range suggested by several studies above, the experiment may still be underpowered for conventional hypothesis testing}, and if the realized endorsement rate is closer to the lower end of the plausible range (e.g., 0.30), power for $R_i$ will fall further.
+Anchoring power calculations in this literature, I use a planning value of $p(A_{i1}=1)\approx 0.40$ for Wave-1 anti-democratic endorsement (i.e., a 60/40 split between non-endorsers and endorsers, with a plausible range of 0.30–0.50; see \autoref{fig:arms_n_diagram}). The primary outcome is binary: Wave-3 democratic reversal $(R_i)$ among Wave-1 antidemocratic endorsers $(A_{i1}=1)$. Correct voting $(C_i)$ is not treated as a substantive outcome for power purposes. It is used as an incentive-compatible scoring rule that makes information search and voting consequential.
+
+
+The main estimands will be estimated with logistic regression. With a two-sided $\alpha=0.05$ and $1-\beta=0.80$, I will recruit $N\approx350$ participants to obtain an expected final analytic sample of $N\approx300$ after approximately 50 dropouts. With $p(A_{i1}=1)\approx0.40$, the effective sample for the primary outcome is approximately $n\approx60$ Wave-1 antidemocratic endorsers per arm. This design is therefore powered to detect large reversal effects, on the order of roughly 25 percentage points. {\bf The resulting risk is that if the true effect in this design is closer to the mid-teen range suggested by several studies above, the experiment may still be underpowered for conventional hypothesis testing}, and if the realized endorsement rate is closer to the lower end of the plausible range (e.g., 0.30), power for $R_i$ will fall further.
 
 \begin{figure}[!htbp]
 \centering
@@ -510,7 +574,7 @@ Equal assignment: $T_i=1$ (structural improvement) vs $T_i=0$ (control)};
 
 \node[box, below=1.25cm of $(treat)!0.5!(ctrl)$] (w3) {\textbf{Wave 3 (common)}\\
 Election day: vote + correct-vote benchmark\\
-Outcomes: Correct voting ($C_i$) for all; reversal ($R_i$) only for W1 antidemocratic endorsers ($A_{i1}=1$)};
+Outcome: reversal $(R_i)$ among W1 antidemocratic endorsers $(A_{i1}=1)$. Correct-vote benchmark $(C_i)$ used only for incentive-compatible scoring};
 
 \draw[line] (n0) -- (w1);
 \draw[line] (w1) -- (rand);
@@ -562,7 +626,7 @@ The design intentionally exposes participants to environments that make antidemo
 \begin{center}
 \vspace*{\stretch{1}}
 \dotfill
-\dotfill {\huge {\bf Word count}: 3,614} \dotfill
+\dotfill {\huge {\bf Word count}: 3,818} \dotfill
 \dotfill
 \vspace*{\stretch{1}}
 \end{center}
