@@ -219,6 +219,11 @@ Because the object of interest is reversal rather than static support for antide
 \label{fig:process_tracing_sequence}
 \end{figure}
 
+
+
+
+
+
 \paragraph{Wave 1} establishes the initial state of the causal chain. Before exposure to campaign information, subjects report baseline preferences, attribute weights, perceived institutional capacity, perceived democratic-collapse risk, and standard democratic-support batteries\todo{define}. These measures serve three purposes. First, they parameterize the subject-specific utility function used by the incentive-compatible scoring rule in Wave 3 (``correct voting,'' see \cite{Lau2006}). Second, they provide pre-discontinuity mechanism measures against which later updating can be assessed (see \autoref{fig:three_wave_campaign}). Third, they identify whether the subject endorses the antidemocratic option under threat. After this baseline module, subjects enter a simulated polity characterized by institutional crisis. All subjects receive campaign information describing deteriorating structural conditions and candidate claims. The purpose of this common Wave-1 environment is to create the initial threat setting in which antidemocratic governance may become instrumentally attractive.
 
 
@@ -411,7 +416,50 @@ Correct voting is an \emph{unobserved counterfactual}: the choice the same subje
 ``Correct voting'' \parencite{Lau1997,Lau2006,Lau2008,Lau2013c} is used instrumentally to make the task incentive compatible. Before campaign exposure in Wave 1, subjects state their preferred positions on different attributes and the importance weights attached to those attributes. These inputs define the subject's utility function. After the Wave-3 ballot, the experiment reveals the full information set and computes the candidate that maximizes the subject's own utility under full information.\footnote{I reveal full information \emph{after} voting to address an identification problem: correct voting is defined relative to an \emph{unobserved counterfactual} (the choice the same subject would have made under full information; \cite{Lau2006}). The design therefore must create a full-information benchmark that is observed only \emph{after} the ballot is cast, so the benchmark can be used to classify the earlier, uncertainty-based vote rather than determine it. If full information were provided pre-vote, the design would collapse to a single fully informed choice and the ``correctness'' counterfactual would no longer be separately identifiable. Second, for incentives, withholding complete information preserves a realistic campaign decision problem in which information acquisition is costly and uncertainty remains, preventing the task from collapsing into cheap talk or a trivial maximization with guaranteed full knowledge before voting.} Subjects receive an accuracy bonus if and only if their Wave-3 ballot matches that utility-maximizing benchmark. This scoring rule does not make correct voting a second substantive outcome. Its purpose is to make information search and voting consequential, reduce cheap talk, and ensure that the final ballot is cast under real incentives.
 
 
-The design treats the laboratory as a controlled decision environment rather than as a physical location. This distinction matters because the experiment is designed to identify whether citizens revise antidemocratic tolerance when the structural conditions that made such tolerance instrumentally attractive are experimentally reversed. The relevant requirements are therefore not co-presence in a room, but control over assignment, information, timing, incentives, and payoff-relevant choice. This is precisely where online implementation is compatible with an economic laboratory logic. Online experiments can be ``just as valid---both internally and externally---as laboratory and field experiments'' when they preserve the conditions required for causal inference \parencite[399]{Horton2011}; even interactive designs can produce data whose quality is ``adequate and reliable'' when attrition, comprehension, and payment rules are properly managed \parencite[100]{Arechar2018}. More recent evidence comparing otherwise identical laboratory and online implementations reaches the same conclusion: \textcite[8]{Prisse2022} argue that ``lack of control is not an issue'' for several standard economic tasks. The proposed design therefore uses an online laboratory format to study a political-psychological process--learning, memory, and threat reassessment--under economic-experimental conditions: costly information acquisition, incentive-compatible voting, and a candidate-neutral payoff rule tied to subject-specific utility.
+\paragraph{Willingness to relax institutional constraints when governance appears unable to solve a crisis} The mechanism module measures crisis-induced tolerance for relaxing institutional constraints. The construct is not generic democratic support. It captures whether, under a governance-capacity crisis, subjects become more willing to prioritize rapid executive action over parliamentary scrutiny, legal review, and independent oversight. This distinction is central to the design: {\bf candidate choice identifies behavioral endorsement of the constraint-removing option, while the battery records the intermediate belief structure that makes such endorsement instrumentally attractive}. Items are measured on seven-point agreement scales. Items emphasizing continued institutional safeguards are reverse-coded so that higher values consistently indicate greater tolerance for relaxing constraints under crisis (reverse coding makes acquiescence bias evident; some respondents tend to agree with everything). 
+
+The questions and the dimensions they try to capture are as follow:
+
+\begin{enumerate}
+
+    \item {\bf (Crisis severity)}: The budget crisis has reached a point where ordinary decision-making procedures may no longer be sufficient.
+
+    \item {\bf (Speed-over-oversight tradeoff)}: In the current situation, the government should prioritize rapid action even if this reduces the time available for parliamentary scrutiny.
+
+    \item {\bf (Constraint commitment)}: Even when public services are under pressure, major decisions should remain subject to parliamentary oversight, legal review, and independent monitoring. \textit{(reverse-coded)}
+
+    \item {\bf (Executive concentration)}: A temporary concentration of decision-making authority would be acceptable if it helped reduce healthcare waiting times and stabilize public services.
+
+    \item {\bf (Procedural ``patience'')}: I would prefer a slower response if that is the cost of keeping normal institutional safeguards in place. \textit{(reverse-coded)}
+
+    \item {\bf (Risk perception)}: Bypassing ordinary oversight would create political risks that are not justified by the current crisis. \textit{(reverse-coded)}
+
+    \item {\bf (Institutional ``impatience'')}: When institutions are unable to act for a long period, leaders should have more room to implement solutions without waiting for normal procedures.
+
+\end{enumerate}
+
+
+Now, let $D_{it}$ denote subject $i$'s institutional-constraint tolerance score at wave $t$. Each item is measured on a seven-point agreement scale, where higher values indicate stronger agreement. Items 3, 5, and 6 are reverse-coded so that
+higher values consistently indicate greater tolerance for relaxing institutional constraints under crisis. The index is computed as
+
+\[
+D_{it} = \frac{1}{7} \sum_{k=1}^{7} d_{ikt},
+\]
+
+where $d_{ikt}$ is subject $i$'s coded response to item $k$ at wave $t$. 
+
+The mechanism-stage quantity of interest is
+
+\[
+\Delta D_i = D_{i,post} - D_{i,pre}.
+\]
+
+The process-tracing expectation is that the Wave-2 structural reversal should reduce $D_{it}$ among subjects who initially treated antidemocratic governance as instrumentally attractive under the Wave-1 crisis.
+
+
+\paragraph{A note on implementation} The design treats the laboratory as a controlled decision environment rather than as a physical location. This distinction matters because the experiment is designed to identify whether citizens revise antidemocratic tolerance when the structural conditions that made such tolerance instrumentally attractive are experimentally reversed. The relevant requirements are therefore not co-presence in a room, but control over assignment, information, timing, incentives, and payoff-relevant choice. This is precisely where online implementation is compatible with an economic laboratory logic. Online experiments can be ``just as valid---both internally and externally---as laboratory and field experiments'' when they preserve the conditions required for causal inference \parencite[399]{Horton2011}; even interactive designs can produce data whose quality is ``adequate and reliable'' when attrition, comprehension, and payment rules are properly managed \parencite[100]{Arechar2018}. More recent evidence comparing otherwise identical laboratory and online implementations reaches the same conclusion: \textcite[8]{Prisse2022} argue that ``lack of control is not an issue'' for several standard economic tasks. The proposed design therefore uses an online laboratory format to study a political-psychological process--learning, memory, and threat reassessment--under economic-experimental conditions: costly information acquisition, incentive-compatible voting, and a candidate-neutral payoff rule tied to subject-specific utility.
+
+
 
 \begin{figure}[!htbp]
 \centering
@@ -504,8 +552,7 @@ The design treats the laboratory as a controlled decision environment rather tha
 
 
 
-
-\paragraph{A note on implementation} The memory literature implies that the effect of Wave-1 threat information should decay unless it is refreshed or remains highly accessible, and that what subjects remember at Wave 3 may depend on whether they are engaging in memory-based evaluation or a more durable online tally process \parencite{Hill2013}. Likewise, framing effects can persist across delayed time points but vary systematically by political knowledge, underscoring why repeated measurement across waves is necessary rather than reliance on immediate post-treatment responses \parencite{Lecheler2011}. Wave 2 therefore introduces new campaign information in the board (see \autoref{fig:newsboard}) and rephrases old information (maintaining costs). Importantly, it keeps the same module on democratic attitudes asked in Wave 1. This also allows us to test whether subjects revise or instead persist in an incorrect status despite feedback from the changed environment \parencite{Esponda2024}.
+The memory literature implies that the effect of Wave-1 threat information should decay unless it is refreshed or remains highly accessible, and that what subjects remember at Wave 3 may depend on whether they are engaging in memory-based evaluation or a more durable online tally process \parencite{Hill2013}. Likewise, framing effects can persist across delayed time points but vary systematically by political knowledge, underscoring why repeated measurement across waves is necessary rather than reliance on immediate post-treatment responses \parencite{Lecheler2011}. Wave 2 therefore introduces new campaign information in the board (see \autoref{fig:newsboard}) and rephrases old information (maintaining costs). Importantly, it keeps the same module on democratic attitudes asked in Wave 1. This also allows us to test whether subjects revise or instead persist in an incorrect status despite feedback from the changed environment \parencite{Esponda2024}.
 
 
 Because the focus is \emph{learning and reversal in a campaign over time}, the waves must be separated enough to allow memory decay and differential accessibility to operate, rather than collapsing everything into an immediate post-treatment window. Accordingly, we run Wave 1, Wave 2, and Wave 3 as three short lab sessions separated by 7 days. A 1-week delay is the critical threshold where competitive framing effects become statistically significant and interpretable. \parencite[158]{Lecheler:2013} note that shorter delays (like 1 day) suffer from recency effects. Thus, a 1-week interval provides optimal conditions for observing the full dynamics of attitude change \parencite{Lecheler2011} (i.e., not too recent, not too long ago).
