@@ -68,6 +68,7 @@
 \usepackage{microtype}
 \usepackage{authblk}
 \usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
 
 \usepackage{tikz}
 \usetikzlibrary{positioning,calc,arrows.meta,decorations.pathreplacing}
@@ -192,14 +193,16 @@ This structure clarifies the status of the outcome variable. The proposal has a 
 
 \section{Brief Theoretical Framework}
 
-My rationale is simple: if antidemocratic attitudes are learned under particular structural conditions, then changes in those conditions should also reshape the beliefs that sustain them. For example, \textcite{voelkel2024megastudy} find that antidemocratic attitudes can be reduced through cognitive shifts: citizens update misperceptions about opponents, revise assessments of democratic threat, and respond to cues that re-anchor democratic norms. I build on that insight by shifting the level of analysis. Rather than asking whether brief informational treatments can generate these updates, I ask whether (lab-simulated) structural reversals can generate the same updates.\todo{define type of crisis} 
+My rationale is simple: if antidemocratic attitudes are learned under particular structural conditions, then changes in those conditions should also reshape the beliefs that sustain them. For example, \textcite{voelkel2024megastudy} find that antidemocratic attitudes can be reduced through cognitive shifts: citizens update misperceptions about opponents, revise assessments of democratic threat, and respond to cues that re-anchor democratic norms. I build on that insight by shifting the level of analysis. Rather than asking whether brief informational treatments can generate these updates, I ask whether (lab-simulated) structural reversals can generate the same updates.
 
 Importantly, the broader literature on democratic backsliding suggests that citizens tolerate norm-eroding behavior at least partly through affective polarization mechanisms \parencite{c4c9e}. Citizens with strong in-party attachment oppose particular constitutional protections when their party is in power, but support them when out of power---a dynamic Kingzette and colleagues term the ``cue-taking mechanism'' \parencite{7f36f}. What remains unexplored, however, is whether citizens can learn to \textit{reverse} this tolerance when structural conditions improve.
+
+The institutional crisis used in the experiment is therefore designed as a governance-capacity crisis rather than as a security emergency. This distinction is central. External war, terrorism, or domestic security breakdowns may activate democratic states of exception in which even constitutional democracies permit temporary restrictions on individual freedoms. Such scenarios would confound the object of the experiment: support for antidemocratic rule-breaking would be difficult to distinguish from support for legally authorized emergency powers. Instead, the Wave-1 crisis describes a prolonged failure of ordinary democratic governance: parliament has been unable to pass a budget for eight months, public-sector planning has stalled, healthcare waiting times have doubled, and economic growth has stagnated. This setting creates a credible institutional-performance problem without invoking emergency law. It also matches the empirical conditions under which democratic tradeoffs are most theoretically informative. In Finland, Saikkonen and Christensen find that even in a high-trust and low-polarization democracy, some voters tolerate authoritarian leader behavior when it is attached to policy congruence, especially on salient issues such as immigration \parencite{Saikkonen2022}. Cross-national evidence similarly suggests that citizens attach greater weight to elections and prosperity than to horizontal constraints on the executive: citizens are more responsive to economic well-being than to civil liberties, and much less responsive to executive constraints \parencite[14--15]{Neundorf2026}. The crisis therefore places participants precisely at the tradeoff identified in this literature: one candidate promises slower but constitutionally constrained problem-solving through parliamentary bargaining, transparent budgeting, and judicially reviewable administrative procedures, whereas the opposing candidate proposes to temporarily centralize budgetary and administrative decisions in the executive in order to bypass gridlock, accelerate healthcare funding, and restore growth, but with reduced parliamentary oversight and weaker institutional checks. This is the most appropriate crisis for the Finnish case because it is plausible, non-security-based, and experimentally clean: it makes antidemocratic governance instrumentally attractive through institutional frustration and promised performance, while avoiding a scenario in which participants could reasonably interpret restrictions on checks and liberties as ordinary democratic emergency powers.
 
 
 \section{Methodological Design}
 
-Because the object of interest is reversal rather than static support for antidemocratic governance, the design observes the same construct at theoretically ordered moments in the campaign. The sequencing is central to the ``process-tracing logic'' \parencite{Collier2011}. The aim is to recover the causal chain rather than capturing the pre-post ``effects of causes'' \parencite{Pearl:2015}. Process tracing is especially appropriate here because it examines whether a hypothesized causal chain is visible in the sequence of \emph{intermediate observations} connecting treatment and outcome \parencite{Bennett:2014}. The primary behavioral outcome is Wave-3 democratic reversal. Earlier wave-specific measures are mechanism-stage observations: they record the initial endorsement of antidemocratic governance under threat, subsequent belief updating after the structural discontinuity, and the information-search patterns that connect the two. Correct voting is not treated as a separate substantive outcome. It is used instrumentally as an incentive-compatible scoring rule that makes costly information search and the final vote consequential (see \autoref{fig:process_tracing_sequence}).
+Because the object of interest is reversal rather than static support for antidemocratic governance, the design observes the same construct at theoretically ordered moments in the campaign. The sequencing is central to the ``process-tracing logic'' \parencite{Collier2011}. The aim is to recover the causal chain rather than capturing the pre-post ``effects of causes'' \parencite{Pearl2015}. Process tracing is especially appropriate here because it examines whether a hypothesized causal chain is visible in the sequence of \emph{intermediate observations} connecting treatment and outcome \parencite{Bennett:2014}. The primary behavioral outcome is Wave-3 democratic reversal. Earlier wave-specific measures are mechanism-stage observations: they record the initial endorsement of antidemocratic governance under threat, subsequent belief updating after the structural discontinuity, and the information-search patterns that connect the two. Correct voting is not treated as a separate substantive outcome. It is used instrumentally as an incentive-compatible scoring rule that makes costly information search and the final vote consequential (see \autoref{fig:process_tracing_sequence}).
 
 
 \begin{figure}[!htbp]
@@ -267,7 +270,7 @@ Because the object of interest is reversal rather than static support for antide
 \paragraph{Wave 1} establishes the initial state of the causal chain. Before exposure to campaign information, subjects report baseline preferences, attribute weights, perceived institutional capacity, perceived democratic-collapse risk, and standard democratic-support batteries\todo{define}. These measures serve three purposes. First, they parameterize the subject-specific utility function used by the incentive-compatible scoring rule in Wave 3 (``correct voting,'' see \cite{Lau2006}). Second, they provide pre-discontinuity mechanism measures against which later updating can be assessed (see \autoref{fig:three_wave_campaign}). Third, they identify whether the subject endorses the antidemocratic option under threat. After this baseline module, subjects enter a simulated polity characterized by institutional crisis. All subjects receive campaign information describing deteriorating structural conditions and candidate claims. The purpose of this common Wave-1 environment is to create the initial threat setting in which antidemocratic governance may become instrumentally attractive.
 
 
-In Wave 1 \emph{all} subjects receive an information stimuli describing an institutional crisis. The idea is to set the (fictitious) voting exercise (in Wave 3) within a context of institutional crisis.\todo{define} Accordingly, all subjects receive some information describing decaying structural conditions and candidate claims\todo{define election/candidate profiles}. Importantly, {\bf information-acquiring is not imposed but rather endogenous, costly and incentive-compatible}: {\bf subjects choose what kind of information buy to vote correctly} (if subjects vote correctly, they earn more points). Following the process-tracing logic of simulated campaign environments \parencite{Lau2006}, subjects access information through a scrolling ``news board'' of labeled information boxes (issues, performance signals, institutional statements\todo{define}). {\bf Clicking a box reveals content but incurs a small cost}; new boxes continue to appear, producing opportunity costs and forcing selective attention. Importantly, voters choose the kind of information they'd like to learn (self-selection). This mirrors the logic that campaign learning is shaped by constrained attention and endogenous information search \parencite{Lyons2016,Lau2013c}. 
+In Wave 1 \emph{all} subjects receive an information stimuli describing an institutional crisis. The idea is to set the (fictitious) voting exercise (in Wave 3) within a context of institutional crisis. Accordingly, all subjects receive some information describing decaying structural conditions and candidate claims\todo{define election/candidate profiles}. Importantly, {\bf information-acquiring is not imposed but rather endogenous, costly and incentive-compatible}: {\bf subjects choose what kind of information buy to vote correctly} (if subjects vote correctly, they earn more points). Following the process-tracing logic of simulated campaign environments \parencite{Lau2006}, subjects access information through a scrolling ``news board'' of labeled information boxes (issues, performance signals, institutional statements\todo{define}). {\bf Clicking a box reveals content but incurs a small cost}; new boxes continue to appear, producing opportunity costs and forcing selective attention. Importantly, voters choose the kind of information they'd like to learn (self-selection). This mirrors the logic that campaign learning is shaped by constrained attention and endogenous information search \parencite{Lyons2016,Lau2013c}. 
 
 \begin{figure}[htbp]
     \centering
@@ -277,7 +280,65 @@ In Wave 1 \emph{all} subjects receive an information stimuli describing an insti
     \caption*{\footnotesize \textit{Note:} The figure illustrates the costly information-search environment used in Wave 1 of the campaign experiment. Participants enter a simulated election campaign under conditions of institutional and social strain and are given a limited campaign information budget. Each news item can be opened at a cost of 5 points, forcing participants to choose selectively which pieces of campaign information to acquire. The board includes information about structural threats, institutional performance, and candidate policy stances, allowing the design to trace how participants search for information before forming evaluations of democratic and anti-democratic alternatives.}
 \end{figure}
 
-\paragraph{Wave 2} implements an experimental discontinuity that enables me to devise a between-subject manipulation in the middle of the ``campaign.'' Subjects are randomly assigned to (i) a \textbf{structural reversal treatment} in which structural conditions improve sharply (i.e., the threat presented in Wave 1 softens\todo{define}), or (ii) a \textbf{control} condition in which the adverse threat persists. The discontinuity is designed as an exogenous shock to the state of the world that {\bf alters the theoretical necessity of democratic rule-breaking}. Critically, the candidates' \emph{rhetoric} remains constant across conditions.
+
+\todo{crisis vignette}
+
+\begin{tcolorbox}[
+    colback=gray!6,
+    colframe=gray!55,
+    title=\texttt{Wave 1: Institutional Crisis},
+    fonttitle=\bfseries\ttfamily,
+    sharp corners,
+    boxrule=0.5pt,
+    left=6pt,
+    right=6pt,
+    top=6pt,
+    bottom=6pt
+]
+\begin{verbatim}
+The country is facing a prolonged institutional crisis.
+
+Parliament has been unable to pass a national budget for eight months.
+Several public services are operating under temporary funding rules.
+Healthcare waiting times have doubled. Municipalities report uncertainty
+about next year's services. Economic growth has stalled.
+
+Two candidates are competing in the election. They offer different ways
+of responding to the crisis, and new campaign information will become
+available as the election unfolds.
+\end{verbatim}
+\end{tcolorbox}
+
+\paragraph{Wave 2} implements an experimental discontinuity that enables me to devise a between-subject manipulation in the middle of the ``campaign.'' Subjects are randomly assigned to (i) a \textbf{structural reversal treatment} in which structural conditions improve sharply (i.e., the threat presented in Wave 1 softens), or (ii) a \textbf{control} condition in which the adverse threat persists. The discontinuity is designed as an exogenous shock to the state of the world that {\bf alters the theoretical necessity of democratic rule-breaking}. Critically, the candidates' \emph{rhetoric} remains constant across conditions.
+
+\begin{tcolorbox}[
+    colback=gray!6,
+    colframe=gray!55,
+    title=\texttt{Wave 2: Institutional Crisis Softens},
+    fonttitle=\bfseries\ttfamily,
+    sharp corners,
+    boxrule=0.5pt,
+    left=6pt,
+    right=6pt,
+    top=6pt,
+    bottom=6pt
+]
+\begin{verbatim}
+The institutional crisis has begun to ease.
+
+After months of deadlock, parliament has reached a preliminary budget
+agreement. Several public services are no longer operating under temporary
+funding rules. Healthcare waiting times remain high, but they have stopped
+increasing and new funding has been approved to reduce the backlog.
+Municipalities report greater certainty about next year's services.
+Economic growth remains weak, but recent indicators suggest that the
+situation has stabilized.
+
+The election campaign continues. The same two candidates remain in the race.
+They still offer different ways of responding to the country's problems,
+and new campaign information will become available as the election unfolds.
+\end{verbatim}
+\end{tcolorbox}
 
 Wave 2 is therefore the mechanism-observation stage of the design. It does not provide the final outcome. Instead, it tests whether the structural discontinuity shifts the beliefs that, according to the theory, sustain antidemocratic tolerance under threat. If structural improvement reduces perceived democratic-collapse risk or increases perceived institutional capacity to deliver policy without norm violations, the design observes the intermediate movement expected by the causal mechanism before the Wave-3 vote occurs.
 
@@ -491,10 +552,11 @@ The design treats the laboratory as a controlled decision environment rather tha
 
 
 
+
 \paragraph{A note on implementation} The memory literature implies that the effect of Wave-1 threat information should decay unless it is refreshed or remains highly accessible, and that what subjects remember at Wave 3 may depend on whether they are engaging in memory-based evaluation or a more durable online tally process \parencite{Hill2013}. Likewise, framing effects can persist across delayed time points but vary systematically by political knowledge, underscoring why repeated measurement across waves is necessary rather than reliance on immediate post-treatment responses \parencite{Lecheler2011}. Wave 2 therefore introduces new campaign information in the board (see \autoref{fig:newsboard}) and rephrases old information (maintaining costs). Importantly, it keeps the same module on democratic attitudes asked in Wave 1. This also allows us to test whether subjects revise or instead persist in an incorrect status despite feedback from the changed environment \parencite{Esponda2024}.
 
 
-Because the focus is \emph{learning and reversal in a campaign over time}, the waves must be separated enough to allow memory decay and differential accessibility to operate, rather than collapsing everything into an immediate post-treatment window. Accordingly, we run Wave 1, Wave 2, and Wave 3 as three short lab sessions separated by 7 days. A 1-week delay is the critical threshold where competitive framing effects become statistically significant and interpretable. \autoref[158]{Lecheler:2013} note that shorter delays (like 1 day) suffer from recency effects. Thus, a 1-week interval provides optimal conditions for observing the full dynamics of attitude change \parencite{Lecheler2011} (i.e., not too recent, not too long ago).
+Because the focus is \emph{learning and reversal in a campaign over time}, the waves must be separated enough to allow memory decay and differential accessibility to operate, rather than collapsing everything into an immediate post-treatment window. Accordingly, we run Wave 1, Wave 2, and Wave 3 as three short lab sessions separated by 7 days. A 1-week delay is the critical threshold where competitive framing effects become statistically significant and interpretable. \parencite[158]{Lecheler:2013} note that shorter delays (like 1 day) suffer from recency effects. Thus, a 1-week interval provides optimal conditions for observing the full dynamics of attitude change \parencite{Lecheler2011} (i.e., not too recent, not too long ago).
 
 Spacing also increases the inferential leverage of process tracing: if reversals occur only when Wave-2 improvement is salient and remembered at Wave 3, that pattern is consistent with memory-based evaluation; if reversals persist despite delay, that is consistent with more durable updating (an online tally or revised mental model) \parencite{Hill2013,Esponda2024,Levy2025}. Substantively, this distinction matters for democratic resilience: {\bf if commitment to democratic norms depends on what remains cognitively accessible from recent events, then improvements may generate only fragile, short-lived} ``{\bf resilience},'' whereas persistence after delay suggests that citizens have internalized institutional constraints as part of their evaluative standard rather than merely reacting to transient campaign salience.
 
@@ -626,7 +688,7 @@ The design intentionally exposes participants to environments that make antidemo
 \begin{center}
 \vspace*{\stretch{1}}
 \dotfill
-\dotfill {\huge {\bf Word count}: 3,818} \dotfill
+\dotfill {\huge {\bf Word count}: 4,194} \dotfill
 \dotfill
 \vspace*{\stretch{1}}
 \end{center}
@@ -642,4 +704,28 @@ The design intentionally exposes participants to environments that make antidemo
 
 \end{document}
 
+Crisis
+
+Parliament has been unable to pass a budget for 8 months. Healthcare wait times have doubled. Economic growth has stalled. A new candidate proposes temporarily centralizing decisions to bypass the gridlock—faster decisions, but fewer checks
+
+(Saikkonen & Christensen, 2022) — Guardians of Democracy or Passive Bystanders. Finland-specific conjoint on norm violations. Finds even in high-trust, low-polarization contexts like Finland, segments of voters will tolerate authoritarian leader behavior if it brings perceived benefits. Directly applicable. FOR THEM IS POLICY CONGRUENCE (IMMIGRATION POLICY). \parencite{Saikkonen2022}.
+
+(Neundorf et al., 2025) — Elections Without Constraints (Neundorf et al., 2025) — 35,000-respondent conjoint across 32 countries showing citizens prioritize elections but care less about executive constraints, especially when prosperity is promised. \parencite[1]{Neundorf2026} ``citizens consistently prioritize free and fair elections, highlighting their salience as a core democratic value. However, executive constraints appear less central to citizens’ preferences, especially when set against the promise of economic prosperity.''
+
+(Casiraghi et al., 2024) — Who Looks Up to the Leviathan (Casiraghi et al., 2024) — Conjoint on crisis types and state intervention. Shows ideology matters less than crisis type—governance crises (not security) shift support rightward even among centrists. ``the type of crisis matters marginally – right-wing respondents were more likely to support state interventions only in the case of terrorism.'' \parencite[317]{Casiraghi2024}
+
+``However, citizens are slightly less responsive to civil liberties (free speech versus absence of free speech) and much less responsive to horizontal accountability (constraints on the executive versus no constraints) than to economic well-being. Thus, responsiveness to checks and balances in particular is overshadowed by responsiveness to the economy, which we interpret as signaling that people prioritize the citizen-centered aspects of democracy (free speech and elections) to a larger extent than institutional aspects (executive constraints).''\parencite[14]{Neundorf2026}
+
+``elections elicit stronger responses than civil liberties, and especially more than executive constraints'' \parencite[15]{Neundorf2026}
+
+AJR: inverted u-curve: benevolent dictator in affluent autocracies (when inequality is low or when inequality is too high).
+
+
+preferences have been found to put more weight on
+strongly held policies than on democratic norms (Graham
+and Svolik 2020).
+
+# democracy question
+
+I think we might have to devise a battery of questions (or a question) that is empirically based: too abstract but theoretically complete might not be understood by respondent. We might have to be pragmatic here.
 
