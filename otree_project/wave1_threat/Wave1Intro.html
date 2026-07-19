@@ -1,21 +1,26 @@
-{{ block title }}
-Wave 1: Threat campaign
-{{ endblock }}
+{{ block title }}Wave 1: Institutional crisis{{ endblock }}
 
 {{ block content }}
+<p>You are entering a hypothetical society experiencing a prolonged governance-capacity crisis. Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and public-service planning has stalled.</p>
 
-<p>In this study, you will move through a hypothetical political campaign that unfolds over multiple waves.</p>
+<p>You will complete <strong>{{ rounds }} paid rounds</strong>. In every round, an anonymous group of {{ group_size }} participants chooses between two procedures:</p>
 
-<p>Please imagine that you are living in a democratic society at a moment of rising political tension. Citizens are increasingly worried about the country’s direction, and public debate has become centered on whether existing institutions are strong enough to manage serious national challenges. Some people believe that the situation requires patience and institutional restraint, while others believe that the country may need faster and more forceful political action.</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body h-100">
+            <h5>Constrained collective procedure</h5>
+            <p>Every member controls their own contribution. All public returns are divided equally. No member can take money from the public account.</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-body h-100">
+            <h5>Executive-delegation procedure</h5>
+            <p>One member can impose an equal contribution and implement the project more efficiently, but may transfer collected points to themself.</p>
+        </div>
+    </div>
+</div>
 
-<p>The campaign you are about to follow takes place in that setting. Over time, you will receive new pieces of information about the political environment, the candidates, and the broader social context. As in real campaigns, you will have to decide what information to pay attention to and how to use it when making political judgments.</p>
-
-<p><strong>Your current available information budget is {{ current_budget }} points.</strong></p>
-
-<p><strong>Total points spent so far: {{ total_spent }}.</strong></p>
-
-<p>In this first wave, you will answer a set of baseline questions about your policy preferences and your views about institutions and democratic risk. These answers will help establish your starting point before the campaign develops further.</p>
+<p class="mt-3">You begin with an information budget of <strong>{{ info_budget }} points</strong>, which carries into Wave 2. Information points you do not spend are paid at the end.</p>
 
 {{ next_button }}
-
 {{ endblock }}

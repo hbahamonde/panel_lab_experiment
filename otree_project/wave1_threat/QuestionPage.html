@@ -1,11 +1,7 @@
-{{ block title }}
-{{ progress_label }}
-{{ endblock }}
+{{ block title }}{{ page_title }}{{ endblock }}
 
 {{ block content }}
-
+{{ if explanation }}<p>{{ explanation }}</p>{{ endif }}
 {{ formfields }}
-
 {{ next_button }}
-
 {{ endblock }}

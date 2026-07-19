@@ -1,10 +1,21 @@
-{{ block title }}
-    Page title
-{{ endblock }}
+{{ block title }}Round {{ round_number }} result{{ endblock }}
 
 {{ block content }}
+<p><strong>Procedure selected:</strong> {{ institution_label }}</p>
 
-    {{ next_button }}
+<table class="table table-sm table-bordered">
+    <tr><th>Total collected from the group</th><td>{{ total_contribution }}</td></tr>
+    {{ if executive_selected }}
+    <tr><th>Equal contribution imposed on each member</th><td>{{ executive_tax }}</td></tr>
+    <tr><th>Transfer retained by the executive</th><td>{{ executive_rent }}</td></tr>
+    {{ endif }}
+    <tr><th>Points remaining in the public-service account</th><td>{{ public_account }}</td></tr>
+    <tr><th>Public return received by every member</th><td>{{ per_capita_return|to2 }}</td></tr>
+    <tr class="table-primary"><th>Your payoff if this round is selected</th><td><strong>{{ round_payoff|to2 }}</strong></td></tr>
+</table>
+
+{{ if is_executive }}<p>You were the executive in this round.</p>{{ endif }}
+<p class="text-muted">Only aggregate group information is shown. Participants are rematched anonymously before the next round.</p>
+
+{{ next_button }}
 {{ endblock }}
-
-

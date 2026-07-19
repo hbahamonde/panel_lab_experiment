@@ -3,14 +3,25 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name='panel_lab_experiment',
-        display_name='3-wave panel lab experiment',
-        num_demo_participants=1,
-        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity', 'wave3_election'],
-        wave1_date='2026-05-05',
-        wave2_date='2026-05-12',
-        wave3_date='2026-05-19',
-        wave_window_days=3,
+        display_name='Undemocratic reversals: two-wave laboratory panel',
+        num_demo_participants=10,
+        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
+        wave1_date='2026-10-06',
+        wave2_date='2026-10-13',
+        wave_window_days=1,
+        enable_wave_gates=True,
+        matching_pool_size=10,
+    ),
+    dict(
+        name='panel_lab_demo',
+        display_name='Undemocratic reversals (testing; date gates disabled)',
+        num_demo_participants=10,
+        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
+        wave1_date='2026-10-06',
+        wave2_date='2026-10-13',
+        wave_window_days=1,
         enable_wave_gates=False,
+        matching_pool_size=10,
     )
 ]
 
@@ -20,7 +31,13 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
+    real_world_currency_per_point=0.20,
+    participation_fee=10.00,
+    doc=(
+        'Two synchronized laboratory visits, ten paid rounds per visit, '
+        'anonymous rematching in treatment-matched pools, and one randomly '
+        'selected payoff round per wave.'
+    ),
 )
 
 PARTICIPANT_FIELDS = []

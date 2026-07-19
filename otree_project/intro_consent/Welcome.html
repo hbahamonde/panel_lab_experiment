@@ -1,33 +1,20 @@
-{{ block title }}
-Welcome
-{{ endblock }}
+{{ block title }}Welcome{{ endblock }}
 
 {{ block content }}
+<p>Thank you for considering participation in this research study.</p>
 
-<p>Thank you for considering participation in this study.</p>
+<p>The study examines how people choose political institutions when a group must finance public services under changing conditions. You will make anonymous decisions with other participants, receive feedback about group outcomes, and return for a second laboratory session one week later.</p>
 
-<p>This research examines how people evaluate political information over time, how they respond to changing social and political conditions, and how they make decisions in a dynamic campaign environment.</p>
+<div class="card card-body bg-light mb-3">
+    <strong>Session 1:</strong> {{ wave1_date_display }}<br>
+    <strong>Session 2:</strong> {{ wave2_date_display }}<br>
+    <strong>Expected duration:</strong> approximately 55--65 minutes per session
+</div>
 
-<p>In this study, you will move through a sequence of short campaign stages in a hypothetical society, review political news items, and make decisions based on the information you choose to open. The study is designed for academic research purposes only.</p>
+<p>The same personal study link identifies you across both sessions. Your decisions are confidential and other participants will never see your identity.</p>
 
-<p>The study is organized in 3 waves:</p>
-
-<p>
-Wave 1: {{ wave1_date_display }} to {{ wave1_deadline_display }}<br>
-Wave 2: {{ wave2_date_display }} to {{ wave2_deadline_display }}<br>
-Wave 3: {{ wave3_date_display }} to {{ wave3_deadline_display }}
-</p>
-
-<p>Each wave remains open for {{ wave_window_days }} days. Please use the same personal study link each time you return to the study.</p>
-
-<p>The results will be used to better understand how citizens process information, update their views, and make political judgments under changing conditions. Findings may be reported in academic publications, presentations, and other scientific outputs.</p>
-
-<p>Your responses will be kept confidential and analyzed only for research purposes. Please read the next page carefully before deciding whether to participate.</p>
-
-<p><strong>Researcher:</strong> Hector Bahamonde<br>
-Project Researcher<br>
-hector.bahamonde@utu.fi</p>
+<p><strong>Researcher:</strong> Hector Bahamonde, Project Researcher<br>
+<strong>Contact:</strong> hector.bahamonde@utu.fi</p>
 
 {{ next_button }}
-
 {{ endblock }}

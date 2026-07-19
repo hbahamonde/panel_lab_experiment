@@ -1,28 +1,27 @@
-{{ block title }}
-Wave 2 complete
-{{ endblock }}
+{{ block title }}Study complete{{ endblock }}
 
 {{ block content }}
+<p>Thank you. All decisions, information choices, and judgments from both waves have been recorded.</p>
 
-<p>Thank you. Your answers from Wave 2 have been recorded.</p>
+<table class="table table-bordered">
+    <tr><th>Wave-1 selected-round payoff</th><td>{{ wave1_selected_payoff|to2 }} points</td></tr>
+    <tr><th>Wave-2 selected payoff round</th><td>Round {{ paying_round }}</td></tr>
+    <tr><th>Wave-2 selected-round payoff</th><td>{{ selected_payoff|to2 }} points</td></tr>
+    <tr><th>Unspent information budget</th><td>{{ information_remaining }} points</td></tr>
+    <tr><th>Wave-2 belief-accuracy bonus</th><td>{{ belief_bonus|to2 }} points</td></tr>
+    <tr><th>Two-wave completion bonus</th><td>{{ completion_bonus }} points</td></tr>
+    <tr class="table-light"><th>Total experimental points</th><td><strong>{{ total_payoff|to2 }} points</strong></td></tr>
+    <tr><th>Performance payment</th><td>{{ performance_payment }}</td></tr>
+    <tr><th>Participation payment</th><td>{{ participation_fee }}</td></tr>
+    <tr class="table-success"><th>Total payment</th><td><strong>{{ total_payment }}</strong></td></tr>
+</table>
 
-<p>Wave 3 is scheduled for <strong>{{ wave3_date_display }}</strong>.</p>
+<p>Your experimental points are converted at the rate stated in the instructions and added to the fixed participation payment.</p>
 
-<p><strong>Cumulative information summary after Wave 2</strong></p>
+<h4>Debriefing</h4>
+<p>The study examines whether support for concentrating authority changes when ordinary institutions recover from a performance crisis. Some matching pools received an improvement in the productivity of the constrained procedure; others remained in the original low-capacity environment. The executive procedure itself did not change.</p>
 
-<ul>
-    <li>Points spent in Wave 2: <strong>{{ wave2_spent }}</strong> points</li>
-    <li>Cumulative points spent so far: <strong>{{ total_spent }}</strong> points</li>
-    <li>Remaining information budget: <strong>{{ remaining_budget }}</strong> points</li>
-</ul>
+<p>The study does not interpret changing one's choice as inconsistency. Updating a decision after receiving new information or experience is the behavioral process the experiment is designed to study.</p>
 
-<p>Please return on that date using the same personal study link.</p>
-
-{{ if gates_enabled }}
 <p>You may now close this window.</p>
-{{ else }}
-<p><em>Testing mode:</em> the gate system is currently off, so you may continue immediately.</p>
-{{ next_button }}
-{{ endif }}
-
 {{ endblock }}

@@ -1,15 +1,18 @@
-{{ block title }}
-Begin the main study
-{{ endblock }}
+{{ block title }}Wave 1 — Round {{ round_number }} of {{ total_rounds }}{{ endblock }}
 
 {{ block content }}
+<p>You have 20 points. Your anonymous five-person group must choose the procedure governing this round.</p>
 
-<p>You have completed the practice round.</p>
+<table class="table table-bordered">
+    <thead><tr><th>Procedure</th><th>Decision authority</th><th>Public-service technology</th><th>Personal transfer</th></tr></thead>
+    <tbody>
+        <tr><td>Constrained collective</td><td>Each member chooses their own contribution</td><td>{{ constrained_multiplier }} total points per contributed point</td><td>Not possible</td></tr>
+        <tr><td>Executive delegation</td><td>One member imposes an equal contribution</td><td>{{ executive_multiplier }} total points per public-account point</td><td>Executive may retain up to 20 collected points</td></tr>
+    </tbody>
+</table>
 
-<p>You will now begin the main study. From this point onward, your decisions will count as part of the study.</p>
+<p>The procedure receiving at least three votes is implemented immediately. This round may be selected for payment.</p>
 
-<p>Click Next when you are ready to continue.</p>
-
+{{ formfields }}
 {{ next_button }}
-
 {{ endblock }}
