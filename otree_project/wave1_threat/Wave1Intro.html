@@ -1,26 +1,26 @@
-{{ block title }}Wave 1: Institutional crisis{{ endblock }}
+{{ block title }}The situation in your society{{ endblock }}
 
 {{ block content }}
-<p>You are entering a hypothetical society experiencing a prolonged governance-capacity crisis. Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and public-service planning has stalled.</p>
+<p>Imagine that you are a citizen in a society where public services have been under serious strain for a long time. Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and planning for public services has stalled.</p>
 
-<p>You will complete <strong>{{ rounds }} paid rounds</strong>. In every round, an anonymous group of {{ group_size }} participants chooses between two procedures:</p>
+<p>You will complete <strong>{{ rounds }} paid rounds</strong>. In every round, an anonymous group of {{ group_size }} citizens chooses between two ways of making the public-service decision:</p>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card card-body h-100">
-            <h5>Constrained collective procedure</h5>
-            <p>Every member controls their own contribution. All public returns are divided equally. No member can take money from the public account.</p>
+            <h5>Citizens decide</h5>
+            <p>Each citizen chooses their own contribution. Public returns are shared equally. No citizen can take points from the public-service account.</p>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card card-body h-100">
-            <h5>Executive-delegation procedure</h5>
-            <p>One member can impose an equal contribution and implement the project more efficiently, but may transfer collected points to themself.</p>
+            <h5>A leader decides</h5>
+            <p>One citizen is chosen as leader for the round. The leader requires the same contribution from everyone and produces a larger public return, but may keep some collected points.</p>
         </div>
     </div>
 </div>
 
-<p class="mt-3">You begin with an information budget of <strong>{{ info_budget }} points</strong>, which carries into Wave 2. Information points you do not spend are paid at the end.</p>
+<p class="mt-3">You also receive <strong>{{ info_budget }} points</strong> that you may spend on optional reports. These points carry into Session 2. Every information point you do not spend is paid to you at the end.</p>
 
 {{ next_button }}
 {{ endblock }}

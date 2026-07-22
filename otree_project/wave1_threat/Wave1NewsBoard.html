@@ -1,9 +1,9 @@
-{{ block title }}Wave 1: Costly information{{ endblock }}
+{{ block title }}Optional background reports{{ endblock }}
 
 {{ block content }}
-<p>The titles below identify available reports. Opening a report costs <strong>{{ click_cost }} points</strong>. Your information budget carries into Wave 2, and every point left at the end is paid to you.</p>
+<p>You may open any of the reports below. A report may help you understand the situation and make later decisions. Opening one costs <strong>{{ click_cost }} points</strong>. Your remaining information points carry into Session 2, and every point left at the end is paid to you.</p>
 
-<p>Remaining information budget: <strong><span id="budget-remaining">{{ budget_remaining }}</span> points</strong></p>
+<p>Points available for reports: <strong><span id="budget-remaining">{{ budget_remaining }}</span></strong></p>
 
 <div style="display:none;">
     {{ formfield player.wave1_news_opened_ids }}

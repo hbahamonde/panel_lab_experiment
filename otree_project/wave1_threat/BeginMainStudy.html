@@ -1,18 +1,70 @@
-{{ block title }}Wave 1 — Round {{ round_number }} of {{ total_rounds }}{{ endblock }}
+{{ block title }}Session 1 — Round {{ round_number }} of {{ total_rounds }}{{ endblock }}
 
 {{ block content }}
-<p>You have 20 points. Your anonymous five-person group must choose the procedure governing this round.</p>
+<p>You have 20 points. Your anonymous group of five citizens must choose how the public-service decision will be made.</p>
 
-<table class="table table-bordered">
-    <thead><tr><th>Procedure</th><th>Decision authority</th><th>Public-service technology</th><th>Personal transfer</th></tr></thead>
-    <tbody>
-        <tr><td>Constrained collective</td><td>Each member chooses their own contribution</td><td>{{ constrained_multiplier }} total points per contributed point</td><td>Not possible</td></tr>
-        <tr><td>Executive delegation</td><td>One member imposes an equal contribution</td><td>{{ executive_multiplier }} total points per public-account point</td><td>Executive may retain up to 20 collected points</td></tr>
-    </tbody>
-</table>
+<p><strong>Who should make the public-service decision this round?</strong> Click anywhere on one of the two rows.</p>
 
-<p>The procedure receiving at least three votes is implemented immediately. This round may be selected for payment.</p>
+<div class="choice-table" role="radiogroup" aria-label="Choose how the decision will be made">
+    <div class="choice-header" aria-hidden="true">
+        <div>Option</div><div>Contributions</div><div>Public return</div><div>Points kept personally</div>
+    </div>
+    <label class="choice-row citizens-row">
+        <input type="radio" name="institution_vote" value="constrained" {{ if selected_vote == 'constrained' }}checked{{ endif }}>
+        <span class="choice-name"><span class="choice-mark">C</span><strong>Citizens decide</strong></span>
+        <span><small>Contributions</small>Each citizen chooses their own</span>
+        <span><small>Public return</small>Each point contributed produces {{ constrained_multiplier }} points for the group in total</span>
+        <span><small>Points kept personally</small>No citizen can take points from the public-service account</span>
+    </label>
+    <label class="choice-row leader-row">
+        <input type="radio" name="institution_vote" value="executive" {{ if selected_vote == 'executive' }}checked{{ endif }}>
+        <span class="choice-name"><span class="choice-mark">L</span><strong>A leader decides</strong></span>
+        <span><small>Contributions</small>The leader requires the same contribution from every citizen</span>
+        <span><small>Public return</small>Each point left for public services produces {{ executive_multiplier }} points for the group in total</span>
+        <span><small>Points kept personally</small>The leader may keep up to 20 collected points</span>
+    </label>
+</div>
 
-{{ formfields }}
+<p class="mt-3">At least three of the five votes are needed for an option to be used. Your vote remains private. This round may be selected for payment.</p>
+
+{{ if optional_responses }}<p class="text-muted"><em>Testing mode: you may continue without selecting an option.</em></p>{{ endif }}
+
 {{ next_button }}
+
+<style>
+.choice-table { border:1px solid #cfd6df; border-radius:10px; overflow:hidden; margin:1rem 0; background:#fff; }
+.choice-header, .choice-row { display:grid; grid-template-columns:1.15fr 1.35fr 1.7fr 1.55fr; gap:0; }
+.choice-header { background:#eef1f5; color:#374151; font-size:.84rem; font-weight:700; }
+.choice-header > div, .choice-row > span { padding:12px 14px; border-right:1px solid #dfe4ea; }
+.choice-header > div:last-child, .choice-row > span:last-child { border-right:0; }
+.choice-row { position:relative; cursor:pointer; border-top:1px solid #cfd6df; transition:background-color .16s ease, box-shadow .16s ease; }
+.choice-row input { position:absolute; opacity:0; pointer-events:none; }
+.choice-row small { display:none; color:#5b6470; font-weight:700; margin-bottom:3px; }
+.choice-row:hover, .choice-row:focus-within { box-shadow:inset 4px 0 0 #6b7280; }
+.citizens-row:hover { background:#eaf4ff; box-shadow:inset 5px 0 0 #2774b8; }
+.leader-row:hover { background:#fff2df; box-shadow:inset 5px 0 0 #c46b12; }
+.citizens-row:has(input:checked), .citizens-row.selected { background:#dceeff; box-shadow:inset 6px 0 0 #1469aa; }
+.leader-row:has(input:checked), .leader-row.selected { background:#ffe8c7; box-shadow:inset 6px 0 0 #ad5600; }
+.choice-name { display:flex; align-items:center; gap:9px; }
+.choice-mark { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; color:#fff; font-weight:800; flex:0 0 30px; }
+.citizens-row .choice-mark { background:#2774b8; }
+.leader-row .choice-mark { background:#c46b12; }
+@media (max-width: 780px) {
+    .choice-header { display:none; }
+    .choice-row { grid-template-columns:1fr; padding:8px 0; }
+    .choice-row > span { border-right:0; padding:7px 14px; }
+    .choice-row small { display:block; }
+}
+</style>
+
+<script>
+document.querySelectorAll('.choice-row input').forEach(function (input) {
+    function updateSelection() {
+        document.querySelectorAll('.choice-row').forEach(function (row) { row.classList.remove('selected'); });
+        if (input.checked) input.closest('.choice-row').classList.add('selected');
+    }
+    input.addEventListener('change', updateSelection);
+    if (input.checked) updateSelection();
+});
+</script>
 {{ endblock }}

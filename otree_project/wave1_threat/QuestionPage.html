@@ -3,5 +3,65 @@
 {{ block content }}
 {{ if explanation }}<p>{{ explanation }}</p>{{ endif }}
 {{ formfields }}
+{{ if optional_responses }}<p class="text-muted"><em>Testing mode: unanswered fields are allowed.</em></p>{{ endif }}
 {{ next_button }}
+
+{{ if slider_prefix }}
+<style>
+.agreement-note { margin:1.35rem 0 .85rem; padding:.8rem 1rem; border-left:4px solid #466f9f; background:#f2f6fa; }
+.agreement-slider { margin:.35rem 0 1.35rem; padding:.8rem 1rem .65rem; border:1px solid #d9e0e7; border-radius:8px; background:#fbfcfd; }
+.agreement-slider input[type="range"] { width:100%; accent-color:#356c9f; }
+.slider-status { display:block; text-align:center; min-height:1.5rem; margin-bottom:.25rem; font-weight:700; color:#4b5563; }
+.agreement-slider.answered .slider-status { color:#1f5d8f; }
+.slider-ends { display:flex; justify-content:space-between; gap:1rem; font-size:.82rem; color:#5b6470; }
+</style>
+<script>
+(function () {
+    const sliderPrefix = '{{ slider_prefix }}';
+    const selects = Array.from(document.querySelectorAll('select[name^="' + sliderPrefix + '"]'));
+    if (!selects.length) return;
+
+    const firstWrapper = selects[0].closest('.mb-3') || selects[0].parentElement;
+    const note = document.createElement('div');
+    note.className = 'agreement-note';
+    note.innerHTML = '<strong>For the following statements, 1 means strongly disagree and 7 means strongly agree.</strong>';
+    firstWrapper.parentNode.insertBefore(note, firstWrapper);
+
+    selects.forEach(function (select) {
+        const currentValue = select.value || '';
+        const sliderBox = document.createElement('div');
+        sliderBox.className = 'agreement-slider' + (currentValue ? ' answered' : '');
+
+        const status = document.createElement('output');
+        status.className = 'slider-status';
+        status.textContent = currentValue ? currentValue : 'Not answered';
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = '1';
+        slider.max = '7';
+        slider.step = '1';
+        slider.value = currentValue || '4';
+        slider.id = select.id;
+        slider.setAttribute('aria-label', select.labels && select.labels[0] ? select.labels[0].textContent : 'Agreement');
+        if (currentValue) slider.name = select.name;
+
+        const ends = document.createElement('div');
+        ends.className = 'slider-ends';
+        ends.innerHTML = '<span>1 — Strongly disagree</span><span>7 — Strongly agree</span>';
+
+        slider.addEventListener('input', function () {
+            slider.name = select.name;
+            status.textContent = slider.value;
+            sliderBox.classList.add('answered');
+        });
+
+        sliderBox.appendChild(status);
+        sliderBox.appendChild(slider);
+        sliderBox.appendChild(ends);
+        select.replaceWith(sliderBox);
+    });
+})();
+</script>
+{{ endif }}
 {{ endblock }}

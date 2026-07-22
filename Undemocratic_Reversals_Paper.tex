@@ -66,8 +66,27 @@
 \usepackage{caption}
 \usepackage{float}
 \usepackage{placeins}
+\usepackage{todonotes}
+
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{plainlanguagebox}{
+  breakable,
+  colback=DemBlue!6,
+  colframe=DemBlue!70!black,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={In simple terms},
+  boxrule=0.8pt,
+  arc=2mm,
+  left=8pt,
+  right=8pt,
+  top=7pt,
+  bottom=7pt
+}
+
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,fit}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
 \usepackage{csquotes}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalize,noabbrev]{cleveref}
@@ -92,6 +111,7 @@
 \definecolor{RecoveryGreen}{HTML}{2A9D8F}
 \definecolor{LightBlue}{HTML}{EAF2F4}
 \definecolor{LightOrange}{HTML}{FBEDE9}
+\definecolor{PersistPurple}{HTML}{6D597A}
 \newcommand{\Dproc}{\textsf{D}}
 \newcommand{\Aproc}{\textsf{A}}
 \newcommand{\ind}[1]{\mathbb{1}\{#1\}}
@@ -107,8 +127,9 @@
 \maketitle
 
 \begin{abstract}
-Why do citizens who accept unconstrained rule under adverse conditions later return to democratic institutions? I study \emph{undemocratic reversal}: a within-person shift from executive delegation back to constrained collective government after the structural justification for delegation disappears. The project uses a two-wave, incentivized laboratory panel conducted in synchronized sessions one week apart. In each wave, participants play ten rounds of a five-person institutional-choice public-good game. Before every allocation decision, each participant casts a secret ballot between a constrained collective procedure and an executive-delegation procedure; the majority choice binds the group. Under delegation, an elected executive can impose equal contributions and privately divert resources. Wave 1 gives delegation a productive advantage over ordinary institutions. In Wave 2, ten-person matching pools are randomly assigned either to a structural-recovery condition, which removes that advantage, or to a persistence condition, which retains it. Anonymous rematching, payoff-relevant votes, real distributive consequences, costly information, and repeated interaction make the design recognizably economic while preserving the original project's learning, memory, and process-tracing objectives. The primary outcome is whether a participant who chose delegation in Wave 1's final round chooses the constrained procedure in Wave 2's final round. Pre-information memory, costly search, belief updating, all twenty ballots, contributions, executive decisions, and realized payoffs reveal how that reversal occurs.
+Why do citizens who accept unconstrained rule under adverse conditions later return to democratic institutions? I study \emph{undemocratic reversal}: a within-person shift from executive delegation back to constrained collective government after the structural justification for delegation disappears. The project uses a two-wave, incentivized laboratory panel conducted in synchronized sessions one week apart. In each wave, participants play ten rounds of a five-person institutional-choice public-good game. Before every allocation decision, each participant casts a secret ballot between a constrained collective procedure and an executive-delegation procedure; the majority choice binds the group. Under delegation, an elected executive can impose equal contributions and privately divert resources. Wave 1 gives delegation a productive advantage over institutions. In Wave 2, ten-person matching pools are randomly assigned either to a structural-recovery condition, which removes that advantage, or to a persistence condition, which retains it. Anonymous rematching, payoff-relevant votes, real distributive consequences, costly information, and repeated interaction make the design recognizably economic while preserving the original project's learning, memory, and process-tracing objectives. The primary outcome is whether a participant who chose delegation in Wave 1's final round chooses the constrained procedure in Wave 2's final round. Pre-information memory, costly search, belief updating, all twenty ballots, contributions, executive decisions, and realized payoffs reveal how that reversal occurs. \\ {\vspace{5cm}\color{red}See prototype here}: \url{https://panel-lab-experiment.onrender.com}
 \end{abstract}
+
 
 \clearpage
 \pagenumbering{arabic}
@@ -116,17 +137,19 @@ Why do citizens who accept unconstrained rule under adverse conditions later ret
 
 \section{Research Question and Contribution}
 
-Research on democratic backsliding shows that citizens sometimes trade institutional safeguards for policy congruence, material performance, or protection from an opposing camp \parencite{34047,7f36f,cd90d,0b3bf}. The harder question is dynamic: after citizens have learned that unconstrained authority is useful, what makes them abandon it? This proposal asks:
+Democratic backsliding research has established that citizens can learn to tolerate norm violations when structural threats make such tolerance instrumentally attractive. The focus of this proposal is whether that learning is reversible when those structural conditions improve. Thus, the most intriguing finding in recent democratic backsliding research is not that citizens tolerate norm violations \parencite{GRAHAM2020}. My claim is that they \textit{learn} to do so. As citizens secularly experience norm-violating leaders and accumulate information about non-democratic behaviors \parencite{Levitsky:2018aa}, they recalibrate expectations, adjust their definitions of democracy itself \parencite{Ananda2021}, and gradually become ``normalized'' to authoritarianism \parencite{78328}. Yet this learning process raises a critical question: \textbf{Can that undemocratic learning be reversed?} If citizens can learn authoritarian tolerance, can they \emph{un}-learn it when the institutional conditions and threats that gave rise to such undemocratic leaders change? And critically, which institutional conditions trigger such reversals? These questions are fundamental for democratic resilience, and importantly, for \emph{defending} democracy \parencite{Capoccia2007a}.
+
+This proposal asks:
 
 \begin{quote}
 \emph{When the structural conditions that made executive discretion instrumentally attractive improve, do citizens return to constrained collective government, and through what learning and memory processes?}
 \end{quote}
 
-I call this behavioral transition \emph{undemocratic reversal}. It is not simply low support for an undemocratic alternative, nor a between-person difference in democratic attitudes. It is an observed within-person change: a participant initially endorses an institution that concentrates authority and weakens ex ante control, then later chooses an institution that restores collective choice and constraints. The concept therefore requires a panel structure and at least two consequential institutional choices by the same person.
+Thus, this study focuses on this behavioral transition in the context of \emph{undemocratic reversal}. It is not simply low support for an undemocratic alternative, nor a between-person difference in democratic attitudes. It is an observed within-person change: a participant initially endorses an institution that concentrates authority and weakens ex ante control, then later chooses an institution that restores collective choice and constraints. The concept therefore requires a panel structure and at least two consequential institutional choices by the same person.
 
-The design contributes in three ways. First, it turns democratic constraint into a set of payoff-relevant rules governing interaction. Participants do not merely rate political descriptions. Their ballots select who controls endowments, how a public good is produced, and whether an executive may extract a private rent. This embeds democratic trade-offs in the classical experimental-economics traditions of public-good provision, delegation, voting, and rent extraction \parencite{Hamman2011}.
+The design contributes to the literature in three ways. First, it turns democratic constraint into a set of payoff-relevant rules governing interaction. Participants do not merely rate political descriptions (vignettes). Their ballots select who controls endowments, how a public good is produced, and whether an executive may extract a private rent. This embeds democratic trade-offs in the public-good provision, delegation and voting literatures \parencite{Hamman2011}.
 
-Second, it identifies a structural cause of reversal. All participants encounter low ordinary institutional capacity in Wave 1. Before Wave 2, matched pools are randomly assigned either to recovered capacity or to persistent incapacity. The executive institution itself does not improve or deteriorate. Consequently, the treatment changes the instrumental case for delegation rather than supplying a moral appeal to democracy.
+Second, it identifies a structural cause of reversal. All participants encounter low institutional capacity in Wave 1: ``{\bf You are entering a hypothetical society experiencing a prolonged governance-capacity crisis. Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and public-service planning has stalled}.'' Before Wave 2, matched pools are randomly assigned either to recovered capacity or to persistent incapacity. The executive institution itself does not improve or deteriorate. Consequently, the treatment changes the instrumental case for delegation rather than supplying a moral appeal to democracy.
 
 Third, the experiment observes the mechanism rather than only its endpoint. Participants choose whether to buy information, state probabilistic beliefs before and after search, report what they remember after a one-week delay, vote in every round, and experience endogenous decisions by other subjects. The resulting record distinguishes durable learning from information retrieval, strategic adaptation, and repeated-game dynamics.
 
@@ -134,19 +157,19 @@ Third, the experiment observes the mechanism rather than only its endpoint. Part
 
 \subsection{Conditional tolerance of unconstrained authority}
 
-Citizens need not reject democratic constraints in principle to support an unconstrained executive in practice. They may instead accept discretion conditionally, when ordinary institutions appear incapable of producing valued outcomes. This logic is compatible with evidence that electoral and material considerations can outweigh checks on executives and that citizens interpret democratic violations through partisan and performance-based trade-offs \parencite{7f36f,0b3bf,33fbf}. It also clarifies why democratic tolerance can be learned: repeated evidence of institutional failure changes the expected payoff from retaining constraints.
+Citizens need not reject democratic constraints in principle to support an unconstrained executive in practice. They may instead accept discretion conditionally, i.e., when institutions appear incapable of producing valued outcomes. This logic is compatible with evidence that electoral and material considerations can outweigh checks on executives and that citizens interpret democratic violations through partisan and performance-based trade-offs \parencite{7f36f,0b3bf,33fbf}. It also clarifies why democratic tolerance can be learned: repeated evidence of institutional failure changes the expected payoff from retaining constraints.
 
-In the experiment, the constrained collective procedure (\Dproc) protects individual control. Each member chooses a contribution, benefits are shared equally, and no single person can appropriate the public account. Yet its low Wave-1 productivity makes underprovision costly. The executive-delegation procedure (\Aproc) solves the coordination problem by allowing one person to impose equal contributions and by supplying a more productive implementation technology. It also permits that executive to divert part of the account. A participant can therefore support \Aproc{} without expressing a general taste for autocracy: under weak ordinary capacity, delegation can be a rational response to institutional performance.
+In the experiment, the constrained collective procedure (\Dproc) protects individual control. Each member chooses a contribution, benefits are shared equally, and no single person can appropriate the public account. Yet its low Wave-1 productivity makes underprovision costly. The executive-delegation procedure (\Aproc) solves the coordination problem by allowing one person to impose equal contributions and by supplying a more productive implementation technology. It also permits that executive to divert part of the account. A participant can therefore support \Aproc{} without expressing a general taste for autocracy: under weak institutional capacity, delegation can be a rational response to weak institutional performance.
 
 \paragraph{H1: Crisis endorsement.} In Wave 1, participants will increasingly support executive delegation when their experience indicates that its productive advantage outweighs the risks of executive extraction.
 
 \subsection{Structural updating and democratic reversal}
 
-The central theoretical claim is conditional. If support for unconstrained authority was learned from structural performance, then credible structural improvement should alter it. The Wave-2 recovery treatment raises the constrained procedure's productivity to the executive procedure's level. Recovery removes the executive's technological advantage but leaves its discretion to extract rents unchanged. A participant who understands this change should update the relative value of the two institutions.
+The central theoretical claim is conditional. If support for unconstrained executive authority was learned from weak structural performance, then credible structural improvement should reverse it. The Wave-2 recovery treatment raises the constrained procedure's productivity to the executive procedure's level. Recovery removes the executive's technological advantage but leaves its discretion to extract rents unchanged. A participant who understands this change should update the relative value of the two institutions.
 
-The persistence condition supplies the counterfactual. Participants return after the same delay, complete the same memory task, face the same information prices, and play the same number of new rounds; only ordinary institutional capacity differs. A treatment-control contrast therefore separates recovery-induced change from generic maturation, regression to the mean, fatigue, or simply playing for a second day.
+The persistence condition supplies the counterfactual. All participants return to the lab after the same time gap, complete the same memory task, face the same information prices, and play the same number of new rounds; only institutional capacity differs. A treatment-control contrast therefore separates recovery-induced change from generic maturation, regression to the mean, fatigue, or simply playing for a second day.
 
-\paragraph{H2: Structural updating.} Participants assigned to recovery will report a larger increase in perceived ordinary institutional capacity and a larger reduction in the perceived instrumental need for delegation than participants assigned to persistence.
+\paragraph{H2: Structural updating.} Participants assigned to institutional recovery will report a larger increase in perceived institutional capacity and a larger reduction in the perceived instrumental need for delegation than participants assigned to weak institutional persistence.
 
 \paragraph{H3: Democratic reversal.} Among participants who choose \Aproc{} in Wave 1's final round, assignment to recovery will increase the probability of choosing \Dproc{} in Wave 2's final round.
 
@@ -154,11 +177,9 @@ The persistence condition supplies the counterfactual. Participants return after
 
 \subsection{Memory and costly information}
 
-Structural change cannot affect choice if it is neither encoded nor retrieved. Political learning may rest on a durable running evaluation or on specific considerations accessible when a decision is made. A one-week gap creates a meaningful test: before Wave-2 information is displayed, participants freely recall the prior environment, recognize its capacity level, recall their own final ballot, and state a prior probability that capacity recovered.
+Structural change cannot affect choice if it is not memory-retrieved. Political learning may rest on a durable running evaluation or on specific considerations accessible when a decision is made. A one-week gap creates a meaningful test: before Wave-2 information is displayed, participants freely recall the prior environment, recognize its capacity level, recall their own final ballot, and state a prior probability that capacity recovered.
 
-Information is then costly. Every participant begins the panel with a 24-point information endowment. Opening a full report costs four points, and unspent points are paid at the end. Headlines are neutral and do not disclose treatment status. Search therefore reveals a consequential demand for evidence rather than costless clicking. The same six report topics appear in each condition; condition-specific facts appear only after purchase. Participants state the probability of recovery again after search.
-
-Information acquisition is endogenous, not itself randomized. It is a process measure: treatment effects on the final outcome will be reported both overall and descriptively by search behavior, but search will not be treated as an exogenous mediator without additional assumptions.
+Information is then costly. Every participant begins the panel with a 24-point information endowment. Opening a full report costs four points, and unspent points are paid at the end. Headlines are neutral and do not disclose treatment status. Search therefore reveals a consequential demand for evidence rather than costless clicking. The same six report \emph{topics} appear in each condition; \emph{condition-specific facts} appear only after purchase. Participants state the probability of recovery again after search. Information acquisition is then endogenous, not itself randomized. It is a process measure: treatment effects on the final outcome will be reported both overall and descriptively by search behavior, but search will not be treated as an exogenous mediator.
 
 \paragraph{H5: Information and memory.} More accurate Wave-1 memory and greater acquisition of diagnostic Wave-2 information will predict more accurate recovery beliefs and a stronger alignment between final institutional choice and the realized environment.
 
@@ -177,8 +198,8 @@ The study consists of two synchronized laboratory visits scheduled seven days ap
 ]
 \node[box,fill=LightBlue] (base) {Consent, baseline beliefs,\\democratic-constraint battery};
 \node[box,fill=LightBlue,right=of base] (w1info) {Unpaid practice and\\costly Wave-1 reports};
-\node[box,fill=LightOrange,right=of w1info] (w1game) {Wave 1: 10 paid rounds\\low ordinary capacity};
-\node[box,fill=LightBlue,below=12mm of w1game] (memory) {Seven-day delay;\\pre-information memory};
+\node[box,fill=LightOrange,right=of w1info] (w1game) {Wave 1: 10 paid rounds\\low capacity};
+\node[box,fill=LightBlue,below=12mm of w1game] (memory) {Seven-day delay};
 \node[box,fill=LightBlue,left=of memory] (random) {Pool-randomized recovery\\or persistence; costly reports};
 \node[box,fill=LightOrange,left=of random] (w2game) {Wave 2: 10 paid rounds\\final ballot and outcomes};
 \draw[arr] (base) -- (w1info);
@@ -191,18 +212,119 @@ The study consists of two synchronized laboratory visits scheduled seven days ap
 \label{fig:design}
 \end{figure}
 
-The ten rounds per visit solve the original design's brevity problem while adding theoretically useful behavior. They permit participants to experience both institutions, observe executive choices, and reveal whether reversal is immediate, gradual, or unstable. The primary endpoint remains the final ballot in each wave; earlier rounds process-trace the trajectory and do not multiply the number of independent treatment units.
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  font=\small,
+  >=Latex,
+  person/.style={circle,draw,minimum size=6.8mm,inner sep=0pt,font=\scriptsize\bfseries},
+  groupone/.style={person,draw=DemBlue,fill=DemBlue!22},
+  grouptwo/.style={person,draw=ExecOrange,fill=ExecOrange!22},
+  poolbox/.style={draw=DemBlue!75!black,dashed,rounded corners=2mm,line width=0.8pt,inner sep=5mm},
+  treatment/.style={draw,rounded corners=1.5mm,align=center,minimum width=3.2cm,minimum height=8mm,font=\small\bfseries},
+  flow/.style={-{Latex[length=2.2mm]},line width=0.8pt,draw=DemBlue!85!black},
+  groupname/.style={font=\scriptsize\bfseries,anchor=east},
+  snapshot/.style={font=\bfseries,anchor=south}
+]
+
+% Wave 1, Round 1
+\node[snapshot] at (2.25,3.95) {Wave 1, Round 1};
+\node[groupname,text=DemBlue] at (0,3.00) {Group 1};
+\foreach \lab [count=\k from 0] in {1,2,3,4,5} {
+  \node[groupone] (wonea\lab) at ({0.85+0.72*\k},3.00) {$p_{\lab}$};
+}
+\node[groupname,text=ExecOrange] at (0,1.90) {Group 2};
+\foreach \lab [count=\k from 0] in {6,7,8,9,10} {
+  \node[grouptwo] (woneb\lab) at ({0.85+0.72*\k},1.90) {$p_{\lab}$};
+}
+\node[poolbox,fit=(wonea1)(wonea5)(woneb6)(woneb10)] (poolone) {};
+\node[font=\scriptsize\bfseries,text=DemBlue,anchor=north]
+  at ($(poolone.south)+(0,-0.08)$) {stable matching pool $g$ ($n_g=10$)};
+
+% Wave 1, later round after rematching
+\node[snapshot] at (11.00,3.95) {Wave 1, later round};
+\node[groupname,text=DemBlue] at (8.7,3.00) {Group 1};
+\foreach \lab [count=\k from 0] in {1,3,6,8,10} {
+  \node[groupone] (wonera\lab) at ({9.60+0.72*\k},3.00) {$p_{\lab}$};
+}
+\node[groupname,text=ExecOrange] at (8.7,1.90) {Group 2};
+\foreach \lab [count=\k from 0] in {2,4,5,7,9} {
+  \node[grouptwo] (wonerb\lab) at ({9.60+0.72*\k},1.90) {$p_{\lab}$};
+}
+\node[poolbox,fit=(wonera1)(wonera10)(wonerb2)(wonerb9)] (poollater) {};
+\node[font=\scriptsize\bfseries,text=DemBlue,anchor=north]
+  at ($(poollater.south)+(0,-0.08)$) {same matching pool $g$};
+
+\draw[flow] (poolone.east) -- node[above,align=center,font=\scriptsize]{{\color{gray}anonymous}\\{\color{gray}before each new round}} (poollater.west);
+
+% Pool-level condition for Wave 2
+\node[align=center,font=\bfseries,text=DemBlue] (assignment) at (2.65,-0.15)
+  {Pool-level condition $T_g$\\revealed in Wave 2};
+\node[treatment,draw=RecoveryGreen,fill=RecoveryGreen!15,text=RecoveryGreen!50!black]
+  (recovery) at (1.45,-1.55) {Recovery\\$T_g=1$};
+\node[treatment,draw=PersistPurple,fill=PersistPurple!12,text=PersistPurple]
+  (persistence) at (5.00,-1.55) {Persistence\\$T_g=0$};
+\draw[flow] (assignment.south) -- ++(0,-0.25) -| (recovery.north);
+\draw[flow] (assignment.south) -- ++(0,-0.25) -| (persistence.north);
+\node[draw=black!45,dotted,rounded corners=1.5mm,fit=(recovery)(persistence),inner sep=2.5mm,
+      label={[font=\scriptsize\itshape,align=center]below:one condition applies to all ten members}]
+  (conditionbox) {};
+
+% Wave 2: same panel participants, same pool, new temporary groups
+\node[snapshot] at (11.00,0.10) {Wave 2, example round};
+\node[groupname,text=DemBlue] at (8.7,-0.85) {Group 1};
+\foreach \lab [count=\k from 0] in {1,4,6,7,9} {
+  \node[groupone] (wtwoa\lab) at ({9.60+0.72*\k},-0.85) {$p_{\lab}$};
+}
+\node[groupname,text=ExecOrange] at (8.7,-1.95) {Group 2};
+\foreach \lab [count=\k from 0] in {2,3,5,8,10} {
+  \node[grouptwo] (wtwob\lab) at ({9.60+0.72*\k},-1.95) {$p_{\lab}$};
+}
+\node[poolbox,fit=(wtwoa1)(wtwoa9)(wtwob2)(wtwob10)] (pooltwo) {};
+\node[font=\scriptsize\bfseries,text=DemBlue,anchor=north]
+  at ($(pooltwo.south)+(0,-0.08)$) {same matching pool $g$};
+
+\draw[flow] (poollater.south east) -- ++(0.55,0) |-
+  node[pos=0.50,right,align=left,font=\scriptsize]{{\color{gray}seven-day interval}\\{\color{gray}same $p_i$, same pool $g$}}
+  (pooltwo.north east);
+\draw[flow] (conditionbox.east) -- node[above,font=\scriptsize]{{\color{gray}entire pool}} (pooltwo.west);
+
+% Legend
+\node[groupone] at (4.15,-3.95) {};
+\node[anchor=west,font=\scriptsize] at (4.48,-3.95) {current Group 1};
+\node[grouptwo] at (9.05,-3.95) {};
+\node[anchor=west,font=\scriptsize] at (9.38,-3.95) {current Group 2};
+\node[font=\scriptsize\itshape,align=center,text=black!70] at (7.20,-5)
+  {Colors indicate temporary within-round membership; participant labels indicate panel identity.};
+
+\end{tikzpicture}%
+}
+\caption{Matching pools, within-pool rematching, and pool-level treatment assignment across the two-wave panel.}
+\label{fig:pool-rematching}
+\end{figure}
+
+
+\begin{plainlanguagebox}
+The design uses permanent ten-person matching pools, denoted by $g$. Before each paid round, the software divides every pool into two temporary five-person groups that vote and play separately. These groups dissolve after the round and are formed again before the next one. Participants never interact outside their pool. Accordingly, the colors in \cref{fig:pool-rematching} show current-round group membership, while $p_i$ identifies the same participant across rounds and waves. In Wave 2, the entire pool receives either institutional recovery ($T_g=1$) or continued institutional failure ($T_g=0$). The planned sample repeats this structure across 40 pools.
+
+This arrangement creates interaction without fixed teams. Its principal cost is repeated exposure within pools, but anonymity and rematching limit partner-specific reputation, collusion, and retaliation while preserving social learning. Stable pools also keep potential spillovers within treatment-homogeneous environments, provide 40 independently randomized clusters, and permit two complete five-person groups in every round.
+
+Statistically, democratic reversal ($R_i$) is measured for each participant $p_i$, whereas treatment ($T_g$) is assigned to the pool. Individual outcomes are therefore compared across treatment conditions with standard errors clustered by pool. The temporary five-person groups organize play but are not independent treatment units.
+\end{plainlanguagebox}
+
+%The ten rounds per visit solve the original design's brevity problem while adding theoretically useful behavior. They permit participants to experience both institutions, observe executive choices, and reveal whether reversal is immediate, gradual, or unstable. The primary endpoint remains the final ballot in each wave; earlier rounds process-trace the trajectory and do not multiply the number of independent treatment units.
 
 \subsection{The institutional-choice public-good game}
 
-Each round begins with a 20-point endowment for each of five group members. Every member privately votes between the constrained collective procedure (\Dproc) and executive delegation (\Aproc). A simple majority of at least three votes selects the binding institution. Individual votes remain secret; the group sees the aggregate vote and the selected rule.
+Each round begins with a 20-point endowment for each of five group members. Every member privately votes between the constrained collective procedure (\Dproc) and executive delegation (\Aproc). A simple majority of at least three votes selects the binding institution (\Dproc\; or \Aproc). Individual votes remain secret; the group sees the aggregate vote and the selected rule. This is consistent with Finland's tradition of ballot secrecy.
 
-\paragraph{Constrained collective procedure (\Dproc).} Each member chooses a contribution $c_i$ of 0--20 points. Let $m_{gw}$ denote ordinary institutional capacity for matching pool $g$ in wave $w$. Player $i$ earns
+\paragraph{Constrained collective procedure (\Dproc).} Each member chooses a contribution $c_i$ of 0--20 points. Let $m_{gw}$ denote institutional capacity for matching pool $g$ in wave $w$. Player $i$ earns
 \begin{equation}
 \pi^{D}_{igwr}=20-c_{igwr}+\frac{m_{gw}}{5}\sum_{j=1}^{5}c_{jgwr}.
 \label{eq:democratic}
 \end{equation}
-The marginal private return is below one in both capacity states, preserving the social dilemma, while the group return exceeds one. In Wave 1, $m_{g1}=1.50$ for everyone. In Wave 2, $m_{g2}=2.50$ under recovery and $m_{g2}=1.50$ under persistence.
+The marginal private return is below 1 in both capacity states, preserving the social dilemma, while the group return exceeds 1. In Wave 1, $m_{g1}=1.50$ for everyone. In Wave 2, $m_{g2}=2.50$ under institutional recovery and $m_{g2}=1.50$ under institutional failure persistence.
 
 \paragraph{Executive-delegation procedure (\Aproc).} One group member is selected as executive. Selection is balanced toward members who have served least often, with random resolution of ties. The executive chooses an equal mandatory contribution $t\in\{0,\ldots,20\}$ and a private transfer $\rho\in\{0,\ldots,20\}$, subject to $\rho\leq 5t$. The public account equals $5t-\rho$ and always uses multiplier 2.50. A nonexecutive earns
 \begin{equation}
@@ -215,6 +337,16 @@ while the executive earns
 \label{eq:executive-leader}
 \end{equation}
 All members observe the imposed contribution, private transfer, public return, and their own payoff after the round. Delegation can coordinate provision, but it creates a distributive conflict grounded in another participant's decision.
+
+
+\begin{plainlanguagebox}
+Each round proceeds as follows. Five participants first cast private ballots ($V_{iwr}\in\{\Dproc,\Aproc\}$) to determine how their group will provide the public good. If at least three participants vote for the constrained procedure ($\Dproc$), each participant independently chooses a contribution of 0--20 points ($c_{igwr}$). These contributions are added together, multiplied by the group's institutional-capacity parameter ($m_{gw}$), and divided equally among the five participants.
+
+If at least three participants vote for executive delegation ($\Aproc$), the software appoints one participant as executive, randomly selecting among the group members who have served least often. Participants therefore elect the procedure, not the executive; there is no candidate campaign. The executive imposes the same contribution on every participant ($t$) and may transfer up to 20 collected points to themself ($\rho\leq\min\{20,5t\}$). The remaining public account ($5t-\rho$) is multiplied by 2.50 and divided equally among all five participants. The executive additionally keeps the private transfer ($\rho$).
+
+At the end of the round, everyone observes the selected procedure, the group's decisions, any executive transfer, the public return, and their own payoff ($\pi^{D}_{igwr}$ under \Dproc{} or $\pi^{A}_{igwr}$ under \Aproc{}). Participants are then anonymously rematched within their ten-person matching pool ($g$) before the next round.
+\end{plainlanguagebox}
+
 
 \begin{table}[H]
 \centering
@@ -250,15 +382,15 @@ Show-up payment & EUR 10.00 \\
 
 After consent, participants receive common instructions, complete baseline capacity and risk beliefs, and answer a seven-item democratic-constraint battery. They then complete an unpaid guided practice block covering the constrained contribution decision, executive taxation and transfer, the ballot, report prices, and random-round payment. Three mandatory comprehension questions must be answered correctly before the paid task begins.
 
-Participants receive neutrally titled report cards about ordinary capacity, the budget and service environment, collective constraints, executive implementation, oversight, and the institutional trade-off. Opening a report reveals its full content and deducts four points from the information endowment. The Wave-1 reports establish a common low-capacity environment: ordinary provision has multiplier 1.50, whereas executive implementation has multiplier 2.50.
+Participants receive neutrally titled report cards about institutional capacity, the budget and service environment, collective constraints, executive implementation, oversight, and the institutional trade-off. Opening a report reveals its full content and deducts four points from the information endowment. The Wave-1 reports establish a common low-capacity environment: institutional provision has multiplier 1.50, whereas executive implementation has multiplier 2.50.
 
 Participants then play ten paid rounds. Every round follows the same sequence: secret institutional ballot; majority rule; contribution decisions under \Dproc{} or executive decisions under \Aproc; simultaneous outcome feedback; rematching. After Round 10, capacity and risk beliefs and the constraint battery are measured again. The software records the final ballot, the executive-vote share in Rounds 8--10, and all round-level behavior. One Wave-1 round is randomly chosen for payment.
 
 \subsection{Wave 2: memory, structural change, and reversal}
 
-At the second visit, participants first complete the memory module without access to prior materials. The module contains free recall, recognition of Wave-1 capacity, recall of the participant's own final Wave-1 ballot, and a 0--100 prior probability that ordinary capacity has recovered.
+At the second visit, participants first complete the memory module without access to prior materials. The module contains free recall, recognition of Wave-1 capacity, recall of the participant's own final Wave-1 ballot, and a 0--100 prior probability that institutional capacity has recovered.
 
-The same matching pools are then exposed to their randomly assigned Wave-2 environment. Under \emph{recovery}, ordinary capacity rises from 1.50 to 2.50. Under \emph{persistence}, it remains 1.50. Executive productivity, executive authority, and the maximum transfer remain constant. Six neutrally titled reports cover the same topic structure in both conditions; only purchased report content reveals whether recovery occurred. Immediately after search, participants state a new recovery probability and a capacity assessment.
+The same matching pools are then exposed to their randomly assigned Wave-2 environment. Under \emph{recovery}, institutional capacity rises from 1.50 to 2.50. Under \emph{persistence}, it remains 1.50. Executive productivity, executive authority, and the maximum transfer remain constant. Six neutrally titled reports cover the same topic structure in both conditions; only purchased report content reveals whether recovery occurred. Immediately after search, participants state a new recovery probability and a capacity assessment.
 
 Participants play ten additional rounds under the Wave-2 parameters. The same ballot and payoff structure makes behavior directly comparable across waves. After the final round, the capacity and risk measures and constraint battery are repeated. The final Wave-2 ballot is the behavioral endpoint. One Wave-2 round is randomly paid, and the software adds the unspent information endowment, a 25-point second-visit completion bonus, the scored-belief bonus, and the participation payment.
 
@@ -276,7 +408,7 @@ Repeated play is an advantage only if procedural learning is not confused with t
 
 \paragraph{Wealth, fatigue, and end-game effects.} Only one randomly selected round per wave determines game earnings, so accumulated wealth from early rounds does not mechanically alter later budgets. Wave instructions explain that each round has an equal payment chance. The ten-round horizon is disclosed and identical across conditions. Page timers, decision times, and timeouts identify fatigue or end-game behavior.
 
-\paragraph{Cross-wave comparability.} The institution labels, executive rules, endowments, sequence, pool structure, and number of rounds are held constant. The recovery treatment changes only ordinary productivity and the reports that accurately describe it. A persistence group identifies change caused by returning to the lab, memory decay, or additional play.
+\paragraph{Cross-wave comparability.} The institution labels, executive rules, endowments, sequence, pool structure, and number of rounds are held constant. The recovery treatment changes only institutional productivity and the reports that accurately describe it. A persistence group identifies change caused by returning to the lab, memory decay, or additional play.
 
 These safeguards do not attempt to eliminate all learning. The study requires participants to learn from consequences. They instead separate theoretically meaningful learning about institutional performance from avoidable learning about the interface or accidental partners.
 
@@ -290,11 +422,16 @@ For the theoretically relevant subgroup with $A_{i1}=1$, democratic reversal is
 \begin{equation}
 R_i=\ind{V_{i,2,10}=\Dproc}.
 \end{equation}
-Let $T_g=1$ indicate that matching pool $g$ received structural recovery. The primary causal estimand is
+Let $T_g=1$ indicate that matching pool $g$ received structural institutional recovery. The primary causal estimand is
 \begin{equation}
 \tau_R=\mathbb{E}[R_i(1)-R_i(0)\mid A_{i1}=1],
 \end{equation}
 estimated as an intention-to-treat contrast with standard errors clustered by the ten-person randomization pool. Because $A_{i1}$ is measured before treatment disclosure, defining this subgroup does not condition on a post-treatment variable. The primary model will include prespecified baseline covariates only for precision; an unadjusted difference in means will also be reported.
+
+\begin{plainlanguagebox}
+The primary causal estimand ($\tau_R$) asks: among participants who chose executive delegation in the final round of Wave 1 ($V_{i,1,10}=\Aproc$, summarized by $A_{i1}=1$), how much does assignment to institutional recovery ($T_g=1$), rather than continued institutional failure ($T_g=0$), increase the probability that they return to the constrained procedure in the final round of Wave 2 ($V_{i,2,10}=\Dproc$), thereby constituting a democratic reversal ($R_i=1$)? Ideally, we would compare each participant's decision under recovery ($R_i(1)$) with the decision that the same participant would have made had institutional failure persisted ($R_i(0)$). Because both outcomes cannot be observed for the same person (i.e., ``fundamental problem of causal inference''), random assignment allows us to estimate this effect by comparing reversal rates between the institutional recovery and persistence groups. This is an intention-to-treat comparison: participants are analyzed according to their assigned condition ($T_g$), regardless of which reports they purchased or whether they correctly recognized the structural change. Because treatment is assigned to ten-person matching pools ($g$), statistical uncertainty is also calculated at the pool level.
+\end{plainlanguagebox}
+
 
 Three secondary behavioral outcomes describe robustness: (1) the change in executive-vote share from Wave-1 Rounds 8--10 to Wave-2 Rounds 8--10; (2) the full round-by-treatment trajectory; and (3) group-level selection of each institution. Contribution, imposed tax, private transfer, public-account size, and realized payoff explain the strategic environment in which ballots change.
 

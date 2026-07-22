@@ -1,9 +1,9 @@
-{{ block title }}Wave 2: Updated costly information{{ endblock }}
+{{ block title }}Optional new reports{{ endblock }}
 
 {{ block content }}
-<p>The titles identify reports released since Wave 1 without revealing their conclusions. Opening a report costs <strong>{{ click_cost }} points</strong>. Unspent information points are paid at the end.</p>
+<p>These reports were released since Session 1. Their titles do not reveal their conclusions. A report may help you judge whether the situation has changed and make later decisions. Opening one costs <strong>{{ click_cost }} points</strong>. Every point you do not spend is paid to you at the end.</p>
 
-<p>Remaining information budget: <strong><span id="budget-remaining">{{ budget_remaining }}</span> points</strong></p>
+<p>Points available for reports: <strong><span id="budget-remaining">{{ budget_remaining }}</span></strong></p>
 
 <div style="display:none;">
     {{ formfield player.wave2_news_opened_ids }}

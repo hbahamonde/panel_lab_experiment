@@ -1,15 +1,15 @@
-{{ block title }}Wave 1 complete{{ endblock }}
+{{ block title }}Session 1 complete{{ endblock }}
 
 {{ block content }}
-<p>All ten Wave-1 decisions have been recorded.</p>
+<p>All ten decisions from Session 1 have been recorded.</p>
 
 <div class="card card-body bg-light mb-3">
-    <strong>Randomly selected Wave-1 payoff round:</strong> {{ paying_round }}<br>
+    <strong>Randomly selected Session-1 payoff round:</strong> {{ paying_round }}<br>
     <strong>Your payoff from that round:</strong> {{ selected_payoff|to2 }} points<br>
-    <strong>Information points carried into Wave 2:</strong> {{ information_remaining }}
+    <strong>Information points carried into Session 2:</strong> {{ information_remaining }}
 </div>
 
-<p>Wave 2 is scheduled for <strong>{{ wave2_date }}</strong>. Please return using the same personal study link. Your information budget and experimental record will carry forward.</p>
+<p>Session 2 is scheduled for <strong>{{ wave2_date }}</strong>. Please return using the same personal study link. Your remaining information points and study record will carry forward.</p>
 
 {{ if gates_enabled }}
 <p>You may now close this window.</p>

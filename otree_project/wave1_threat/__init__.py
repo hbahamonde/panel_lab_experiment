@@ -21,6 +21,18 @@ def shuffled_items_once(player, field_name, items):
     return shuffled
 
 
+def development_mode(player):
+    """Allow researchers to move through the demo without completing every field."""
+    return player.session.config.get('allow_optional_responses', False)
+
+
+def require_all(player, values, field_names):
+    if development_mode(player):
+        return
+    if any(values.get(field_name) in (None, '') for field_name in field_names):
+        return 'Please answer all questions before continuing.'
+
+
 def assign_matching_pools(subsession):
     players = subsession.get_players()
     pool_size = subsession.session.config.get('matching_pool_size', C.MATCHING_POOL_SIZE)
@@ -125,8 +137,8 @@ class C(BaseConstants):
     CONSTRAINED = 'constrained'
     EXECUTIVE = 'executive'
     INSTITUTION_CHOICES = [
-        [CONSTRAINED, 'Constrained collective procedure'],
-        [EXECUTIVE, 'Executive-delegation procedure'],
+        [CONSTRAINED, 'Citizens decide'],
+        [EXECUTIVE, 'A leader decides'],
     ]
 
     AGREEMENT_CHOICES = [[i, str(i)] for i in range(1, 8)]
@@ -137,18 +149,18 @@ class C(BaseConstants):
     NEWS_ITEMS = [
         dict(
             id='w1_capacity',
-            title_excerpt='Independent public-service capacity report',
-            full_title='Ordinary public-service capacity remains weak',
+            title_excerpt='Report on how well public services are working',
+            full_title='Public services remain under strain',
             full_text=(
-                'The report concludes that collective public-service provision is functioning below its '
-                'long-run capacity. Each point placed in the public account currently produces only 1.50 '
-                'points of total group benefit.'
+                'An independent review finds that public services are working less effectively than usual. '
+                'When citizens decide, each point placed in the public-service account currently produces '
+                '1.50 points for the group in total.'
             ),
         ),
         dict(
             id='w1_budget',
-            title_excerpt='National budget and healthcare briefing',
-            full_title='Budget deadlock continues to disrupt public services',
+            title_excerpt='Update on the national budget and healthcare',
+            full_title='The budget delay continues to disrupt public services',
             full_text=(
                 'Parliament has failed to pass a budget for eight months. Healthcare waiting times have '
                 'doubled, temporary funding rules remain in place, and service planning has stalled.'
@@ -156,39 +168,40 @@ class C(BaseConstants):
         ),
         dict(
             id='w1_collective',
-            title_excerpt='Briefing on the constrained procedure',
-            full_title='Constrained procedure protects individual control and oversight',
+            title_excerpt='Report on what happens when citizens decide',
+            full_title='Each citizen keeps control of their own contribution',
             full_text=(
-                'Under the constrained procedure, every member retains control over their own contribution. '
-                'No single member can appropriate the public account, but underprovision remains possible.'
+                'When citizens decide, each citizen chooses their own contribution. No citizen can take '
+                'points from the public-service account, but the group may contribute too little.'
             ),
         ),
         dict(
             id='w1_executive',
-            title_excerpt='Briefing on executive delegation',
-            full_title='Executive delegation can accelerate provision',
+            title_excerpt='Report on what happens when a leader decides',
+            full_title='A leader can provide services faster but has personal discretion',
             full_text=(
-                'The executive can impose an equal contribution and uses a more productive implementation '
-                'technology. The executive may also transfer as many as 20 collected points to themself.'
+                'The leader sets the same required contribution for all five citizens. The leader can turn '
+                'the remaining points into public services more effectively, but may keep up to 20 collected '
+                'points for themself.'
             ),
         ),
         dict(
             id='w1_audit',
-            title_excerpt='Institutional oversight assessment',
-            full_title='Oversight cannot prevent executive diversion',
+            title_excerpt='Report on checks on the leader',
+            full_title='The leader must disclose any points kept after the round',
             full_text=(
-                'Auditors can report how much the executive retains after the round, but they cannot reverse '
-                'the transfer. Delegation therefore trades implementation capacity for weaker ex ante control.'
+                'The group is told how many points the leader kept, but it cannot reverse that choice. Giving '
+                'the leader control may improve public services, but citizens give up control before the choice.'
             ),
         ),
         dict(
             id='w1_analysis',
-            title_excerpt='Economic analysis of the institutional tradeoff',
-            full_title='Efficiency advantage depends on institutional capacity',
+            title_excerpt='Comparison of the two ways of deciding',
+            full_title='The best-performing option depends on how well public services work',
             full_text=(
-                'When ordinary capacity is weak, executive implementation can produce more public service. '
-                'If ordinary capacity later recovers, that efficiency advantage may disappear while the risk '
-                'of discretionary transfers remains.'
+                'When public services are under strain, a leader can produce more public benefit from the '
+                'same number of points. If services later recover, that advantage may disappear, while the '
+                'leader would still be allowed to keep some collected points.'
             ),
         ),
     ]
@@ -218,7 +231,8 @@ class Player(BasePlayer):
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES,
         widget=widgets.RadioSelect,
-        label='Which procedure should govern this round?',
+        label='Who should make the public-service decision this round?',
+        blank=True,
     )
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT,
@@ -227,12 +241,12 @@ class Player(BasePlayer):
     )
     executive_tax = models.IntegerField(
         min=0, max=C.ENDOWMENT,
-        label='How many points must each group member contribute?',
+        label='How many points must each citizen contribute?',
         blank=True,
     )
     executive_rent = models.IntegerField(
         min=0, max=C.MAX_EXECUTIVE_RENT,
-        label='How many collected points do you transfer to yourself?',
+        label='How many collected points do you keep for yourself?',
         blank=True,
     )
     is_executive = models.BooleanField(initial=False)
@@ -241,37 +255,42 @@ class Player(BasePlayer):
 
     inst_capacity_pre = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='Before the decision task, how capable are ordinary institutions of providing public services?',
+        label='At this point, how well can citizens provide public services when each citizen chooses their own contribution?',
+        blank=True,
     )
     collapse_risk_pre = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='Before the decision task, how high is the risk that democratic constraints will be seriously weakened?',
+        label='At this point, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
+        blank=True,
     )
 
-    constraint_pre_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='A governance crisis can justify giving one leader temporary authority to act without prior group approval.')
-    constraint_pre_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Rapid public-service provision can be worth reducing institutional oversight.')
-    constraint_pre_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Major public decisions should remain collectively constrained even when this causes delay.')
-    constraint_pre_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='An executive should be allowed to impose contributions when voluntary provision fails.')
-    constraint_pre_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower collective action to efficient action by an executive who can benefit personally.')
-    constraint_pre_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak oversight creates political risks that outweigh short-run efficiency gains.')
-    constraint_pre_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When ordinary institutions perform poorly, leaders should have greater freedom from normal constraints.')
+    constraint_pre_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='A crisis can justify giving one leader temporary power to act without asking the group first.', blank=True)
+    constraint_pre_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services can be worth reducing checks on a leader\'s power.', blank=True)
+    constraint_pre_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
+    constraint_pre_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='A leader should be allowed to require equal contributions when voluntary contributions are too low.', blank=True)
+    constraint_pre_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may keep some collected points.', blank=True)
+    constraint_pre_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh short-term gains.', blank=True)
+    constraint_pre_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader should have more freedom from the usual limits.', blank=True)
 
-    practice_contribution = models.IntegerField(min=0, max=10, label='Practice: choose a contribution from a 10-point endowment.')
-    practice_tax = models.IntegerField(min=0, max=10, label='Practice: choose an equal contribution for every member.')
-    practice_rent = models.IntegerField(min=0, max=10, label='Practice: choose how many collected points to transfer to yourself.')
+    practice_contribution = models.IntegerField(min=0, max=10, label='How many of your 10 points do you contribute?', blank=True)
+    practice_tax = models.IntegerField(min=0, max=10, label='Choose the contribution required from each citizen.', blank=True)
+    practice_rent = models.IntegerField(min=0, max=10, label='How many collected points do you keep for yourself?', blank=True)
     comprehension_1 = models.StringField(
-        choices=[['individual', 'Each member chooses their own contribution'], ['executive', 'One executive chooses every contribution']],
+        choices=[['individual', 'Each citizen chooses their own contribution'], ['executive', 'One leader chooses every citizen\'s contribution']],
         widget=widgets.RadioSelect,
-        label='Under the constrained collective procedure, who chooses contributions?',
+        label='When citizens decide, who chooses the contributions?',
+        blank=True,
     )
     comprehension_2 = models.StringField(
         choices=[['yes', 'Yes'], ['no', 'No']], widget=widgets.RadioSelect,
-        label='Can the executive transfer some collected points to themself?',
+        label='Can the leader keep some of the collected points?',
+        blank=True,
     )
     comprehension_3 = models.StringField(
         choices=[['all', 'Every round'], ['selected', 'Only the randomly selected round'], ['last', 'Only Round 10']],
         widget=widgets.RadioSelect,
-        label='Which paid round determines your Wave-1 game earnings?',
+        label='Which paid round determines your game earnings from Session 1?',
+        blank=True,
     )
 
     wave1_news_display_order = models.LongStringField(blank=True)
@@ -282,19 +301,21 @@ class Player(BasePlayer):
 
     inst_capacity_w1 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After Wave 1, how capable is the constrained collective procedure of providing public services?',
+        label='After these rounds, how well can citizens provide public services when each citizen chooses their own contribution?',
+        blank=True,
     )
     collapse_risk_w1 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After Wave 1, how high is the risk of serious institutional weakening under executive delegation?',
+        label='After these rounds, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
+        blank=True,
     )
-    constraint_w1_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current governance crisis justifies temporary executive authority without prior group approval.')
-    constraint_w1_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Rapid public-service provision is worth reducing institutional oversight in the current situation.')
-    constraint_w1_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Major public decisions should remain collectively constrained despite the current delay.')
-    constraint_w1_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The executive should be allowed to impose contributions under the current conditions.')
-    constraint_w1_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower collective action to efficient action by an executive who can benefit personally.')
-    constraint_w1_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The risks created by weak oversight outweigh current efficiency gains.')
-    constraint_w1_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Because ordinary institutions are performing poorly, leaders need greater freedom from normal constraints.')
+    constraint_w1_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current crisis justifies giving one leader temporary power to act without asking the group first.', blank=True)
+    constraint_w1_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services are worth reducing checks on a leader\'s power in the current situation.', blank=True)
+    constraint_w1_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
+    constraint_w1_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require equal contributions in the current situation.', blank=True)
+    constraint_w1_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may keep some collected points.', blank=True)
+    constraint_w1_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh the current gains.', blank=True)
+    constraint_w1_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Because public services are working poorly, a leader needs more freedom from the usual limits.', blank=True)
 
 
 class Wave1Intro(Page):
@@ -330,9 +351,15 @@ class BaselineSurvey(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Baseline judgments',
-            explanation='For the following statements, 1 means strongly disagree and 7 means strongly agree.',
+            page_title='Your first impressions',
+            explanation='Please answer the two questions about public services first.',
+            slider_prefix='constraint_pre_',
+            optional_responses=development_mode(player),
         )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, BaselineSurvey.form_fields)
 
 
 class PracticeIntro(Page):
@@ -350,6 +377,10 @@ class PracticeDemocratic(Page):
     def is_displayed(player):
         return player.round_number == 1
 
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, PracticeDemocratic.form_fields)
+
 
 class PracticeExecutive(Page):
     form_model = 'player'
@@ -362,8 +393,12 @@ class PracticeExecutive(Page):
 
     @staticmethod
     def error_message(player, values):
-        if values['practice_rent'] > C.PLAYERS_PER_GROUP * values['practice_tax']:
-            return 'The executive cannot transfer more points than the group contributes.'
+        missing = require_all(player, values, PracticeExecutive.form_fields)
+        if missing:
+            return missing
+        if values.get('practice_rent') is not None and values.get('practice_tax') is not None:
+            if values['practice_rent'] > C.PLAYERS_PER_GROUP * values['practice_tax']:
+                return 'The leader cannot keep more points than the group contributes.'
 
 
 class Comprehension(Page):
@@ -377,13 +412,15 @@ class Comprehension(Page):
 
     @staticmethod
     def error_message(player, values):
+        if development_mode(player):
+            return
         errors = []
         if values['comprehension_1'] != 'individual':
-            errors.append('Under the constrained procedure, each member chooses their own contribution.')
+            errors.append('When citizens decide, each citizen chooses their own contribution.')
         if values['comprehension_2'] != 'yes':
-            errors.append('The executive can transfer collected points to themself.')
+            errors.append('The leader can keep some of the collected points.')
         if values['comprehension_3'] != 'selected':
-            errors.append('One randomly selected round determines Wave-1 game earnings.')
+            errors.append('One randomly selected round determines your Session-1 game earnings.')
         if errors:
             return 'Please review: ' + ' '.join(errors)
 
@@ -442,7 +479,13 @@ class InstitutionVote(Page):
             total_rounds=C.NUM_ROUNDS,
             constrained_multiplier=C.CONSTRAINED_MULTIPLIER_CRISIS,
             executive_multiplier=C.EXECUTIVE_MULTIPLIER,
+            optional_responses=development_mode(player),
+            selected_vote=player.field_maybe_none('institution_vote'),
         )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, InstitutionVote.form_fields)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -452,7 +495,7 @@ class InstitutionVote(Page):
 
 
 class VoteWaitPage(WaitPage):
-    body_text = 'Waiting for the other members of this round\'s anonymous group.'
+    body_text = 'Waiting for the other citizens in this round\'s anonymous group.'
     after_all_players_arrive = choose_institution
 
 
@@ -469,12 +512,18 @@ class DemocraticContribution(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Constrained collective decision',
+            page_title='Citizens decide',
             explanation=(
                 f'Each point kept returns 1 point to you. Each point placed in the public account '
                 f'produces {C.CONSTRAINED_MULTIPLIER_CRISIS:.2f} points for the group, divided equally.'
             ),
+            slider_prefix='',
+            optional_responses=development_mode(player),
         )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, DemocraticContribution.form_fields)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -496,18 +545,24 @@ class ExecutiveDecision(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='You are the executive for this round',
+            page_title='You are the leader for this round',
             explanation=(
-                f'Choose an equal contribution for all five members. You may transfer at most '
-                f'{C.MAX_EXECUTIVE_RENT} collected points to yourself. Remaining collected points '
-                f'produce {C.EXECUTIVE_MULTIPLIER:.2f} points of group benefit each.'
+                f'Choose the contribution required from all five citizens. You may keep at most '
+                f'{C.MAX_EXECUTIVE_RENT} collected points for yourself. Each remaining point produces '
+                f'{C.EXECUTIVE_MULTIPLIER:.2f} points for the group in total.'
             ),
+            slider_prefix='',
+            optional_responses=development_mode(player),
         )
 
     @staticmethod
     def error_message(player, values):
-        if values['executive_rent'] > C.PLAYERS_PER_GROUP * values['executive_tax']:
-            return 'You cannot transfer more points than the group contributes.'
+        missing = require_all(player, values, ExecutiveDecision.form_fields)
+        if missing:
+            return missing
+        if values.get('executive_rent') is not None and values.get('executive_tax') is not None:
+            if values['executive_rent'] > C.PLAYERS_PER_GROUP * values['executive_tax']:
+                return 'You cannot keep more points than the group contributes.'
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -559,17 +614,23 @@ class Wave1Mechanism(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Wave-1 judgments',
-            explanation='Please answer after considering all ten rounds. For statements, 1 means strongly disagree and 7 means strongly agree.',
+            page_title='Your views after the rounds',
+            explanation='Please answer after considering all ten rounds.',
+            slider_prefix='constraint_w1_',
+            optional_responses=development_mode(player),
         )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, Wave1Mechanism.form_fields)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.participant.vars['w1_final_vote'] = player.institution_vote
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
         player.participant.vars['w1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
-        player.participant.vars['inst_capacity_w1'] = player.inst_capacity_w1
-        player.participant.vars['collapse_risk_w1'] = player.collapse_risk_w1
+        player.participant.vars['inst_capacity_w1'] = player.field_maybe_none('inst_capacity_w1')
+        player.participant.vars['collapse_risk_w1'] = player.field_maybe_none('collapse_risk_w1')
 
         paying_round = player.session.vars['wave1_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff

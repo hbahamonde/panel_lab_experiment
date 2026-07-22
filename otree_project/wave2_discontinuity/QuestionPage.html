@@ -2,6 +2,120 @@
 
 {{ block content }}
 {{ if explanation }}<p>{{ explanation }}</p>{{ endif }}
+
+{{ if institution_vote_page }}
+<p><strong>Who should make the public-service decision this round?</strong> Click anywhere on one of the two rows.</p>
+
+<div class="choice-table" role="radiogroup" aria-label="Choose how the decision will be made">
+    <div class="choice-header" aria-hidden="true">
+        <div>Option</div><div>Contributions</div><div>Public return</div><div>Points kept personally</div>
+    </div>
+    <label class="choice-row citizens-row">
+        <input type="radio" name="institution_vote" value="constrained" {{ if selected_vote == 'constrained' }}checked{{ endif }}>
+        <span class="choice-name"><span class="choice-mark">C</span><strong>Citizens decide</strong></span>
+        <span><small>Contributions</small>Each citizen chooses their own</span>
+        <span><small>Public return</small>Each point contributed produces {{ constrained_multiplier }} points for the group in total</span>
+        <span><small>Points kept personally</small>No citizen can take points from the public-service account</span>
+    </label>
+    <label class="choice-row leader-row">
+        <input type="radio" name="institution_vote" value="executive" {{ if selected_vote == 'executive' }}checked{{ endif }}>
+        <span class="choice-name"><span class="choice-mark">L</span><strong>A leader decides</strong></span>
+        <span><small>Contributions</small>The leader requires the same contribution from every citizen</span>
+        <span><small>Public return</small>Each point left for public services produces {{ executive_multiplier }} points for the group in total</span>
+        <span><small>Points kept personally</small>The leader may keep up to 20 collected points</span>
+    </label>
+</div>
+
+<p class="mt-3">At least three of the five votes are needed for an option to be used. Your vote remains private.</p>
+{{ else }}
 {{ formfields }}
+{{ endif }}
+
+{{ if optional_responses }}<p class="text-muted"><em>Testing mode: unanswered fields are allowed.</em></p>{{ endif }}
 {{ next_button }}
+
+{{ if institution_vote_page }}
+<style>
+.choice-table { border:1px solid #cfd6df; border-radius:10px; overflow:hidden; margin:1rem 0; background:#fff; }
+.choice-header, .choice-row { display:grid; grid-template-columns:1.15fr 1.35fr 1.7fr 1.55fr; gap:0; }
+.choice-header { background:#eef1f5; color:#374151; font-size:.84rem; font-weight:700; }
+.choice-header > div, .choice-row > span { padding:12px 14px; border-right:1px solid #dfe4ea; }
+.choice-header > div:last-child, .choice-row > span:last-child { border-right:0; }
+.choice-row { position:relative; cursor:pointer; border-top:1px solid #cfd6df; transition:background-color .16s ease, box-shadow .16s ease; }
+.choice-row input { position:absolute; opacity:0; pointer-events:none; }
+.choice-row small { display:none; color:#5b6470; font-weight:700; margin-bottom:3px; }
+.choice-row:hover, .choice-row:focus-within { box-shadow:inset 4px 0 0 #6b7280; }
+.citizens-row:hover { background:#eaf4ff; box-shadow:inset 5px 0 0 #2774b8; }
+.leader-row:hover { background:#fff2df; box-shadow:inset 5px 0 0 #c46b12; }
+.citizens-row:has(input:checked), .citizens-row.selected { background:#dceeff; box-shadow:inset 6px 0 0 #1469aa; }
+.leader-row:has(input:checked), .leader-row.selected { background:#ffe8c7; box-shadow:inset 6px 0 0 #ad5600; }
+.choice-name { display:flex; align-items:center; gap:9px; }
+.choice-mark { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; color:#fff; font-weight:800; flex:0 0 30px; }
+.citizens-row .choice-mark { background:#2774b8; }
+.leader-row .choice-mark { background:#c46b12; }
+@media (max-width: 780px) {
+    .choice-header { display:none; }
+    .choice-row { grid-template-columns:1fr; padding:8px 0; }
+    .choice-row > span { border-right:0; padding:7px 14px; }
+    .choice-row small { display:block; }
+}
+</style>
+<script>
+document.querySelectorAll('.choice-row input').forEach(function (input) {
+    function updateSelection() {
+        document.querySelectorAll('.choice-row').forEach(function (row) { row.classList.remove('selected'); });
+        if (input.checked) input.closest('.choice-row').classList.add('selected');
+    }
+    input.addEventListener('change', updateSelection);
+    if (input.checked) updateSelection();
+});
+</script>
+{{ endif }}
+
+{{ if slider_prefix }}
+<style>
+.agreement-note { margin:1.35rem 0 .85rem; padding:.8rem 1rem; border-left:4px solid #466f9f; background:#f2f6fa; }
+.agreement-slider { margin:.35rem 0 1.35rem; padding:.8rem 1rem .65rem; border:1px solid #d9e0e7; border-radius:8px; background:#fbfcfd; }
+.agreement-slider input[type="range"] { width:100%; accent-color:#356c9f; }
+.slider-status { display:block; text-align:center; min-height:1.5rem; margin-bottom:.25rem; font-weight:700; color:#4b5563; }
+.agreement-slider.answered .slider-status { color:#1f5d8f; }
+.slider-ends { display:flex; justify-content:space-between; gap:1rem; font-size:.82rem; color:#5b6470; }
+</style>
+<script>
+(function () {
+    const sliderPrefix = '{{ slider_prefix }}';
+    const selects = Array.from(document.querySelectorAll('select[name^="' + sliderPrefix + '"]'));
+    if (!selects.length) return;
+    const firstWrapper = selects[0].closest('.mb-3') || selects[0].parentElement;
+    const note = document.createElement('div');
+    note.className = 'agreement-note';
+    note.innerHTML = '<strong>For the following statements, 1 means strongly disagree and 7 means strongly agree.</strong>';
+    firstWrapper.parentNode.insertBefore(note, firstWrapper);
+
+    selects.forEach(function (select) {
+        const currentValue = select.value || '';
+        const sliderBox = document.createElement('div');
+        sliderBox.className = 'agreement-slider' + (currentValue ? ' answered' : '');
+        const status = document.createElement('output');
+        status.className = 'slider-status';
+        status.textContent = currentValue ? currentValue : 'Not answered';
+        const slider = document.createElement('input');
+        slider.type = 'range'; slider.min = '1'; slider.max = '7'; slider.step = '1';
+        slider.value = currentValue || '4'; slider.id = select.id;
+        slider.setAttribute('aria-label', select.labels && select.labels[0] ? select.labels[0].textContent : 'Agreement');
+        if (currentValue) slider.name = select.name;
+        const ends = document.createElement('div');
+        ends.className = 'slider-ends';
+        ends.innerHTML = '<span>1 — Strongly disagree</span><span>7 — Strongly agree</span>';
+        slider.addEventListener('input', function () {
+            slider.name = select.name;
+            status.textContent = slider.value;
+            sliderBox.classList.add('answered');
+        });
+        sliderBox.appendChild(status); sliderBox.appendChild(slider); sliderBox.appendChild(ends);
+        select.replaceWith(sliderBox);
+    });
+})();
+</script>
+{{ endif }}
 {{ endblock }}

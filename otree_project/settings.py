@@ -10,6 +10,7 @@ SESSION_CONFIGS = [
         wave2_date='2026-10-13',
         wave_window_days=1,
         enable_wave_gates=True,
+        allow_optional_responses=False,
         matching_pool_size=10,
     ),
     dict(
@@ -21,6 +22,7 @@ SESSION_CONFIGS = [
         wave2_date='2026-10-13',
         wave_window_days=1,
         enable_wave_gates=False,
+        allow_optional_responses=True,
         matching_pool_size=10,
     )
 ]
