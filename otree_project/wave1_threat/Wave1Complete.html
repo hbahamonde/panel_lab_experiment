@@ -5,11 +5,10 @@
 
 <div class="card card-body bg-light mb-3">
     <strong>Randomly selected Session-1 payoff round:</strong> {{ paying_round }}<br>
-    <strong>Your payoff from that round:</strong> {{ selected_payoff|to2 }} points<br>
-    <strong>Information points carried into Session 2:</strong> {{ information_remaining }}
+    <strong>Your payoff from that round:</strong> {{ selected_payoff|to2 }} points
 </div>
 
-<p>Session 2 is scheduled for <strong>{{ wave2_date }}</strong>. Please return using the same personal study link. Your remaining information points and study record will carry forward.</p>
+<p>Session 2 is scheduled for <strong>{{ wave2_date }}</strong>. Please return using the same personal study link. Your study record will carry forward.</p>
 
 {{ if gates_enabled }}
 <p>You may now close this window.</p>

@@ -6,19 +6,9 @@ from otree.api import *
 
 doc = """
 Wave 1 of the two-wave panel: common low-capacity environment, ten repeated
-institutional-choice/public-good rounds, costly information, and mechanism
-measurement. Participants are anonymously rematched within ten-person pools.
+institutional-choice/public-good rounds and mechanism measurement. Participants
+are anonymously rematched within ten-person pools.
 """
-
-
-def shuffled_items_once(player, field_name, items):
-    stored_order = player.field_maybe_none(field_name)
-    item_map = {item['id']: item for item in items}
-    if stored_order:
-        return [item_map[item_id] for item_id in stored_order.split(',') if item_id in item_map]
-    shuffled = random.sample(items, len(items))
-    setattr(player, field_name, ','.join(item['id'] for item in shuffled))
-    return shuffled
 
 
 def development_mode(player):
@@ -33,13 +23,36 @@ def require_all(player, values, field_names):
         return 'Please answer all questions before continuing.'
 
 
+def solo_testing(obj):
+    return obj.session.config.get('solo_testing', False)
+
+
 def assign_matching_pools(subsession):
     players = subsession.get_players()
     pool_size = subsession.session.config.get('matching_pool_size', C.MATCHING_POOL_SIZE)
 
+    if solo_testing(subsession):
+        if len(players) != 1:
+            raise RuntimeError('Solo testing sessions require exactly one participant.')
+        player = players[0]
+        if subsession.round_number == 1:
+            player.participant.vars['matching_pool_id'] = 1
+            player.participant.vars['times_executive'] = 0
+            player.participant.vars['treatment'] = subsession.session.config.get(
+                'solo_treatment', 'reversal'
+            )
+            subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
+        subsession.set_group_matrix([[player]])
+        player.matching_pool_id = 1
+        return
+
     if subsession.round_number == 1:
-        if len(players) % C.PLAYERS_PER_GROUP != 0:
-            raise RuntimeError('The session size must be divisible by five.')
+        if pool_size % C.GROUP_SIZE != 0:
+            raise RuntimeError('The matching-pool size must be divisible by five.')
+        if len(players) % pool_size != 0:
+            raise RuntimeError(
+                f'The session size must be divisible by the {pool_size}-person matching-pool size.'
+            )
 
         shuffled = random.sample(players, len(players))
         for index, player in enumerate(shuffled):
@@ -62,14 +75,14 @@ def assign_matching_pools(subsession):
     for pool_id in pool_ids:
         pool_players = [p for p in players if p.participant.vars['matching_pool_id'] == pool_id]
         random.shuffle(pool_players)
-        if len(pool_players) % C.PLAYERS_PER_GROUP != 0:
+        if len(pool_players) % C.GROUP_SIZE != 0:
             raise RuntimeError(
                 f'Matching pool {pool_id} contains {len(pool_players)} participants; '
                 'each pool must be divisible into five-person groups.'
             )
         groups.extend(
-            pool_players[index:index + C.PLAYERS_PER_GROUP]
-            for index in range(0, len(pool_players), C.PLAYERS_PER_GROUP)
+            pool_players[index:index + C.GROUP_SIZE]
+            for index in range(0, len(pool_players), C.GROUP_SIZE)
         )
 
     subsession.set_group_matrix(groups)
@@ -79,11 +92,26 @@ def assign_matching_pools(subsession):
 
 def choose_institution(group):
     players = group.get_players()
-    undemocratic_votes = sum(p.institution_vote == C.EXECUTIVE for p in players)
+    if solo_testing(group):
+        player = players[0]
+        other_leader_votes = player.field_maybe_none('solo_other_leader_votes')
+        undemocratic_votes = int(player.institution_vote == C.EXECUTIVE) + (
+            other_leader_votes if other_leader_votes is not None else 2
+        )
+    else:
+        undemocratic_votes = sum(p.institution_vote == C.EXECUTIVE for p in players)
     group.executive_votes = undemocratic_votes
     group.selected_institution = C.EXECUTIVE if undemocratic_votes >= 3 else C.CONSTRAINED
 
     if group.selected_institution == C.EXECUTIVE:
+        if solo_testing(group):
+            executive = players[0]
+            executive.is_executive = True
+            executive.participant.vars['times_executive'] = (
+                executive.participant.vars.get('times_executive', 0) + 1
+            )
+            group.executive_id = executive.id_in_group
+            return
         minimum_count = min(p.participant.vars.get('times_executive', 0) for p in players)
         eligible = [p for p in players if p.participant.vars.get('times_executive', 0) == minimum_count]
         executive = random.choice(eligible)
@@ -95,24 +123,27 @@ def choose_institution(group):
 def calculate_round(group):
     players = group.get_players()
     if group.selected_institution == C.CONSTRAINED:
-        total = sum(p.contribution or 0 for p in players)
+        if solo_testing(group):
+            total = (players[0].contribution or 0) + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION
+        else:
+            total = sum(p.contribution or 0 for p in players)
         group.total_contribution = total
         group.executive_tax = 0
         group.executive_rent = 0
         group.public_account = total
-        group.per_capita_return = C.CONSTRAINED_MULTIPLIER_CRISIS * total / C.PLAYERS_PER_GROUP
+        group.per_capita_return = C.CONSTRAINED_MULTIPLIER_CRISIS * total / C.GROUP_SIZE
         for player in players:
             player.round_payoff = C.ENDOWMENT - (player.contribution or 0) + group.per_capita_return
     else:
         executive = group.get_player_by_id(group.executive_id)
         tax = executive.executive_tax or 0
         rent = executive.executive_rent or 0
-        public_account = C.PLAYERS_PER_GROUP * tax - rent
-        group.total_contribution = C.PLAYERS_PER_GROUP * tax
+        public_account = C.GROUP_SIZE * tax - rent
+        group.total_contribution = C.GROUP_SIZE * tax
         group.executive_tax = tax
         group.executive_rent = rent
         group.public_account = public_account
-        group.per_capita_return = C.EXECUTIVE_MULTIPLIER * public_account / C.PLAYERS_PER_GROUP
+        group.per_capita_return = C.EXECUTIVE_MULTIPLIER * public_account / C.GROUP_SIZE
         for player in players:
             player.round_payoff = C.ENDOWMENT - tax + group.per_capita_return
             if player.id_in_group == group.executive_id:
@@ -121,7 +152,8 @@ def calculate_round(group):
 
 class C(BaseConstants):
     NAME_IN_URL = 'wave1_threat'
-    PLAYERS_PER_GROUP = 5
+    PLAYERS_PER_GROUP = None
+    GROUP_SIZE = 5
     MATCHING_POOL_SIZE = 10
     NUM_ROUNDS = 10
 
@@ -130,9 +162,8 @@ class C(BaseConstants):
     CONSTRAINED_MULTIPLIER_RECOVERY = 2.50
     EXECUTIVE_MULTIPLIER = 2.50
     MAX_EXECUTIVE_RENT = 20
-
-    INFO_BUDGET = 24
-    INFO_CLICK_COST = 4
+    SOLO_OTHER_CITIZENS = 4
+    SOLO_OTHER_CONTRIBUTION = 10
 
     CONSTRAINED = 'constrained'
     EXECUTIVE = 'executive'
@@ -145,67 +176,6 @@ class C(BaseConstants):
     FIVE_POINT_CHOICES = [
         [1, 'Very low'], [2, 'Low'], [3, 'Moderate'], [4, 'High'], [5, 'Very high']
     ]
-
-    NEWS_ITEMS = [
-        dict(
-            id='w1_capacity',
-            title_excerpt='Report on how well public services are working',
-            full_title='Public services remain under strain',
-            full_text=(
-                'An independent review finds that public services are working less effectively than usual. '
-                'When citizens decide, each point placed in the public-service account currently produces '
-                '1.50 points for the group in total.'
-            ),
-        ),
-        dict(
-            id='w1_budget',
-            title_excerpt='Update on the national budget and healthcare',
-            full_title='The budget delay continues to disrupt public services',
-            full_text=(
-                'Parliament has failed to pass a budget for eight months. Healthcare waiting times have '
-                'doubled, temporary funding rules remain in place, and service planning has stalled.'
-            ),
-        ),
-        dict(
-            id='w1_collective',
-            title_excerpt='Report on what happens when citizens decide',
-            full_title='Each citizen keeps control of their own contribution',
-            full_text=(
-                'When citizens decide, each citizen chooses their own contribution. No citizen can take '
-                'points from the public-service account, but the group may contribute too little.'
-            ),
-        ),
-        dict(
-            id='w1_executive',
-            title_excerpt='Report on what happens when a leader decides',
-            full_title='A leader can provide services faster but has personal discretion',
-            full_text=(
-                'The leader sets the same required contribution for all five citizens. The leader can turn '
-                'the remaining points into public services more effectively, but may keep up to 20 collected '
-                'points for themself.'
-            ),
-        ),
-        dict(
-            id='w1_audit',
-            title_excerpt='Report on checks on the leader',
-            full_title='The leader must disclose any points kept after the round',
-            full_text=(
-                'The group is told how many points the leader kept, but it cannot reverse that choice. Giving '
-                'the leader control may improve public services, but citizens give up control before the choice.'
-            ),
-        ),
-        dict(
-            id='w1_analysis',
-            title_excerpt='Comparison of the two ways of deciding',
-            full_title='The best-performing option depends on how well public services work',
-            full_text=(
-                'When public services are under strain, a leader can produce more public benefit from the '
-                'same number of points. If services later recover, that advantage may disappear, while the '
-                'leader would still be allowed to keep some collected points.'
-            ),
-        ),
-    ]
-
 
 class Subsession(BaseSubsession):
     pass
@@ -234,6 +204,7 @@ class Player(BasePlayer):
         label='Who should make the public-service decision this round?',
         blank=True,
     )
+    solo_other_leader_votes = models.IntegerField(min=0, max=4, blank=True)
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT,
         label='How many of your 20 points do you place in the public-service account?',
@@ -293,12 +264,6 @@ class Player(BasePlayer):
         blank=True,
     )
 
-    wave1_news_display_order = models.LongStringField(blank=True)
-    wave1_news_opened_ids = models.LongStringField(blank=True)
-    wave1_news_spent = models.IntegerField(initial=0)
-    wave1_news_click_order = models.LongStringField(blank=True)
-    wave1_news_time_seconds = models.FloatField(initial=0)
-
     inst_capacity_w1 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
         label='After these rounds, how well can citizens provide public services when each citizen chooses their own contribution?',
@@ -325,13 +290,9 @@ class Wave1Intro(Page):
 
     @staticmethod
     def vars_for_template(player):
-        if 'info_budget_remaining' not in player.participant.vars:
-            player.participant.vars['info_budget_remaining'] = C.INFO_BUDGET
-            player.participant.vars['info_spent_total'] = 0
         return dict(
             rounds=C.NUM_ROUNDS,
-            group_size=C.PLAYERS_PER_GROUP,
-            info_budget=C.INFO_BUDGET,
+            group_size=C.GROUP_SIZE,
         )
 
 
@@ -371,7 +332,7 @@ class PracticeIntro(Page):
 class PracticeDemocratic(Page):
     form_model = 'player'
     form_fields = ['practice_contribution']
-    template_name = 'wave1_threat/PracticeNewsBoard.html'
+    template_name = 'wave1_threat/PracticeDemocratic.html'
 
     @staticmethod
     def is_displayed(player):
@@ -397,7 +358,7 @@ class PracticeExecutive(Page):
         if missing:
             return missing
         if values.get('practice_rent') is not None and values.get('practice_tax') is not None:
-            if values['practice_rent'] > C.PLAYERS_PER_GROUP * values['practice_tax']:
+            if values['practice_rent'] > C.GROUP_SIZE * values['practice_tax']:
                 return 'The leader cannot keep more points than the group contributes.'
 
 
@@ -425,50 +386,9 @@ class Comprehension(Page):
             return 'Please review: ' + ' '.join(errors)
 
 
-class Wave1NewsBoard(Page):
-    form_model = 'player'
-    form_fields = ['wave1_news_opened_ids', 'wave1_news_spent', 'wave1_news_click_order', 'wave1_news_time_seconds']
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 1
-
-    @staticmethod
-    def vars_for_template(player):
-        items = shuffled_items_once(player, 'wave1_news_display_order', C.NEWS_ITEMS)
-        return dict(
-            news_items=items,
-            click_cost=C.INFO_CLICK_COST,
-            budget_remaining=player.participant.vars.get('info_budget_remaining', C.INFO_BUDGET),
-            storage_key=f'w1-news-{player.participant.code}',
-        )
-
-    @staticmethod
-    def error_message(player, values):
-        opened = [item for item in (values.get('wave1_news_opened_ids') or '').split(',') if item]
-        valid_ids = {item['id'] for item in C.NEWS_ITEMS}
-        expected_spend = len(opened) * C.INFO_CLICK_COST
-        budget = player.participant.vars.get('info_budget_remaining', C.INFO_BUDGET)
-        if len(opened) != len(set(opened)) or not set(opened).issubset(valid_ids):
-            return 'The submitted report record is invalid. Please reload the page and make your choices again.'
-        if values.get('wave1_news_spent') != expected_spend or expected_spend > budget:
-            return 'The submitted information cost does not match the reports opened. Please reload the page.'
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        opened = [item for item in (player.wave1_news_opened_ids or '').split(',') if item]
-        spent = len(opened) * C.INFO_CLICK_COST
-        player.wave1_news_spent = spent
-        player.participant.vars['wave1_news_opened_ids'] = opened
-        player.participant.vars['wave1_news_click_order'] = player.wave1_news_click_order or ''
-        player.participant.vars['wave1_news_time_seconds'] = player.wave1_news_time_seconds or 0
-        player.participant.vars['info_spent_total'] = player.participant.vars.get('info_spent_total', 0) + spent
-        player.participant.vars['info_budget_remaining'] = player.participant.vars.get('info_budget_remaining', C.INFO_BUDGET) - spent
-
-
 class InstitutionVote(Page):
     form_model = 'player'
-    form_fields = ['institution_vote']
+    form_fields = ['institution_vote', 'solo_other_leader_votes']
     template_name = 'wave1_threat/BeginMainStudy.html'
     timeout_seconds = 90
 
@@ -481,14 +401,21 @@ class InstitutionVote(Page):
             executive_multiplier=C.EXECUTIVE_MULTIPLIER,
             optional_responses=development_mode(player),
             selected_vote=player.field_maybe_none('institution_vote'),
+            solo_testing=solo_testing(player),
+            solo_other_leader_votes=(
+                player.field_maybe_none('solo_other_leader_votes')
+                if player.field_maybe_none('solo_other_leader_votes') is not None else 2
+            ),
         )
 
     @staticmethod
     def error_message(player, values):
-        return require_all(player, values, InstitutionVote.form_fields)
+        return require_all(player, values, ['institution_vote'])
 
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if solo_testing(player) and player.field_maybe_none('solo_other_leader_votes') is None:
+            player.solo_other_leader_votes = 2
         if timeout_happened or not player.field_maybe_none('institution_vote'):
             player.institution_vote = C.CONSTRAINED
             player.timed_out = True
@@ -561,7 +488,7 @@ class ExecutiveDecision(Page):
         if missing:
             return missing
         if values.get('executive_rent') is not None and values.get('executive_tax') is not None:
-            if values['executive_rent'] > C.PLAYERS_PER_GROUP * values['executive_tax']:
+            if values['executive_rent'] > C.GROUP_SIZE * values['executive_tax']:
                 return 'You cannot keep more points than the group contributes.'
 
     @staticmethod
@@ -587,6 +514,9 @@ class RoundResults(Page):
             round_number=player.round_number,
             total_rounds=C.NUM_ROUNDS,
             institution_label=dict(C.INSTITUTION_CHOICES)[group.selected_institution],
+            citizen_votes=C.GROUP_SIZE - group.executive_votes,
+            leader_votes=group.executive_votes,
+            solo_testing=solo_testing(player),
             executive_selected=group.selected_institution == C.EXECUTIVE,
             is_executive=player.id_in_group == group.executive_id,
             total_contribution=group.total_contribution,
@@ -649,7 +579,6 @@ class Wave1Complete(Page):
         return dict(
             paying_round=player.participant.vars['wave1_paying_round'],
             selected_payoff=player.participant.vars['wave1_selected_payoff'],
-            information_remaining=player.participant.vars.get('info_budget_remaining', 0),
             wave2_date=datetime.fromisoformat(player.session.config['wave2_date']).strftime('%B %d, %Y'),
             gates_enabled=player.session.config.get('enable_wave_gates', False),
         )
@@ -662,7 +591,6 @@ page_sequence = [
     PracticeDemocratic,
     PracticeExecutive,
     Comprehension,
-    Wave1NewsBoard,
     InstitutionVote,
     VoteWaitPage,
     DemocraticContribution,

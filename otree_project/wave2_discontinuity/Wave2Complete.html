@@ -1,14 +1,12 @@
 {{ block title }}Study complete{{ endblock }}
 
 {{ block content }}
-<p>Thank you. All decisions, report choices, and answers from both sessions have been recorded.</p>
+<p>Thank you. All decisions and answers from both sessions have been recorded.</p>
 
 <table class="table table-bordered">
     <tr><th>Session-1 selected-round payoff</th><td>{{ wave1_selected_payoff|to2 }} points</td></tr>
     <tr><th>Session-2 selected payoff round</th><td>Round {{ paying_round }}</td></tr>
     <tr><th>Session-2 selected-round payoff</th><td>{{ selected_payoff|to2 }} points</td></tr>
-    <tr><th>Unspent information budget</th><td>{{ information_remaining }} points</td></tr>
-    <tr><th>Session-2 accuracy bonus</th><td>{{ belief_bonus|to2 }} points</td></tr>
     <tr><th>Two-session completion bonus</th><td>{{ completion_bonus }} points</td></tr>
     <tr class="table-light"><th>Total experimental points</th><td><strong>{{ total_payoff|to2 }}</strong></td></tr>
     <tr><th>Performance payment</th><td>{{ performance_payment }}</td></tr>
@@ -21,7 +19,7 @@
 <h4>Debriefing</h4>
 <p>The study examines whether support for giving power to one leader changes when public services recover from a crisis. For some assigned sets of participants, each point contributed when citizens decided produced a larger public return in Session 2. For others, it continued to produce the original return. The leader option did not change.</p>
 
-<p>Changing a choice is not treated as inconsistency. The study is designed to observe how people update decisions after receiving new information or experience.</p>
+<p>Changing a choice is not treated as inconsistency. The study is designed to observe how people update decisions after new experience.</p>
 
 <p>You may now close this window.</p>
 {{ endblock }}
