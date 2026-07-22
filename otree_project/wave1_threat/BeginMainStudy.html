@@ -1,27 +1,27 @@
-{{ block title }}Session 1 — Round {{ round_number }} of {{ total_rounds }}{{ endblock }}
+{{ block title }}Block 1 — Round {{ round_number }} of {{ total_rounds }}{{ endblock }}
 
 {{ block content }}
-<p>You have 20 points. Your anonymous group of five citizens must choose how the public-service decision will be made.</p>
+<p>You have 20 points. Points placed in the <strong>public-services fund</strong> produce a return that is divided equally among all five citizens. Points you do not put in the fund remain yours.</p>
 
 <p><strong>Who should make the public-service decision this round?</strong> Click anywhere on one of the two rows.</p>
 
 <div class="choice-table" role="radiogroup" aria-label="Choose how the decision will be made">
     <div class="choice-header" aria-hidden="true">
-        <div>Option</div><div>Contributions</div><div>Public return</div><div>Points kept personally</div>
+        <div>Option</div><div>Who decides what goes into the fund?</div><div>How well does the fund work?</div><div>Can fund points become personal points?</div>
     </div>
     <label class="choice-row citizens-row">
         <input type="radio" name="institution_vote" value="constrained" {{ if selected_vote == 'constrained' }}checked{{ endif }}>
         <span class="choice-name"><span class="choice-mark">C</span><strong>Citizens decide</strong></span>
-        <span><small>Contributions</small>Each citizen chooses their own</span>
-        <span><small>Public return</small>Each point contributed produces {{ constrained_multiplier }} points for the group in total</span>
-        <span><small>Points kept personally</small>No citizen can take points from the public-service account</span>
+        <span><small>Who decides?</small>Each citizen chooses how many of their own points to put in the fund</span>
+        <span><small>How well does it work?</small>Each point in the fund creates {{ constrained_multiplier }} points for the group</span>
+        <span><small>Personal points</small>No citizen can move fund points to a personal account</span>
     </label>
     <label class="choice-row leader-row">
         <input type="radio" name="institution_vote" value="executive" {{ if selected_vote == 'executive' }}checked{{ endif }}>
         <span class="choice-name"><span class="choice-mark">L</span><strong>A leader decides</strong></span>
-        <span><small>Contributions</small>The leader requires the same contribution from every citizen</span>
-        <span><small>Public return</small>Each point left for public services produces {{ executive_multiplier }} points for the group in total</span>
-        <span><small>Points kept personally</small>The leader may keep up to 20 collected points</span>
+        <span><small>Who decides?</small>The leader chooses the same number of points for every citizen to put in the fund</span>
+        <span><small>How well does it work?</small>Each point left in the fund creates {{ executive_multiplier }} points for the group</span>
+        <span><small>Personal points</small>The leader may move up to 20 fund points to their personal account</span>
     </label>
 </div>
 

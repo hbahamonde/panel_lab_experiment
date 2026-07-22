@@ -1,26 +1,15 @@
-from datetime import datetime, timedelta
-
 from otree.api import *
 
 
 doc = """
-Consent and instructions for the two-wave interactive laboratory experiment.
+Consent and instructions for the one-session interactive laboratory experiment.
 """
 
 
-def study_schedule(session):
-    wave1 = datetime.fromisoformat(session.config['wave1_date']).date()
-    wave2 = datetime.fromisoformat(session.config['wave2_date']).date()
-    window_days = session.config['wave_window_days']
-
+def study_details(session):
     return dict(
-        wave_window_days=window_days,
-        wave1_date_display=wave1.strftime('%B %d, %Y'),
-        wave2_date_display=wave2.strftime('%B %d, %Y'),
-        wave1_deadline_display=(wave1 + timedelta(days=window_days - 1)).strftime('%B %d, %Y'),
-        wave2_deadline_display=(wave2 + timedelta(days=window_days - 1)).strftime('%B %d, %Y'),
         participation_fee=session.config['participation_fee'],
-        conversion=session.config['real_world_currency_per_point'],
+        conversion=f"€{session.config['real_world_currency_per_point']:.2f}",
     )
 
 
@@ -54,7 +43,7 @@ class Player(BasePlayer):
 class Welcome(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        return study_details(player.session)
 
 
 class Consent(Page):
@@ -63,7 +52,7 @@ class Consent(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        return study_details(player.session)
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
@@ -83,7 +72,7 @@ class Instructions(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        return study_schedule(player.session)
+        return study_details(player.session)
 
 
 page_sequence = [Welcome, Consent, Decline, Instructions]

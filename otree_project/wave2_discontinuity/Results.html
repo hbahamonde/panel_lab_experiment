@@ -1,4 +1,4 @@
-{{ block title }}Session 2 — Round {{ round_number }} result{{ endblock }}
+{{ block title }}Block 2 — Round {{ round_number }} result{{ endblock }}
 
 {{ block content }}
 <p><strong>Group choice:</strong> {{ institution_label }}</p>
@@ -6,21 +6,21 @@
 
 {{ if solo_testing }}
 <div class="alert alert-secondary">
-    <strong>Solo test:</strong> four simulated citizens supplied the other ballots. When Citizens decide wins, each simulated citizen contributes 10 points. When A leader decides wins, you serve as the leader.
+    <strong>Solo test:</strong> four simulated citizens supplied the other ballots. When Citizens decide wins, each simulated citizen puts 10 points in the public-services fund. When A leader decides wins, you serve as the leader.
 </div>
 {{ endif }}
 
 <table class="table table-sm table-bordered">
     {{ if not executive_selected }}
-    <tr><th>Public return produced by each point contributed</th><td>{{ constrained_multiplier|to2 }} points for the group</td></tr>
+    <tr><th>Group points created by each fund point</th><td>{{ constrained_multiplier|to2 }}</td></tr>
     {{ endif }}
-    <tr><th>Total contributed by the group</th><td>{{ total_contribution }}</td></tr>
+    <tr><th>Total points placed in the public-services fund</th><td>{{ total_contribution }}</td></tr>
     {{ if executive_selected }}
-    <tr><th>Contribution required from each citizen</th><td>{{ executive_tax }}</td></tr>
-    <tr><th>Collected points kept by the leader</th><td>{{ executive_rent }}</td></tr>
+    <tr><th>Points each citizen was required to put in the fund</th><td>{{ executive_tax }}</td></tr>
+    <tr><th>Fund points moved to the leader's personal account</th><td>{{ executive_rent }}</td></tr>
     {{ endif }}
-    <tr><th>Points remaining in the public-service account</th><td>{{ public_account }}</td></tr>
-    <tr><th>Public return received by every citizen</th><td>{{ per_capita_return|to2 }}</td></tr>
+    <tr><th>Points left in the public-services fund</th><td>{{ public_account }}</td></tr>
+    <tr><th>Shared return received by every citizen</th><td>{{ per_capita_return|to2 }}</td></tr>
     <tr class="table-primary"><th>Your payoff if this round is selected</th><td><strong>{{ round_payoff|to2 }}</strong></td></tr>
 </table>
 

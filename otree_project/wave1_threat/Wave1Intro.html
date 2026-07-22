@@ -3,21 +3,27 @@
 {{ block content }}
 <p>Imagine that you are a citizen in a society where public services have been under serious strain for a long time. Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and planning for public services has stalled.</p>
 
-<p>You will complete <strong>{{ rounds }} paid rounds</strong>. In every round, an anonymous group of {{ group_size }} citizens chooses between two ways of making the public-service decision:</p>
+<p>You will first complete <strong>{{ rounds }} paid rounds</strong>. Every citizen begins each round with 20 points. Points placed in the <strong>public-services fund</strong> produce a return that all five citizens receive equally.</p>
+
+<p>In every round, an anonymous group of {{ group_size }} citizens chooses between two ways of deciding how points enter that fund:</p>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card card-body h-100">
             <h5>Citizens decide</h5>
-            <p>Each citizen chooses their own contribution. Public returns are shared equally. No citizen can take points from the public-service account.</p>
+            <p>Each citizen chooses how many of their own points to put in the public-services fund. No citizen can move points from the fund to a personal account.</p>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card card-body h-100">
             <h5>A leader decides</h5>
-            <p>One citizen is chosen as leader for the round. The leader requires the same contribution from everyone and produces a larger public return, but may keep some collected points.</p>
+            <p>One citizen is chosen as leader for the round. That person makes one decision for everyone, which can help the society act faster. Points left in the fund also work more effectively. However, the leader may move some fund points to their personal account.</p>
         </div>
     </div>
+</div>
+
+<div class="alert alert-light border mt-3">
+    <strong>The trade-off:</strong> A leader may provide a faster, more effective response because one person decides for everyone and each point left for public services produces a larger return. But the result is not guaranteed to be better: the leader can move up to 20 points from the public-services fund to their personal account, leaving fewer points to support public services.
 </div>
 
 {{ next_button }}

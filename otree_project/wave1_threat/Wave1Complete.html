@@ -1,19 +1,9 @@
-{{ block title }}Session 1 complete{{ endblock }}
+{{ block title }}Block 1 complete{{ endblock }}
 
 {{ block content }}
-<p>All ten decisions from Session 1 have been recorded.</p>
+<p>Your first ten decisions have been recorded. Block 2 begins next.</p>
 
-<div class="card card-body bg-light mb-3">
-    <strong>Randomly selected Session-1 payoff round:</strong> {{ paying_round }}<br>
-    <strong>Your payoff from that round:</strong> {{ selected_payoff|to2 }} points
-</div>
+<p>The randomly selected payoff round from Block 1 will be shown at the end of the study.</p>
 
-<p>Session 2 is scheduled for <strong>{{ wave2_date }}</strong>. Please return using the same personal study link. Your study record will carry forward.</p>
-
-{{ if gates_enabled }}
-<p>You may now close this window.</p>
-{{ else }}
-<p><em>Testing mode:</em> date gates are disabled.</p>
 {{ next_button }}
-{{ endif }}
 {{ endblock }}

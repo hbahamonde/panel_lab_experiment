@@ -3,25 +3,17 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name='panel_lab_experiment',
-        display_name='Undemocratic reversals: two-wave laboratory panel',
+        display_name='Undemocratic reversals: one-session laboratory experiment',
         num_demo_participants=10,
         app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
-        wave1_date='2026-10-06',
-        wave2_date='2026-10-13',
-        wave_window_days=1,
-        enable_wave_gates=True,
         allow_optional_responses=False,
         matching_pool_size=10,
     ),
     dict(
         name='panel_lab_demo',
-        display_name='Undemocratic reversals (testing; date gates disabled)',
+        display_name='Undemocratic reversals (full-group testing)',
         num_demo_participants=10,
         app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
-        wave1_date='2026-10-06',
-        wave2_date='2026-10-13',
-        wave_window_days=1,
-        enable_wave_gates=False,
         allow_optional_responses=True,
         matching_pool_size=10,
     ),
@@ -30,10 +22,6 @@ SESSION_CONFIGS = [
         display_name='Solo test: public services recover',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
-        wave1_date='2026-10-06',
-        wave2_date='2026-10-13',
-        wave_window_days=1,
-        enable_wave_gates=False,
         allow_optional_responses=True,
         matching_pool_size=1,
         solo_testing=True,
@@ -44,10 +32,6 @@ SESSION_CONFIGS = [
         display_name='Solo test: public services remain under strain',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
-        wave1_date='2026-10-06',
-        wave2_date='2026-10-13',
-        wave_window_days=1,
-        enable_wave_gates=False,
         allow_optional_responses=True,
         matching_pool_size=1,
         solo_testing=True,
@@ -64,9 +48,9 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=0.20,
     participation_fee=10.00,
     doc=(
-        'Two synchronized laboratory visits, ten paid rounds per visit, '
+        'One synchronized laboratory session with two ten-round blocks, '
         'anonymous rematching in treatment-matched pools, and one randomly '
-        'selected payoff round per wave.'
+        'selected payoff round per block.'
     ),
 )
 

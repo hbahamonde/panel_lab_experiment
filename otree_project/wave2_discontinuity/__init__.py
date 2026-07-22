@@ -1,35 +1,13 @@
 import random
-from datetime import date, datetime, timedelta
 
 from otree.api import *
 
 
 doc = """
-Wave 2: pre-refresh memory measurement, a pool-randomized structural recovery
-or persistence condition, ten repeated institutional-choice rounds, and the
-final two-wave democratic-reversal outcome.
+Block 2: a pool-randomized structural recovery or persistence condition, ten
+repeated institutional-choice rounds, and the final within-session
+democratic-reversal outcome.
 """
-
-
-def wave_status(player):
-    if not player.session.config.get('enable_wave_gates', False):
-        return 'open'
-    wave_date = datetime.fromisoformat(player.session.config['wave2_date']).date()
-    deadline = wave_date + timedelta(days=player.session.config['wave_window_days'] - 1)
-    if date.today() < wave_date:
-        return 'early'
-    if date.today() > deadline:
-        return 'late'
-    return 'open'
-
-
-def study_schedule(session):
-    wave2 = datetime.fromisoformat(session.config['wave2_date']).date()
-    deadline = wave2 + timedelta(days=session.config['wave_window_days'] - 1)
-    return dict(
-        wave2_date_display=wave2.strftime('%B %d, %Y'),
-        wave2_deadline_display=deadline.strftime('%B %d, %Y'),
-    )
 
 
 def development_mode(player):
@@ -70,7 +48,7 @@ def group_within_matching_pools(subsession):
         if len(pool_players) % C.GROUP_SIZE != 0:
             raise RuntimeError(
                 f'Matching pool {pool_id} contains {len(pool_players)} participants; '
-                'Wave 2 requires complete five-person groups.'
+                'Block 2 requires complete five-person groups.'
             )
         groups.extend(
             pool_players[index:index + C.GROUP_SIZE]
@@ -163,7 +141,6 @@ class C(BaseConstants):
     CONSTRAINED_MULTIPLIER_RECOVERY = 2.50
     EXECUTIVE_MULTIPLIER = 2.50
     MAX_EXECUTIVE_RENT = 20
-    COMPLETION_BONUS = 25
     SOLO_OTHER_CITIZENS = 4
     SOLO_OTHER_CONTRIBUTION = 10
 
@@ -180,16 +157,6 @@ class C(BaseConstants):
     FIVE_POINT_CHOICES = [
         [1, 'Very low'], [2, 'Low'], [3, 'Moderate'], [4, 'High'], [5, 'Very high']
     ]
-    MEMORY_CAPACITY_CHOICES = [
-        ['low', 'They were working poorly'], ['moderate', 'They were working moderately well'],
-        ['high', 'They were working well'], ['unsure', 'I do not remember'],
-    ]
-    MEMORY_VOTE_CHOICES = [
-        [CONSTRAINED, 'Citizens decide'],
-        [EXECUTIVE, 'A leader decides'],
-        ['unsure', 'I do not remember'],
-    ]
-
 class Subsession(BaseSubsession):
     pass
 
@@ -221,43 +188,23 @@ class Player(BasePlayer):
     solo_other_leader_votes = models.IntegerField(min=0, max=4, blank=True)
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT, blank=True,
-        label='How many of your 20 points do you place in the public-service account?',
+        label='How many of your 20 points do you put in the public-services fund?',
     )
     executive_tax = models.IntegerField(
         min=0, max=C.ENDOWMENT, blank=True,
-        label='How many points must each citizen contribute?',
+        label='How many points must each citizen put in the public-services fund?',
     )
     executive_rent = models.IntegerField(
         min=0, max=C.MAX_EXECUTIVE_RENT, blank=True,
-        label='How many collected points do you keep for yourself?',
+        label='How many points do you move from the public-services fund to your personal account?',
     )
     is_executive = models.BooleanField(initial=False)
     timed_out = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
 
-    memory_free_recall = models.LongStringField(
-        label='Without reopening earlier material, what do you remember about the society and the group task in Session 1?',
-        blank=True,
-    )
-    memory_w1_capacity = models.StringField(
-        choices=C.MEMORY_CAPACITY_CHOICES, widget=widgets.RadioSelect,
-        label='How well were public services working in Session 1?',
-        blank=True,
-    )
-    memory_w1_vote = models.StringField(
-        choices=C.MEMORY_VOTE_CHOICES, widget=widgets.RadioSelect,
-        label='Which option did you choose in the final round of Session 1?',
-        blank=True,
-    )
-    belief_recovery_pre = models.IntegerField(
-        min=0, max=100,
-        label='At the start of Session 2, what is the probability (0--100) that public services have recovered since Session 1?',
-        blank=True,
-    )
-
     inst_capacity_w2 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After these rounds, how well can citizens provide public services when each citizen chooses their own contribution?',
+        label='After these rounds, how well can the group support public services when each citizen chooses how many points to put in the fund?',
         blank=True,
     )
     collapse_risk_w2 = models.IntegerField(
@@ -265,66 +212,30 @@ class Player(BasePlayer):
         label='After these rounds, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
         blank=True,
     )
-    belief_recovery_final = models.IntegerField(
-        min=0, max=100,
-        label='After all ten rounds, what is the probability (0--100) that public services recovered before Session 2?',
-        blank=True,
-    )
     constraint_w2_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current situation justifies giving one leader temporary power to act without asking the group first.', blank=True)
     constraint_w2_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services are worth reducing checks on a leader\'s power in the current situation.', blank=True)
     constraint_w2_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
-    constraint_w2_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require equal contributions in the current situation.', blank=True)
-    constraint_w2_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may keep some collected points.', blank=True)
+    constraint_w2_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require every citizen to put the same number of points in the public-services fund.', blank=True)
+    constraint_w2_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may move public-service points to a personal account.', blank=True)
     constraint_w2_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh the current gains.', blank=True)
     constraint_w2_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader needs more freedom from the usual limits.', blank=True)
 
     democratic_reversal = models.BooleanField(initial=False)
 
 
-class Wave2LockedEarly(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 1 and wave_status(player) == 'early'
-
-    @staticmethod
-    def vars_for_template(player):
-        return study_schedule(player.session)
-
-
-class Wave2LockedLate(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 1 and wave_status(player) == 'late'
-
-    @staticmethod
-    def vars_for_template(player):
-        return study_schedule(player.session)
-
-
 class Wave2Intro(Page):
     @staticmethod
     def is_displayed(player):
-        return player.round_number == 1 and wave_status(player) == 'open'
+        return player.round_number == 1
 
     @staticmethod
     def vars_for_template(player):
         return dict(
             rounds=C.NUM_ROUNDS,
+            recovery=player.treatment == C.TREATMENT_REVERSAL,
+            constrained_multiplier=f'{constrained_multiplier(player):.2f}',
+            executive_multiplier=f'{C.EXECUTIVE_MULTIPLIER:.2f}',
         )
-
-
-class MemoryAndPrior(Page):
-    form_model = 'player'
-    form_fields = ['memory_free_recall', 'memory_w1_capacity', 'memory_w1_vote', 'belief_recovery_pre']
-    template_name = 'wave2_discontinuity/TreatmentReveal.html'
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 1 and wave_status(player) == 'open'
-
-    @staticmethod
-    def error_message(player, values):
-        return require_all(player, values, MemoryAndPrior.form_fields)
 
 
 class InstitutionVote(Page):
@@ -334,19 +245,15 @@ class InstitutionVote(Page):
     timeout_seconds = 90
 
     @staticmethod
-    def is_displayed(player):
-        return wave_status(player) == 'open'
-
-    @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title=f'Session 2 — Round {player.round_number} of {C.NUM_ROUNDS}',
+            page_title=f'Block 2 — Round {player.round_number} of {C.NUM_ROUNDS}',
             explanation=(
-                'Vote privately. Public services may have recovered or may still be under strain. The leader '
-                'option has not changed. This round may be selected for payment.'
+                'Vote privately. The public-services fund now works as explained at the start of Block 2. '
+                'The leader can still move up to 20 fund points to a personal account. This round may be selected for payment.'
             ),
             institution_vote_page=True,
-            constrained_multiplier='1.50 or 2.50',
+            constrained_multiplier=f'{constrained_multiplier(player):.2f}',
             executive_multiplier=f'{C.EXECUTIVE_MULTIPLIER:.2f}',
             optional_responses=development_mode(player),
             selected_vote=player.field_maybe_none('institution_vote'),
@@ -375,11 +282,6 @@ class VoteWaitPage(WaitPage):
     body_text = 'Waiting for the other citizens in this round\'s anonymous group.'
     after_all_players_arrive = choose_institution
 
-    @staticmethod
-    def is_displayed(player):
-        return wave_status(player) == 'open'
-
-
 class DemocraticContribution(Page):
     form_model = 'player'
     form_fields = ['contribution']
@@ -388,16 +290,16 @@ class DemocraticContribution(Page):
 
     @staticmethod
     def is_displayed(player):
-        return wave_status(player) == 'open' and player.group.selected_institution == C.CONSTRAINED
+        return player.group.selected_institution == C.CONSTRAINED
 
     @staticmethod
     def vars_for_template(player):
         return dict(
             page_title='Citizens decide',
             explanation=(
-                'Each point kept returns 1 point to you. Depending on how well public services now work, each '
-                'point contributed produces either 1.50 or 2.50 points for the group in total. The return is '
-                'divided equally among all five citizens.'
+                f'Points you do not put in the public-services fund remain yours. Each point you put in the '
+                f'fund creates {constrained_multiplier(player):.2f} points for the group. The resulting return '
+                f'is divided equally among all five citizens.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -423,16 +325,16 @@ class ExecutiveDecision(Page):
 
     @staticmethod
     def is_displayed(player):
-        return wave_status(player) == 'open' and player.group.selected_institution == C.EXECUTIVE and player.is_executive
+        return player.group.selected_institution == C.EXECUTIVE and player.is_executive
 
     @staticmethod
     def vars_for_template(player):
         return dict(
             page_title='You are the leader for this round',
             explanation=(
-                f'Choose the contribution required from all five citizens. You may keep at most '
-                f'{C.MAX_EXECUTIVE_RENT} collected points for yourself. Each remaining point produces '
-                f'{C.EXECUTIVE_MULTIPLIER:.2f} points for the group in total.'
+                f'Choose how many points every citizen must put in the public-services fund. You may '
+                f'move at most {C.MAX_EXECUTIVE_RENT} points from that fund to your personal account. '
+                f'Each point left in the fund creates {C.EXECUTIVE_MULTIPLIER:.2f} points for the group.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -446,7 +348,7 @@ class ExecutiveDecision(Page):
             return missing
         if values.get('executive_rent') is not None and values.get('executive_tax') is not None:
             if values['executive_rent'] > C.GROUP_SIZE * values['executive_tax']:
-                return 'You cannot keep more points than the group contributes.'
+                return 'You cannot move more points than the group has put in the public-services fund.'
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -460,17 +362,8 @@ class DecisionWaitPage(WaitPage):
     body_text = 'Waiting for all decisions in this round.'
     after_all_players_arrive = calculate_round
 
-    @staticmethod
-    def is_displayed(player):
-        return wave_status(player) == 'open'
-
-
 class RoundResults(Page):
     template_name = 'wave2_discontinuity/Results.html'
-
-    @staticmethod
-    def is_displayed(player):
-        return wave_status(player) == 'open'
 
     @staticmethod
     def vars_for_template(player):
@@ -496,7 +389,7 @@ class RoundResults(Page):
 class Wave2Mechanism(Page):
     form_model = 'player'
     form_fields = [
-        'inst_capacity_w2', 'collapse_risk_w2', 'belief_recovery_final',
+        'inst_capacity_w2', 'collapse_risk_w2',
         'constraint_w2_1', 'constraint_w2_2', 'constraint_w2_3', 'constraint_w2_4',
         'constraint_w2_5', 'constraint_w2_6', 'constraint_w2_7',
     ]
@@ -504,13 +397,13 @@ class Wave2Mechanism(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.round_number == C.NUM_ROUNDS and wave_status(player) == 'open'
+        return player.round_number == C.NUM_ROUNDS
 
     @staticmethod
     def vars_for_template(player):
         return dict(
             page_title='Your final views',
-            explanation='Please answer after considering all ten rounds in Session 2.',
+            explanation='Please answer after considering all ten rounds in Block 2.',
             institution_vote_page=False,
             slider_prefix='constraint_w2_',
             optional_responses=development_mode(player),
@@ -522,17 +415,17 @@ class Wave2Mechanism(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        w1_vote = player.participant.vars.get('w1_final_vote')
-        w2_vote = player.institution_vote
-        player.democratic_reversal = w1_vote == C.EXECUTIVE and w2_vote == C.CONSTRAINED
-        player.participant.vars['w2_final_vote'] = w2_vote
+        block1_vote = player.participant.vars.get('w1_final_vote')
+        block2_vote = player.institution_vote
+        player.democratic_reversal = block1_vote == C.EXECUTIVE and block2_vote == C.CONSTRAINED
+        player.participant.vars['w2_final_vote'] = block2_vote
         player.participant.vars['democratic_reversal'] = player.democratic_reversal
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
         player.participant.vars['w2_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
 
         paying_round = player.session.vars['wave2_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff
-        player.payoff = cu(selected_payoff + C.COMPLETION_BONUS)
+        player.payoff = cu(selected_payoff)
 
         player.participant.vars['wave2_paying_round'] = paying_round
         player.participant.vars['wave2_selected_payoff'] = selected_payoff
@@ -541,7 +434,7 @@ class Wave2Mechanism(Page):
 class Wave2Complete(Page):
     @staticmethod
     def is_displayed(player):
-        return player.round_number == C.NUM_ROUNDS and wave_status(player) == 'open'
+        return player.round_number == C.NUM_ROUNDS
 
     @staticmethod
     def vars_for_template(player):
@@ -549,7 +442,6 @@ class Wave2Complete(Page):
             paying_round=player.participant.vars['wave2_paying_round'],
             selected_payoff=player.participant.vars['wave2_selected_payoff'],
             wave1_selected_payoff=player.participant.vars.get('wave1_selected_payoff', 0),
-            completion_bonus=C.COMPLETION_BONUS,
             total_payoff=player.participant.payoff,
             performance_payment=player.participant.payoff.to_real_world_currency(player.session),
             participation_fee=player.session.config['participation_fee'],
@@ -558,10 +450,7 @@ class Wave2Complete(Page):
 
 
 page_sequence = [
-    Wave2LockedEarly,
-    Wave2LockedLate,
     Wave2Intro,
-    MemoryAndPrior,
     InstitutionVote,
     VoteWaitPage,
     DemocraticContribution,

@@ -1,11 +1,23 @@
-{{ block title }}Welcome back: Session 2{{ endblock }}
+{{ block title }}Block 2: conditions in the society{{ endblock }}
 
 {{ block content }}
-<p>One week has passed in the hypothetical society. Public services may have recovered, or they may still be under strain.</p>
+<p>The first ten rounds are complete. The same citizens remain in your ten-person matching pool and will continue to be reshuffled into groups of five.</p>
 
-<p>Before the rounds, you will answer a few questions from memory. You will then complete <strong>{{ rounds }} additional paid rounds</strong>. You will not be told in advance whether public services have recovered; the round results will show how effectively contributed points produce public services.</p>
+{{ if recovery }}
+<div class="alert alert-success">
+    <h5>Public services have recovered</h5>
+    <p class="mb-0">When <strong>Citizens decide</strong>, every point placed in the public-services fund now creates <strong>{{ constrained_multiplier }} points</strong> for the group. The fund therefore works just as effectively as it does when <strong>A leader decides</strong>.</p>
+</div>
+{{ else }}
+<div class="alert alert-warning">
+    <h5>Public services remain under strain</h5>
+    <p class="mb-0">When <strong>Citizens decide</strong>, every point placed in the public-services fund still creates <strong>{{ constrained_multiplier }} points</strong> for the group. When <strong>A leader decides</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} points</strong> for the group.</p>
+</div>
+{{ endif }}
 
-<p>The two ways of deciding have not changed. Only how well public services work when citizens decide may differ from Session 1.</p>
+<p>The rules for choosing a leader have not changed. A leader still chooses how many points every citizen must put in the fund and may still move up to 20 fund points to their personal account.</p>
+
+<p>You will now complete <strong>{{ rounds }} additional paid rounds</strong>.</p>
 
 {{ next_button }}
 {{ endblock }}
