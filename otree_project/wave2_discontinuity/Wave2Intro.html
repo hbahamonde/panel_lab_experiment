@@ -4,18 +4,18 @@
 <p>The first ten rounds are complete. The same citizens remain in your ten-person matching pool and will continue to be reshuffled into groups of five.</p>
 
 {{ if recovery }}
-<div class="alert alert-success">
+<div class="alert alert-secondary">
     <h5>Public services have recovered</h5>
-    <p class="mb-0">When <strong>Citizens decide</strong>, every point placed in the public-services fund now creates <strong>{{ constrained_multiplier }} points</strong> for the group. The fund therefore works just as effectively as it does when <strong>A leader decides</strong>.</p>
+    <p class="mb-0">In Block 2, each point placed in the fund creates <strong>{{ constrained_multiplier }} points</strong> for the group under either decision method.</p>
 </div>
 {{ else }}
-<div class="alert alert-warning">
+<div class="alert alert-secondary">
     <h5>Public services remain under strain</h5>
     <p class="mb-0">When <strong>Citizens decide</strong>, every point placed in the public-services fund still creates <strong>{{ constrained_multiplier }} points</strong> for the group. When <strong>A leader decides</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} points</strong> for the group.</p>
 </div>
 {{ endif }}
 
-<p>The rules for choosing a leader have not changed. A leader still chooses how many points every citizen must put in the fund and may still move up to 20 fund points to their personal account.</p>
+<p>The two methods still use different decision rules. When <strong>Citizens decide</strong>, each citizen chooses their own amount, so the five citizens may put different amounts in the fund. When <strong>A leader decides</strong>, the leader sets the same required amount for everyone and may still move up to 20 fund points to their personal account.</p>
 
 <p>You will now complete <strong>{{ rounds }} additional paid rounds</strong>.</p>
 

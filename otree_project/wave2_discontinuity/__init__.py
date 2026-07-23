@@ -35,6 +35,7 @@ def group_within_matching_pools(subsession):
         player = players[0]
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = player.participant.vars['matching_pool_id']
+        player.matching_pool_uid = player.participant.vars['matching_pool_uid']
         player.treatment = player.participant.vars['treatment']
         if subsession.round_number == 1:
             subsession.session.vars['wave2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
@@ -57,6 +58,7 @@ def group_within_matching_pools(subsession):
     subsession.set_group_matrix(groups)
     for player in players:
         player.matching_pool_id = player.participant.vars['matching_pool_id']
+        player.matching_pool_uid = player.participant.vars['matching_pool_uid']
         player.treatment = player.participant.vars['treatment']
 
     if subsession.round_number == 1:
@@ -64,7 +66,7 @@ def group_within_matching_pools(subsession):
 
 
 def constrained_multiplier(player):
-    if player.treatment == C.TREATMENT_REVERSAL:
+    if player.treatment == C.TREATMENT_RECOVERY:
         return C.CONSTRAINED_MULTIPLIER_RECOVERY
     return C.CONSTRAINED_MULTIPLIER_CRISIS
 
@@ -146,8 +148,11 @@ class C(BaseConstants):
 
     CONSTRAINED = 'constrained'
     EXECUTIVE = 'executive'
-    TREATMENT_REVERSAL = 'reversal'
-    TREATMENT_CONTROL = 'control'
+    TREATMENT_RECOVERY = 'recovery'
+    TREATMENT_PERSISTENCE = 'persistence'
+    DEFAULT_CONTRIBUTION = 10
+    DEFAULT_EXECUTIVE_TAX = 10
+    DEFAULT_EXECUTIVE_RENT = 0
 
     INSTITUTION_CHOICES = [
         [CONSTRAINED, 'Citizens decide'],
@@ -179,6 +184,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     matching_pool_id = models.IntegerField()
+    matching_pool_uid = models.StringField()
     treatment = models.StringField()
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES, widget=widgets.RadioSelect,
@@ -200,9 +206,10 @@ class Player(BasePlayer):
     )
     is_executive = models.BooleanField(initial=False)
     timed_out = models.BooleanField(initial=False)
+    institution_vote_timed_out = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
 
-    inst_capacity_w2 = models.IntegerField(
+    citizen_effectiveness_b2 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
         label='After these rounds, how well can the group support public services when each citizen chooses how many points to put in the fund?',
         blank=True,
@@ -232,7 +239,7 @@ class Wave2Intro(Page):
     def vars_for_template(player):
         return dict(
             rounds=C.NUM_ROUNDS,
-            recovery=player.treatment == C.TREATMENT_REVERSAL,
+            recovery=player.treatment == C.TREATMENT_RECOVERY,
             constrained_multiplier=f'{constrained_multiplier(player):.2f}',
             executive_multiplier=f'{C.EXECUTIVE_MULTIPLIER:.2f}',
         )
@@ -274,8 +281,9 @@ class InstitutionVote(Page):
         if solo_testing(player) and player.field_maybe_none('solo_other_leader_votes') is None:
             player.solo_other_leader_votes = 2
         if timeout_happened or not player.field_maybe_none('institution_vote'):
-            player.institution_vote = C.CONSTRAINED
+            player.institution_vote = random.choice([C.CONSTRAINED, C.EXECUTIVE])
             player.timed_out = True
+            player.institution_vote_timed_out = True
 
 
 class VoteWaitPage(WaitPage):
@@ -313,7 +321,7 @@ class DemocraticContribution(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened or player.field_maybe_none('contribution') is None:
-            player.contribution = 0
+            player.contribution = C.DEFAULT_CONTRIBUTION
             player.timed_out = True
 
 
@@ -353,8 +361,8 @@ class ExecutiveDecision(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened or player.field_maybe_none('executive_tax') is None:
-            player.executive_tax = 0
-            player.executive_rent = 0
+            player.executive_tax = C.DEFAULT_EXECUTIVE_TAX
+            player.executive_rent = C.DEFAULT_EXECUTIVE_RENT
             player.timed_out = True
 
 
@@ -389,7 +397,7 @@ class RoundResults(Page):
 class Wave2Mechanism(Page):
     form_model = 'player'
     form_fields = [
-        'inst_capacity_w2', 'collapse_risk_w2',
+        'citizen_effectiveness_b2', 'collapse_risk_w2',
         'constraint_w2_1', 'constraint_w2_2', 'constraint_w2_3', 'constraint_w2_4',
         'constraint_w2_5', 'constraint_w2_6', 'constraint_w2_7',
     ]
@@ -417,8 +425,18 @@ class Wave2Mechanism(Page):
     def before_next_page(player, timeout_happened):
         block1_vote = player.participant.vars.get('w1_final_vote')
         block2_vote = player.institution_vote
-        player.democratic_reversal = block1_vote == C.EXECUTIVE and block2_vote == C.CONSTRAINED
+        final_votes_observed = (
+            player.participant.vars.get('w1_final_vote_observed', False)
+            and not player.institution_vote_timed_out
+        )
+        player.democratic_reversal = (
+            final_votes_observed
+            and block1_vote == C.EXECUTIVE
+            and block2_vote == C.CONSTRAINED
+        )
         player.participant.vars['w2_final_vote'] = block2_vote
+        player.participant.vars['w2_final_vote_observed'] = not player.institution_vote_timed_out
+        player.participant.vars['democratic_reversal_observed'] = final_votes_observed
         player.participant.vars['democratic_reversal'] = player.democratic_reversal
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
         player.participant.vars['w2_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3

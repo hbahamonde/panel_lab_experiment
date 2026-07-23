@@ -25,7 +25,7 @@ SESSION_CONFIGS = [
         allow_optional_responses=True,
         matching_pool_size=1,
         solo_testing=True,
-        solo_treatment='reversal',
+        solo_treatment='recovery',
     ),
     dict(
         name='panel_lab_solo_persistence',
@@ -35,7 +35,7 @@ SESSION_CONFIGS = [
         allow_optional_responses=True,
         matching_pool_size=1,
         solo_testing=True,
-        solo_treatment='control',
+        solo_treatment='persistence',
     )
 ]
 

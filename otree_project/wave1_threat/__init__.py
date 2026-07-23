@@ -4,7 +4,7 @@ from otree.api import *
 
 
 doc = """
-Block 1 of the one-session experiment: a common low-capacity environment, ten
+Block 1 of the one-session experiment: a common public-service crisis, ten
 repeated institutional-choice/public-good rounds and mechanism measurement.
 Participants are anonymously rematched within ten-person pools.
 """
@@ -26,6 +26,26 @@ def solo_testing(obj):
     return obj.session.config.get('solo_testing', False)
 
 
+def balanced_pool_treatments(pool_ids):
+    """Randomize by pool without deterministically treating a one-pool session."""
+    randomized_pool_ids = random.sample(pool_ids, len(pool_ids))
+    treatment_by_pool = {}
+
+    complete_pairs = len(randomized_pool_ids) // 2
+    for pair_index in range(complete_pairs):
+        first, second = randomized_pool_ids[2 * pair_index:2 * pair_index + 2]
+        treatment_by_pool[first] = C.TREATMENT_RECOVERY
+        treatment_by_pool[second] = C.TREATMENT_PERSISTENCE
+
+    if len(randomized_pool_ids) % 2:
+        final_pool = randomized_pool_ids[-1]
+        treatment_by_pool[final_pool] = random.choice(
+            [C.TREATMENT_RECOVERY, C.TREATMENT_PERSISTENCE]
+        )
+
+    return treatment_by_pool
+
+
 def assign_matching_pools(subsession):
     players = subsession.get_players()
     pool_size = subsession.session.config.get('matching_pool_size', C.MATCHING_POOL_SIZE)
@@ -36,13 +56,15 @@ def assign_matching_pools(subsession):
         player = players[0]
         if subsession.round_number == 1:
             player.participant.vars['matching_pool_id'] = 1
+            player.participant.vars['matching_pool_uid'] = f'{subsession.session.code}-pool-1'
             player.participant.vars['times_executive'] = 0
             player.participant.vars['treatment'] = subsession.session.config.get(
-                'solo_treatment', 'reversal'
+                'solo_treatment', C.TREATMENT_RECOVERY
             )
             subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = 1
+        player.matching_pool_uid = player.participant.vars['matching_pool_uid']
         return
 
     if subsession.round_number == 1:
@@ -57,15 +79,17 @@ def assign_matching_pools(subsession):
         for index, player in enumerate(shuffled):
             pool_id = index // pool_size + 1
             player.participant.vars['matching_pool_id'] = pool_id
+            player.participant.vars['matching_pool_uid'] = (
+                f'{subsession.session.code}-pool-{pool_id}'
+            )
             player.participant.vars['times_executive'] = 0
 
         pool_ids = sorted({p.participant.vars['matching_pool_id'] for p in shuffled})
-        randomized_pool_ids = random.sample(pool_ids, len(pool_ids))
-        midpoint = (len(randomized_pool_ids) + 1) // 2
-        reversal_ids = set(randomized_pool_ids[:midpoint])
+        treatment_by_pool = balanced_pool_treatments(pool_ids)
+        subsession.session.vars['treatment_by_pool'] = treatment_by_pool
         for player in shuffled:
-            treatment = 'reversal' if player.participant.vars['matching_pool_id'] in reversal_ids else 'control'
-            player.participant.vars['treatment'] = treatment
+            pool_id = player.participant.vars['matching_pool_id']
+            player.participant.vars['treatment'] = treatment_by_pool[pool_id]
 
         subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
@@ -87,6 +111,7 @@ def assign_matching_pools(subsession):
     subsession.set_group_matrix(groups)
     for player in players:
         player.matching_pool_id = player.participant.vars['matching_pool_id']
+        player.matching_pool_uid = player.participant.vars['matching_pool_uid']
 
 
 def choose_institution(group):
@@ -166,6 +191,11 @@ class C(BaseConstants):
 
     CONSTRAINED = 'constrained'
     EXECUTIVE = 'executive'
+    TREATMENT_RECOVERY = 'recovery'
+    TREATMENT_PERSISTENCE = 'persistence'
+    DEFAULT_CONTRIBUTION = 10
+    DEFAULT_EXECUTIVE_TAX = 10
+    DEFAULT_EXECUTIVE_RENT = 0
     INSTITUTION_CHOICES = [
         [CONSTRAINED, 'Citizens decide'],
         [EXECUTIVE, 'A leader decides'],
@@ -197,6 +227,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     matching_pool_id = models.IntegerField()
+    matching_pool_uid = models.StringField()
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES,
         widget=widgets.RadioSelect,
@@ -221,9 +252,10 @@ class Player(BasePlayer):
     )
     is_executive = models.BooleanField(initial=False)
     timed_out = models.BooleanField(initial=False)
+    institution_vote_timed_out = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
 
-    inst_capacity_pre = models.IntegerField(
+    citizen_effectiveness_pre = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
         label='At this point, how well can the group support public services when each citizen chooses how many points to put in the fund?',
         blank=True,
@@ -263,7 +295,7 @@ class Player(BasePlayer):
         blank=True,
     )
 
-    inst_capacity_w1 = models.IntegerField(
+    citizen_effectiveness_b1 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
         label='After these rounds, how well can the group support public services when each citizen chooses how many points to put in the fund?',
         blank=True,
@@ -298,7 +330,7 @@ class Wave1Intro(Page):
 class BaselineSurvey(Page):
     form_model = 'player'
     form_fields = [
-        'inst_capacity_pre', 'collapse_risk_pre',
+        'citizen_effectiveness_pre', 'collapse_risk_pre',
         'constraint_pre_1', 'constraint_pre_2', 'constraint_pre_3', 'constraint_pre_4',
         'constraint_pre_5', 'constraint_pre_6', 'constraint_pre_7',
     ]
@@ -416,8 +448,9 @@ class InstitutionVote(Page):
         if solo_testing(player) and player.field_maybe_none('solo_other_leader_votes') is None:
             player.solo_other_leader_votes = 2
         if timeout_happened or not player.field_maybe_none('institution_vote'):
-            player.institution_vote = C.CONSTRAINED
+            player.institution_vote = random.choice([C.CONSTRAINED, C.EXECUTIVE])
             player.timed_out = True
+            player.institution_vote_timed_out = True
 
 
 class VoteWaitPage(WaitPage):
@@ -455,7 +488,7 @@ class DemocraticContribution(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened or player.field_maybe_none('contribution') is None:
-            player.contribution = 0
+            player.contribution = C.DEFAULT_CONTRIBUTION
             player.timed_out = True
 
 
@@ -494,8 +527,8 @@ class ExecutiveDecision(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened or player.field_maybe_none('executive_tax') is None:
-            player.executive_tax = 0
-            player.executive_rent = 0
+            player.executive_tax = C.DEFAULT_EXECUTIVE_TAX
+            player.executive_rent = C.DEFAULT_EXECUTIVE_RENT
             player.timed_out = True
 
 
@@ -531,7 +564,7 @@ class RoundResults(Page):
 class Wave1Mechanism(Page):
     form_model = 'player'
     form_fields = [
-        'inst_capacity_w1', 'collapse_risk_w1',
+        'citizen_effectiveness_b1', 'collapse_risk_w1',
         'constraint_w1_1', 'constraint_w1_2', 'constraint_w1_3', 'constraint_w1_4',
         'constraint_w1_5', 'constraint_w1_6', 'constraint_w1_7',
     ]
@@ -557,9 +590,12 @@ class Wave1Mechanism(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.participant.vars['w1_final_vote'] = player.institution_vote
+        player.participant.vars['w1_final_vote_observed'] = not player.institution_vote_timed_out
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
         player.participant.vars['w1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
-        player.participant.vars['inst_capacity_w1'] = player.field_maybe_none('inst_capacity_w1')
+        player.participant.vars['citizen_effectiveness_b1'] = player.field_maybe_none(
+            'citizen_effectiveness_b1'
+        )
         player.participant.vars['collapse_risk_w1'] = player.field_maybe_none('collapse_risk_w1')
 
         paying_round = player.session.vars['wave1_paying_round']
