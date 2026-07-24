@@ -167,13 +167,8 @@ class C(BaseConstants):
     DEFAULT_EXECUTIVE_TAX = 10
     DEFAULT_EXECUTIVE_RENT = 0
     INSTITUTION_CHOICES = [
-        [CONSTRAINED, 'Citizens decide'],
-        [EXECUTIVE, 'A leader decides'],
-    ]
-
-    AGREEMENT_CHOICES = [[i, str(i)] for i in range(1, 8)]
-    FIVE_POINT_CHOICES = [
-        [1, 'Very low'], [2, 'Low'], [3, 'Moderate'], [4, 'High'], [5, 'Very high']
+        [CONSTRAINED, 'Each person chooses'],
+        [EXECUTIVE, 'One person chooses for the group'],
     ]
 
 class Subsession(BaseSubsession):
@@ -201,7 +196,7 @@ class Player(BasePlayer):
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES,
         widget=widgets.RadioSelect,
-        label='Who should make the public-service decision this round?',
+        label='How should the fund decision be made this round?',
         blank=True,
     )
     solo_other_leader_votes = models.IntegerField(min=0, max=4, blank=True)
@@ -212,12 +207,12 @@ class Player(BasePlayer):
     )
     executive_tax = models.IntegerField(
         min=0, max=C.ENDOWMENT,
-        label='How many points must each citizen put in the public-services fund?',
+        label='How many points must each group member put in the public-services fund?',
         blank=True,
     )
     executive_rent = models.IntegerField(
         min=0, max=C.MAX_EXECUTIVE_RENT,
-        label='How many points do you move from the public-services fund to your personal account?',
+        label='How many fund points do you move to your own payoff?',
         blank=True,
     )
     is_executive = models.BooleanField(initial=False)
@@ -226,51 +221,32 @@ class Player(BasePlayer):
     round_payoff = models.FloatField(initial=0)
     expected_payoff_citizens = models.IntegerField(
         min=0, max=60,
-        label='If Citizens decide is used in this round, how many points do you expect to earn?',
+        label='If Each person chooses is used in this round, how many points do you expect to earn?',
         blank=True,
     )
     expected_payoff_leader = models.IntegerField(
         min=0, max=60,
-        label='If A leader decides is used in this round, how many points do you expect to earn?',
+        label='If One person chooses for the group is used, how many points do you expect to earn?',
         blank=True,
     )
     expected_leader_transfer = models.IntegerField(
         min=0, max=C.MAX_EXECUTIVE_RENT,
-        label='If A leader decides, how many fund points do you expect the leader to move to their personal account?',
+        label='If one person chooses for the group, how many fund points do you expect the selected person to move to their own payoff?',
         blank=True,
     )
-
-    citizen_effectiveness_pre = models.IntegerField(
-        choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='At this point, how well can the group support public services when each citizen chooses how many points to put in the fund?',
-        blank=True,
-    )
-    collapse_risk_pre = models.IntegerField(
-        choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='At this point, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
-        blank=True,
-    )
-
-    constraint_pre_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='A crisis can justify giving one leader temporary power to act without asking the group first.', blank=True)
-    constraint_pre_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services can be worth reducing checks on a leader\'s power.', blank=True)
-    constraint_pre_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
-    constraint_pre_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='A leader should be allowed to require every citizen to put the same number of points in the public-services fund.', blank=True)
-    constraint_pre_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may move public-service points to a personal account.', blank=True)
-    constraint_pre_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh short-term gains.', blank=True)
-    constraint_pre_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader should have more freedom from the usual limits.', blank=True)
 
     practice_contribution = models.IntegerField(min=0, max=20, label='How many of your 20 points do you put in the public-services fund?', blank=True)
-    practice_tax = models.IntegerField(min=0, max=20, label='How many of each citizen\'s 20 points must go into the public-services fund?', blank=True)
+    practice_tax = models.IntegerField(min=0, max=20, label='How many of each member\'s 20 points must go into the public-services fund?', blank=True)
     practice_rent = models.IntegerField(min=0, max=20, label='How many fund points do you move to your own payoff?', blank=True)
     comprehension_1 = models.StringField(
-        choices=[['individual', 'Each citizen chooses how many of their own points to put in the fund'], ['executive', 'One leader chooses the amount for every citizen']],
+        choices=[['individual', 'Each member chooses how many of their own points to put in the fund'], ['executive', 'One selected person chooses the amount for every member']],
         widget=widgets.RadioSelect,
-        label='When citizens decide, who chooses how many points each person puts in the public-services fund?',
+        label='With Each person chooses, who decides how many points each member puts in the public-services fund?',
         blank=True,
     )
     comprehension_2 = models.StringField(
         choices=[['yes', 'Yes'], ['no', 'No']], widget=widgets.RadioSelect,
-        label='Can the leader move points from the public-services fund to their personal account?',
+        label='With One person chooses for the group, can the selected person move fund points to their own payoff?',
         blank=True,
     )
     comprehension_3 = models.StringField(
@@ -279,25 +255,6 @@ class Player(BasePlayer):
         label='Which paid round determines your game earnings from Block 1?',
         blank=True,
     )
-
-    citizen_effectiveness_b1 = models.IntegerField(
-        choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After these rounds, how well can the group support public services when each citizen chooses how many points to put in the fund?',
-        blank=True,
-    )
-    collapse_risk_w1 = models.IntegerField(
-        choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After these rounds, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
-        blank=True,
-    )
-    constraint_w1_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current crisis justifies giving one leader temporary power to act without asking the group first.', blank=True)
-    constraint_w1_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services are worth reducing checks on a leader\'s power in the current situation.', blank=True)
-    constraint_w1_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
-    constraint_w1_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require every citizen to put the same number of points in the public-services fund.', blank=True)
-    constraint_w1_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may move public-service points to a personal account.', blank=True)
-    constraint_w1_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh the current gains.', blank=True)
-    constraint_w1_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Because public services are working poorly, a leader needs more freedom from the usual limits.', blank=True)
-
 
 class Wave1Intro(Page):
     @staticmethod
@@ -310,33 +267,6 @@ class Wave1Intro(Page):
             rounds=C.NUM_ROUNDS,
             group_size=C.GROUP_SIZE,
         )
-
-
-class BaselineSurvey(Page):
-    form_model = 'player'
-    form_fields = [
-        'citizen_effectiveness_pre', 'collapse_risk_pre',
-        'constraint_pre_1', 'constraint_pre_2', 'constraint_pre_3', 'constraint_pre_4',
-        'constraint_pre_5', 'constraint_pre_6', 'constraint_pre_7',
-    ]
-    template_name = 'wave1_threat/QuestionPage.html'
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 1
-
-    @staticmethod
-    def vars_for_template(player):
-        return dict(
-            page_title='Your first impressions',
-            explanation='Please answer the two questions about public services first.',
-            slider_prefix='constraint_pre_',
-            optional_responses=development_mode(player),
-        )
-
-    @staticmethod
-    def error_message(player, values):
-        return require_all(player, values, BaselineSurvey.form_fields)
 
 
 class PracticeIntro(Page):
@@ -375,7 +305,7 @@ class PracticeExecutive(Page):
             return missing
         if values.get('practice_rent') is not None and values.get('practice_tax') is not None:
             if values['practice_rent'] > C.GROUP_SIZE * values['practice_tax']:
-                return 'The leader cannot move more points than the group has put in the public-services fund.'
+                return 'The decision-maker cannot move more points than the group has put in the public-services fund.'
 
 
 class Comprehension(Page):
@@ -393,9 +323,9 @@ class Comprehension(Page):
             return
         errors = []
         if values['comprehension_1'] != 'individual':
-            errors.append('When citizens decide, each citizen chooses how many of their own points to put in the public-services fund.')
+            errors.append('With Each person chooses, every member chooses how many of their own points to put in the public-services fund.')
         if values['comprehension_2'] != 'yes':
-            errors.append('The leader can move points from the public-services fund to their personal account.')
+            errors.append('With One person chooses for the group, the selected person can move fund points to their own payoff.')
         if values['comprehension_3'] != 'selected':
             errors.append('One randomly selected round determines your Block-1 game earnings.')
         if errors:
@@ -420,8 +350,8 @@ class StrategicExpectations(Page):
         return dict(
             page_title='What do you expect in this round?',
             explanation=(
-                'Before voting, estimate what you would earn under each decision method and '
-                'what the leader would do. Enter your best estimates; these answers do not '
+                'Before choosing, estimate what you would earn under each method and '
+                'what the selected decision-maker would do. Enter your best estimates; these answers do not '
                 'change your payoff.'
             ),
             slider_prefix='',
@@ -470,7 +400,7 @@ class InstitutionVote(Page):
 
 
 class VoteWaitPage(WaitPage):
-    body_text = 'Waiting for the other citizens in this round\'s anonymous group.'
+    body_text = 'Waiting for the other members of this round\'s anonymous group.'
     after_all_players_arrive = choose_institution
 
 
@@ -487,11 +417,11 @@ class DemocraticContribution(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Citizens decide',
+            page_title='Each person chooses',
             explanation=(
                 f'Points you do not put in the public-services fund remain yours. Each point you put '
-                f'in the fund creates {C.CONSTRAINED_MULTIPLIER_CRISIS:.2f} points for the group. '
-                f'The resulting return is divided equally among all five citizens.'
+                f'in the fund creates {C.CONSTRAINED_MULTIPLIER_CRISIS:.2f} group points. '
+                f'These points are shared equally among all five members.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -521,11 +451,11 @@ class ExecutiveDecision(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='You are the leader for this round',
+            page_title='You are the decision-maker for this round',
             explanation=(
-                f'Choose how many points every citizen must put in the public-services fund. You may '
-                f'move at most {C.MAX_EXECUTIVE_RENT} points from that fund to your personal account. '
-                f'Each point left in the fund creates {C.EXECUTIVE_MULTIPLIER:.2f} points for the group.'
+                f'Choose how many points every group member must put in the public-services fund. You may '
+                f'move at most {C.MAX_EXECUTIVE_RENT} fund points to your own payoff. '
+                f'Each point left in the fund creates {C.EXECUTIVE_MULTIPLIER:.2f} group points.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -576,43 +506,14 @@ class RoundResults(Page):
             round_payoff=player.round_payoff,
         )
 
-
-class Wave1Mechanism(Page):
-    form_model = 'player'
-    form_fields = [
-        'citizen_effectiveness_b1', 'collapse_risk_w1',
-        'constraint_w1_1', 'constraint_w1_2', 'constraint_w1_3', 'constraint_w1_4',
-        'constraint_w1_5', 'constraint_w1_6', 'constraint_w1_7',
-    ]
-    template_name = 'wave1_threat/QuestionPage.html'
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == C.NUM_ROUNDS
-
-    @staticmethod
-    def vars_for_template(player):
-        return dict(
-            page_title='Your views after Block 1',
-            explanation='Please answer after considering the first ten rounds.',
-            slider_prefix='constraint_w1_',
-            optional_responses=development_mode(player),
-        )
-
-    @staticmethod
-    def error_message(player, values):
-        return require_all(player, values, Wave1Mechanism.form_fields)
-
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if player.round_number != C.NUM_ROUNDS:
+            return
         player.participant.vars['w1_final_vote'] = player.institution_vote
         player.participant.vars['w1_final_vote_observed'] = not player.institution_vote_timed_out
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
         player.participant.vars['w1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
-        player.participant.vars['citizen_effectiveness_b1'] = player.field_maybe_none(
-            'citizen_effectiveness_b1'
-        )
-        player.participant.vars['collapse_risk_w1'] = player.field_maybe_none('collapse_risk_w1')
         player.participant.vars['expected_payoff_citizens_b1'] = (
             player.field_maybe_none('expected_payoff_citizens')
         )
@@ -645,7 +546,6 @@ class Wave1Complete(Page):
 
 page_sequence = [
     Wave1Intro,
-    BaselineSurvey,
     PracticeIntro,
     PracticeDemocratic,
     PracticeExecutive,
@@ -657,6 +557,5 @@ page_sequence = [
     ExecutiveDecision,
     DecisionWaitPage,
     RoundResults,
-    Wave1Mechanism,
     Wave1Complete,
 ]

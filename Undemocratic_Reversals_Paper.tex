@@ -187,7 +187,7 @@ Persistence supplies the counterfactual: participants complete the same session 
 
 \paragraph{H4: Democratic reversal.} Among participants who choose \Aproc{} in Block 1's final round, assignment to recovery will increase the probability of choosing \Dproc{} in Block 2's final round despite the leader-led method's remaining coordination advantage.
 
-\paragraph{H5: Value of decision rights.} Among participants assigned to recovery, reversals made while \Aproc{} is expected to pay at least as much will be more common among those with stronger pretreatment support for executive constraints. Such choices provide the sharpest evidence that retained decision rights enter utility beyond their monetary return.
+\paragraph{H5: Value of decision rights.} Among participants assigned to recovery, some reversals will occur even when \Aproc{} is expected to pay at least as much as \Dproc{}. Such choices provide the sharpest behavioral evidence that retained decision rights enter utility beyond their monetary return.
 
 \section{Experimental Design}
 
@@ -202,19 +202,19 @@ In one synchronized 75--90 minute session, participants complete two ten-round b
   box/.style={draw,rounded corners=2pt,align=center,text width=3.4cm,minimum height=1.25cm,inner sep=5pt},
   arr/.style={-{Latex[length=2.2mm]},thick}
 ]
-\node[box,fill=LightBlue] (base) {Consent, baseline beliefs,\\democratic-constraint battery};
-\node[box,fill=LightBlue,right=of base] (w1info) {Unpaid practice and\\comprehension checks};
+\node[box,fill=LightBlue] (base) {Consent and neutral\\task instructions};
+\node[box,fill=LightBlue,right=of base] (w1info) {Unpaid practice\\and comprehension\\checks};
 \node[box,fill=LightOrange,right=of w1info] (w1game) {Block 1: 10 paid rounds\\public-service crisis};
 \node[box,fill=LightBlue,below=12mm of w1game] (random) {Post-Block-1 pool randomization\\and fund-rate disclosure};
 \node[box,fill=LightOrange,left=of random] (w2game) {Block 2: 10 paid rounds\\recovery or persistence};
-\node[box,fill=LightBlue,left=of w2game] (finish) {Final measures, debrief,\\and payment};
+\node[box,fill=LightBlue,left=of w2game] (finish) {Final questions,\\debrief, and payment};
 \draw[arr] (base) -- (w1info);
 \draw[arr] (w1info) -- (w1game);
 \draw[arr] (w1game) -- (random);
 \draw[arr] (random) -- (w2game);
 \draw[arr] (w2game) -- (finish);
 \end{tikzpicture}
-\caption{One-session sequence. Each paid round includes a secret ballot, allocation, feedback, and anonymous rematching.}
+\caption{One-session sequence. Each paid round includes an individual choice, allocation, feedback, and anonymous rematching.}
 \label{fig:design}
 \end{figure}
 
@@ -323,7 +323,7 @@ Reversal ($R_i$) is measured for participant $p_i$, but treatment ($T_g$) is ass
 
 \subsection{The institutional-choice public-good game}
 
-Each round begins with 20 points for each of five group members. Every member privately votes between the citizen-led procedure (\Dproc) and the leader-led procedure (\Aproc). A simple majority of at least three votes selects the binding method. Individual ballots remain secret; the group sees the aggregate vote and the selected rule. The neutral labels shown to participants are ``Citizens decide'' and ``A leader decides.''
+Each round begins with 20 points for each of five group members. Every member privately votes between the citizen-led procedure (\Dproc) and the leader-led procedure (\Aproc). A simple majority of at least three votes selects the binding method. Individual ballots remain secret; the group sees the aggregate vote and the selected rule. The neutral labels shown to participants are ``Each person chooses'' and ``One person chooses for the group.''
 
 \paragraph{Citizen-led procedure (\Dproc).} Each member chooses an allocation $c_i$ of 0--20 points to a public-services fund; unallocated points remain in the member's personal account. Let $m_{gb}$ denote the fund's productivity for matching pool $g$ in block $b$. Player $i$ earns
 \begin{equation}
@@ -378,9 +378,9 @@ This distinction makes reversal theoretically informative. Conditional cooperati
 
 
 \begin{plainlanguagebox}
-Each round, five citizens receive 20 points and cast private ballots ($V_{ibr}\in\{\Dproc,\Aproc\}$). A majority selects the method. Under ``Citizens decide'' ($\Dproc$), each citizen chooses a fund allocation ($c_{igbr}$); the total is multiplied by the current rate ($m_{gb}$), divided equally, and unallocated points remain personal.
+Each round, five citizens receive 20 points and cast private ballots ($V_{ibr}\in\{\Dproc,\Aproc\}$). A majority selects the method. Under ``Each person chooses'' ($\Dproc$), each citizen chooses a fund allocation ($c_{igbr}$); the total is multiplied by the current rate ($m_{gb}$), divided equally, and unallocated points remain personal.
 
-Under ``A leader decides'' ($\Aproc$), the software selects among those who have served least often. Citizens choose the method, not a candidate. The leader sets everyone's allocation ($t$) and may move fund points to a personal account ($\rho\leq\min\{20,5t\}$). The remainder ($5t-\rho$) is multiplied by 2.50 and shared equally; the leader keeps $\rho$.
+Under ``One person chooses for the group'' ($\Aproc$), the software selects among those who have served least often. Citizens choose the method, not a candidate. The selected decision-maker sets everyone's allocation ($t$) and may move fund points to their own payoff ($\rho\leq\min\{20,5t\}$). The remainder ($5t-\rho$) is multiplied by 2.50 and shared equally; the decision-maker keeps $\rho$.
 
 Everyone then sees the decision, fund, transfer, return, and own payoff ($\pi^{D}_{igbr}$ or $\pi^{A}_{igbr}$). The group dissolves, and participants are rematched within pool $g$.
 \end{plainlanguagebox}
@@ -416,15 +416,15 @@ Show-up payment & EUR 10.00 \\
 
 \subsection{Block 1: crisis and leader authorization}
 
-After consent, participants report baseline beliefs about public-service effectiveness and democratic risk, complete a seven-item constraint battery, and receive unpaid practice on both methods, voting, and payment. Three comprehension questions precede paid play; development configurations allow omissions. Block 1 presents a prolonged public-service crisis: each fund point produces 1.50 under \Dproc{} and 2.50 under \Aproc{}, whose leader may move up to 20 fund points to a personal account.
+After consent, participants receive short, neutral on-screen instructions and active unpaid practice on both methods and their payoff rules. The interface labels the methods ``Each person chooses'' and ``One person chooses for the group'' and does not identify either method with democracy or backsliding. Three comprehension questions precede paid play; development configurations allow omissions. Block 1 presents a prolonged public-service crisis: each fund point produces 1.50 under \Dproc{} and 2.50 under \Aproc{}, whose selected decision-maker may move up to 20 fund points to their own payoff.
 
-Ten paid rounds follow: secret ballot, majority choice, method-specific fund decision, feedback, and rematching. Expected payoffs and transfers are elicited before the final ballot. After Round 10, the constraint battery is repeated. The software records ballots, allocations, transfers, and payoffs, and randomly selects one round for payment.
+Ten paid rounds follow: individual choice, majority selection, method-specific fund decision, feedback, and rematching. Expected payoffs and transfers are elicited before the final choice. No democratic-constraint questions are asked before or between the paid blocks. The software records choices, allocations, transfers, and payoffs, and randomly selects one round for payment.
 
 \subsection{Block 2: structural change and reversal}
 
 After every participant completes Block 1, pools are randomized to \emph{recovery}, which raises the citizen-led multiplier from 1.50 to 2.50, or \emph{persistence}, which leaves it at 1.50. The leader-led multiplier, authority, and maximum transfer remain fixed. The transition page reports the applicable numerical rates without adding an evaluative recovery vignette.
 
-Participants report expected payoffs and transfers before the first ballot, complete ten otherwise identical rounds, and report those expectations again before the final ballot. The first ballot measures immediate revision; the last measures sustained reversal and is the primary endpoint. The final constraint battery follows. One Block-2 round is randomly paid, and both selected payoffs are converted to euros and added to the participation payment.
+Participants report expected payoffs and transfers before the first choice, complete ten otherwise identical rounds, and report those expectations again before the final choice. The first choice measures immediate revision; the last measures sustained reversal and is the primary endpoint. Only after that endpoint is recorded do participants complete the public-service and democratic-constraint battery. One Block-2 round is randomly paid, and both selected payoffs are converted to euros and added to the participation payment.
 
 
 \section{Outcomes, Process Measures, and Estimands}
@@ -444,7 +444,7 @@ Let $T_g=1$ indicate that the public-service crisis receded for matching pool $g
 an intention-to-treat contrast. Because treatment is randomized only after Block 1, $A_{i1}$ is unambiguously pretreatment. The primary test uses randomization inference that reproduces the pool-level assignment; an unadjusted difference in means and regression estimates with pool-clustered and wild-cluster uncertainty will also be reported.
 
 \begin{plainlanguagebox}
-The primary estimand ($\tau_R$) asks: among final-round Block-1 leader voters ($V_{i,1,10}=\Aproc$; $A_{i1}=1$), how much does recovery ($T_g=1$), rather than persistence ($T_g=0$), increase a final-round return to ``Citizens decide'' ($V_{i,2,10}=\Dproc$; $R_i=1$)? Under recovery, both methods are equally productive, but the leader can still require equal allocations, so reversal accepts continued free-riding risk.
+The primary estimand ($\tau_R$) asks: among participants who choose ``One person chooses for the group'' in Block 1's final round ($V_{i,1,10}=\Aproc$; $A_{i1}=1$), how much does recovery ($T_g=1$), rather than persistence ($T_g=0$), increase a final-round return to ``Each person chooses'' ($V_{i,2,10}=\Dproc$; $R_i=1$)? Under recovery, both methods are equally productive, but one decision-maker can still require equal allocations, so reversal accepts continued free-riding risk.
 
 We cannot observe the same person's choice under both recovery ($R_i(1)$) and persistence ($R_i(0)$). Post-Block-1 random assignment therefore identifies $\tau_R$ by comparing reversal rates across assigned conditions ($T_g$). The assignment and statistical test both operate at pool level.
 \end{plainlanguagebox}
@@ -457,7 +457,7 @@ R_i^{I}=\ind{V_{i,2,1}=\Dproc}\quad\text{for }A_{i1}=1.
 \end{equation}
 It records the first response to the new rates, before Block-2 interaction. The primary \(R_i\) records whether that response is sustained after ten rounds. Other secondary outcomes are the change in leader-vote share across Rounds 8--10, the round-by-treatment trajectory, and group-level method choice.
 
-Expected payoffs under both methods and the expected leader transfer are measured before the final Block-1 ballot and the first and final Block-2 ballots. These expectations distinguish reversals accompanied by an expected monetary gain from those that preserve an expected payoff advantage for \Aproc{}. Public-service beliefs, perceived risk to constraints, and the seven-item index are measured at baseline and after each block; ballots, decisions, and payoffs are recorded by round. Mechanism decompositions remain exploratory absent a preregistered mediation strategy.
+Expected payoffs under both methods and the expected transfer are measured before the final Block-1 choice and the first and final Block-2 choices. These expectations distinguish reversals accompanied by an expected monetary gain from those that preserve an expected payoff advantage for \Aproc{}. Public-service beliefs, perceived risk to constraints, and the seven-item index are measured only after the final behavioral outcome, preventing those explicitly political questions from cueing earlier choices. They are descriptive endline measures rather than pretreatment moderators; choices, decisions, and payoffs are recorded by round.
 
 \section{Randomization, Sample, and Power}
 
@@ -495,7 +495,7 @@ Repeated play reveals whether institutional choices persist after participants e
 
 \paragraph{Leader-role expectations.} Subjects could support one-person rule because they expect to become leader. Assignment is balanced among the least-served eligible members, preventing a few participants from monopolizing the role. Analyses will nevertheless describe prior leader service and realized personal transfers.
 
-\paragraph{Endogenous institutional experience.} Groups that never elect one procedure receive less experience with it. Instructions and practice expose everyone to both payoff rules, and realized experience is recorded. Treatment effects will be reported by prior exposure, but the primary intention-to-treat contrast will not condition on a post-treatment institutional path.
+\paragraph{Endogenous institutional experience.} Groups that never elect one procedure receive less experience with it. Instructions and practice expose everyone to both payoff rules, and realized experience is recorded.\footnote{We follow \textcite{Bigoni:2012} and implement a short and effective set of instructions.} Treatment effects will be reported by prior exposure, but the primary intention-to-treat contrast will not condition on a post-treatment institutional path.
 
 \paragraph{Wealth, fatigue, and end-game effects.} Only one randomly selected round per block determines game earnings, so earnings from early rounds do not alter later endowments. Instructions explain that every round has an equal payment chance. The ten-round horizon is disclosed and identical across conditions. Page timers, decision times, and timeouts identify fatigue or end-game behavior. The persistence group experiences the same twenty-round sequence as the recovery group, separating the treatment effect from generic within-session fatigue.
 
@@ -505,7 +505,7 @@ These safeguards preserve experience with institutional consequences while limit
 
 \section{Ethics and Interpretation}
 
-The experiment exposes participants to a setting in which concentrated authority can be materially effective. That feature is necessary to study conditional tolerance, but it creates an obligation to avoid deception and moral labeling. Instructions therefore use the neutral labels ``Citizens decide'' and ``A leader decides,'' explain the public-services fund in plain language, and disclose exactly what the leader may do. Before Block 2, the interface reports the applicable programmed rates without describing either assignment as desirable.
+The experiment exposes participants to a setting in which concentrated authority can be materially effective. That feature is necessary to study conditional tolerance, but it creates an obligation to avoid deception and moral labeling. Instructions therefore use the neutral labels ``Each person chooses'' and ``One person chooses for the group,'' explain the public-services fund in plain language, and disclose exactly what the selected decision-maker may do. Before Block 2, the interface reports the applicable programmed rates without describing either assignment as desirable. Explicit questions about democratic constraints appear only after the final incentivized choice.
 
 Consent explains the one-session structure, interaction, anonymity, payment rule, data linkage, and right to withdraw. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports should replace participant labels with study IDs and store the linkage key separately.
 

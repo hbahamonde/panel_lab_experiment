@@ -1,31 +1,31 @@
 {{ block title }}How each round works{{ endblock }}
 
 {{ block content }}
-<p>The first block has <strong>{{ rounds }} paid rounds</strong>. In each round, every citizen starts with 20 points. Points in the <strong>public-services fund</strong> create group points that are shared equally among all five citizens.</p>
+<p>The first block has <strong>{{ rounds }} paid rounds</strong>. In each round, every group member starts with 20 points. Points in the <strong>public-services fund</strong> create group points that are shared equally among all five members.</p>
 
-<p>First, each citizen chooses one of the following decision methods. The method chosen by at least three of the {{ group_size }} citizens is used for the round.</p>
+<p>First, each group member chooses one of the following methods. The method chosen by at least three of the {{ group_size }} members is used for the round.</p>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card card-body h-100">
-            <h5>Citizens decide</h5>
-            <p>Each citizen chooses how many of their own 20 points to put in the fund.</p>
-            <p>Every fund point creates <strong>1.50 group points</strong>. These points are shared equally among all five citizens.</p>
-            <p class="mb-0">No one can take points out of the fund.</p>
+            <h5>Each person chooses</h5>
+            <p>Each group member chooses how many of their own 20 points to put in the fund.</p>
+            <p>Every fund point creates <strong>1.50 group points</strong>. These points are shared equally among all five members.</p>
+            <p class="mb-0">All fund points remain in the fund.</p>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card card-body h-100">
-            <h5>A leader decides</h5>
-            <p>The software chooses one citizen as leader. The leader sets the number of points that <strong>every citizen</strong> must put in the fund.</p>
-            <p>Every point left in the fund creates <strong>2.50 group points</strong>. These points are shared equally among all five citizens.</p>
-            <p class="mb-0">Before the group points are created, the leader may move up to 20 fund points to their own payoff.</p>
+            <h5>One person chooses for the group</h5>
+            <p>The software selects one group member as the decision-maker. This person sets the number of points that <strong>every member</strong> must put in the fund.</p>
+            <p>Every point left in the fund creates <strong>2.50 group points</strong>. These points are shared equally among all five members.</p>
+            <p class="mb-0">Before the group points are created, the decision-maker may move up to 20 fund points to their own payoff.</p>
         </div>
     </div>
 </div>
 
 <div class="alert alert-light border mt-3">
-    <strong>You choose the method, not the leader.</strong> If <strong>A leader decides</strong> is chosen, the software selects a leader from the citizens who have served least often. Ties are decided at random.
+    <strong>You choose the method, not the person.</strong> If <strong>One person chooses for the group</strong> is selected, the software chooses among the members who have served as decision-maker least often. Ties are decided at random.
 </div>
 
 <p>At the end of the round, everyone sees the group choice, the fund outcome, and their own payoff. The group is then reshuffled for the next round.</p>

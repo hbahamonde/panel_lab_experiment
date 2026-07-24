@@ -147,7 +147,12 @@ def group_within_matching_pools(subsession):
 
 
 def constrained_multiplier(player):
-    if player.treatment == C.TREATMENT_RECOVERY:
+    treatment = player.field_maybe_none('treatment')
+    if treatment is None:
+        treatment = player.participant.vars['treatment']
+        player.treatment = treatment
+        player.randomization_stratum = player.participant.vars['randomization_stratum']
+    if treatment == C.TREATMENT_RECOVERY:
         return C.CONSTRAINED_MULTIPLIER_RECOVERY
     return C.CONSTRAINED_MULTIPLIER_CRISIS
 
@@ -236,8 +241,8 @@ class C(BaseConstants):
     DEFAULT_EXECUTIVE_RENT = 0
 
     INSTITUTION_CHOICES = [
-        [CONSTRAINED, 'Citizens decide'],
-        [EXECUTIVE, 'A leader decides'],
+        [CONSTRAINED, 'Each person chooses'],
+        [EXECUTIVE, 'One person chooses for the group'],
     ]
     AGREEMENT_CHOICES = [[i, str(i)] for i in range(1, 8)]
     FIVE_POINT_CHOICES = [
@@ -270,7 +275,7 @@ class Player(BasePlayer):
     randomization_stratum = models.IntegerField(initial=0)
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES, widget=widgets.RadioSelect,
-        label='Who should make the public-service decision this round?',
+        label='How should the fund decision be made this round?',
         blank=True,
     )
     solo_other_leader_votes = models.IntegerField(min=0, max=4, blank=True)
@@ -280,11 +285,11 @@ class Player(BasePlayer):
     )
     executive_tax = models.IntegerField(
         min=0, max=C.ENDOWMENT, blank=True,
-        label='How many points must each citizen put in the public-services fund?',
+        label='How many points must each group member put in the public-services fund?',
     )
     executive_rent = models.IntegerField(
         min=0, max=C.MAX_EXECUTIVE_RENT, blank=True,
-        label='How many points do you move from the public-services fund to your personal account?',
+        label='How many fund points do you move to your own payoff?',
     )
     is_executive = models.BooleanField(initial=False)
     timed_out = models.BooleanField(initial=False)
@@ -292,17 +297,17 @@ class Player(BasePlayer):
     round_payoff = models.FloatField(initial=0)
     expected_payoff_citizens = models.IntegerField(
         min=0, max=60,
-        label='If Citizens decide is used in this round, how many points do you expect to earn?',
+        label='If Each person chooses is used in this round, how many points do you expect to earn?',
         blank=True,
     )
     expected_payoff_leader = models.IntegerField(
         min=0, max=60,
-        label='If A leader decides is used in this round, how many points do you expect to earn?',
+        label='If One person chooses for the group is used, how many points do you expect to earn?',
         blank=True,
     )
     expected_leader_transfer = models.IntegerField(
         min=0, max=C.MAX_EXECUTIVE_RENT,
-        label='If A leader decides, how many fund points do you expect the leader to move to their personal account?',
+        label='If one person chooses for the group, how many fund points do you expect the selected person to move to their own payoff?',
         blank=True,
     )
 
@@ -373,8 +378,8 @@ class StrategicExpectations(Page):
         return dict(
             page_title='What do you expect in this round?',
             explanation=(
-                f'Before the {timing} Block-2 vote, estimate what you would earn under '
-                'each decision method and what the leader would do. Enter your best '
+                f'Before the {timing} Block-2 choice, estimate what you would earn under '
+                'each method and what the selected decision-maker would do. Enter your best '
                 'estimates; these answers do not change your payoff.'
             ),
             institution_vote_page=False,
@@ -398,8 +403,9 @@ class InstitutionVote(Page):
         return dict(
             page_title=f'Block 2 — Round {player.round_number} of {C.NUM_ROUNDS}',
             explanation=(
-                'Vote privately. The public-services fund now works as explained at the start of Block 2. '
-                'The leader can still move up to 20 fund points to a personal account. This round may be selected for payment.'
+                'The public-services fund works at the rates shown at the start of Block 2. '
+                'With One person chooses for the group, the selected person may move up to '
+                '20 fund points to their own payoff. This round may be selected for payment.'
             ),
             institution_vote_page=True,
             constrained_multiplier=f'{constrained_multiplier(player):.2f}',
@@ -449,7 +455,7 @@ class InstitutionVote(Page):
 
 
 class VoteWaitPage(WaitPage):
-    body_text = 'Waiting for the other citizens in this round\'s anonymous group.'
+    body_text = 'Waiting for the other members of this round\'s anonymous group.'
     after_all_players_arrive = choose_institution
 
 class DemocraticContribution(Page):
@@ -465,11 +471,11 @@ class DemocraticContribution(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Citizens decide',
+            page_title='Each person chooses',
             explanation=(
                 f'Points you do not put in the public-services fund remain yours. Each point you put in the '
-                f'fund creates {constrained_multiplier(player):.2f} points for the group. The resulting return '
-                f'is divided equally among all five citizens.'
+                f'fund creates {constrained_multiplier(player):.2f} group points. These points '
+                f'are shared equally among all five members.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -500,11 +506,11 @@ class ExecutiveDecision(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='You are the leader for this round',
+            page_title='You are the decision-maker for this round',
             explanation=(
-                f'Choose how many points every citizen must put in the public-services fund. You may '
-                f'move at most {C.MAX_EXECUTIVE_RENT} points from that fund to your personal account. '
-                f'Each point left in the fund creates {C.EXECUTIVE_MULTIPLIER:.2f} points for the group.'
+                f'Choose how many points every group member must put in the public-services fund. You may '
+                f'move at most {C.MAX_EXECUTIVE_RENT} fund points to your own payoff. '
+                f'Each point left in the fund creates {C.EXECUTIVE_MULTIPLIER:.2f} group points.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -555,36 +561,10 @@ class RoundResults(Page):
             constrained_multiplier=group.realized_constrained_multiplier,
         )
 
-
-class Wave2Mechanism(Page):
-    form_model = 'player'
-    form_fields = [
-        'citizen_effectiveness_b2', 'collapse_risk_w2',
-        'constraint_w2_1', 'constraint_w2_2', 'constraint_w2_3', 'constraint_w2_4',
-        'constraint_w2_5', 'constraint_w2_6', 'constraint_w2_7',
-    ]
-    template_name = 'wave2_discontinuity/QuestionPage.html'
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == C.NUM_ROUNDS
-
-    @staticmethod
-    def vars_for_template(player):
-        return dict(
-            page_title='Your final views',
-            explanation='Please answer after considering all ten rounds in Block 2.',
-            institution_vote_page=False,
-            slider_prefix='constraint_w2_',
-            optional_responses=development_mode(player),
-        )
-
-    @staticmethod
-    def error_message(player, values):
-        return require_all(player, values, Wave2Mechanism.form_fields)
-
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if player.round_number != C.NUM_ROUNDS:
+            return
         block1_vote = player.participant.vars.get('w1_final_vote')
         block2_vote = player.institution_vote
         final_votes_observed = (
@@ -601,7 +581,9 @@ class Wave2Mechanism(Page):
         player.participant.vars['democratic_reversal_observed'] = final_votes_observed
         player.participant.vars['democratic_reversal'] = player.democratic_reversal
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
-        player.participant.vars['w2_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
+        player.participant.vars['w2_late_executive_share'] = sum(
+            vote == C.EXECUTIVE for vote in late_votes
+        ) / 3
         player.participant.vars['expected_payoff_citizens_b2_final'] = (
             player.field_maybe_none('expected_payoff_citizens')
         )
@@ -625,9 +607,39 @@ class Wave2Mechanism(Page):
         paying_round = player.session.vars['wave2_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff
         player.payoff = cu(selected_payoff)
-
         player.participant.vars['wave2_paying_round'] = paying_round
         player.participant.vars['wave2_selected_payoff'] = selected_payoff
+
+
+class Wave2Mechanism(Page):
+    form_model = 'player'
+    form_fields = [
+        'citizen_effectiveness_b2', 'collapse_risk_w2',
+        'constraint_w2_1', 'constraint_w2_2', 'constraint_w2_3', 'constraint_w2_4',
+        'constraint_w2_5', 'constraint_w2_6', 'constraint_w2_7',
+    ]
+    template_name = 'wave2_discontinuity/QuestionPage.html'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            page_title='Final questions',
+            explanation=(
+                'All paid decisions are complete. Please answer the following questions '
+                'about the situation you experienced.'
+            ),
+            institution_vote_page=False,
+            slider_prefix='constraint_w2_',
+            optional_responses=development_mode(player),
+        )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, Wave2Mechanism.form_fields)
 
 
 class Wave2Complete(Page):

@@ -1,21 +1,21 @@
 {{ block title }}Block 2: public-services fund rates{{ endblock }}
 
 {{ block content }}
-<p>The first ten rounds are complete. The same citizens remain in your ten-person matching pool and will continue to be reshuffled into groups of five.</p>
+<p>The first ten rounds are complete. The same participants remain in your ten-person matching pool and will continue to be reshuffled into groups of five.</p>
 
 {{ if recovery }}
 <div class="alert alert-secondary">
-    <h5>The rate for Citizens decide has changed</h5>
-    <p class="mb-0">When <strong>Citizens decide</strong>, every point placed in the public-services fund now creates <strong>{{ constrained_multiplier }} points</strong> for the group. When <strong>A leader decides</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} points</strong> for the group.</p>
+    <h5>The rate for Each person chooses has changed</h5>
+    <p class="mb-0">With <strong>Each person chooses</strong>, every fund point now creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
 </div>
 {{ else }}
 <div class="alert alert-secondary">
     <h5>The rates remain the same</h5>
-    <p class="mb-0">When <strong>Citizens decide</strong>, every point placed in the public-services fund creates <strong>{{ constrained_multiplier }} points</strong> for the group. When <strong>A leader decides</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} points</strong> for the group.</p>
+    <p class="mb-0">With <strong>Each person chooses</strong>, every fund point creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
 </div>
 {{ endif }}
 
-<p>The two methods still use different decision rules. When <strong>Citizens decide</strong>, each citizen chooses their own amount, so the five citizens may put different amounts in the fund. When <strong>A leader decides</strong>, the leader sets the same required amount for everyone and may still move up to 20 fund points to their personal account.</p>
+<p>The decision rules remain the same. With <strong>Each person chooses</strong>, every member chooses their own amount. With <strong>One person chooses for the group</strong>, the selected person sets the same amount for everyone and may move up to 20 fund points to their own payoff.</p>
 
 <p>You will now complete <strong>{{ rounds }} additional paid rounds</strong>.</p>
 

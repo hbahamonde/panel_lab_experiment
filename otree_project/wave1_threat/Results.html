@@ -2,27 +2,27 @@
 
 {{ block content }}
 <p><strong>Group choice:</strong> {{ institution_label }}</p>
-<p><strong>Secret-ballot result:</strong> Citizens decide: {{ citizen_votes }}; A leader decides: {{ leader_votes }}.</p>
+<p><strong>Individual choices:</strong> Each person chooses: {{ citizen_votes }}; One person chooses for the group: {{ leader_votes }}.</p>
 
 {{ if solo_testing }}
 <div class="alert alert-secondary">
-    <strong>Solo test:</strong> four simulated citizens supplied the other ballots. When Citizens decide wins, each simulated citizen puts 10 points in the public-services fund. When A leader decides wins, you serve as the leader.
+    <strong>Solo test:</strong> four simulated group members supplied the other choices. When Each person chooses is used, each simulated member puts 10 points in the public-services fund. When One person chooses for the group is used, you are the decision-maker.
 </div>
 {{ endif }}
 
 <table class="table table-sm table-bordered">
     <tr><th>Total points placed in the public-services fund</th><td>{{ total_contribution }}</td></tr>
     {{ if executive_selected }}
-    <tr><th>Points each citizen was required to put in the fund</th><td>{{ executive_tax }}</td></tr>
-    <tr><th>Fund points moved to the leader's personal account</th><td>{{ executive_rent }}</td></tr>
+    <tr><th>Points each member was required to put in the fund</th><td>{{ executive_tax }}</td></tr>
+    <tr><th>Fund points moved to the decision-maker's payoff</th><td>{{ executive_rent }}</td></tr>
     {{ endif }}
     <tr><th>Points left in the public-services fund</th><td>{{ public_account }}</td></tr>
-    <tr><th>Shared return received by every citizen</th><td>{{ per_capita_return|to2 }}</td></tr>
+    <tr><th>Group points received by every member</th><td>{{ per_capita_return|to2 }}</td></tr>
     <tr class="table-primary"><th>Your payoff if this round is selected</th><td><strong>{{ round_payoff|to2 }}</strong></td></tr>
 </table>
 
-{{ if is_executive }}<p>You were the leader in this round.</p>{{ endif }}
-<p class="text-muted">Only group totals are shown. Citizens are reshuffled anonymously before the next round.</p>
+{{ if is_executive }}<p>You were the decision-maker in this round.</p>{{ endif }}
+<p class="text-muted">Only group totals are shown. Participants are reshuffled anonymously before the next round.</p>
 
 {{ next_button }}
 {{ endblock }}
