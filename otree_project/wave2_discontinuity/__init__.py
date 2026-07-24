@@ -26,6 +26,89 @@ def solo_testing(obj):
     return obj.session.config.get('solo_testing', False)
 
 
+def assign_treatments_after_block1(subsession):
+    """Randomize pools after Block 1, pairing pools on pretreatment leader support."""
+    players = subsession.get_players()
+
+    if solo_testing(subsession):
+        treatment = subsession.session.config.get(
+            'solo_treatment', C.TREATMENT_RECOVERY
+        )
+        player = players[0]
+        player.participant.vars['treatment'] = treatment
+        player.participant.vars['randomization_stratum'] = 1
+        for round_player in player.in_all_rounds():
+            round_player.treatment = treatment
+            round_player.randomization_stratum = 1
+        subsession.session.vars['treatment_by_pool'] = {1: treatment}
+        subsession.session.vars['treatment_randomization_pairs'] = []
+        subsession.session.vars['treatment_unmatched_pools'] = [1]
+        subsession.session.vars['randomization_stratum_by_pool'] = {1: 1}
+        return
+
+    pool_summaries = []
+    pool_ids = sorted({p.participant.vars['matching_pool_id'] for p in players})
+    for pool_id in pool_ids:
+        pool_players = [
+            p for p in players
+            if p.participant.vars['matching_pool_id'] == pool_id
+        ]
+        observed_votes = [
+            p.participant.vars.get('w1_final_vote')
+            for p in pool_players
+            if p.participant.vars.get('w1_final_vote_observed', False)
+        ]
+        leader_share = (
+            sum(vote == C.EXECUTIVE for vote in observed_votes) / len(observed_votes)
+            if observed_votes else 0.5
+        )
+        pool_summaries.append((leader_share, random.random(), pool_id))
+
+    pool_summaries.sort()
+    ordered_pool_ids = [pool_id for _, _, pool_id in pool_summaries]
+    treatment_by_pool = {}
+    randomization_pairs = []
+    stratum_by_pool = {}
+
+    for pair_number, pair_start in enumerate(
+        range(0, len(ordered_pool_ids) - 1, 2), start=1
+    ):
+        first_pool, second_pool = ordered_pool_ids[pair_start:pair_start + 2]
+        if random.choice([True, False]):
+            recovery_pool, persistence_pool = first_pool, second_pool
+        else:
+            recovery_pool, persistence_pool = second_pool, first_pool
+        treatment_by_pool[recovery_pool] = C.TREATMENT_RECOVERY
+        treatment_by_pool[persistence_pool] = C.TREATMENT_PERSISTENCE
+        randomization_pairs.append([first_pool, second_pool])
+        stratum_by_pool[first_pool] = pair_number
+        stratum_by_pool[second_pool] = pair_number
+
+    unmatched_pools = []
+    if len(ordered_pool_ids) % 2:
+        unmatched_pool = ordered_pool_ids[-1]
+        treatment_by_pool[unmatched_pool] = random.choice(
+            [C.TREATMENT_RECOVERY, C.TREATMENT_PERSISTENCE]
+        )
+        unmatched_pools.append(unmatched_pool)
+        stratum_by_pool[unmatched_pool] = len(randomization_pairs) + 1
+
+    for player in players:
+        pool_id = player.participant.vars['matching_pool_id']
+        treatment = treatment_by_pool[pool_id]
+        stratum = stratum_by_pool[pool_id]
+        player.participant.vars['treatment'] = treatment
+        player.participant.vars['randomization_stratum'] = stratum
+        for round_player in player.in_all_rounds():
+            round_player.treatment = treatment
+            round_player.randomization_stratum = stratum
+
+    subsession.session.vars['treatment_by_pool'] = treatment_by_pool
+    subsession.session.vars['treatment_randomization_pairs'] = randomization_pairs
+    subsession.session.vars['treatment_unmatched_pools'] = unmatched_pools
+    subsession.session.vars['randomization_stratum_by_pool'] = stratum_by_pool
+
+
 def group_within_matching_pools(subsession):
     players = subsession.get_players()
 
@@ -36,7 +119,6 @@ def group_within_matching_pools(subsession):
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = player.participant.vars['matching_pool_id']
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
-        player.treatment = player.participant.vars['treatment']
         if subsession.round_number == 1:
             subsession.session.vars['wave2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         return
@@ -59,7 +141,6 @@ def group_within_matching_pools(subsession):
     for player in players:
         player.matching_pool_id = player.participant.vars['matching_pool_id']
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
-        player.treatment = player.participant.vars['treatment']
 
     if subsession.round_number == 1:
         subsession.session.vars['wave2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
@@ -186,6 +267,7 @@ class Player(BasePlayer):
     matching_pool_id = models.IntegerField()
     matching_pool_uid = models.StringField()
     treatment = models.StringField()
+    randomization_stratum = models.IntegerField(initial=0)
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES, widget=widgets.RadioSelect,
         label='Who should make the public-service decision this round?',
@@ -208,6 +290,21 @@ class Player(BasePlayer):
     timed_out = models.BooleanField(initial=False)
     institution_vote_timed_out = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
+    expected_payoff_citizens = models.IntegerField(
+        min=0, max=60,
+        label='If Citizens decide is used in this round, how many points do you expect to earn?',
+        blank=True,
+    )
+    expected_payoff_leader = models.IntegerField(
+        min=0, max=60,
+        label='If A leader decides is used in this round, how many points do you expect to earn?',
+        blank=True,
+    )
+    expected_leader_transfer = models.IntegerField(
+        min=0, max=C.MAX_EXECUTIVE_RENT,
+        label='If A leader decides, how many fund points do you expect the leader to move to their personal account?',
+        blank=True,
+    )
 
     citizen_effectiveness_b2 = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
@@ -228,6 +325,18 @@ class Player(BasePlayer):
     constraint_w2_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader needs more freedom from the usual limits.', blank=True)
 
     democratic_reversal = models.BooleanField(initial=False)
+    immediate_democratic_reversal = models.BooleanField(initial=False)
+
+
+class TreatmentAssignmentWaitPage(WaitPage):
+    wait_for_all_groups = True
+    body_text = 'Waiting for all participants to complete Block 1.'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+    after_all_players_arrive = assign_treatments_after_block1
 
 
 class Wave2Intro(Page):
@@ -243,6 +352,39 @@ class Wave2Intro(Page):
             constrained_multiplier=f'{constrained_multiplier(player):.2f}',
             executive_multiplier=f'{C.EXECUTIVE_MULTIPLIER:.2f}',
         )
+
+
+class StrategicExpectations(Page):
+    form_model = 'player'
+    form_fields = [
+        'expected_payoff_citizens',
+        'expected_payoff_leader',
+        'expected_leader_transfer',
+    ]
+    template_name = 'wave2_discontinuity/QuestionPage.html'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number in [1, C.NUM_ROUNDS]
+
+    @staticmethod
+    def vars_for_template(player):
+        timing = 'first' if player.round_number == 1 else 'final'
+        return dict(
+            page_title='What do you expect in this round?',
+            explanation=(
+                f'Before the {timing} Block-2 vote, estimate what you would earn under '
+                'each decision method and what the leader would do. Enter your best '
+                'estimates; these answers do not change your payoff.'
+            ),
+            institution_vote_page=False,
+            slider_prefix='',
+            optional_responses=development_mode(player),
+        )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, StrategicExpectations.form_fields)
 
 
 class InstitutionVote(Page):
@@ -284,6 +426,26 @@ class InstitutionVote(Page):
             player.institution_vote = random.choice([C.CONSTRAINED, C.EXECUTIVE])
             player.timed_out = True
             player.institution_vote_timed_out = True
+        if player.round_number == 1:
+            first_votes_observed = (
+                player.participant.vars.get('w1_final_vote_observed', False)
+                and not player.institution_vote_timed_out
+            )
+            player.immediate_democratic_reversal = (
+                first_votes_observed
+                and player.participant.vars.get('w1_final_vote') == C.EXECUTIVE
+                and player.institution_vote == C.CONSTRAINED
+            )
+            player.participant.vars['w2_first_vote'] = player.institution_vote
+            player.participant.vars['w2_first_vote_observed'] = (
+                not player.institution_vote_timed_out
+            )
+            player.participant.vars['immediate_democratic_reversal_observed'] = (
+                first_votes_observed
+            )
+            player.participant.vars['immediate_democratic_reversal'] = (
+                player.immediate_democratic_reversal
+            )
 
 
 class VoteWaitPage(WaitPage):
@@ -440,6 +602,25 @@ class Wave2Mechanism(Page):
         player.participant.vars['democratic_reversal'] = player.democratic_reversal
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
         player.participant.vars['w2_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
+        player.participant.vars['expected_payoff_citizens_b2_final'] = (
+            player.field_maybe_none('expected_payoff_citizens')
+        )
+        player.participant.vars['expected_payoff_leader_b2_final'] = (
+            player.field_maybe_none('expected_payoff_leader')
+        )
+        player.participant.vars['expected_leader_transfer_b2_final'] = (
+            player.field_maybe_none('expected_leader_transfer')
+        )
+        first_round = player.in_round(1)
+        player.participant.vars['expected_payoff_citizens_b2_initial'] = (
+            first_round.field_maybe_none('expected_payoff_citizens')
+        )
+        player.participant.vars['expected_payoff_leader_b2_initial'] = (
+            first_round.field_maybe_none('expected_payoff_leader')
+        )
+        player.participant.vars['expected_leader_transfer_b2_initial'] = (
+            first_round.field_maybe_none('expected_leader_transfer')
+        )
 
         paying_round = player.session.vars['wave2_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff
@@ -468,7 +649,9 @@ class Wave2Complete(Page):
 
 
 page_sequence = [
+    TreatmentAssignmentWaitPage,
     Wave2Intro,
+    StrategicExpectations,
     InstitutionVote,
     VoteWaitPage,
     DemocraticContribution,

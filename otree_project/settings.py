@@ -49,8 +49,8 @@ SESSION_CONFIG_DEFAULTS = dict(
     participation_fee=10.00,
     doc=(
         'One synchronized laboratory session with two ten-round blocks, '
-        'anonymous rematching in treatment-matched pools, and one randomly '
-        'selected payoff round per block.'
+        'anonymous rematching in ten-person pools, post-Block-1 pool '
+        'randomization, and one randomly selected payoff round per block.'
     ),
 )
 

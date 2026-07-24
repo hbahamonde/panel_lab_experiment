@@ -26,26 +26,6 @@ def solo_testing(obj):
     return obj.session.config.get('solo_testing', False)
 
 
-def balanced_pool_treatments(pool_ids):
-    """Randomize by pool without deterministically treating a one-pool session."""
-    randomized_pool_ids = random.sample(pool_ids, len(pool_ids))
-    treatment_by_pool = {}
-
-    complete_pairs = len(randomized_pool_ids) // 2
-    for pair_index in range(complete_pairs):
-        first, second = randomized_pool_ids[2 * pair_index:2 * pair_index + 2]
-        treatment_by_pool[first] = C.TREATMENT_RECOVERY
-        treatment_by_pool[second] = C.TREATMENT_PERSISTENCE
-
-    if len(randomized_pool_ids) % 2:
-        final_pool = randomized_pool_ids[-1]
-        treatment_by_pool[final_pool] = random.choice(
-            [C.TREATMENT_RECOVERY, C.TREATMENT_PERSISTENCE]
-        )
-
-    return treatment_by_pool
-
-
 def assign_matching_pools(subsession):
     players = subsession.get_players()
     pool_size = subsession.session.config.get('matching_pool_size', C.MATCHING_POOL_SIZE)
@@ -58,9 +38,6 @@ def assign_matching_pools(subsession):
             player.participant.vars['matching_pool_id'] = 1
             player.participant.vars['matching_pool_uid'] = f'{subsession.session.code}-pool-1'
             player.participant.vars['times_executive'] = 0
-            player.participant.vars['treatment'] = subsession.session.config.get(
-                'solo_treatment', C.TREATMENT_RECOVERY
-            )
             subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = 1
@@ -83,13 +60,6 @@ def assign_matching_pools(subsession):
                 f'{subsession.session.code}-pool-{pool_id}'
             )
             player.participant.vars['times_executive'] = 0
-
-        pool_ids = sorted({p.participant.vars['matching_pool_id'] for p in shuffled})
-        treatment_by_pool = balanced_pool_treatments(pool_ids)
-        subsession.session.vars['treatment_by_pool'] = treatment_by_pool
-        for player in shuffled:
-            pool_id = player.participant.vars['matching_pool_id']
-            player.participant.vars['treatment'] = treatment_by_pool[pool_id]
 
         subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
@@ -254,6 +224,21 @@ class Player(BasePlayer):
     timed_out = models.BooleanField(initial=False)
     institution_vote_timed_out = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
+    expected_payoff_citizens = models.IntegerField(
+        min=0, max=60,
+        label='If Citizens decide is used in this round, how many points do you expect to earn?',
+        blank=True,
+    )
+    expected_payoff_leader = models.IntegerField(
+        min=0, max=60,
+        label='If A leader decides is used in this round, how many points do you expect to earn?',
+        blank=True,
+    )
+    expected_leader_transfer = models.IntegerField(
+        min=0, max=C.MAX_EXECUTIVE_RENT,
+        label='If A leader decides, how many fund points do you expect the leader to move to their personal account?',
+        blank=True,
+    )
 
     citizen_effectiveness_pre = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
@@ -415,6 +400,37 @@ class Comprehension(Page):
             errors.append('One randomly selected round determines your Block-1 game earnings.')
         if errors:
             return 'Please review: ' + ' '.join(errors)
+
+
+class StrategicExpectations(Page):
+    form_model = 'player'
+    form_fields = [
+        'expected_payoff_citizens',
+        'expected_payoff_leader',
+        'expected_leader_transfer',
+    ]
+    template_name = 'wave1_threat/QuestionPage.html'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            page_title='What do you expect in this round?',
+            explanation=(
+                'Before voting, estimate what you would earn under each decision method and '
+                'what the leader would do. Enter your best estimates; these answers do not '
+                'change your payoff.'
+            ),
+            slider_prefix='',
+            optional_responses=development_mode(player),
+        )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, StrategicExpectations.form_fields)
 
 
 class InstitutionVote(Page):
@@ -597,6 +613,15 @@ class Wave1Mechanism(Page):
             'citizen_effectiveness_b1'
         )
         player.participant.vars['collapse_risk_w1'] = player.field_maybe_none('collapse_risk_w1')
+        player.participant.vars['expected_payoff_citizens_b1'] = (
+            player.field_maybe_none('expected_payoff_citizens')
+        )
+        player.participant.vars['expected_payoff_leader_b1'] = (
+            player.field_maybe_none('expected_payoff_leader')
+        )
+        player.participant.vars['expected_leader_transfer_b1'] = (
+            player.field_maybe_none('expected_leader_transfer')
+        )
 
         paying_round = player.session.vars['wave1_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff
@@ -625,6 +650,7 @@ page_sequence = [
     PracticeDemocratic,
     PracticeExecutive,
     Comprehension,
+    StrategicExpectations,
     InstitutionVote,
     VoteWaitPage,
     DemocraticContribution,
