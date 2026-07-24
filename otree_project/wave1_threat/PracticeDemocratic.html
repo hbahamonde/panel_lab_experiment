@@ -1,12 +1,43 @@
-{{ block title }}Practice 1: citizens decide{{ endblock }}
+{{ block title }}Try it: Citizens decide{{ endblock }}
 
 {{ block content }}
-<p>Suppose every citizen has 10 points. Each citizen chooses how many points to keep and how many to put in the public-services fund. Every point in the fund creates 1.50 points for the group, and the resulting return is divided equally among all five citizens.</p>
+<p>You have 20 points. The other four citizens each put 10 points in the public-services fund. Choose how many of your points to put in the fund.</p>
 
-<p>Your payoff would be:</p>
-<p class="text-center"><strong>10 − points you put in the fund + your equal share of the return.</strong></p>
+<p>Every fund point creates 1.50 group points. These points are shared equally among all five citizens. Points you do not put in the fund remain yours.</p>
 
 {{ formfields }}
+
+<div class="card card-body bg-light mb-3" id="citizen-preview" aria-live="polite">
+    Enter an amount above to see the result.
+</div>
+
 <p class="text-muted">This practice choice is not paid and is not included in the analysis.</p>
 {{ next_button }}
+
+<script>
+(function () {
+    const input = document.querySelector('[name="practice_contribution"]');
+    const preview = document.getElementById('citizen-preview');
+    if (!input || !preview) return;
+
+    function updatePreview() {
+        if (input.value === '') {
+            preview.textContent = 'Enter an amount above to see the result.';
+            return;
+        }
+        const ownAmount = Number(input.value);
+        const fundTotal = 40 + ownAmount;
+        const sharedReturn = 1.5 * fundTotal / 5;
+        const ownPayoff = 20 - ownAmount + sharedReturn;
+        preview.innerHTML =
+            '<strong>Result with your choice</strong><br>' +
+            'Total in the fund: ' + fundTotal.toFixed(0) + ' points<br>' +
+            'Group points received by each citizen: ' + sharedReturn.toFixed(2) + '<br>' +
+            'Your payoff: <strong>' + ownPayoff.toFixed(2) + ' points</strong>';
+    }
+
+    input.addEventListener('input', updatePreview);
+    updatePreview();
+})();
+</script>
 {{ endblock }}

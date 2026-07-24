@@ -1,30 +1,34 @@
-{{ block title }}The situation in your society{{ endblock }}
+{{ block title }}How each round works{{ endblock }}
 
 {{ block content }}
-<p>Imagine that you are a citizen in a society where public services have been under serious strain for a long time. Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and planning for public services has stalled.</p>
+<p>The first block has <strong>{{ rounds }} paid rounds</strong>. In each round, every citizen starts with 20 points. Points in the <strong>public-services fund</strong> create group points that are shared equally among all five citizens.</p>
 
-<p>You will first complete <strong>{{ rounds }} paid rounds</strong>. Every citizen begins each round with 20 points. Points placed in the <strong>public-services fund</strong> produce a return that all five citizens receive equally.</p>
-
-<p>In every round, an anonymous group of {{ group_size }} citizens chooses between two ways of deciding how points enter that fund:</p>
+<p>First, each citizen chooses one of the following decision methods. The method chosen by at least three of the {{ group_size }} citizens is used for the round.</p>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card card-body h-100">
             <h5>Citizens decide</h5>
-            <p>Each citizen chooses how many of their own points to put in the public-services fund. No citizen can move points from the fund to a personal account.</p>
+            <p>Each citizen chooses how many of their own 20 points to put in the fund.</p>
+            <p>Every fund point creates <strong>1.50 group points</strong>. These points are shared equally among all five citizens.</p>
+            <p class="mb-0">No one can take points out of the fund.</p>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card card-body h-100">
             <h5>A leader decides</h5>
-            <p>One citizen is chosen as leader for the round. The leader chooses the same number of points that every citizen must put in the fund. This can help the society act in a coordinated way, and points left in the fund work more effectively. The leader may also move some fund points to their personal account.</p>
+            <p>The software chooses one citizen as leader. The leader sets the number of points that <strong>every citizen</strong> must put in the fund.</p>
+            <p>Every point left in the fund creates <strong>2.50 group points</strong>. These points are shared equally among all five citizens.</p>
+            <p class="mb-0">Before the group points are created, the leader may move up to 20 fund points to their own payoff.</p>
         </div>
     </div>
 </div>
 
 <div class="alert alert-light border mt-3">
-    <strong>The trade-off:</strong> A leader can require the same amount from everyone, and each point left for public services produces a larger return. The leader can also move up to 20 points from the public-services fund to their personal account, leaving fewer points to support public services.
+    <strong>You choose the method, not the leader.</strong> If <strong>A leader decides</strong> is chosen, the software selects a leader from the citizens who have served least often. Ties are decided at random.
 </div>
+
+<p>At the end of the round, everyone sees the group choice, the fund outcome, and their own payoff. The group is then reshuffled for the next round.</p>
 
 {{ next_button }}
 {{ endblock }}

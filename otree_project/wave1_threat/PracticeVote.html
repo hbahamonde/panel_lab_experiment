@@ -1,11 +1,53 @@
-{{ block title }}Practice 2: a leader decides{{ endblock }}
+{{ block title }}Try it: A leader decides{{ endblock }}
 
 {{ block content }}
-<p>Now suppose you are the leader. Every citizen has 10 points. You choose the same number of points that all five citizens must put in the public-services fund. You may then move up to 10 points from that fund to your personal account. Every point left in the fund creates 2.50 points for the group, and the resulting return is divided equally among all five citizens.</p>
+<p>Now you are the leader. Every citizen has 20 points. Choose how many points every citizen must put in the public-services fund. Then choose whether to move any fund points to your own payoff.</p>
 
-<p>Every citizen keeps the points not required for the fund and receives the same shared return. The leader also receives any points moved to the personal account. Moving points out leaves fewer points to support public services.</p>
+<p>You may move up to 20 points, but never more than the group has put in the fund. Every point left in the fund creates 2.50 group points. These points are shared equally among all five citizens.</p>
 
 {{ formfields }}
+
+<div class="card card-body bg-light mb-3" id="leader-preview" aria-live="polite">
+    Enter both amounts above to see the result.
+</div>
+
 <p class="text-muted">This practice choice is not paid and is not included in the analysis.</p>
 {{ next_button }}
+
+<script>
+(function () {
+    const requiredInput = document.querySelector('[name="practice_tax"]');
+    const movedInput = document.querySelector('[name="practice_rent"]');
+    const preview = document.getElementById('leader-preview');
+    if (!requiredInput || !movedInput || !preview) return;
+
+    function updatePreview() {
+        if (requiredInput.value === '' || movedInput.value === '') {
+            preview.textContent = 'Enter both amounts above to see the result.';
+            return;
+        }
+        const requiredAmount = Number(requiredInput.value);
+        const movedAmount = Number(movedInput.value);
+        const collected = 5 * requiredAmount;
+        if (movedAmount > collected) {
+            preview.innerHTML = '<strong>The leader cannot move more points than the group has put in the fund.</strong>';
+            return;
+        }
+        const fundTotal = collected - movedAmount;
+        const sharedReturn = 2.5 * fundTotal / 5;
+        const citizenPayoff = 20 - requiredAmount + sharedReturn;
+        const leaderPayoff = citizenPayoff + movedAmount;
+        preview.innerHTML =
+            '<strong>Result with your choices</strong><br>' +
+            'Points left in the fund: ' + fundTotal.toFixed(0) + '<br>' +
+            'Group points received by each citizen: ' + sharedReturn.toFixed(2) + '<br>' +
+            'Payoff of each other citizen: ' + citizenPayoff.toFixed(2) + ' points<br>' +
+            'Your payoff as leader: <strong>' + leaderPayoff.toFixed(2) + ' points</strong>';
+    }
+
+    requiredInput.addEventListener('input', updatePreview);
+    movedInput.addEventListener('input', updatePreview);
+    updatePreview();
+})();
+</script>
 {{ endblock }}

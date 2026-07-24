@@ -259,9 +259,9 @@ class Player(BasePlayer):
     constraint_pre_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh short-term gains.', blank=True)
     constraint_pre_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader should have more freedom from the usual limits.', blank=True)
 
-    practice_contribution = models.IntegerField(min=0, max=10, label='How many of your 10 points do you put in the public-services fund?', blank=True)
-    practice_tax = models.IntegerField(min=0, max=10, label='How many points must each citizen put in the public-services fund?', blank=True)
-    practice_rent = models.IntegerField(min=0, max=10, label='How many points do you move from the fund to your personal account?', blank=True)
+    practice_contribution = models.IntegerField(min=0, max=20, label='How many of your 20 points do you put in the public-services fund?', blank=True)
+    practice_tax = models.IntegerField(min=0, max=20, label='How many of each citizen\'s 20 points must go into the public-services fund?', blank=True)
+    practice_rent = models.IntegerField(min=0, max=20, label='How many fund points do you move to your own payoff?', blank=True)
     comprehension_1 = models.StringField(
         choices=[['individual', 'Each citizen chooses how many of their own points to put in the fund'], ['executive', 'One leader chooses the amount for every citizen']],
         widget=widgets.RadioSelect,
