@@ -54,9 +54,9 @@ def assign_treatments_after_block1(subsession):
             if p.participant.vars['matching_pool_id'] == pool_id
         ]
         observed_votes = [
-            p.participant.vars.get('w1_final_vote')
+            p.participant.vars.get('block1_final_vote')
             for p in pool_players
-            if p.participant.vars.get('w1_final_vote_observed', False)
+            if p.participant.vars.get('block1_final_vote_observed', False)
         ]
         leader_share = (
             sum(vote == C.EXECUTIVE for vote in observed_votes) / len(observed_votes)
@@ -120,7 +120,7 @@ def group_within_matching_pools(subsession):
         player.matching_pool_id = player.participant.vars['matching_pool_id']
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
         if subsession.round_number == 1:
-            subsession.session.vars['wave2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
+            subsession.session.vars['block2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         return
 
     groups = []
@@ -143,7 +143,7 @@ def group_within_matching_pools(subsession):
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
 
     if subsession.round_number == 1:
-        subsession.session.vars['wave2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
+        subsession.session.vars['block2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
 
 def constrained_multiplier(player):
@@ -161,9 +161,9 @@ def choose_institution(group):
     players = group.get_players()
     if solo_testing(group):
         player = players[0]
-        other_leader_votes = player.field_maybe_none('solo_other_leader_votes')
+        other_group_choice_votes = player.field_maybe_none('solo_other_group_choice_votes')
         executive_votes = int(player.institution_vote == C.EXECUTIVE) + (
-            other_leader_votes if other_leader_votes is not None else 2
+            other_group_choice_votes if other_group_choice_votes is not None else 2
         )
     else:
         executive_votes = sum(p.institution_vote == C.EXECUTIVE for p in players)
@@ -219,7 +219,7 @@ def calculate_round(group):
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'wave2_discontinuity'
+    NAME_IN_URL = 'block2_reversal'
     PLAYERS_PER_GROUP = None
     GROUP_SIZE = 5
     NUM_ROUNDS = 10
@@ -278,7 +278,7 @@ class Player(BasePlayer):
         label='How should the fund decision be made this round?',
         blank=True,
     )
-    solo_other_leader_votes = models.IntegerField(min=0, max=4, blank=True)
+    solo_other_group_choice_votes = models.IntegerField(min=0, max=4, blank=True)
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT, blank=True,
         label='How many of your 20 points do you put in the public-services fund?',
@@ -311,23 +311,23 @@ class Player(BasePlayer):
         blank=True,
     )
 
-    citizen_effectiveness_b2 = models.IntegerField(
+    individual_method_effectiveness = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
         label='After these rounds, how well can the group support public services when each citizen chooses how many points to put in the fund?',
         blank=True,
     )
-    collapse_risk_w2 = models.IntegerField(
+    constraint_risk = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
         label='After these rounds, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
         blank=True,
     )
-    constraint_w2_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current situation justifies giving one leader temporary power to act without asking the group first.', blank=True)
-    constraint_w2_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services are worth reducing checks on a leader\'s power in the current situation.', blank=True)
-    constraint_w2_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
-    constraint_w2_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require every citizen to put the same number of points in the public-services fund.', blank=True)
-    constraint_w2_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may move public-service points to a personal account.', blank=True)
-    constraint_w2_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh the current gains.', blank=True)
-    constraint_w2_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader needs more freedom from the usual limits.', blank=True)
+    constraint_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current situation justifies giving one leader temporary power to act without asking the group first.', blank=True)
+    constraint_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Faster public services are worth reducing checks on a leader\'s power in the current situation.', blank=True)
+    constraint_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should keep control over major public decisions, even if decisions take longer.', blank=True)
+    constraint_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require every citizen to put the same number of points in the public-services fund.', blank=True)
+    constraint_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer slower decisions by citizens to faster decisions by a leader who may move public-service points to a personal account.', blank=True)
+    constraint_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Weak limits on a leader\'s power create risks that outweigh the current gains.', blank=True)
+    constraint_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, a leader needs more freedom from the usual limits.', blank=True)
 
     democratic_reversal = models.BooleanField(initial=False)
     immediate_democratic_reversal = models.BooleanField(initial=False)
@@ -344,7 +344,7 @@ class TreatmentAssignmentWaitPage(WaitPage):
     after_all_players_arrive = assign_treatments_after_block1
 
 
-class Wave2Intro(Page):
+class Block2Intro(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1
@@ -366,7 +366,7 @@ class StrategicExpectations(Page):
         'expected_payoff_leader',
         'expected_leader_transfer',
     ]
-    template_name = 'wave2_discontinuity/QuestionPage.html'
+    template_name = 'block2_reversal/QuestionPage.html'
 
     @staticmethod
     def is_displayed(player):
@@ -394,8 +394,8 @@ class StrategicExpectations(Page):
 
 class InstitutionVote(Page):
     form_model = 'player'
-    form_fields = ['institution_vote', 'solo_other_leader_votes']
-    template_name = 'wave2_discontinuity/QuestionPage.html'
+    form_fields = ['institution_vote', 'solo_other_group_choice_votes']
+    template_name = 'block2_reversal/QuestionPage.html'
     timeout_seconds = 90
 
     @staticmethod
@@ -414,9 +414,9 @@ class InstitutionVote(Page):
             selected_vote=player.field_maybe_none('institution_vote'),
             slider_prefix='',
             solo_testing=solo_testing(player),
-            solo_other_leader_votes=(
-                player.field_maybe_none('solo_other_leader_votes')
-                if player.field_maybe_none('solo_other_leader_votes') is not None else 2
+            solo_other_group_choice_votes=(
+                player.field_maybe_none('solo_other_group_choice_votes')
+                if player.field_maybe_none('solo_other_group_choice_votes') is not None else 2
             ),
         )
 
@@ -426,24 +426,24 @@ class InstitutionVote(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        if solo_testing(player) and player.field_maybe_none('solo_other_leader_votes') is None:
-            player.solo_other_leader_votes = 2
+        if solo_testing(player) and player.field_maybe_none('solo_other_group_choice_votes') is None:
+            player.solo_other_group_choice_votes = 2
         if timeout_happened or not player.field_maybe_none('institution_vote'):
             player.institution_vote = random.choice([C.CONSTRAINED, C.EXECUTIVE])
             player.timed_out = True
             player.institution_vote_timed_out = True
         if player.round_number == 1:
             first_votes_observed = (
-                player.participant.vars.get('w1_final_vote_observed', False)
+                player.participant.vars.get('block1_final_vote_observed', False)
                 and not player.institution_vote_timed_out
             )
             player.immediate_democratic_reversal = (
                 first_votes_observed
-                and player.participant.vars.get('w1_final_vote') == C.EXECUTIVE
+                and player.participant.vars.get('block1_final_vote') == C.EXECUTIVE
                 and player.institution_vote == C.CONSTRAINED
             )
-            player.participant.vars['w2_first_vote'] = player.institution_vote
-            player.participant.vars['w2_first_vote_observed'] = (
+            player.participant.vars['block2_first_vote'] = player.institution_vote
+            player.participant.vars['block2_first_vote_observed'] = (
                 not player.institution_vote_timed_out
             )
             player.participant.vars['immediate_democratic_reversal_observed'] = (
@@ -458,10 +458,10 @@ class VoteWaitPage(WaitPage):
     body_text = 'Waiting for the other members of this round\'s anonymous group.'
     after_all_players_arrive = choose_institution
 
-class DemocraticContribution(Page):
+class IndividualAllocation(Page):
     form_model = 'player'
     form_fields = ['contribution']
-    template_name = 'wave2_discontinuity/QuestionPage.html'
+    template_name = 'block2_reversal/QuestionPage.html'
     timeout_seconds = 90
 
     @staticmethod
@@ -484,7 +484,7 @@ class DemocraticContribution(Page):
 
     @staticmethod
     def error_message(player, values):
-        return require_all(player, values, DemocraticContribution.form_fields)
+        return require_all(player, values, IndividualAllocation.form_fields)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -493,10 +493,10 @@ class DemocraticContribution(Page):
             player.timed_out = True
 
 
-class ExecutiveDecision(Page):
+class DecisionMakerAllocation(Page):
     form_model = 'player'
     form_fields = ['executive_tax', 'executive_rent']
-    template_name = 'wave2_discontinuity/QuestionPage.html'
+    template_name = 'block2_reversal/QuestionPage.html'
     timeout_seconds = 90
 
     @staticmethod
@@ -519,7 +519,7 @@ class ExecutiveDecision(Page):
 
     @staticmethod
     def error_message(player, values):
-        missing = require_all(player, values, ExecutiveDecision.form_fields)
+        missing = require_all(player, values, DecisionMakerAllocation.form_fields)
         if missing:
             return missing
         if values.get('executive_rent') is not None and values.get('executive_tax') is not None:
@@ -539,7 +539,7 @@ class DecisionWaitPage(WaitPage):
     after_all_players_arrive = calculate_round
 
 class RoundResults(Page):
-    template_name = 'wave2_discontinuity/Results.html'
+    template_name = 'block2_reversal/RoundResults.html'
 
     @staticmethod
     def vars_for_template(player):
@@ -547,8 +547,8 @@ class RoundResults(Page):
         return dict(
             round_number=player.round_number,
             institution_label=dict(C.INSTITUTION_CHOICES)[group.selected_institution],
-            citizen_votes=C.GROUP_SIZE - group.executive_votes,
-            leader_votes=group.executive_votes,
+            individual_choice_votes=C.GROUP_SIZE - group.executive_votes,
+            group_choice_votes=group.executive_votes,
             solo_testing=solo_testing(player),
             executive_selected=group.selected_institution == C.EXECUTIVE,
             is_executive=player.id_in_group == group.executive_id,
@@ -565,10 +565,10 @@ class RoundResults(Page):
     def before_next_page(player, timeout_happened):
         if player.round_number != C.NUM_ROUNDS:
             return
-        block1_vote = player.participant.vars.get('w1_final_vote')
+        block1_vote = player.participant.vars.get('block1_final_vote')
         block2_vote = player.institution_vote
         final_votes_observed = (
-            player.participant.vars.get('w1_final_vote_observed', False)
+            player.participant.vars.get('block1_final_vote_observed', False)
             and not player.institution_vote_timed_out
         )
         player.democratic_reversal = (
@@ -576,12 +576,12 @@ class RoundResults(Page):
             and block1_vote == C.EXECUTIVE
             and block2_vote == C.CONSTRAINED
         )
-        player.participant.vars['w2_final_vote'] = block2_vote
-        player.participant.vars['w2_final_vote_observed'] = not player.institution_vote_timed_out
+        player.participant.vars['block2_final_vote'] = block2_vote
+        player.participant.vars['block2_final_vote_observed'] = not player.institution_vote_timed_out
         player.participant.vars['democratic_reversal_observed'] = final_votes_observed
         player.participant.vars['democratic_reversal'] = player.democratic_reversal
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
-        player.participant.vars['w2_late_executive_share'] = sum(
+        player.participant.vars['block2_late_executive_share'] = sum(
             vote == C.EXECUTIVE for vote in late_votes
         ) / 3
         player.participant.vars['expected_payoff_citizens_b2_final'] = (
@@ -604,21 +604,21 @@ class RoundResults(Page):
             first_round.field_maybe_none('expected_leader_transfer')
         )
 
-        paying_round = player.session.vars['wave2_paying_round']
+        paying_round = player.session.vars['block2_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff
         player.payoff = cu(selected_payoff)
-        player.participant.vars['wave2_paying_round'] = paying_round
-        player.participant.vars['wave2_selected_payoff'] = selected_payoff
+        player.participant.vars['block2_paying_round'] = paying_round
+        player.participant.vars['block2_selected_payoff'] = selected_payoff
 
 
-class Wave2Mechanism(Page):
+class FinalQuestions(Page):
     form_model = 'player'
     form_fields = [
-        'citizen_effectiveness_b2', 'collapse_risk_w2',
-        'constraint_w2_1', 'constraint_w2_2', 'constraint_w2_3', 'constraint_w2_4',
-        'constraint_w2_5', 'constraint_w2_6', 'constraint_w2_7',
+        'individual_method_effectiveness', 'constraint_risk',
+        'constraint_1', 'constraint_2', 'constraint_3', 'constraint_4',
+        'constraint_5', 'constraint_6', 'constraint_7',
     ]
-    template_name = 'wave2_discontinuity/QuestionPage.html'
+    template_name = 'block2_reversal/QuestionPage.html'
 
     @staticmethod
     def is_displayed(player):
@@ -633,16 +633,16 @@ class Wave2Mechanism(Page):
                 'about the situation you experienced.'
             ),
             institution_vote_page=False,
-            slider_prefix='constraint_w2_',
+            slider_prefix='constraint_',
             optional_responses=development_mode(player),
         )
 
     @staticmethod
     def error_message(player, values):
-        return require_all(player, values, Wave2Mechanism.form_fields)
+        return require_all(player, values, FinalQuestions.form_fields)
 
 
-class Wave2Complete(Page):
+class StudyComplete(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == C.NUM_ROUNDS
@@ -650,9 +650,10 @@ class Wave2Complete(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            paying_round=player.participant.vars['wave2_paying_round'],
-            selected_payoff=player.participant.vars['wave2_selected_payoff'],
-            wave1_selected_payoff=player.participant.vars.get('wave1_selected_payoff', 0),
+            paying_round=player.participant.vars['block2_paying_round'],
+            selected_payoff=player.participant.vars['block2_selected_payoff'],
+            block1_paying_round=player.participant.vars['block1_paying_round'],
+            block1_selected_payoff=player.participant.vars.get('block1_selected_payoff', 0),
             total_payoff=player.participant.payoff,
             performance_payment=player.participant.payoff.to_real_world_currency(player.session),
             participation_fee=player.session.config['participation_fee'],
@@ -662,14 +663,14 @@ class Wave2Complete(Page):
 
 page_sequence = [
     TreatmentAssignmentWaitPage,
-    Wave2Intro,
+    Block2Intro,
     StrategicExpectations,
     InstitutionVote,
     VoteWaitPage,
-    DemocraticContribution,
-    ExecutiveDecision,
+    IndividualAllocation,
+    DecisionMakerAllocation,
     DecisionWaitPage,
     RoundResults,
-    Wave2Mechanism,
-    Wave2Complete,
+    FinalQuestions,
+    StudyComplete,
 ]

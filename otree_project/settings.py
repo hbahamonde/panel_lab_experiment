@@ -5,7 +5,7 @@ SESSION_CONFIGS = [
         name='panel_lab_experiment',
         display_name='Undemocratic reversals: one-session laboratory experiment',
         num_demo_participants=10,
-        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
+        app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=False,
         matching_pool_size=10,
     ),
@@ -13,7 +13,7 @@ SESSION_CONFIGS = [
         name='panel_lab_demo',
         display_name='Undemocratic reversals (full-group testing)',
         num_demo_participants=10,
-        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
+        app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
         matching_pool_size=10,
     ),
@@ -21,7 +21,7 @@ SESSION_CONFIGS = [
         name='panel_lab_solo_recovery',
         display_name='Solo test: public services recover',
         num_demo_participants=1,
-        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
+        app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
         matching_pool_size=1,
         solo_testing=True,
@@ -31,7 +31,7 @@ SESSION_CONFIGS = [
         name='panel_lab_solo_persistence',
         display_name='Solo test: public services remain under strain',
         num_demo_participants=1,
-        app_sequence=['intro_consent', 'wave1_threat', 'wave2_discontinuity'],
+        app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
         matching_pool_size=1,
         solo_testing=True,
@@ -64,6 +64,7 @@ LANGUAGE_CODE = 'en'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'EUR'
 USE_POINTS = True
+POINTS_DECIMAL_PLACES = 2
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable

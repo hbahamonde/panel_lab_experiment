@@ -44,6 +44,14 @@
 *.rubbercache
 rubber.cache
 
+## Local development and operating-system files:
+.DS_Store
+.idea/
+.venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+
 ## Build tool directories for auxiliary files
 # latexrun
 latex.out/

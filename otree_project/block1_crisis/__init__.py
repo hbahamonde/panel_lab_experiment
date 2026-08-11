@@ -38,7 +38,7 @@ def assign_matching_pools(subsession):
             player.participant.vars['matching_pool_id'] = 1
             player.participant.vars['matching_pool_uid'] = f'{subsession.session.code}-pool-1'
             player.participant.vars['times_executive'] = 0
-            subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
+            subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = 1
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
@@ -61,7 +61,7 @@ def assign_matching_pools(subsession):
             )
             player.participant.vars['times_executive'] = 0
 
-        subsession.session.vars['wave1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
+        subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
     groups = []
     pool_ids = sorted({p.participant.vars['matching_pool_id'] for p in players})
@@ -88,14 +88,14 @@ def choose_institution(group):
     players = group.get_players()
     if solo_testing(group):
         player = players[0]
-        other_leader_votes = player.field_maybe_none('solo_other_leader_votes')
-        undemocratic_votes = int(player.institution_vote == C.EXECUTIVE) + (
-            other_leader_votes if other_leader_votes is not None else 2
+        other_group_choice_votes = player.field_maybe_none('solo_other_group_choice_votes')
+        group_choice_votes = int(player.institution_vote == C.EXECUTIVE) + (
+            other_group_choice_votes if other_group_choice_votes is not None else 2
         )
     else:
-        undemocratic_votes = sum(p.institution_vote == C.EXECUTIVE for p in players)
-    group.executive_votes = undemocratic_votes
-    group.selected_institution = C.EXECUTIVE if undemocratic_votes >= 3 else C.CONSTRAINED
+        group_choice_votes = sum(p.institution_vote == C.EXECUTIVE for p in players)
+    group.executive_votes = group_choice_votes
+    group.selected_institution = C.EXECUTIVE if group_choice_votes >= 3 else C.CONSTRAINED
 
     if group.selected_institution == C.EXECUTIVE:
         if solo_testing(group):
@@ -145,7 +145,7 @@ def calculate_round(group):
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'wave1_threat'
+    NAME_IN_URL = 'block1_crisis'
     PLAYERS_PER_GROUP = None
     GROUP_SIZE = 5
     MATCHING_POOL_SIZE = 10
@@ -199,7 +199,7 @@ class Player(BasePlayer):
         label='How should the fund decision be made this round?',
         blank=True,
     )
-    solo_other_leader_votes = models.IntegerField(min=0, max=4, blank=True)
+    solo_other_group_choice_votes = models.IntegerField(min=0, max=4, blank=True)
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT,
         label='How many of your 20 points do you put in the public-services fund?',
@@ -256,7 +256,7 @@ class Player(BasePlayer):
         blank=True,
     )
 
-class Wave1Intro(Page):
+class Block1Intro(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1
@@ -275,10 +275,10 @@ class PracticeIntro(Page):
         return player.round_number == 1
 
 
-class PracticeDemocratic(Page):
+class PracticeIndividualChoice(Page):
     form_model = 'player'
     form_fields = ['practice_contribution']
-    template_name = 'wave1_threat/PracticeDemocratic.html'
+    template_name = 'block1_crisis/PracticeIndividualChoice.html'
 
     @staticmethod
     def is_displayed(player):
@@ -286,13 +286,13 @@ class PracticeDemocratic(Page):
 
     @staticmethod
     def error_message(player, values):
-        return require_all(player, values, PracticeDemocratic.form_fields)
+        return require_all(player, values, PracticeIndividualChoice.form_fields)
 
 
-class PracticeExecutive(Page):
+class PracticeGroupChoice(Page):
     form_model = 'player'
     form_fields = ['practice_tax', 'practice_rent']
-    template_name = 'wave1_threat/PracticeVote.html'
+    template_name = 'block1_crisis/PracticeGroupChoice.html'
 
     @staticmethod
     def is_displayed(player):
@@ -300,7 +300,7 @@ class PracticeExecutive(Page):
 
     @staticmethod
     def error_message(player, values):
-        missing = require_all(player, values, PracticeExecutive.form_fields)
+        missing = require_all(player, values, PracticeGroupChoice.form_fields)
         if missing:
             return missing
         if values.get('practice_rent') is not None and values.get('practice_tax') is not None:
@@ -311,7 +311,7 @@ class PracticeExecutive(Page):
 class Comprehension(Page):
     form_model = 'player'
     form_fields = ['comprehension_1', 'comprehension_2', 'comprehension_3']
-    template_name = 'wave1_threat/PracticeComplete.html'
+    template_name = 'block1_crisis/Comprehension.html'
 
     @staticmethod
     def is_displayed(player):
@@ -339,7 +339,7 @@ class StrategicExpectations(Page):
         'expected_payoff_leader',
         'expected_leader_transfer',
     ]
-    template_name = 'wave1_threat/QuestionPage.html'
+    template_name = 'block1_crisis/QuestionPage.html'
 
     @staticmethod
     def is_displayed(player):
@@ -365,8 +365,8 @@ class StrategicExpectations(Page):
 
 class InstitutionVote(Page):
     form_model = 'player'
-    form_fields = ['institution_vote', 'solo_other_leader_votes']
-    template_name = 'wave1_threat/BeginMainStudy.html'
+    form_fields = ['institution_vote', 'solo_other_group_choice_votes']
+    template_name = 'block1_crisis/InstitutionChoice.html'
     timeout_seconds = 90
 
     @staticmethod
@@ -379,9 +379,9 @@ class InstitutionVote(Page):
             optional_responses=development_mode(player),
             selected_vote=player.field_maybe_none('institution_vote'),
             solo_testing=solo_testing(player),
-            solo_other_leader_votes=(
-                player.field_maybe_none('solo_other_leader_votes')
-                if player.field_maybe_none('solo_other_leader_votes') is not None else 2
+            solo_other_group_choice_votes=(
+                player.field_maybe_none('solo_other_group_choice_votes')
+                if player.field_maybe_none('solo_other_group_choice_votes') is not None else 2
             ),
         )
 
@@ -391,8 +391,8 @@ class InstitutionVote(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        if solo_testing(player) and player.field_maybe_none('solo_other_leader_votes') is None:
-            player.solo_other_leader_votes = 2
+        if solo_testing(player) and player.field_maybe_none('solo_other_group_choice_votes') is None:
+            player.solo_other_group_choice_votes = 2
         if timeout_happened or not player.field_maybe_none('institution_vote'):
             player.institution_vote = random.choice([C.CONSTRAINED, C.EXECUTIVE])
             player.timed_out = True
@@ -404,10 +404,10 @@ class VoteWaitPage(WaitPage):
     after_all_players_arrive = choose_institution
 
 
-class DemocraticContribution(Page):
+class IndividualAllocation(Page):
     form_model = 'player'
     form_fields = ['contribution']
-    template_name = 'wave1_threat/QuestionPage.html'
+    template_name = 'block1_crisis/QuestionPage.html'
     timeout_seconds = 90
 
     @staticmethod
@@ -429,7 +429,7 @@ class DemocraticContribution(Page):
 
     @staticmethod
     def error_message(player, values):
-        return require_all(player, values, DemocraticContribution.form_fields)
+        return require_all(player, values, IndividualAllocation.form_fields)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -438,10 +438,10 @@ class DemocraticContribution(Page):
             player.timed_out = True
 
 
-class ExecutiveDecision(Page):
+class DecisionMakerAllocation(Page):
     form_model = 'player'
     form_fields = ['executive_tax', 'executive_rent']
-    template_name = 'wave1_threat/QuestionPage.html'
+    template_name = 'block1_crisis/QuestionPage.html'
     timeout_seconds = 90
 
     @staticmethod
@@ -463,7 +463,7 @@ class ExecutiveDecision(Page):
 
     @staticmethod
     def error_message(player, values):
-        missing = require_all(player, values, ExecutiveDecision.form_fields)
+        missing = require_all(player, values, DecisionMakerAllocation.form_fields)
         if missing:
             return missing
         if values.get('executive_rent') is not None and values.get('executive_tax') is not None:
@@ -484,7 +484,7 @@ class DecisionWaitPage(WaitPage):
 
 
 class RoundResults(Page):
-    template_name = 'wave1_threat/Results.html'
+    template_name = 'block1_crisis/RoundResults.html'
 
     @staticmethod
     def vars_for_template(player):
@@ -493,8 +493,8 @@ class RoundResults(Page):
             round_number=player.round_number,
             total_rounds=C.NUM_ROUNDS,
             institution_label=dict(C.INSTITUTION_CHOICES)[group.selected_institution],
-            citizen_votes=C.GROUP_SIZE - group.executive_votes,
-            leader_votes=group.executive_votes,
+            individual_choice_votes=C.GROUP_SIZE - group.executive_votes,
+            group_choice_votes=group.executive_votes,
             solo_testing=solo_testing(player),
             executive_selected=group.selected_institution == C.EXECUTIVE,
             is_executive=player.id_in_group == group.executive_id,
@@ -510,10 +510,10 @@ class RoundResults(Page):
     def before_next_page(player, timeout_happened):
         if player.round_number != C.NUM_ROUNDS:
             return
-        player.participant.vars['w1_final_vote'] = player.institution_vote
-        player.participant.vars['w1_final_vote_observed'] = not player.institution_vote_timed_out
+        player.participant.vars['block1_final_vote'] = player.institution_vote
+        player.participant.vars['block1_final_vote_observed'] = not player.institution_vote_timed_out
         late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
-        player.participant.vars['w1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
+        player.participant.vars['block1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
         player.participant.vars['expected_payoff_citizens_b1'] = (
             player.field_maybe_none('expected_payoff_citizens')
         )
@@ -524,14 +524,14 @@ class RoundResults(Page):
             player.field_maybe_none('expected_leader_transfer')
         )
 
-        paying_round = player.session.vars['wave1_paying_round']
+        paying_round = player.session.vars['block1_paying_round']
         selected_payoff = player.in_round(paying_round).round_payoff
         player.payoff = cu(selected_payoff)
-        player.participant.vars['wave1_paying_round'] = paying_round
-        player.participant.vars['wave1_selected_payoff'] = selected_payoff
+        player.participant.vars['block1_paying_round'] = paying_round
+        player.participant.vars['block1_selected_payoff'] = selected_payoff
 
 
-class Wave1Complete(Page):
+class Block1Complete(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == C.NUM_ROUNDS
@@ -539,23 +539,23 @@ class Wave1Complete(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            paying_round=player.participant.vars['wave1_paying_round'],
-            selected_payoff=player.participant.vars['wave1_selected_payoff'],
+            paying_round=player.participant.vars['block1_paying_round'],
+            selected_payoff=player.participant.vars['block1_selected_payoff'],
         )
 
 
 page_sequence = [
-    Wave1Intro,
+    Block1Intro,
     PracticeIntro,
-    PracticeDemocratic,
-    PracticeExecutive,
+    PracticeIndividualChoice,
+    PracticeGroupChoice,
     Comprehension,
     StrategicExpectations,
     InstitutionVote,
     VoteWaitPage,
-    DemocraticContribution,
-    ExecutiveDecision,
+    IndividualAllocation,
+    DecisionMakerAllocation,
     DecisionWaitPage,
     RoundResults,
-    Wave1Complete,
+    Block1Complete,
 ]

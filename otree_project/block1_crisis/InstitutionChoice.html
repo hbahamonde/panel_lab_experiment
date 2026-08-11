@@ -9,14 +9,14 @@
     <div class="choice-header" aria-hidden="true">
         <div>Method</div><div>Who chooses the amount?</div><div>Group points created</div><div>Points moved from the fund</div>
     </div>
-    <label class="choice-row citizens-row">
+    <label class="choice-row individual-choice-row">
         <input type="radio" name="institution_vote" value="constrained" {{ if selected_vote == 'constrained' }}checked{{ endif }}>
         <span class="choice-name"><span class="choice-mark">E</span><strong>Each person chooses</strong></span>
         <span><small>Who chooses?</small>Each member chooses how many of their own points to put in the fund</span>
         <span><small>Group points</small>Each fund point creates {{ constrained_multiplier }} group points</span>
         <span><small>Moved points</small>All fund points remain in the fund</span>
     </label>
-    <label class="choice-row leader-row">
+    <label class="choice-row group-choice-row">
         <input type="radio" name="institution_vote" value="executive" {{ if selected_vote == 'executive' }}checked{{ endif }}>
         <span class="choice-name"><span class="choice-mark">O</span><strong>One person chooses for the group</strong></span>
         <span><small>Who chooses?</small>The selected person chooses the same amount for every member</span>
@@ -27,14 +27,14 @@
 
 {{ if solo_testing }}
 <div class="solo-test-panel">
-    <label for="id_solo_other_leader_votes"><strong>Solo test control</strong></label>
+    <label for="id_solo_other_group_choice_votes"><strong>Solo test control</strong></label>
     <p class="mb-2">How many of the four simulated members choose <strong>One person chooses for the group</strong>?</p>
-    <select class="form-select" id="id_solo_other_leader_votes" name="solo_other_leader_votes">
-        <option value="0" {{ if solo_other_leader_votes == 0 }}selected{{ endif }}>0 of 4</option>
-        <option value="1" {{ if solo_other_leader_votes == 1 }}selected{{ endif }}>1 of 4</option>
-        <option value="2" {{ if solo_other_leader_votes == 2 }}selected{{ endif }}>2 of 4</option>
-        <option value="3" {{ if solo_other_leader_votes == 3 }}selected{{ endif }}>3 of 4</option>
-        <option value="4" {{ if solo_other_leader_votes == 4 }}selected{{ endif }}>4 of 4</option>
+    <select class="form-select" id="id_solo_other_group_choice_votes" name="solo_other_group_choice_votes">
+        <option value="0" {{ if solo_other_group_choice_votes == 0 }}selected{{ endif }}>0 of 4</option>
+        <option value="1" {{ if solo_other_group_choice_votes == 1 }}selected{{ endif }}>1 of 4</option>
+        <option value="2" {{ if solo_other_group_choice_votes == 2 }}selected{{ endif }}>2 of 4</option>
+        <option value="3" {{ if solo_other_group_choice_votes == 3 }}selected{{ endif }}>3 of 4</option>
+        <option value="4" {{ if solo_other_group_choice_votes == 4 }}selected{{ endif }}>4 of 4</option>
     </select>
     <p class="small text-muted mb-0 mt-2">Your choice is added to these four simulated choices. This control appears only in one-person test sessions.</p>
 </div>
@@ -56,14 +56,14 @@
 .choice-row input { position:absolute; opacity:0; pointer-events:none; }
 .choice-row small { display:none; color:#5b6470; font-weight:700; margin-bottom:3px; }
 .choice-row:hover, .choice-row:focus-within { box-shadow:inset 4px 0 0 #6b7280; }
-.citizens-row:hover { background:#eaf4ff; box-shadow:inset 5px 0 0 #2774b8; }
-.leader-row:hover { background:#fff2df; box-shadow:inset 5px 0 0 #c46b12; }
-.citizens-row:has(input:checked), .citizens-row.selected { background:#dceeff; box-shadow:inset 6px 0 0 #1469aa; }
-.leader-row:has(input:checked), .leader-row.selected { background:#ffe8c7; box-shadow:inset 6px 0 0 #ad5600; }
+.individual-choice-row:hover { background:#eaf4ff; box-shadow:inset 5px 0 0 #2774b8; }
+.group-choice-row:hover { background:#fff2df; box-shadow:inset 5px 0 0 #c46b12; }
+.individual-choice-row:has(input:checked), .individual-choice-row.selected { background:#dceeff; box-shadow:inset 6px 0 0 #1469aa; }
+.group-choice-row:has(input:checked), .group-choice-row.selected { background:#ffe8c7; box-shadow:inset 6px 0 0 #ad5600; }
 .choice-name { display:flex; align-items:center; gap:9px; }
 .choice-mark { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; color:#fff; font-weight:800; flex:0 0 30px; }
-.citizens-row .choice-mark { background:#2774b8; }
-.leader-row .choice-mark { background:#c46b12; }
+.individual-choice-row .choice-mark { background:#2774b8; }
+.group-choice-row .choice-mark { background:#c46b12; }
 .solo-test-panel { margin:1rem 0; padding:14px 16px; border:1px dashed #6b7280; border-radius:8px; background:#f7f7f8; }
 .solo-test-panel .form-select { max-width:180px; }
 @media (max-width: 780px) {

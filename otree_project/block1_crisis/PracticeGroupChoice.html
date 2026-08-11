@@ -7,7 +7,7 @@
 
 {{ formfields }}
 
-<div class="card card-body bg-light mb-3" id="leader-preview" aria-live="polite">
+<div class="card card-body bg-light mb-3" id="decision-maker-preview" aria-live="polite">
     Enter both amounts above to see the result.
 </div>
 
@@ -18,7 +18,7 @@
 (function () {
     const requiredInput = document.querySelector('[name="practice_tax"]');
     const movedInput = document.querySelector('[name="practice_rent"]');
-    const preview = document.getElementById('leader-preview');
+    const preview = document.getElementById('decision-maker-preview');
     if (!requiredInput || !movedInput || !preview) return;
 
     function updatePreview() {
@@ -36,13 +36,13 @@
         const fundTotal = collected - movedAmount;
         const sharedReturn = 2.5 * fundTotal / 5;
         const citizenPayoff = 20 - requiredAmount + sharedReturn;
-        const leaderPayoff = citizenPayoff + movedAmount;
+        const decisionMakerPayoff = citizenPayoff + movedAmount;
         preview.innerHTML =
             '<strong>Result with your choices</strong><br>' +
             'Points left in the fund: ' + fundTotal.toFixed(0) + '<br>' +
             'Group points received by each member: ' + sharedReturn.toFixed(2) + '<br>' +
             'Payoff of each other member: ' + citizenPayoff.toFixed(2) + ' points<br>' +
-            'Your payoff as decision-maker: <strong>' + leaderPayoff.toFixed(2) + ' points</strong>';
+            'Your payoff as decision-maker: <strong>' + decisionMakerPayoff.toFixed(2) + ' points</strong>';
     }
 
     requiredInput.addEventListener('input', updatePreview);

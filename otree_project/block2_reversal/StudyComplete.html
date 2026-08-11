@@ -4,7 +4,8 @@
 <p>Thank you. All twenty decisions and your answers have been recorded.</p>
 
 <table class="table table-bordered">
-    <tr><th>Block-1 selected-round payoff</th><td>{{ wave1_selected_payoff|to2 }} points</td></tr>
+    <tr><th>Block-1 selected payoff round</th><td>Round {{ block1_paying_round }}</td></tr>
+    <tr><th>Block-1 selected-round payoff</th><td>{{ block1_selected_payoff|to2 }} points</td></tr>
     <tr><th>Block-2 selected payoff round</th><td>Round {{ paying_round }}</td></tr>
     <tr><th>Block-2 selected-round payoff</th><td>{{ selected_payoff|to2 }} points</td></tr>
     <tr class="table-light"><th>Total experimental points</th><td><strong>{{ total_payoff|to2 }}</strong></td></tr>
