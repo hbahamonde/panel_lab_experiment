@@ -225,7 +225,7 @@ Each laboratory cohort completes one 75--90 minute session with two ten-round bl
 ]
 
 % One paid round
-\node[font=\bfseries] at (2.65,3.70) {One paid round};
+\node[font=\bfseries] at (2.65,3.70) {One round};
 \foreach \lab [count=\k from 0] in {1,2,3,4,5} {
   \node[groupone] (firsta\lab) at ({1.05+0.80*\k},2.55) {$p_{\lab}$};
 }
@@ -237,7 +237,7 @@ Each laboratory cohort completes one 75--90 minute session with two ten-round bl
   at ($(firstpool.south)+(0,-0.10)$) {matching pool $g$};
 
 % Next paid round: same pool, new groups
-\node[font=\bfseries] at (10.15,3.70) {Next paid round};
+\node[font=\bfseries] at (10.15,3.70) {Next round};
 \foreach \lab [count=\k from 0] in {1,3,6,8,10} {
   \node[groupone] (nexta\lab) at ({8.55+0.80*\k},2.55) {$p_{\lab}$};
 }
