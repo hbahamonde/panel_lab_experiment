@@ -22,7 +22,7 @@
     <label class="choice-row group-choice-row">
         <input type="radio" name="institution_vote" value="executive" {{ if selected_vote == 'executive' }}checked{{ endif }}>
         <span class="choice-name"><span class="choice-mark">O</span><strong>One person chooses for the group</strong></span>
-        <span><small>Who chooses?</small>The selected person chooses the same amount for every member</span>
+        <span><small>Who chooses?</small>The software chooses among the members who have been decision-maker least often; ties are random. That person sets the same amount for everyone</span>
         <span><small>Group points</small>Each point left in the fund creates {{ executive_multiplier }} group points</span>
         <span><small>Moved points</small>The selected person may move up to 20 fund points to their own payoff</span>
     </label>

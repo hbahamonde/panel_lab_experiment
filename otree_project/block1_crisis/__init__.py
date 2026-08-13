@@ -1,4 +1,5 @@
 import random
+import time
 
 from otree.api import *
 
@@ -24,6 +25,19 @@ def require_all(player, values, field_names):
 
 def solo_testing(obj):
     return obj.session.config.get('solo_testing', False)
+
+
+def start_decision_timer(player, decision_name):
+    key = f'block1_round_{player.round_number}_{decision_name}_started_at'
+    player.participant.vars.setdefault(key, time.time())
+
+
+def record_decision_time(player, decision_name, seconds_field, flag_field):
+    key = f'block1_round_{player.round_number}_{decision_name}_started_at'
+    started_at = player.participant.vars.pop(key, time.time())
+    elapsed = max(0, time.time() - started_at)
+    setattr(player, seconds_field, elapsed)
+    setattr(player, flag_field, elapsed > C.DECISION_DELAY_THRESHOLD_SECONDS)
 
 
 def assign_matching_pools(subsession):
@@ -89,11 +103,13 @@ def choose_institution(group):
     if solo_testing(group):
         player = players[0]
         other_group_choice_votes = player.field_maybe_none('solo_other_group_choice_votes')
-        group_choice_votes = int(player.institution_vote == C.EXECUTIVE) + (
+        group_choice_votes = int(player.field_maybe_none('institution_vote') == C.EXECUTIVE) + (
             other_group_choice_votes if other_group_choice_votes is not None else 2
         )
     else:
-        group_choice_votes = sum(p.institution_vote == C.EXECUTIVE for p in players)
+        group_choice_votes = sum(
+            p.field_maybe_none('institution_vote') == C.EXECUTIVE for p in players
+        )
     group.executive_votes = group_choice_votes
     group.selected_institution = C.EXECUTIVE if group_choice_votes >= 3 else C.CONSTRAINED
 
@@ -118,20 +134,20 @@ def calculate_round(group):
     players = group.get_players()
     if group.selected_institution == C.CONSTRAINED:
         if solo_testing(group):
-            total = (players[0].contribution or 0) + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION
+            total = (players[0].field_maybe_none('contribution') or 0) + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION
         else:
-            total = sum(p.contribution or 0 for p in players)
+            total = sum(p.field_maybe_none('contribution') or 0 for p in players)
         group.total_contribution = total
         group.executive_tax = 0
         group.executive_rent = 0
         group.public_account = total
         group.per_capita_return = C.CONSTRAINED_MULTIPLIER_CRISIS * total / C.GROUP_SIZE
         for player in players:
-            player.round_payoff = C.ENDOWMENT - (player.contribution or 0) + group.per_capita_return
+            player.round_payoff = C.ENDOWMENT - (player.field_maybe_none('contribution') or 0) + group.per_capita_return
     else:
         executive = group.get_player_by_id(group.executive_id)
-        tax = executive.executive_tax or 0
-        rent = executive.executive_rent or 0
+        tax = executive.field_maybe_none('executive_tax') or 0
+        rent = executive.field_maybe_none('executive_rent') or 0
         public_account = C.GROUP_SIZE * tax - rent
         group.total_contribution = C.GROUP_SIZE * tax
         group.executive_tax = tax
@@ -145,7 +161,7 @@ def calculate_round(group):
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'block1_crisis'
+    NAME_IN_URL = 'group_decisions_1'
     PLAYERS_PER_GROUP = None
     GROUP_SIZE = 5
     MATCHING_POOL_SIZE = 10
@@ -163,9 +179,7 @@ class C(BaseConstants):
     EXECUTIVE = 'executive'
     TREATMENT_RECOVERY = 'recovery'
     TREATMENT_PERSISTENCE = 'persistence'
-    DEFAULT_CONTRIBUTION = 10
-    DEFAULT_EXECUTIVE_TAX = 10
-    DEFAULT_EXECUTIVE_RENT = 0
+    DECISION_DELAY_THRESHOLD_SECONDS = 90
     INSTITUTION_CHOICES = [
         [CONSTRAINED, 'Each person chooses'],
         [EXECUTIVE, 'One person chooses for the group'],
@@ -216,8 +230,10 @@ class Player(BasePlayer):
         blank=True,
     )
     is_executive = models.BooleanField(initial=False)
-    timed_out = models.BooleanField(initial=False)
-    institution_vote_timed_out = models.BooleanField(initial=False)
+    institution_vote_time_seconds = models.FloatField(initial=0)
+    institution_vote_over_90 = models.BooleanField(initial=False)
+    allocation_time_seconds = models.FloatField(initial=0)
+    allocation_over_90 = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
     expected_payoff_citizens = models.IntegerField(
         min=0, max=60,
@@ -367,10 +383,9 @@ class InstitutionVote(Page):
     form_model = 'player'
     form_fields = ['institution_vote', 'solo_other_group_choice_votes']
     template_name = 'block1_crisis/InstitutionChoice.html'
-    timeout_seconds = 90
-
     @staticmethod
     def vars_for_template(player):
+        start_decision_timer(player, 'institution_vote')
         return dict(
             round_number=player.round_number,
             total_rounds=C.NUM_ROUNDS,
@@ -391,12 +406,14 @@ class InstitutionVote(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
+        record_decision_time(
+            player,
+            'institution_vote',
+            'institution_vote_time_seconds',
+            'institution_vote_over_90',
+        )
         if solo_testing(player) and player.field_maybe_none('solo_other_group_choice_votes') is None:
             player.solo_other_group_choice_votes = 2
-        if timeout_happened or not player.field_maybe_none('institution_vote'):
-            player.institution_vote = random.choice([C.CONSTRAINED, C.EXECUTIVE])
-            player.timed_out = True
-            player.institution_vote_timed_out = True
 
 
 class VoteWaitPage(WaitPage):
@@ -408,14 +425,13 @@ class IndividualAllocation(Page):
     form_model = 'player'
     form_fields = ['contribution']
     template_name = 'block1_crisis/QuestionPage.html'
-    timeout_seconds = 90
-
     @staticmethod
     def is_displayed(player):
         return player.group.selected_institution == C.CONSTRAINED
 
     @staticmethod
     def vars_for_template(player):
+        start_decision_timer(player, 'allocation')
         return dict(
             page_title='Each person chooses',
             explanation=(
@@ -433,23 +449,25 @@ class IndividualAllocation(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        if timeout_happened or player.field_maybe_none('contribution') is None:
-            player.contribution = C.DEFAULT_CONTRIBUTION
-            player.timed_out = True
+        record_decision_time(
+            player,
+            'allocation',
+            'allocation_time_seconds',
+            'allocation_over_90',
+        )
 
 
 class DecisionMakerAllocation(Page):
     form_model = 'player'
     form_fields = ['executive_tax', 'executive_rent']
     template_name = 'block1_crisis/QuestionPage.html'
-    timeout_seconds = 90
-
     @staticmethod
     def is_displayed(player):
         return player.group.selected_institution == C.EXECUTIVE and player.is_executive
 
     @staticmethod
     def vars_for_template(player):
+        start_decision_timer(player, 'allocation')
         return dict(
             page_title='You are the decision-maker for this round',
             explanation=(
@@ -472,10 +490,12 @@ class DecisionMakerAllocation(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        if timeout_happened or player.field_maybe_none('executive_tax') is None:
-            player.executive_tax = C.DEFAULT_EXECUTIVE_TAX
-            player.executive_rent = C.DEFAULT_EXECUTIVE_RENT
-            player.timed_out = True
+        record_decision_time(
+            player,
+            'allocation',
+            'allocation_time_seconds',
+            'allocation_over_90',
+        )
 
 
 class DecisionWaitPage(WaitPage):
@@ -510,9 +530,11 @@ class RoundResults(Page):
     def before_next_page(player, timeout_happened):
         if player.round_number != C.NUM_ROUNDS:
             return
-        player.participant.vars['block1_final_vote'] = player.institution_vote
-        player.participant.vars['block1_final_vote_observed'] = not player.institution_vote_timed_out
-        late_votes = [p.institution_vote for p in player.in_rounds(8, 10)]
+        player.participant.vars['block1_final_vote'] = player.field_maybe_none('institution_vote')
+        player.participant.vars['block1_final_vote_observed'] = (
+            player.field_maybe_none('institution_vote') is not None
+        )
+        late_votes = [p.field_maybe_none('institution_vote') for p in player.in_rounds(8, 10)]
         player.participant.vars['block1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
         player.participant.vars['expected_payoff_citizens_b1'] = (
             player.field_maybe_none('expected_payoff_citizens')

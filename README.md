@@ -6,9 +6,11 @@ This repository contains the proposal and oTree implementation for a one-session
 
 Participants complete two ten-round blocks of a five-person institutional-choice public-good game. In every round, each participant chooses between **Each person chooses** and **One person chooses for the group**. The option selected by at least three group members determines who controls allocations to a public-services fund and whether the selected decision-maker may move fund points to their own payoff.
 
-Participants are anonymously rematched before every round within stable ten-person pools. In Block 1, each fund point creates 1.50 group points when each person chooses and 2.50 when one person chooses for the group. Before Block 2, pools are randomized to recovery or persistence. Recovery raises the first rate to 2.50; persistence leaves it at 1.50. The one-person rule remains unchanged.
+Participants are anonymously rematched before every round within stable ten-person pools. In Block 1, all pools face strained public-service conditions: each fund point creates 1.50 group points when each person chooses and 2.50 when one person chooses for the group. Before Block 2, pools are randomized to recovery or persistence. Under recovery, the public-service crisis recedes and the first rate rises to 2.50. Under persistence, the crisis and the 1.50 rate remain. The one-person rule remains unchanged in both conditions.
 
 Each round begins with 20 points per participant. One randomly selected round from each block is paid at EUR 0.20 per point, in addition to a EUR 10 participation payment.
+
+Strategic choice pages do not advance automatically and the software never generates a ballot or allocation. It records response time and flags decisions that exceed 90 seconds so the laboratory manager can monitor the session and prompt delayed participants to complete their decisions.
 
 ## Start a clean development server
 

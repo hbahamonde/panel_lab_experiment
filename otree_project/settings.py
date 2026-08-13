@@ -3,7 +3,7 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name='panel_lab_experiment',
-        display_name='Undemocratic reversals: one-session laboratory experiment',
+        display_name='Group decisions and public services',
         num_demo_participants=10,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=False,
@@ -11,7 +11,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='panel_lab_demo',
-        display_name='Undemocratic reversals (full-group testing)',
+        display_name='Group decisions and public services (full-group testing)',
         num_demo_participants=10,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
@@ -19,7 +19,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='panel_lab_solo_recovery',
-        display_name='Solo test: public services recover',
+        display_name='Solo test: conditions improve',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
@@ -29,7 +29,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='panel_lab_solo_persistence',
-        display_name='Solo test: public services remain under strain',
+        display_name='Solo test: conditions remain unchanged',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
@@ -75,7 +75,7 @@ DEMO_PAGE_INTRO_HTML = """ """
 ROOMS = [
     dict(
         name='panel_lab_room',
-        display_name='Panel Lab Experiment',
+        display_name='Group Decisions Study',
         participant_label_file='_rooms/panel_lab_labels.txt',
         use_secure_urls=True,
     ),

@@ -5,13 +5,15 @@
 
 {{ if recovery }}
 <div class="alert alert-secondary">
-    <h5>The rate for Each person chooses has changed</h5>
-    <p class="mb-0">With <strong>Each person chooses</strong>, every fund point now creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
+    <h5>Public-service conditions have improved</h5>
+    <p>Parliament has passed a budget, healthcare waiting times are falling, and planning for public services has resumed.</p>
+    <p class="mb-0">As a result, with <strong>Each person chooses</strong>, every fund point now creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
 </div>
 {{ else }}
 <div class="alert alert-secondary">
-    <h5>The rates remain the same</h5>
-    <p class="mb-0">With <strong>Each person chooses</strong>, every fund point creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
+    <h5>Public-service conditions remain under strain</h5>
+    <p>Parliament has still not passed a budget, healthcare waiting times remain high, and planning for public services remains stalled.</p>
+    <p class="mb-0">The fund rates therefore remain the same. With <strong>Each person chooses</strong>, every fund point creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
 </div>
 {{ endif }}
 

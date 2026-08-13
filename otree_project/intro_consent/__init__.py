@@ -14,14 +14,11 @@ def study_details(session):
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'intro_consent'
+    NAME_IN_URL = 'study_start'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    CONSENT_CHOICES = [
-        ['accept', 'I agree to participate'],
-        ['decline', 'I do not agree to participate'],
-    ]
+    CONSENT_CHOICES = [['accept', 'I agree to participate']]
 
 
 class Subsession(BaseSubsession):
@@ -59,12 +56,6 @@ class Consent(Page):
         player.participant.vars['consent'] = player.consent
 
 
-class Decline(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.consent == 'decline'
-
-
 class Instructions(Page):
     @staticmethod
     def is_displayed(player: Player):
@@ -75,4 +66,4 @@ class Instructions(Page):
         return study_details(player.session)
 
 
-page_sequence = [Welcome, Consent, Decline, Instructions]
+page_sequence = [Welcome, Consent, Instructions]
