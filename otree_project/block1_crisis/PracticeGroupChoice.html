@@ -1,9 +1,9 @@
-{{ block title }}Try it: One person chooses for the group{{ endblock }}
+{{ block title }}Try it: make a proposal{{ endblock }}
 
 {{ block content }}
-<p>Now the software has selected you as the decision-maker. Every group member has 20 points. Choose how many points every member must put in the public-services fund. Then choose whether to move any fund points to your own payoff.</p>
+<p>The software has selected you to make a proposal. Every citizen has 20 points. Propose how many points everyone should put in the public-services fund and whether any fund points should move to your own payoff.</p>
 
-<p>You may move up to 20 points, but never more than the group has put in the fund. Every point left in the fund creates 2.50 group points. These points are shared equally among all five members.</p>
+<p>You may propose moving up to 20 points, but never more than the group would put in the fund. Whether the proposal requires approval depends on the method chosen for the round.</p>
 
 {{ formfields }}
 
@@ -16,8 +16,8 @@
 
 <script>
 (function () {
-    const requiredInput = document.querySelector('[name="practice_tax"]');
-    const movedInput = document.querySelector('[name="practice_rent"]');
+    const requiredInput = document.querySelector('[name="practice_allocation"]');
+    const movedInput = document.querySelector('[name="practice_transfer"]');
     const preview = document.getElementById('decision-maker-preview');
     if (!requiredInput || !movedInput || !preview) return;
 
@@ -30,7 +30,7 @@
         const movedAmount = Number(movedInput.value);
         const collected = 5 * requiredAmount;
         if (movedAmount > collected) {
-            preview.innerHTML = '<strong>The decision-maker cannot move more points than the group has put in the fund.</strong>';
+            preview.innerHTML = '<strong>The selected person cannot move more points than the group would put in the fund.</strong>';
             return;
         }
         const fundTotal = collected - movedAmount;
@@ -41,8 +41,8 @@
             '<strong>Result with your choices</strong><br>' +
             'Points left in the fund: ' + fundTotal.toFixed(0) + '<br>' +
             'Group points received by each member: ' + sharedReturn.toFixed(2) + '<br>' +
-            'Payoff of each other member: ' + citizenPayoff.toFixed(2) + ' points<br>' +
-            'Your payoff as decision-maker: <strong>' + decisionMakerPayoff.toFixed(2) + ' points</strong>';
+            'Payoff of each other citizen if implemented directly at the 2.50 rate: ' + citizenPayoff.toFixed(2) + ' points<br>' +
+            'Your payoff as selected person: <strong>' + decisionMakerPayoff.toFixed(2) + ' points</strong>';
     }
 
     requiredInput.addEventListener('input', updatePreview);

@@ -7,17 +7,17 @@
 <div class="alert alert-secondary">
     <h5>Public-service conditions have improved</h5>
     <p>Parliament has passed a budget, healthcare waiting times are falling, and planning for public services has resumed.</p>
-    <p class="mb-0">As a result, with <strong>Each person chooses</strong>, every fund point now creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
+    <p class="mb-0">As part of this recovery, every fund point under <strong>Group approval required</strong> now creates <strong>{{ approval_multiplier }} group points</strong>. Under <strong>Decision takes effect directly</strong>, every point left in the fund creates <strong>{{ automatic_multiplier }} group points</strong>.</p>
 </div>
 {{ else }}
 <div class="alert alert-secondary">
     <h5>Public-service conditions remain under strain</h5>
     <p>Parliament has still not passed a budget, healthcare waiting times remain high, and planning for public services remains stalled.</p>
-    <p class="mb-0">The fund rates therefore remain the same. With <strong>Each person chooses</strong>, every fund point creates <strong>{{ constrained_multiplier }} group points</strong>. With <strong>One person chooses for the group</strong>, every point left in the fund creates <strong>{{ executive_multiplier }} group points</strong>.</p>
+    <p class="mb-0">The fund rates therefore remain the same. Under <strong>Group approval required</strong>, every fund point creates <strong>{{ approval_multiplier }} group points</strong>. Under <strong>Decision takes effect directly</strong>, every point left in the fund creates <strong>{{ automatic_multiplier }} group points</strong>.</p>
 </div>
 {{ endif }}
 
-<p>The decision rules remain the same. With <strong>Each person chooses</strong>, every member chooses their own amount. With <strong>One person chooses for the group</strong>, the selected person sets the same amount for everyone and may move up to 20 fund points to their own payoff.</p>
+<p>The decision rules remain the same. Under both methods, a randomly selected person proposes the allocation and any personal transfer. The proposal either requires three approvals from the other four citizens or takes effect directly. Rejection returns the group to individual allocations.</p>
 
 <p>You will now complete <strong>{{ rounds }} additional paid rounds</strong>.</p>
 

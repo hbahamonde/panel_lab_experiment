@@ -6,7 +6,7 @@ from otree.api import *
 
 doc = """
 Block 1 of the one-session experiment: a common public-service crisis, ten
-repeated institutional-choice/public-good rounds and mechanism measurement.
+repeated institutional-choice/public-good rounds and process measurement.
 Participants are anonymously rematched within ten-person pools.
 """
 
@@ -51,7 +51,7 @@ def assign_matching_pools(subsession):
         if subsession.round_number == 1:
             player.participant.vars['matching_pool_id'] = 1
             player.participant.vars['matching_pool_uid'] = f'{subsession.session.code}-pool-1'
-            player.participant.vars['times_executive'] = 0
+            player.participant.vars['times_leader'] = 0
             subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = 1
@@ -73,7 +73,7 @@ def assign_matching_pools(subsession):
             player.participant.vars['matching_pool_uid'] = (
                 f'{subsession.session.code}-pool-{pool_id}'
             )
-            player.participant.vars['times_executive'] = 0
+            player.participant.vars['times_leader'] = 0
 
         subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
@@ -98,66 +98,114 @@ def assign_matching_pools(subsession):
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
 
 
-def choose_institution(group):
+def choose_institution_and_leader(group):
     players = group.get_players()
     if solo_testing(group):
         player = players[0]
-        other_group_choice_votes = player.field_maybe_none('solo_other_group_choice_votes')
-        group_choice_votes = int(player.field_maybe_none('institution_vote') == C.EXECUTIVE) + (
-            other_group_choice_votes if other_group_choice_votes is not None else 2
+        other_automatic_votes = player.field_maybe_none('solo_other_automatic_votes')
+        automatic_votes = int(player.field_maybe_none('institution_vote') == C.AUTOMATIC) + (
+            other_automatic_votes if other_automatic_votes is not None else 2
         )
     else:
-        group_choice_votes = sum(
-            p.field_maybe_none('institution_vote') == C.EXECUTIVE for p in players
+        automatic_votes = sum(
+            p.field_maybe_none('institution_vote') == C.AUTOMATIC for p in players
         )
-    group.executive_votes = group_choice_votes
-    group.selected_institution = C.EXECUTIVE if group_choice_votes >= 3 else C.CONSTRAINED
+    group.automatic_votes = automatic_votes
+    group.selected_institution = C.AUTOMATIC if automatic_votes >= 3 else C.APPROVAL
 
-    if group.selected_institution == C.EXECUTIVE:
-        if solo_testing(group):
-            executive = players[0]
-            executive.is_executive = True
-            executive.participant.vars['times_executive'] = (
-                executive.participant.vars.get('times_executive', 0) + 1
+    if solo_testing(group):
+        player = players[0]
+        if player.round_number % 2:
+            player.is_leader = True
+            player.participant.vars['times_leader'] = (
+                player.participant.vars.get('times_leader', 0) + 1
             )
-            group.executive_id = executive.id_in_group
-            return
-        minimum_count = min(p.participant.vars.get('times_executive', 0) for p in players)
-        eligible = [p for p in players if p.participant.vars.get('times_executive', 0) == minimum_count]
-        executive = random.choice(eligible)
-        executive.is_executive = True
-        executive.participant.vars['times_executive'] = minimum_count + 1
-        group.executive_id = executive.id_in_group
+            group.leader_id = player.id_in_group
+        else:
+            group.leader_id = 0  # simulated leader; lets one-browser tests show approval
+        return
+
+    minimum_count = min(p.participant.vars.get('times_leader', 0) for p in players)
+    eligible = [
+        p for p in players
+        if p.participant.vars.get('times_leader', 0) == minimum_count
+    ]
+    leader = random.choice(eligible)
+    leader.is_leader = True
+    leader.participant.vars['times_leader'] = minimum_count + 1
+    group.leader_id = leader.id_in_group
+
+
+def record_proposal(group):
+    if solo_testing(group) and group.leader_id == 0:
+        group.proposed_allocation = 10
+        group.proposed_transfer = 5
+        return
+    leader = group.get_player_by_id(group.leader_id)
+    group.proposed_allocation = leader.field_maybe_none('proposed_allocation') or 0
+    group.proposed_transfer = leader.field_maybe_none('proposed_transfer') or 0
+
+
+def decide_approval(group):
+    if group.selected_institution != C.APPROVAL:
+        group.proposal_approved = False
+        return
+
+    if solo_testing(group):
+        if group.leader_id == 0:
+            participant_approval = (
+                group.get_players()[0].field_maybe_none('approval_vote') == C.APPROVE
+            )
+            group.approval_votes = 2 + int(participant_approval)
+        else:
+            leader = group.get_player_by_id(group.leader_id)
+            simulated_approvals = leader.field_maybe_none('solo_other_approval_votes')
+            group.approval_votes = simulated_approvals if simulated_approvals is not None else 3
+    else:
+        group.approval_votes = sum(
+            p.field_maybe_none('approval_vote') == C.APPROVE
+            for p in group.get_players()
+            if p.id_in_group != group.leader_id
+        )
+    group.proposal_approved = group.approval_votes >= C.APPROVAL_THRESHOLD
 
 
 def calculate_round(group):
     players = group.get_players()
-    if group.selected_institution == C.CONSTRAINED:
+    proposal_implemented = (
+        group.selected_institution == C.AUTOMATIC or group.proposal_approved
+    )
+    group.proposal_implemented = proposal_implemented
+    group.fallback_used = not proposal_implemented
+
+    if group.fallback_used:
         if solo_testing(group):
             total = (players[0].field_maybe_none('contribution') or 0) + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION
         else:
             total = sum(p.field_maybe_none('contribution') or 0 for p in players)
         group.total_contribution = total
-        group.executive_tax = 0
-        group.executive_rent = 0
+        group.implemented_transfer = 0
         group.public_account = total
-        group.per_capita_return = C.CONSTRAINED_MULTIPLIER_CRISIS * total / C.GROUP_SIZE
+        group.per_capita_return = C.APPROVAL_MULTIPLIER_CRISIS * total / C.GROUP_SIZE
         for player in players:
             player.round_payoff = C.ENDOWMENT - (player.field_maybe_none('contribution') or 0) + group.per_capita_return
     else:
-        executive = group.get_player_by_id(group.executive_id)
-        tax = executive.field_maybe_none('executive_tax') or 0
-        rent = executive.field_maybe_none('executive_rent') or 0
-        public_account = C.GROUP_SIZE * tax - rent
-        group.total_contribution = C.GROUP_SIZE * tax
-        group.executive_tax = tax
-        group.executive_rent = rent
+        allocation = group.proposed_allocation
+        transfer = group.proposed_transfer
+        public_account = C.GROUP_SIZE * allocation - transfer
+        multiplier = (
+            C.AUTOMATIC_MULTIPLIER
+            if group.selected_institution == C.AUTOMATIC
+            else C.APPROVAL_MULTIPLIER_CRISIS
+        )
+        group.total_contribution = C.GROUP_SIZE * allocation
+        group.implemented_transfer = transfer
         group.public_account = public_account
-        group.per_capita_return = C.EXECUTIVE_MULTIPLIER * public_account / C.GROUP_SIZE
+        group.per_capita_return = multiplier * public_account / C.GROUP_SIZE
         for player in players:
-            player.round_payoff = C.ENDOWMENT - tax + group.per_capita_return
-            if player.id_in_group == group.executive_id:
-                player.round_payoff += rent
+            player.round_payoff = C.ENDOWMENT - allocation + group.per_capita_return
+            if player.id_in_group == group.leader_id:
+                player.round_payoff += transfer
 
 
 class C(BaseConstants):
@@ -168,21 +216,28 @@ class C(BaseConstants):
     NUM_ROUNDS = 10
 
     ENDOWMENT = 20
-    CONSTRAINED_MULTIPLIER_CRISIS = 1.50
-    CONSTRAINED_MULTIPLIER_RECOVERY = 2.50
-    EXECUTIVE_MULTIPLIER = 2.50
-    MAX_EXECUTIVE_RENT = 20
+    APPROVAL_MULTIPLIER_CRISIS = 1.50
+    APPROVAL_MULTIPLIER_RECOVERY = 2.50
+    AUTOMATIC_MULTIPLIER = 2.50
+    MAX_PERSONAL_TRANSFER = 20
+    APPROVAL_THRESHOLD = 3
     SOLO_OTHER_CITIZENS = 4
     SOLO_OTHER_CONTRIBUTION = 10
 
-    CONSTRAINED = 'constrained'
-    EXECUTIVE = 'executive'
+    APPROVAL = 'approval'
+    AUTOMATIC = 'automatic'
+    APPROVE = 'approve'
+    REJECT = 'reject'
     TREATMENT_RECOVERY = 'recovery'
     TREATMENT_PERSISTENCE = 'persistence'
     DECISION_DELAY_THRESHOLD_SECONDS = 90
     INSTITUTION_CHOICES = [
-        [CONSTRAINED, 'Each person chooses'],
-        [EXECUTIVE, 'One person chooses for the group'],
+        [APPROVAL, 'Group approval required'],
+        [AUTOMATIC, 'Decision takes effect directly'],
+    ]
+    APPROVAL_CHOICES = [
+        [APPROVE, 'Approve the proposal'],
+        [REJECT, 'Reject the proposal'],
     ]
 
 class Subsession(BaseSubsession):
@@ -195,11 +250,16 @@ def creating_session(subsession: Subsession):
 
 class Group(BaseGroup):
     selected_institution = models.StringField()
-    executive_votes = models.IntegerField(initial=0)
-    executive_id = models.IntegerField(initial=0)
+    automatic_votes = models.IntegerField(initial=0)
+    leader_id = models.IntegerField(initial=0)
+    proposed_allocation = models.IntegerField(initial=0)
+    proposed_transfer = models.IntegerField(initial=0)
+    approval_votes = models.IntegerField(initial=0)
+    proposal_approved = models.BooleanField(initial=False)
+    proposal_implemented = models.BooleanField(initial=False)
+    fallback_used = models.BooleanField(initial=False)
     total_contribution = models.IntegerField(initial=0)
-    executive_tax = models.IntegerField(initial=0)
-    executive_rent = models.IntegerField(initial=0)
+    implemented_transfer = models.IntegerField(initial=0)
     public_account = models.IntegerField(initial=0)
     per_capita_return = models.FloatField(initial=0)
 
@@ -210,62 +270,91 @@ class Player(BasePlayer):
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES,
         widget=widgets.RadioSelect,
-        label='How should the fund decision be made this round?',
+        label='Should the selected person\'s proposal require group approval?',
         blank=True,
     )
-    solo_other_group_choice_votes = models.IntegerField(min=0, max=4, blank=True)
+    solo_other_automatic_votes = models.IntegerField(min=0, max=4, blank=True)
+    solo_other_approval_votes = models.IntegerField(
+        min=0, max=4, blank=True,
+        label='Solo test: how many of the four simulated citizens approve the proposal?',
+    )
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT,
         label='How many of your 20 points do you put in the public-services fund?',
         blank=True,
     )
-    executive_tax = models.IntegerField(
+    proposed_allocation = models.IntegerField(
         min=0, max=C.ENDOWMENT,
-        label='How many points must each group member put in the public-services fund?',
+        label='How many points should every citizen put in the public-services fund?',
         blank=True,
     )
-    executive_rent = models.IntegerField(
-        min=0, max=C.MAX_EXECUTIVE_RENT,
-        label='How many fund points do you move to your own payoff?',
+    proposed_transfer = models.IntegerField(
+        min=0, max=C.MAX_PERSONAL_TRANSFER,
+        label='How many fund points should move to your own payoff?',
         blank=True,
     )
-    is_executive = models.BooleanField(initial=False)
+    approval_vote = models.StringField(
+        choices=C.APPROVAL_CHOICES,
+        widget=widgets.RadioSelect,
+        label='Do you approve or reject the selected person\'s proposal?',
+        blank=True,
+    )
+    is_leader = models.BooleanField(initial=False)
     institution_vote_time_seconds = models.FloatField(initial=0)
     institution_vote_over_90 = models.BooleanField(initial=False)
-    allocation_time_seconds = models.FloatField(initial=0)
-    allocation_over_90 = models.BooleanField(initial=False)
+    proposal_time_seconds = models.FloatField(initial=0)
+    proposal_over_90 = models.BooleanField(initial=False)
+    approval_time_seconds = models.FloatField(initial=0)
+    approval_over_90 = models.BooleanField(initial=False)
+    fallback_time_seconds = models.FloatField(initial=0)
+    fallback_over_90 = models.BooleanField(initial=False)
     round_payoff = models.FloatField(initial=0)
     expected_payoff_citizens = models.IntegerField(
         min=0, max=60,
-        label='If Each person chooses is used in this round, how many points do you expect to earn?',
+        label='If group approval is required, how many points do you expect to earn?',
         blank=True,
     )
     expected_payoff_leader = models.IntegerField(
         min=0, max=60,
-        label='If One person chooses for the group is used, how many points do you expect to earn?',
+        label='If the selected person\'s decision takes effect directly, how many points do you expect to earn?',
         blank=True,
     )
     expected_leader_transfer = models.IntegerField(
-        min=0, max=C.MAX_EXECUTIVE_RENT,
-        label='If one person chooses for the group, how many fund points do you expect the selected person to move to their own payoff?',
+        min=0, max=C.MAX_PERSONAL_TRANSFER,
+        label='How many fund points do you expect the selected person to propose moving to their own payoff?',
         blank=True,
     )
 
     practice_contribution = models.IntegerField(min=0, max=20, label='How many of your 20 points do you put in the public-services fund?', blank=True)
-    practice_tax = models.IntegerField(min=0, max=20, label='How many of each member\'s 20 points must go into the public-services fund?', blank=True)
-    practice_rent = models.IntegerField(min=0, max=20, label='How many fund points do you move to your own payoff?', blank=True)
+    practice_allocation = models.IntegerField(min=0, max=20, label='How many points should every citizen put in the public-services fund?', blank=True)
+    practice_transfer = models.IntegerField(min=0, max=20, label='How many fund points should move to your own payoff?', blank=True)
+    practice_approval = models.StringField(
+        choices=C.APPROVAL_CHOICES, widget=widgets.RadioSelect,
+        label='Would you approve or reject this proposal?', blank=True,
+    )
     comprehension_1 = models.StringField(
-        choices=[['individual', 'Each member chooses how many of their own points to put in the fund'], ['executive', 'One selected person chooses the amount for every member']],
+        choices=[['same', 'A randomly selected person proposes the allocation under both methods'], ['different', 'A selected person is used only when the decision takes effect directly']],
         widget=widgets.RadioSelect,
-        label='With Each person chooses, who decides how many points each member puts in the public-services fund?',
+        label='Who proposes the equal allocation under the two methods?',
         blank=True,
     )
     comprehension_2 = models.StringField(
-        choices=[['yes', 'Yes'], ['no', 'No']], widget=widgets.RadioSelect,
-        label='With One person chooses for the group, can the selected person move fund points to their own payoff?',
+        choices=[['three', 'At least three of the four other citizens'], ['two', 'At least two of the four other citizens'], ['all', 'All four other citizens']], widget=widgets.RadioSelect,
+        label='When group approval is required, how many of the four other citizens must approve?',
         blank=True,
     )
     comprehension_3 = models.StringField(
+        choices=[['fallback', 'Everyone chooses their own fund allocation'], ['automatic', 'The proposal takes effect anyway']],
+        widget=widgets.RadioSelect,
+        label='What happens when a proposal requiring group approval is rejected?',
+        blank=True,
+    )
+    comprehension_4 = models.StringField(
+        choices=[['yes', 'Yes'], ['no', 'No']], widget=widgets.RadioSelect,
+        label='When a decision takes effect directly, can the other citizens reject the proposal before it is implemented?',
+        blank=True,
+    )
+    comprehension_5 = models.StringField(
         choices=[['all', 'Every round'], ['selected', 'Only the randomly selected round'], ['last', 'Only Round 10']],
         widget=widgets.RadioSelect,
         label='Which paid round determines your game earnings from Block 1?',
@@ -307,7 +396,7 @@ class PracticeIndividualChoice(Page):
 
 class PracticeGroupChoice(Page):
     form_model = 'player'
-    form_fields = ['practice_tax', 'practice_rent']
+    form_fields = ['practice_allocation', 'practice_transfer']
     template_name = 'block1_crisis/PracticeGroupChoice.html'
 
     @staticmethod
@@ -319,14 +408,45 @@ class PracticeGroupChoice(Page):
         missing = require_all(player, values, PracticeGroupChoice.form_fields)
         if missing:
             return missing
-        if values.get('practice_rent') is not None and values.get('practice_tax') is not None:
-            if values['practice_rent'] > C.GROUP_SIZE * values['practice_tax']:
-                return 'The decision-maker cannot move more points than the group has put in the public-services fund.'
+        if values.get('practice_transfer') is not None and values.get('practice_allocation') is not None:
+            if values['practice_transfer'] > C.GROUP_SIZE * values['practice_allocation']:
+                return 'The selected person cannot move more points than the group would put in the public-services fund.'
+
+
+class PracticeApproval(Page):
+    form_model = 'player'
+    form_fields = ['practice_approval']
+    template_name = 'block1_crisis/QuestionPage.html'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            page_title='Try it: group approval',
+            explanation=(
+                'Suppose the selected person proposes that every citizen put 10 points '
+                'in the fund and that 5 fund points move to that person\'s own payoff. '
+                'When group approval is required, the other four citizens see the full '
+                'proposal and decide whether to approve or reject it.'
+            ),
+            slider_prefix='',
+            optional_responses=development_mode(player),
+        )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, PracticeApproval.form_fields)
 
 
 class Comprehension(Page):
     form_model = 'player'
-    form_fields = ['comprehension_1', 'comprehension_2', 'comprehension_3']
+    form_fields = [
+        'comprehension_1', 'comprehension_2', 'comprehension_3',
+        'comprehension_4', 'comprehension_5',
+    ]
     template_name = 'block1_crisis/Comprehension.html'
 
     @staticmethod
@@ -338,11 +458,15 @@ class Comprehension(Page):
         if development_mode(player):
             return
         errors = []
-        if values['comprehension_1'] != 'individual':
-            errors.append('With Each person chooses, every member chooses how many of their own points to put in the public-services fund.')
-        if values['comprehension_2'] != 'yes':
-            errors.append('With One person chooses for the group, the selected person can move fund points to their own payoff.')
-        if values['comprehension_3'] != 'selected':
+        if values['comprehension_1'] != 'same':
+            errors.append('The software selects a person to propose the allocation under both methods.')
+        if values['comprehension_2'] != 'three':
+            errors.append('At least three of the four other citizens must approve the proposal.')
+        if values['comprehension_3'] != 'fallback':
+            errors.append('After rejection, every citizen chooses their own fund allocation.')
+        if values['comprehension_4'] != 'no':
+            errors.append('A proposal that takes effect directly cannot be rejected before implementation.')
+        if values['comprehension_5'] != 'selected':
             errors.append('One randomly selected round determines your Block-1 game earnings.')
         if errors:
             return 'Please review: ' + ' '.join(errors)
@@ -381,7 +505,7 @@ class StrategicExpectations(Page):
 
 class InstitutionVote(Page):
     form_model = 'player'
-    form_fields = ['institution_vote', 'solo_other_group_choice_votes']
+    form_fields = ['institution_vote', 'solo_other_automatic_votes']
     template_name = 'block1_crisis/InstitutionChoice.html'
     @staticmethod
     def vars_for_template(player):
@@ -389,14 +513,14 @@ class InstitutionVote(Page):
         return dict(
             round_number=player.round_number,
             total_rounds=C.NUM_ROUNDS,
-            constrained_multiplier=f'{C.CONSTRAINED_MULTIPLIER_CRISIS:.2f}',
-            executive_multiplier=f'{C.EXECUTIVE_MULTIPLIER:.2f}',
+            approval_multiplier=f'{C.APPROVAL_MULTIPLIER_CRISIS:.2f}',
+            automatic_multiplier=f'{C.AUTOMATIC_MULTIPLIER:.2f}',
             optional_responses=development_mode(player),
             selected_vote=player.field_maybe_none('institution_vote'),
             solo_testing=solo_testing(player),
-            solo_other_group_choice_votes=(
-                player.field_maybe_none('solo_other_group_choice_votes')
-                if player.field_maybe_none('solo_other_group_choice_votes') is not None else 2
+            solo_other_automatic_votes=(
+                player.field_maybe_none('solo_other_automatic_votes')
+                if player.field_maybe_none('solo_other_automatic_votes') is not None else 2
             ),
         )
 
@@ -412,32 +536,155 @@ class InstitutionVote(Page):
             'institution_vote_time_seconds',
             'institution_vote_over_90',
         )
-        if solo_testing(player) and player.field_maybe_none('solo_other_group_choice_votes') is None:
-            player.solo_other_group_choice_votes = 2
+        if solo_testing(player) and player.field_maybe_none('solo_other_automatic_votes') is None:
+            player.solo_other_automatic_votes = 2
 
 
 class VoteWaitPage(WaitPage):
     body_text = 'Waiting for the other members of this round\'s anonymous group.'
-    after_all_players_arrive = choose_institution
+    after_all_players_arrive = choose_institution_and_leader
 
 
-class IndividualAllocation(Page):
+class LeaderProposal(Page):
+    form_model = 'player'
+    template_name = 'block1_crisis/QuestionPage.html'
+
+    @staticmethod
+    def get_form_fields(player):
+        fields = ['proposed_allocation', 'proposed_transfer']
+        if solo_testing(player) and player.group.selected_institution == C.APPROVAL:
+            fields.append('solo_other_approval_votes')
+        return fields
+    @staticmethod
+    def is_displayed(player):
+        return player.is_leader
+
+    @staticmethod
+    def vars_for_template(player):
+        start_decision_timer(player, 'proposal')
+        return dict(
+            page_title='You are the selected person for this round',
+            explanation=(
+                'Propose how many points every citizen should put in the public-services fund '
+                f'and whether up to {C.MAX_PERSONAL_TRANSFER} fund points should move to your payoff. '
+                + (
+                    f'If at least three of the other four citizens approve, the remaining fund uses '
+                    f'the {C.APPROVAL_MULTIPLIER_CRISIS:.2f} rate. If they reject, everyone chooses '
+                    'their own allocation.'
+                    if player.group.selected_institution == C.APPROVAL
+                    else f'Your proposal takes effect directly, and the remaining fund uses the '
+                         f'{C.AUTOMATIC_MULTIPLIER:.2f} rate.'
+                )
+            ),
+            slider_prefix='',
+            optional_responses=development_mode(player),
+            solo_testing=solo_testing(player),
+        )
+
+    @staticmethod
+    def error_message(player, values):
+        required = ['proposed_allocation', 'proposed_transfer']
+        missing = require_all(player, values, required)
+        if missing:
+            return missing
+        if values.get('proposed_transfer') is not None and values.get('proposed_allocation') is not None:
+            if values['proposed_transfer'] > C.GROUP_SIZE * values['proposed_allocation']:
+                return 'You cannot move more points than the group would put in the public-services fund.'
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        record_decision_time(
+            player,
+            'proposal',
+            'proposal_time_seconds',
+            'proposal_over_90',
+        )
+        if (
+            solo_testing(player)
+            and player.group.selected_institution == C.APPROVAL
+            and player.field_maybe_none('solo_other_approval_votes') is None
+        ):
+            player.solo_other_approval_votes = 3
+
+
+class ProposalWaitPage(WaitPage):
+    body_text = 'Waiting for the selected person\'s proposal.'
+    after_all_players_arrive = record_proposal
+
+
+class ApprovalVote(Page):
+    form_model = 'player'
+    form_fields = ['approval_vote']
+    template_name = 'block1_crisis/QuestionPage.html'
+    @staticmethod
+    def is_displayed(player):
+        return (
+            player.group.selected_institution == C.APPROVAL
+            and not player.is_leader
+        )
+
+    @staticmethod
+    def vars_for_template(player):
+        start_decision_timer(player, 'approval')
+        return dict(
+            page_title='Approve or reject the proposal',
+            explanation=(
+                f'The selected person proposes that every citizen put '
+                f'{player.group.proposed_allocation} points in the fund and that '
+                f'{player.group.proposed_transfer} fund points move to their own payoff. '
+                f'At least three of the four other citizens must approve. If the proposal is '
+                'rejected, every citizen will choose their own fund allocation.'
+            ),
+            slider_prefix='',
+            optional_responses=development_mode(player),
+        )
+
+    @staticmethod
+    def error_message(player, values):
+        return require_all(player, values, ApprovalVote.form_fields)
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        record_decision_time(
+            player,
+            'approval',
+            'approval_time_seconds',
+            'approval_over_90',
+        )
+
+
+class ApprovalWaitPage(WaitPage):
+    body_text = 'Waiting for the group\'s approval decisions.'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.group.selected_institution == C.APPROVAL
+
+    after_all_players_arrive = decide_approval
+
+
+class FallbackAllocation(Page):
     form_model = 'player'
     form_fields = ['contribution']
     template_name = 'block1_crisis/QuestionPage.html'
+
     @staticmethod
     def is_displayed(player):
-        return player.group.selected_institution == C.CONSTRAINED
+        return (
+            player.group.selected_institution == C.APPROVAL
+            and not player.group.proposal_approved
+        )
 
     @staticmethod
     def vars_for_template(player):
-        start_decision_timer(player, 'allocation')
+        start_decision_timer(player, 'fallback')
         return dict(
-            page_title='Each person chooses',
+            page_title='The proposal was not approved',
             explanation=(
-                f'Points you do not put in the public-services fund remain yours. Each point you put '
-                f'in the fund creates {C.CONSTRAINED_MULTIPLIER_CRISIS:.2f} group points. '
-                f'These points are shared equally among all five members.'
+                'Each citizen now chooses how many of their own 20 points to put in the '
+                f'public-services fund. Each fund point creates '
+                f'{C.APPROVAL_MULTIPLIER_CRISIS:.2f} group points, shared equally. '
+                'Points you do not put in the fund remain yours.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -445,56 +692,15 @@ class IndividualAllocation(Page):
 
     @staticmethod
     def error_message(player, values):
-        return require_all(player, values, IndividualAllocation.form_fields)
+        return require_all(player, values, FallbackAllocation.form_fields)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
         record_decision_time(
             player,
-            'allocation',
-            'allocation_time_seconds',
-            'allocation_over_90',
-        )
-
-
-class DecisionMakerAllocation(Page):
-    form_model = 'player'
-    form_fields = ['executive_tax', 'executive_rent']
-    template_name = 'block1_crisis/QuestionPage.html'
-    @staticmethod
-    def is_displayed(player):
-        return player.group.selected_institution == C.EXECUTIVE and player.is_executive
-
-    @staticmethod
-    def vars_for_template(player):
-        start_decision_timer(player, 'allocation')
-        return dict(
-            page_title='You are the decision-maker for this round',
-            explanation=(
-                f'Choose how many points every group member must put in the public-services fund. You may '
-                f'move at most {C.MAX_EXECUTIVE_RENT} fund points to your own payoff. '
-                f'Each point left in the fund creates {C.EXECUTIVE_MULTIPLIER:.2f} group points.'
-            ),
-            slider_prefix='',
-            optional_responses=development_mode(player),
-        )
-
-    @staticmethod
-    def error_message(player, values):
-        missing = require_all(player, values, DecisionMakerAllocation.form_fields)
-        if missing:
-            return missing
-        if values.get('executive_rent') is not None and values.get('executive_tax') is not None:
-            if values['executive_rent'] > C.GROUP_SIZE * values['executive_tax']:
-                return 'You cannot move more points than the group has put in the public-services fund.'
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        record_decision_time(
-            player,
-            'allocation',
-            'allocation_time_seconds',
-            'allocation_over_90',
+            'fallback',
+            'fallback_time_seconds',
+            'fallback_over_90',
         )
 
 
@@ -513,14 +719,19 @@ class RoundResults(Page):
             round_number=player.round_number,
             total_rounds=C.NUM_ROUNDS,
             institution_label=dict(C.INSTITUTION_CHOICES)[group.selected_institution],
-            individual_choice_votes=C.GROUP_SIZE - group.executive_votes,
-            group_choice_votes=group.executive_votes,
+            approval_rule_votes=C.GROUP_SIZE - group.automatic_votes,
+            automatic_rule_votes=group.automatic_votes,
             solo_testing=solo_testing(player),
-            executive_selected=group.selected_institution == C.EXECUTIVE,
-            is_executive=player.id_in_group == group.executive_id,
+            approval_required=group.selected_institution == C.APPROVAL,
+            is_leader=player.id_in_group == group.leader_id,
+            proposed_allocation=group.proposed_allocation,
+            proposed_transfer=group.proposed_transfer,
+            approval_votes=group.approval_votes,
+            proposal_approved=group.proposal_approved,
+            proposal_implemented=group.proposal_implemented,
+            fallback_used=group.fallback_used,
             total_contribution=group.total_contribution,
-            executive_tax=group.executive_tax,
-            executive_rent=group.executive_rent,
+            implemented_transfer=group.implemented_transfer,
             public_account=group.public_account,
             per_capita_return=group.per_capita_return,
             round_payoff=player.round_payoff,
@@ -535,7 +746,7 @@ class RoundResults(Page):
             player.field_maybe_none('institution_vote') is not None
         )
         late_votes = [p.field_maybe_none('institution_vote') for p in player.in_rounds(8, 10)]
-        player.participant.vars['block1_late_executive_share'] = sum(v == C.EXECUTIVE for v in late_votes) / 3
+        player.participant.vars['block1_late_automatic_share'] = sum(v == C.AUTOMATIC for v in late_votes) / 3
         player.participant.vars['expected_payoff_citizens_b1'] = (
             player.field_maybe_none('expected_payoff_citizens')
         )
@@ -569,14 +780,18 @@ class Block1Complete(Page):
 page_sequence = [
     Block1Intro,
     PracticeIntro,
-    PracticeIndividualChoice,
     PracticeGroupChoice,
+    PracticeApproval,
+    PracticeIndividualChoice,
     Comprehension,
     StrategicExpectations,
     InstitutionVote,
     VoteWaitPage,
-    IndividualAllocation,
-    DecisionMakerAllocation,
+    LeaderProposal,
+    ProposalWaitPage,
+    ApprovalVote,
+    ApprovalWaitPage,
+    FallbackAllocation,
     DecisionWaitPage,
     RoundResults,
     Block1Complete,

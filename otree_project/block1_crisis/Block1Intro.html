@@ -3,32 +3,32 @@
 {{ block content }}
 <p>The first block has <strong>{{ rounds }} paid rounds</strong>. In each round, every group member starts with 20 points. Points in the <strong>public-services fund</strong> create group points that are shared equally among all five members.</p>
 
-<p>First, each group member chooses one of the following methods. The method chosen by at least three of the {{ group_size }} members is used for the round.</p>
+<p>First, each group member chooses one of the following methods. The method chosen by at least three of the {{ group_size }} members is used for the round. The software then selects one citizen to propose the same allocation for everyone and any transfer to their own payoff.</p>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card card-body h-100">
-            <h5>Each person chooses</h5>
-            <p>Each group member chooses how many of their own 20 points to put in the fund.</p>
-            <p>Every fund point creates <strong>1.50 group points</strong>. These points are shared equally among all five members.</p>
-            <p class="mb-0">All fund points remain in the fund.</p>
+            <h5>Group approval required</h5>
+            <p>The other four citizens see the selected person's complete proposal. At least three must approve it.</p>
+            <p>If approved, every fund point left after any transfer creates <strong>1.50 group points</strong>, shared equally.</p>
+            <p class="mb-0">If rejected, everyone chooses their own allocation at the same 1.50 rate.</p>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card card-body h-100">
-            <h5>One person chooses for the group</h5>
-            <p>The software selects one group member as the decision-maker. This person sets the number of points that <strong>every member</strong> must put in the fund.</p>
-            <p>Every point left in the fund creates <strong>2.50 group points</strong>. These points are shared equally among all five members.</p>
-            <p class="mb-0">Before the group points are created, the decision-maker may move up to 20 fund points to their own payoff.</p>
+            <h5>Decision takes effect directly</h5>
+            <p>The same kind of proposal is implemented without an approval vote by the other citizens.</p>
+            <p>Every fund point left after any transfer creates <strong>2.50 group points</strong>, shared equally.</p>
+            <p class="mb-0">The selected person may propose moving up to 20 fund points to their own payoff.</p>
         </div>
     </div>
 </div>
 
 <div class="alert alert-light border mt-3">
-    <strong>You choose the method, not the person.</strong> If <strong>One person chooses for the group</strong> is selected, the software chooses among the members who have served as decision-maker least often. Ties are decided at random.
+    <strong>You choose the method, not the person.</strong> Under either method, the software selects from those who have served least often. Ties are decided at random. Selection occurs after the method vote.
 </div>
 
-<p>At the end of the round, everyone sees the group choice, the fund outcome, and their own payoff. The group is then reshuffled for the next round.</p>
+<p>At the end of the round, everyone sees the method, proposal, approval result where applicable, fund outcome, and own payoff. The group is then reshuffled.</p>
 
 {{ next_button }}
 {{ endblock }}

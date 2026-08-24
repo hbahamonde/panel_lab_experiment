@@ -4,9 +4,11 @@ This repository contains the proposal and oTree implementation for a one-session
 
 ## Design
 
-Participants complete two ten-round blocks of a five-person institutional-choice public-good game. In every round, each participant chooses between **Each person chooses** and **One person chooses for the group**. The option selected by at least three group members determines who controls allocations to a public-services fund and whether the selected decision-maker may move fund points to their own payoff.
+Participants complete two ten-round blocks of a five-person institutional-choice public-good game. In every round, they vote between **Group approval required** and **Decision takes effect directly**. The software then selects one citizen to propose an equal fund allocation and any personal transfer. Under the first method, three of the other four citizens must approve; rejection returns the group to voluntary contributions. Under the second, the proposal is implemented without an approval vote.
 
-Participants are anonymously rematched before every round within stable ten-person pools. In Block 1, all pools face strained public-service conditions: each fund point creates 1.50 group points when each person chooses and 2.50 when one person chooses for the group. Before Block 2, pools are randomized to recovery or persistence. Under recovery, the public-service crisis recedes and the first rate rises to 2.50. Under persistence, the crisis and the 1.50 rate remain. The one-person rule remains unchanged in both conditions.
+Participants are anonymously rematched before every round within stable ten-person pools. In Block 1, all pools face strained public-service conditions: each fund point creates 1.50 group points when approval is required and 2.50 when the proposal takes effect directly. Before Block 2, pools are randomized to recovery or persistence. Recovery jointly reports improved public-service conditions and raises the approval-required rate to 2.50; persistence keeps the crisis and 1.50 rate. The automatic procedure remains unchanged.
+
+The recovery description and rate change form one structural package: the text states that public-service conditions improved, while the higher approval-required rate makes that improvement consequential inside the game. Reversal is measured from individual ballots: a previous supporter of direct implementation later votes to restore group approval. Whether the group actually adopts that rule is recorded separately.
 
 Each round begins with 20 points per participant. One randomly selected round from each block is paid at EUR 0.20 per point, in addition to a EUR 10 participation payment.
 
@@ -26,7 +28,7 @@ Every launch erases local development sessions and responses. Keep the Terminal 
 
 The production configuration is `panel_lab_experiment`. Production session sizes must be multiples of ten; sessions containing an even number of ten-person pools allow every pool to be paired for treatment assignment.
 
-The `panel_lab_demo` configuration runs a complete ten-participant test while allowing survey fields to be skipped. For testing alone, use `panel_lab_solo_recovery` or `panel_lab_solo_persistence`. These configurations create one human participant plus four simulated group members. A testing control on each institutional-choice page sets how many simulated members select **One person chooses for the group**, allowing both majority outcomes to be tested in one browser.
+The `panel_lab_demo` configuration runs a complete ten-participant test while allowing survey fields to be skipped. For testing alone, use `panel_lab_solo_recovery` or `panel_lab_solo_persistence`. These configurations create one human participant plus four simulated citizens. Testing controls set their method and approval ballots, allowing automatic implementation, approval, and rejection/fallback paths to be tested in one browser.
 
 The active app sequence is:
 

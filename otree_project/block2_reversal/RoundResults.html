@@ -2,29 +2,29 @@
 
 {{ block content }}
 <p><strong>Group choice:</strong> {{ institution_label }}</p>
-<p><strong>Individual choices:</strong> Each person chooses: {{ individual_choice_votes }}; One person chooses for the group: {{ group_choice_votes }}.</p>
-
-{{ if solo_testing }}
-<div class="alert alert-secondary">
-    <strong>Solo test:</strong> four simulated group members supplied the other choices. When Each person chooses is used, each simulated member puts 10 points in the public-services fund. When One person chooses for the group is used, you are the decision-maker.
-</div>
-{{ endif }}
+<p><strong>Method ballots:</strong> Group approval required: {{ approval_rule_votes }}; Decision takes effect directly: {{ automatic_rule_votes }}.</p>
 
 <table class="table table-sm table-bordered">
-    {{ if not executive_selected }}
-    <tr><th>Group points created by each fund point</th><td>{{ constrained_multiplier|to2 }}</td></tr>
+    <tr><th>Selected person's proposed allocation for each citizen</th><td>{{ proposed_allocation }}</td></tr>
+    <tr><th>Proposed transfer to the selected person's payoff</th><td>{{ proposed_transfer }}</td></tr>
+    {{ if approval_required }}
+    <tr><th>Approval votes among the four other citizens</th><td>{{ approval_votes }} of 4</td></tr>
+    <tr><th>Approval result</th><td>{{ if proposal_approved }}Approved{{ else }}Rejected{{ endif }}</td></tr>
+    {{ else }}
+    <tr><th>Approval result</th><td>No approval vote; the proposal took effect directly</td></tr>
     {{ endif }}
+    {{ if fallback_used }}
+    <tr class="table-light"><th>Decision after rejection</th><td>Each citizen chose their own fund allocation</td></tr>
+    {{ endif }}
+    <tr><th>Group points created by each fund point</th><td>{{ implemented_multiplier|to2 }}</td></tr>
     <tr><th>Total points placed in the public-services fund</th><td>{{ total_contribution }}</td></tr>
-    {{ if executive_selected }}
-    <tr><th>Points each member was required to put in the fund</th><td>{{ executive_tax }}</td></tr>
-    <tr><th>Fund points moved to the decision-maker's payoff</th><td>{{ executive_rent }}</td></tr>
-    {{ endif }}
+    <tr><th>Fund points moved to the selected person's payoff</th><td>{{ implemented_transfer }}</td></tr>
     <tr><th>Points left in the public-services fund</th><td>{{ public_account }}</td></tr>
     <tr><th>Group points received by every member</th><td>{{ per_capita_return|to2 }}</td></tr>
     <tr class="table-primary"><th>Your payoff if this round is selected</th><td><strong>{{ round_payoff|to2 }}</strong></td></tr>
 </table>
 
-{{ if is_executive }}<p>You were the decision-maker in this round.</p>{{ endif }}
+{{ if is_leader }}<p>You were the selected person in this round.</p>{{ endif }}
 <p class="text-muted">Only group totals are shown. Participants are reshuffled anonymously before the next round.</p>
 {{ next_button }}
 {{ endblock }}

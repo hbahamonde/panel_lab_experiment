@@ -3,46 +3,44 @@
 {{ block content }}
 <p>You have 20 points. Points in the <strong>public-services fund</strong> create group points that are shared equally among all five members. Points you do not put in the fund remain yours.</p>
 
-<p><strong>How should the fund decision be made this round?</strong> Click anywhere on one of the two rows.</p>
+<p><strong>Should the selected person's proposal require approval?</strong> Click anywhere on one row.</p>
 
 <div class="choice-table" role="radiogroup" aria-label="Choose how the decision will be made">
     <div class="choice-header" aria-hidden="true">
-        <div>Method</div><div>Who chooses the amount?</div><div>Group points created</div><div>Points moved from the fund</div>
+        <div>Method</div><div>What happens to the proposal?</div><div>Fund rate</div><div>If citizens reject</div>
     </div>
-    <label class="choice-row individual-choice-row">
-        <input type="radio" name="institution_vote" value="constrained" {{ if selected_vote == 'constrained' }}checked{{ endif }}>
-        <span class="choice-name"><span class="choice-mark">E</span><strong>Each person chooses</strong></span>
-        <span><small>Who chooses?</small>Each member chooses how many of their own points to put in the fund</span>
-        <span><small>Group points</small>Each fund point creates {{ constrained_multiplier }} group points</span>
-        <span><small>Moved points</small>All fund points remain in the fund</span>
+    <label class="choice-row approval-choice-row">
+        <input type="radio" name="institution_vote" value="approval" {{ if selected_vote == 'approval' }}checked{{ endif }}>
+        <span class="choice-name"><span class="choice-mark">G</span><strong>Group approval required</strong></span>
+        <span><small>Approval</small>The other four citizens see the full proposal; at least three must approve</span>
+        <span><small>Fund rate</small>Each point left in the fund creates {{ approval_multiplier }} group points</span>
+        <span><small>If rejected</small>Everyone chooses their own fund allocation at the same rate</span>
     </label>
-    <label class="choice-row group-choice-row">
-        <input type="radio" name="institution_vote" value="executive" {{ if selected_vote == 'executive' }}checked{{ endif }}>
-        <span class="choice-name"><span class="choice-mark">O</span><strong>One person chooses for the group</strong></span>
-        <span><small>Who chooses?</small>The software chooses among the members who have been decision-maker least often; ties are random. That person sets the same amount for everyone</span>
-        <span><small>Group points</small>Each point left in the fund creates {{ executive_multiplier }} group points</span>
-        <span><small>Moved points</small>The selected person may move up to 20 fund points to their own payoff</span>
+    <label class="choice-row automatic-choice-row">
+        <input type="radio" name="institution_vote" value="automatic" {{ if selected_vote == 'automatic' }}checked{{ endif }}>
+        <span class="choice-name"><span class="choice-mark">D</span><strong>Decision takes effect directly</strong></span>
+        <span><small>Approval</small>The proposal is implemented without an approval vote by the other citizens</span>
+        <span><small>Fund rate</small>Each point left in the fund creates {{ automatic_multiplier }} group points</span>
+        <span><small>If rejected</small>No rejection stage</span>
     </label>
 </div>
 
 {{ if solo_testing }}
 <div class="solo-test-panel">
-    <label for="id_solo_other_group_choice_votes"><strong>Solo test control</strong></label>
-    <p class="mb-2">How many of the four simulated members choose <strong>One person chooses for the group</strong>?</p>
-    <select class="form-select" id="id_solo_other_group_choice_votes" name="solo_other_group_choice_votes">
-        <option value="0" {{ if solo_other_group_choice_votes == 0 }}selected{{ endif }}>0 of 4</option>
-        <option value="1" {{ if solo_other_group_choice_votes == 1 }}selected{{ endif }}>1 of 4</option>
-        <option value="2" {{ if solo_other_group_choice_votes == 2 }}selected{{ endif }}>2 of 4</option>
-        <option value="3" {{ if solo_other_group_choice_votes == 3 }}selected{{ endif }}>3 of 4</option>
-        <option value="4" {{ if solo_other_group_choice_votes == 4 }}selected{{ endif }}>4 of 4</option>
+    <label for="id_solo_other_automatic_votes"><strong>Solo test control</strong></label>
+    <p class="mb-2">How many of the four simulated citizens choose <strong>Decision takes effect directly</strong>?</p>
+    <select class="form-select" id="id_solo_other_automatic_votes" name="solo_other_automatic_votes">
+        <option value="0" {{ if solo_other_automatic_votes == 0 }}selected{{ endif }}>0 of 4</option>
+        <option value="1" {{ if solo_other_automatic_votes == 1 }}selected{{ endif }}>1 of 4</option>
+        <option value="2" {{ if solo_other_automatic_votes == 2 }}selected{{ endif }}>2 of 4</option>
+        <option value="3" {{ if solo_other_automatic_votes == 3 }}selected{{ endif }}>3 of 4</option>
+        <option value="4" {{ if solo_other_automatic_votes == 4 }}selected{{ endif }}>4 of 4</option>
     </select>
     <p class="small text-muted mb-0 mt-2">Your choice is added to these four simulated choices. This control appears only in one-person test sessions.</p>
 </div>
 {{ endif }}
 
-<p class="mt-3">A method is used when at least three of the five members choose it. Only you can see your choice. This round may be selected for payment.</p>
-
-{{ if optional_responses }}<p class="text-muted"><em>Testing mode: you may continue without selecting an option.</em></p>{{ endif }}
+<p class="mt-3">At least three votes select a method. The leader is selected afterward from those who have served least often. Only you can see your ballot.</p>
 
 {{ next_button }}
 
@@ -56,14 +54,14 @@
 .choice-row input { position:absolute; opacity:0; pointer-events:none; }
 .choice-row small { display:none; color:#5b6470; font-weight:700; margin-bottom:3px; }
 .choice-row:hover, .choice-row:focus-within { box-shadow:inset 4px 0 0 #6b7280; }
-.individual-choice-row:hover { background:#eaf4ff; box-shadow:inset 5px 0 0 #2774b8; }
-.group-choice-row:hover { background:#fff2df; box-shadow:inset 5px 0 0 #c46b12; }
-.individual-choice-row:has(input:checked), .individual-choice-row.selected { background:#dceeff; box-shadow:inset 6px 0 0 #1469aa; }
-.group-choice-row:has(input:checked), .group-choice-row.selected { background:#ffe8c7; box-shadow:inset 6px 0 0 #ad5600; }
+.approval-choice-row:hover { background:#eaf4ff; box-shadow:inset 5px 0 0 #2774b8; }
+.automatic-choice-row:hover { background:#fff2df; box-shadow:inset 5px 0 0 #c46b12; }
+.approval-choice-row:has(input:checked), .approval-choice-row.selected { background:#dceeff; box-shadow:inset 6px 0 0 #1469aa; }
+.automatic-choice-row:has(input:checked), .automatic-choice-row.selected { background:#ffe8c7; box-shadow:inset 6px 0 0 #ad5600; }
 .choice-name { display:flex; align-items:center; gap:9px; }
 .choice-mark { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; color:#fff; font-weight:800; flex:0 0 30px; }
-.individual-choice-row .choice-mark { background:#2774b8; }
-.group-choice-row .choice-mark { background:#c46b12; }
+.approval-choice-row .choice-mark { background:#2774b8; }
+.automatic-choice-row .choice-mark { background:#c46b12; }
 .solo-test-panel { margin:1rem 0; padding:14px 16px; border:1px dashed #6b7280; border-radius:8px; background:#f7f7f8; }
 .solo-test-panel .form-select { max-width:180px; }
 @media (max-width: 780px) {
