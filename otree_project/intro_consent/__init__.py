@@ -8,8 +8,8 @@ Consent and instructions for the one-session interactive laboratory experiment.
 
 def study_details(session):
     return dict(
-        participation_fee=session.config['participation_fee'],
-        conversion=f"€{session.config['real_world_currency_per_point']:.2f}",
+        participation_fee=f"€{session.config['participation_fee']:.2f}",
+        bonus_cap=f"€{session.config['performance_bonus_cap']:.2f}",
     )
 
 

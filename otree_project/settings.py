@@ -45,8 +45,11 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=0.20,
+    # Two selected payoff rounds can yield at most 120 points in total.
+    # This linear conversion therefore keeps the performance bonus at EUR 5 or less.
+    real_world_currency_per_point=5.00 / 120,
     participation_fee=10.00,
+    performance_bonus_cap=5.00,
     doc=(
         'One synchronized laboratory session with two ten-round blocks, '
         'anonymous rematching in ten-person pools, leader proposals with or '

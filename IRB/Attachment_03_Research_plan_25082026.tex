@@ -1,7 +1,8 @@
 % !TeX program = pdflatex
 
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage{graphicx}
+\graphicspath{{../}}
 
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
@@ -14,6 +15,7 @@
 \usepackage[textsize=small]{todonotes}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{booktabs,threeparttable,tabularx,array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{caption}
 \usepackage{float}
 \usepackage{placeins}
@@ -93,7 +95,7 @@
   uniquename=false,
   uniquelist=false
 ]{biblatex}
-\addbibresource{references.bib}
+\addbibresource{../references.bib}
 \renewcommand*{\bibfont}{\small}
 
 \definecolor{DemBlue}{HTML}{264653}
@@ -106,11 +108,12 @@
 \newcommand{\Aproc}{\textsf{A}}
 \newcommand{\ind}[1]{\mathbb{1}\{#1\}}
 
-\title{\textbf{\input{title.txt}\unskip}}
+\title{\includegraphics[width=0.32\textwidth]{utu_logo.pdf}\\[1.2em]
+\textbf{\input{../title.txt}\unskip}\\[0.35em]\large Research Plan for Ethical Review}
 \author[1,2]{\textsc{Hector Bahamonde}}
 \affil[1]{INVEST Research Flagship Centre, University of Turku, Finland}
 \affil[2]{Social Science Research Institute, \AA bo Akademi University, Finland}
-\date{\textbf{Principal Investigator and project contact:} Janne Tukiainen, Professor, Turku School of Economics, University of Turku; \href{mailto:janne.tukiainen@utu.fi}{janne.tukiainen@utu.fi}\\[0.4em]Working proposal --- \today}
+\date{\textbf{Principal Investigator and project contact:} Janne Tukiainen, Professor, Turku School of Economics, University of Turku; \href{mailto:janne.tukiainen@utu.fi}{janne.tukiainen@utu.fi}\\[0.4em]Version 1.0 --- 25 August 2026}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \pagenumbering{gobble}
@@ -515,59 +518,52 @@ Expected payoffs assess whether participants understood how recovery changed the
 
 \section{Randomization, Sample, and Power}
 
-The sample comprises 400 participants in 40 ten-person pools. Treatment is assigned only after everyone finishes Block 1. Within each session, pools are ordered by their final-round Block-1 \Aproc{} vote share and paired. One pool in each pair receives recovery and the other persistence, at random; an unmatched pool is assigned by a fair draw. Pairing improves balance in the number eligible to reverse, which is measured before assignment. A single visit avoids losses caused by requiring participants to return. Budgeting assumes EUR~12--15 per participant on average, yielding total participant compensation of EUR~4,800--6,000.
+The sample comprises 400 participants in 40 ten-person pools. Treatment is assigned only after everyone finishes Block 1. Within each session, pools are ordered by their final-round Block-1 \Aproc{} vote share and paired. One pool in each pair receives recovery and the other persistence, at random; an unmatched pool is assigned by a fair draw. Pairing improves balance in the number eligible to reverse, which is measured before assignment. A single visit avoids losses caused by requiring participants to return.
 
 Power depends on three quantities: Block-1 endpoint support for \Aproc{}, the persistence-group reversal rate, and the similarity of outcomes within pools. Pilot estimates will inform pool-level simulations. Repeated rounds improve measurement and reveal trajectories; they do not turn 400 participants in 40 randomized pools into 8,000 independent observations. Production sessions require multiples of ten and, when feasible, an even number of pools. Each oTree session is a separate interaction and randomization cohort.
 
 Strategic decisions do not time out automatically. The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The laboratory manager monitors the session and prompts delayed participants to complete the current decision so the group can advance.
 
 \FloatBarrier
+
+\section{Implementation Plan}
+
+The study will be conducted at the University of Turku PCRC Decision Laboratory after ethical approval. Adult participants will receive the approved invitation, participant information sheet, privacy notice, and electronic consent form. A laboratory manager will verify attendance and complete ten-person pools before the first paid round. Standby participants may enter only before paid play begins; no replacement participant will inherit another person's experimental history.
+
+The protocol will be piloted before production. A technical pilot will test simultaneous clients, both Block-2 conditions, wait pages, rematching, response-time flags, browser recovery, exports, and payment calculations. A behavioral pilot will assess comprehension, session length, choice distributions, fatigue, and expected earnings. The protocol, analysis plan, and data dictionary will then be frozen before confirmatory data collection.
+
+Production sessions will last approximately 60 minutes. The laboratory manager will monitor synchronized progress and prompt delayed participants; the software will record delays but will never generate a ballot, proposal, approval decision, or allocation. A structured session log will record late arrivals, early departures, technical interruptions, staff interventions, and payment exceptions. The research team will review the log before applying preregistered data-quality rules.
+
+\section{Recruitment, Participant Care, and Resources}
+
+The PCRC laboratory will invite adults through its participant pool using a neutral description of a paid study of group decision making and public-service provision. Recruitment will not disclose the directional hypotheses. Participation is voluntary and will not affect employment, studies, or access to University services. The fixed participation payment is EUR~10; points earned in one randomly selected round from each block determine a performance bonus of up to EUR~5.
+
+Foreseeable risks are minimal. Participants may experience mild discomfort with unequal allocations, the fictional crisis, or waiting for an interacting group. Instructions avoid moral or partisan labels, individual ballots remain private, and only group-level outcomes are shown to other participants. The debrief explains the research interpretation only after paid decisions and emphasizes that no individual choice is treated as evidence of corruption, authoritarianism, or opposition to democracy.
+
+Participant compensation is budgeted at EUR~12--15 on average, or EUR~4,800--6,000 for 400 participants. PCRC laboratory charges, possible standby payments, secure data services, and routine dissemination costs will follow final institutional quotations and available project funds. The experiment uses the open-source oTree platform and requires no proprietary experimental-software licence.
+
+\section{Data Governance, Schedule, and Outputs}
+
+The experimental interface uses participant codes rather than names. The production oTree study and coded research data are hosted on University of Turku IT servers in Finland. PCRC keeps identifying recruitment and payment information separate and gives researchers only coded data. It retains the temporary identity-to-code link until compensation is paid and then deletes it. Access to coded research data is limited to Janne Tukiainen, Hector Bahamonde, and authorised personnel. Reporting will use aggregate or de-identified data, while coded data may be retained for verification and compatible future research under the privacy notice.
+
+\begin{table}[H]
+\centering
+\caption{Planned project schedule}
+\begin{tabularx}{0.92\textwidth}{@{}L{0.24\textwidth}X@{}}
+\toprule
+Period & Main activities \\
+\midrule
+September 2026 & Ethical review, final programming and translation, technical and behavioral pilots, data-protection review, and preregistration. \\
+1--31 October 2026 & PCRC recruitment and laboratory data collection, subject to pool availability. \\
+November--December 2026 & Data verification, de-identification, reproducible cleaning, primary and secondary analyses, and robustness checks. \\
+January--March 2027 & Manuscript preparation and preparation of de-identified replication materials. \\
+After reporting & Retention, controlled archiving, or deletion in accordance with the approved data management plan and privacy notice. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The main outputs will be academic articles, presentations, and replication materials. Consistent with University open-science policy, code, documentation, and data that can be shared safely will be made as open as possible and as restricted as necessary. The primary conclusion will follow the estimand and decision rule stated above; related econometric and randomization-based methods may be used to assess precision and robustness without changing the randomized comparison.
+
 \printbibliography
 
 \end{document}
-
-[IF NEEDED, EDIT THESE PARTS (IF THE CONTENT AND SUBSTANCE OF THE ABOVE CONTENT CHANGES). BUT WE WILL KEEP THIS BELOW FOR LATER. DO NOT DELETE THEM. LET'S JUST ``MUTE'' THEM FOR NOW.]
-
-\section{Payments and Laboratory Operations}
-
-Participants receive a EUR~10 show-up payment plus a points-based performance bonus capped at EUR~5. The budget assumes an average total payment of EUR~12--15 per participant, or EUR~4,800--6,000 for 400 participants. At completion, the interface displays the selected Block-1 round, selected Block-2 round, point total, performance payment, participation payment, and total payment separately.
-
-Both blocks are run during one synchronized session. The transition page is released only after every active participant has completed Block 1, so members of a matching pool encounter the new environment together. Participant codes, not names, link decisions across blocks, and all payments are made after Block 2.
-
-The operational protocol requires complete groups. Standby participants may enter only before the first paid round. Once play begins, no replacement subject inherits another participant's history. Strategic decisions do not time out automatically: the software records response time and flags delays beyond 90 seconds without generating an answer. The laboratory manager monitors these flags and prompts delayed participants to complete the current decision. The session log must document late arrival, browser failure, early departure, manual intervention, and payment exceptions. Exclusion rules should be preregistered and should never depend on treatment-consistent behavior.
-
-Before launch, two pilots are required. A technical pilot should use at least ten simultaneous clients and both treatment branches to stress wait pages, rematching, delayed-response monitoring, refresh persistence, and payment calculations. A behavioral pilot should estimate duration, comprehension, Block-1 \Aproc{} support, approval, rejection, transfers, fatigue, and payoff distributions. Parameters should be frozen after that pilot and before confirmatory registration.
-
-\section{Experience Across Repeated Play: Design Safeguards}
-
-Repeated play reveals whether institutional choices persist after participants experience their consequences. The design therefore separates those consequential responses from avoidable procedural adaptation.
-
-\paragraph{Procedural familiarity.} Participants may initially misunderstand payoff rules. Guided unpaid practice and mandatory comprehension checks establish familiarity before paid decisions. Block-2 Round 1 records the immediate response, while Round 10 records sustained reversal and Rounds 8--10 summarize late behavior.
-
-\paragraph{Reputation and reciprocity.} Fixed five-person groups would allow personal histories to drive votes and contributions. Anonymous rematching within ten-person pools breaks stable bilateral relationships while keeping treatment exposure and synchronized interaction feasible. Participants never receive persistent identities.
-
-\paragraph{Leader-role expectations.} Leader selection occurs after the institutional ballot and uses the same balanced rule under both procedures. Participants therefore cannot vote knowing whether they will make the proposal.
-
-\paragraph{Endogenous institutional experience.} Groups that never elect one procedure receive less experience with it. Instructions and practice expose everyone to both payoff rules, and realized experience is recorded.\footnote{We follow \textcite{Bigoni:2012} and implement a short and effective set of instructions.} Treatment effects will be reported by prior exposure, but the primary randomized comparison will not condition on a post-treatment institutional path.
-
-\paragraph{Wealth, fatigue, and end-game effects.} Only one randomly selected round per block determines game earnings, so earnings from early rounds do not alter later endowments. Instructions explain that every round has an equal payment chance. The ten-round horizon is disclosed and identical across conditions. Recorded decision times and delay flags identify fatigue or end-game behavior. The persistence group experiences the same twenty-round sequence as the recovery group, separating the treatment effect from generic within-session fatigue.
-
-\paragraph{Cross-block comparability.} Labels, leader selection, proposal choices, approval threshold, fallback, endowments, and sequence are fixed. Recovery jointly improves public-service conditions and raises the approval-constrained multiplier; persistence identifies change from repeated play or approaching the session's end.
-
-These safeguards preserve experience with institutional consequences while limiting changes driven by the interface, accidental partners, or accumulated wealth.
-
-\section{Ethics and Interpretation}
-
-The experiment makes action without approval materially effective but avoids moral labels. Instructions use ``Group approval required'' and ``Decision takes effect directly,'' disclose every rule, and reserve explicit questions about democratic constraints until paid choices are complete.
-
-Consent explains the one-session structure, interaction, anonymity, payment rule, data linkage, and the importance of remaining for the full interactive session. Participants who do not consent are handled by the laboratory manager before the group task begins. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports should replace participant labels with study IDs and store the linkage key separately.
-
-The Finnish setting strengthens the case for a hypothetical, incentive-based task. Participants do not judge Finnish officials; they face a fictional crisis and transparent, consequential rules. Recovery is the joint improvement in that environment and the approval-constrained production rate.
-
-The interpretation centers on revealed choice over approval. Comparing recovery with persistence identifies whether the structural package causes previous \Aproc{} supporters to restore that constraint; it does not separate the package's narrative and payoff components.
-
-\section{Planned Deliverables and Decision Rule}
-
-The principal conclusion follows a simple rule: evidence for structural reversal requires a positive, substantively meaningful, and statistically distinguishable recovery effect on $R_i$ among Block-1 \Aproc{} supporters. Approval, proposals, transfers, fallback contributions, and expectations describe behavior around that effect.
-
-The design isolates a microfoundation of executive aggrandizement: citizens use a democratic ballot to remove approval from a later decision and may restore it after structural recovery. Democratic reversal is the sustained vote to reinstate that constraint.

@@ -1,0 +1,84 @@
+\input{irb_style.tex}
+\begin{document}
+\IRBTitle{Attachment 12}{Data Protection Impact Assessment}
+
+\begin{reviewbox}[Status of this assessment]
+This is a project-specific DPIA draft prepared using the University of Turku structure. Because questionnaire responses may reveal political opinions, the responsible researcher must ask the University Data Protection Officer to confirm whether a DPIA is required, review the final production platform, and approve or revise this assessment before personal data are collected.
+\end{reviewbox}
+
+\sectionbar{1. Project and contact}
+\textbf{Project:} \StudyTitle.\\
+\textbf{Principal Investigator and contact for personal-data matters:} Janne Tukiainen, Professor, Turku School of Economics, University of Turku;\\
+\StudyEmail.\\
+\textbf{Controller/DPO:} University of Turku; \href{mailto:dpo@utu.fi}{dpo@utu.fi}; +358 29 450 3009.
+
+\sectionbar{2. Nature, scope, and context of processing}
+Approximately 400 adults participate in one laboratory session lasting approximately 60 minutes, with data collection planned for 1--31 October 2026. oTree records coded behavioral decisions across twenty rounds, randomized recovery or persistence assignment, group and pool identifiers, response times, payoffs, expectations, comprehension items, and a short final questionnaire. The questionnaire may reveal political opinions about approval rights and limits on authority. No party affiliation, voting history, direct identifiers, audio, video, biometric data, health data, criminal records, or free text are collected in the interface.
+
+PCRC separately administers recruitment, attendance, and payment and temporarily links each identity to a participant code. Researchers receive only coded experimental data and never receive the link. PCRC deletes the link when compensation has been paid. The research team stores, validates, analyses, aggregates, reports, retains coded data for compatible future research, archives anonymous outputs, and deletes data when no longer necessary. The experimental randomization affects only the fictional task and payment opportunities within the session; it creates no legal or similarly significant external decision.
+
+\sectionbar{3. Purpose, necessity, and proportionality}
+The specified purpose is scientific research on consequential institutional choice and group approval. Individual-level longitudinal decisions are necessary to observe whether the same participant changes an institutional ballot; pool and group identifiers are necessary for randomization, rematching, payoff calculation, and valid statistical uncertainty. Response times identify delays and implementation problems. Expectations and final questions check comprehension and help interpret behavioral patterns.
+
+The design minimises data by omitting names from the interface, avoiding free text and unnecessary demographics, collecting political-attitude items only after paid decisions, and limiting the questionnaire to constructs stated in the research plan. The research cannot answer its within-person question using anonymous aggregate counts collected only once. Coded individual records are therefore necessary, while PCRC's separate link permits payment and is deleted immediately afterward.
+
+The lawful bases are scientific research in the public interest under GDPR Article 6(1)(e), Article 9(2)(j), Article 89, and sections 4(3) and 6(1)(7) of the Finnish Data Protection Act. Participants receive an information sheet, privacy notice, and consent form before the task. No data-subject right is categorically excluded in advance; requests are evaluated case by case. Data portability does not apply to a public-interest task, and Article 11 may apply after the linkage key is removed.
+
+\sectionbar{4. Systems, people, and data flow}
+\begin{enumerate}
+  \item PCRC recruits and schedules adults and assigns the code used for the laboratory session.
+  \item At the laboratory, the code opens oTree and consent is recorded electronically. PCRC keeps the identity-to-code link separate.
+  \item oTree stores coded responses, treatment, interaction identifiers, response times, and payoffs on a University of Turku IT server with an \texttt{utu.fi} domain in Finland.
+  \item Janne Tukiainen, Hector Bahamonde, and authorised personnel access coded data on University IT-provided storage. The raw export becomes read-only; scripted processing creates analysis data.
+  \item PCRC administers payment separately and deletes the identity-to-code link once compensation has been paid.
+  \item Results are reported in aggregate. Only disclosure-checked anonymous data and code may be shared publicly.
+\end{enumerate}
+
+Live data are hosted and backed up on University of Turku IT-provided servers in Finland. The public prototype is not used for live data. No transfer outside Finland or the EU/EEA is planned.
+
+\sectionbar{5. Rights and organisational safeguards}
+Participants receive clear advance information, can decline or stop, and have a study contact and DPO contact. Individual ballots are not displayed to other participants. Laboratory staff see only information needed to operate the synchronized session and payment. Researchers and staff receive confidentiality and incident-handling instructions appropriate to their roles.
+
+Technical safeguards include participant codes, PCRC's separate and temporary linkage data, access control, institutional credentials, encrypted connections, two-factor authentication where available, managed backups, versioned code, audit/session logs, and secure deletion. Exports are limited to University-managed devices and UTU IT-provided storage. Small-cell outputs and combinations of session, pool, treatment, response, or payoff variables are assessed before release.
+
+\sectionbar{6. Risk assessment and controls}
+\begin{longtable}{@{}L{0.24\textwidth}L{0.25\textwidth}L{0.35\textwidth}@{}}
+\toprule
+Risk to participant & Initial assessment & Controls and residual assessment \\
+\midrule
+\endhead
+Unauthorised disclosure of questionnaire answers or decisions & Moderate impact; low-to-moderate likelihood & Codes rather than names, special-category handling, restricted access, encryption, no raw email transfer, aggregate reporting. Residual: low. \\
+\addlinespace
+Linkage of experimental choices to recruitment or payment identity & Moderate impact; low likelihood & PCRC alone holds the separate link; researchers receive only coded data; PCRC deletes the link after payment. Residual: low. \\
+\addlinespace
+Re-identification from pool, session, payoff, or rare response combinations & Moderate impact; low-to-moderate likelihood & No public session dates or operational labels, small-cell review, coarsening/suppression, anonymous release only. Residual: low. \\
+\addlinespace
+Disclosure to other participants during interaction & Low-to-moderate impact; low likelihood & Private institutional and approval ballots, anonymous rematching, group totals only, no persistent identities. Residual: low. \\
+\addlinespace
+Loss, alteration, or corruption of research data & Low-to-moderate impact; low likelihood & Read-only raw export, scripted cleaning, version control, checksums where practical, managed backups, access logs. Residual: low. \\
+\addlinespace
+External platform access or non-EEA transfer & Moderate-to-high impact; low likelihood & Production oTree and storage on University IT servers in Finland; no live data on the public prototype; no non-EEA transfer. Residual: low. \\
+\addlinespace
+Use of an individual choice to stigmatise or classify a participant & Moderate impact; low likelihood & No individual reporting, no consequential automated profiling, neutral instructions, debrief stating that no vote or transfer defines a person's political or moral character. Residual: low. \\
+\bottomrule
+\end{longtable}
+
+\sectionbar{7. Residual risk, consultation, and review}
+After the stated measures, residual risk is expected to be low and proportionate to the scientific purpose. No unmitigated high risk has been identified. If the host, collected variables, access arrangements, future use, or data-subject-rights approach changes materially, or if a breach exposes PCRC's linkage, data collection will pause and the controller/DPO will reassess the design and any need for prior consultation with the Data Protection Ombudsman.
+
+The DPIA will be reviewed after technical pilots, immediately before production, after any material platform or data change, and if an incident changes the risk profile. Any required advice from the DPO, ethics committee, PCRC laboratory, or data services will be recorded with the final version.
+
+\vspace{1em}
+\begin{tabularx}{\textwidth}{@{}X X@{}}
+\toprule
+Responsible researcher & Data Protection Officer review \\
+\midrule
+Name: Janne Tukiainen & Name: \rule{5cm}{0.3pt} \\
+Date/signature: \rule{5cm}{0.3pt} & Date/signature: \rule{5cm}{0.3pt} \\
+\bottomrule
+\end{tabularx}
+
+\sectionbar{Guidance used}
+University of Turku DPIA template and ethical-review appendix guidance; Regulation (EU) 2016/679, especially Articles 6, 9, 11, 35, and 89; Finnish Data Protection Act 1050/2018, especially sections 4, 6, and 31.
+
+\end{document}
