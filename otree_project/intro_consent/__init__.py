@@ -1,3 +1,5 @@
+import time
+
 from otree.api import *
 
 
@@ -18,7 +20,11 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    CONSENT_CHOICES = [['accept', 'I agree to participate']]
+    CONSENT_FORM_VERSION = '2026-08-31-v2'
+    CONSENT_CHOICES = [[
+        'accept',
+        'I have read the information above and agree to take part in this study.',
+    ]]
 
 
 class Subsession(BaseSubsession):
@@ -33,14 +39,10 @@ class Player(BasePlayer):
     consent = models.StringField(
         choices=C.CONSENT_CHOICES,
         widget=widgets.RadioSelect,
-        label='Do you agree to participate in this study?',
+        label='Please confirm your participation:',
     )
-
-
-class Welcome(Page):
-    @staticmethod
-    def vars_for_template(player: Player):
-        return study_details(player.session)
+    consent_form_version = models.StringField(blank=True)
+    consent_recorded_at = models.FloatField()
 
 
 class Consent(Page):
@@ -53,7 +55,11 @@ class Consent(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
+        player.consent_form_version = C.CONSENT_FORM_VERSION
+        player.consent_recorded_at = time.time()
         player.participant.vars['consent'] = player.consent
+        player.participant.vars['consent_form_version'] = player.consent_form_version
+        player.participant.vars['consent_recorded_at'] = player.consent_recorded_at
 
 
 class Instructions(Page):
@@ -66,4 +72,4 @@ class Instructions(Page):
         return study_details(player.session)
 
 
-page_sequence = [Welcome, Consent, Instructions]
+page_sequence = [Consent, Instructions]

@@ -1,29 +1,26 @@
-{{ block title }}Informed consent{{ endblock }}
+{{ block title }}Study information and consent{{ endblock }}
 
 {{ block content }}
-<p><strong>Study:</strong> Group decisions and public-service provision in a changing environment</p>
+<p>When you joined TOKA, you accepted PCRC's general laboratory rules and TOKA privacy notice. The information below concerns this particular study.</p>
+
+<div class="card card-body bg-light mb-3">
+    <strong>Study:</strong> Group decisions and public-service provision<br>
+    <strong>Format:</strong> one interactive laboratory session, approximately 60 minutes<br>
+    <strong>Payment:</strong> {{ participation_fee }} plus a decision-based bonus of up to {{ bonus_cap }}
+</div>
+
+<p>You will make anonymous decisions about experimental points with other participants. There are two blocks of ten paid rounds. You remain in a matching pool of 10 or 15 participants, and the software reshuffles that pool into groups of five before each round. Other participants never see your identity.</p>
+
+<p>The foreseeable risks are minimal. Waiting in an interactive task, the fictional public-service situation, or unequal point allocations may be mildly uncomfortable. There is no direct personal benefit beyond payment.</p>
+
+<p>PCRC keeps the identifying information needed for recruitment and payment separate from experimental responses. Researchers receive only coded data stored on University of Turku IT servers in Finland. PCRC deletes the temporary identity-to-participant-code link after payment. Coded data may be retained for compatible future scientific research, and no publication will identify individual participants.</p>
+
+<p>Participation is voluntary. If you do not wish to take part, tell the laboratory manager before continuing. If you later decide to stop, notify the laboratory manager so the interactive session can be managed safely. Because other participants' progress depends on synchronized decisions, please remain for the full session if you agree to participate.</p>
+
+<p>By selecting the option below, you confirm that you are at least 18 years old, have read this study information, and voluntarily agree to take part.</p>
+
 <p><strong>Principal Investigator:</strong> Janne Tukiainen, Professor, Turku School of Economics, University of Turku<br>
 <strong>Contact:</strong> janne.tukiainen@utu.fi, +358 50 308 3620</p>
-
-<h4>Purpose and procedures</h4>
-<p>This study investigates how people respond to public-service performance and make group decisions. It takes place in one laboratory session lasting approximately 60 minutes.</p>
-
-<p>You will complete two blocks of ten decision rounds in anonymous five-person groups. You will choose whether a selected person's proposal requires group approval, make decisions about experimental points, and see the resulting payoffs. Groups are reshuffled anonymously across rounds within a fixed set of participants.</p>
-
-<h4>Payments</h4>
-<p>You receive a {{ participation_fee }} participation payment plus a performance bonus of up to {{ bonus_cap }}. One round from each block is selected randomly, and the points you earn in those rounds determine the bonus. Every round can therefore affect your earnings.</p>
-
-<h4>Risks and benefits</h4>
-<p>The foreseeable risks are minimal. The fictional public-service situation or decisions about unequal allocations may be mildly uncomfortable. There is no direct personal benefit beyond payment, although your participation may improve scientific understanding of group decision making.</p>
-
-<h4>Privacy and voluntary participation</h4>
-<p>The experimental interface does not collect unnecessary identifying information. PCRC retains the identifying information needed for recruitment and payment and gives researchers only coded responses. PCRC deletes the identity-to-participant-code link after payment. Coded experimental data are stored on University of Turku IT servers in Finland and may be retained for compatible future scientific research. Results may be published or presented, but individual participants will not be identified.</p>
-
-<p>Participation is voluntary. If you do not wish to participate, please tell the laboratory manager before entering the interactive task.</p>
-
-<p>Because decisions are interactive, arriving on time and remaining for the full session are important. Other participants' progress can depend on everyone in their assigned set being present.</p>
-
-<p>By selecting the option below, you confirm that you are at least 18 years old, have read this information, and voluntarily agree to participate.</p>
 
 {{ formfields }}
 {{ next_button }}

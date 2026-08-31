@@ -7,7 +7,7 @@ SESSION_CONFIGS = [
         num_demo_participants=10,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=False,
-        matching_pool_size=10,
+        flexible_matching_pools=True,
     ),
     dict(
         name='panel_lab_demo',
@@ -15,7 +15,7 @@ SESSION_CONFIGS = [
         num_demo_participants=10,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
-        matching_pool_size=10,
+        flexible_matching_pools=True,
     ),
     dict(
         name='panel_lab_solo_recovery',
@@ -52,7 +52,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     performance_bonus_cap=5.00,
     doc=(
         'One synchronized laboratory session with two ten-round blocks, '
-        'anonymous rematching in ten-person pools, leader proposals with or '
+        'anonymous rematching in 10- or 15-person pools, leader proposals with or '
         'without group approval, post-Block-1 pool randomization, and one '
         'randomly selected payoff round per block.'
     ),

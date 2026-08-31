@@ -133,6 +133,7 @@ def group_within_matching_pools(subsession):
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = player.participant.vars['matching_pool_id']
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
+        player.matching_pool_size = player.participant.vars['matching_pool_size']
         if subsession.round_number == 1:
             subsession.session.vars['block2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         return
@@ -155,6 +156,7 @@ def group_within_matching_pools(subsession):
     for player in players:
         player.matching_pool_id = player.participant.vars['matching_pool_id']
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
+        player.matching_pool_size = player.participant.vars['matching_pool_size']
 
     if subsession.round_number == 1:
         subsession.session.vars['block2_paying_round'] = random.randint(1, C.NUM_ROUNDS)
@@ -353,6 +355,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     matching_pool_id = models.IntegerField()
     matching_pool_uid = models.StringField()
+    matching_pool_size = models.IntegerField()
     treatment = models.StringField()
     randomization_stratum = models.IntegerField(initial=0)
     institution_vote = models.StringField(

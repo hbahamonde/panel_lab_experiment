@@ -7,7 +7,7 @@ from otree.api import *
 doc = """
 Block 1 of the one-session experiment: a common public-service crisis, ten
 repeated institutional-choice/public-good rounds and process measurement.
-Participants are anonymously rematched within ten-person pools.
+Participants are anonymously rematched within 10- or 15-person pools.
 """
 
 
@@ -27,6 +27,21 @@ def solo_testing(obj):
     return obj.session.config.get('solo_testing', False)
 
 
+def flexible_pool_sizes(player_count):
+    """Prefer 10-person pools and use one 15-person pool for a remainder of five."""
+    if player_count < 10:
+        raise RuntimeError(
+            'Production sessions require at least 10 completed participants.'
+        )
+    if player_count % C.GROUP_SIZE != 0:
+        raise RuntimeError(
+            'The completed session roster must be divisible into five-person groups.'
+        )
+    if player_count % 10 == 0:
+        return [10] * (player_count // 10)
+    return [10] * ((player_count - 15) // 10) + [15]
+
+
 def start_decision_timer(player, decision_name):
     key = f'block1_round_{player.round_number}_{decision_name}_started_at'
     player.participant.vars.setdefault(key, time.time())
@@ -42,7 +57,6 @@ def record_decision_time(player, decision_name, seconds_field, flag_field):
 
 def assign_matching_pools(subsession):
     players = subsession.get_players()
-    pool_size = subsession.session.config.get('matching_pool_size', C.MATCHING_POOL_SIZE)
 
     if solo_testing(subsession):
         if len(players) != 1:
@@ -51,29 +65,30 @@ def assign_matching_pools(subsession):
         if subsession.round_number == 1:
             player.participant.vars['matching_pool_id'] = 1
             player.participant.vars['matching_pool_uid'] = f'{subsession.session.code}-pool-1'
+            player.participant.vars['matching_pool_size'] = 1
             player.participant.vars['times_leader'] = 0
             subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = 1
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
+        player.matching_pool_size = 1
         return
 
     if subsession.round_number == 1:
-        if pool_size % C.GROUP_SIZE != 0:
-            raise RuntimeError('The matching-pool size must be divisible by five.')
-        if len(players) % pool_size != 0:
-            raise RuntimeError(
-                f'The session size must be divisible by the {pool_size}-person matching-pool size.'
-            )
-
+        pool_sizes = flexible_pool_sizes(len(players))
+        subsession.session.vars['matching_pool_sizes'] = pool_sizes
         shuffled = random.sample(players, len(players))
-        for index, player in enumerate(shuffled):
-            pool_id = index // pool_size + 1
-            player.participant.vars['matching_pool_id'] = pool_id
-            player.participant.vars['matching_pool_uid'] = (
-                f'{subsession.session.code}-pool-{pool_id}'
-            )
-            player.participant.vars['times_leader'] = 0
+        position = 0
+        for pool_id, pool_size in enumerate(pool_sizes, start=1):
+            pool_members = shuffled[position:position + pool_size]
+            position += pool_size
+            for player in pool_members:
+                player.participant.vars['matching_pool_id'] = pool_id
+                player.participant.vars['matching_pool_uid'] = (
+                    f'{subsession.session.code}-pool-{pool_id}'
+                )
+                player.participant.vars['matching_pool_size'] = pool_size
+                player.participant.vars['times_leader'] = 0
 
         subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
@@ -96,6 +111,7 @@ def assign_matching_pools(subsession):
     for player in players:
         player.matching_pool_id = player.participant.vars['matching_pool_id']
         player.matching_pool_uid = player.participant.vars['matching_pool_uid']
+        player.matching_pool_size = player.participant.vars['matching_pool_size']
 
 
 def choose_institution_and_leader(group):
@@ -212,7 +228,6 @@ class C(BaseConstants):
     NAME_IN_URL = 'group_decisions_1'
     PLAYERS_PER_GROUP = None
     GROUP_SIZE = 5
-    MATCHING_POOL_SIZE = 10
     NUM_ROUNDS = 10
 
     ENDOWMENT = 20
@@ -267,6 +282,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     matching_pool_id = models.IntegerField()
     matching_pool_uid = models.StringField()
+    matching_pool_size = models.IntegerField()
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES,
         widget=widgets.RadioSelect,
