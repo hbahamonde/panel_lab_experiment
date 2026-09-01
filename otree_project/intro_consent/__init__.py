@@ -20,7 +20,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    CONSENT_FORM_VERSION = '2026-08-31-v2'
+    CONSENT_FORM_VERSION = '2026-09-01-v4'
     CONSENT_CHOICES = [[
         'accept',
         'I have read the information above and agree to take part in this study.',
@@ -43,6 +43,7 @@ class Player(BasePlayer):
     )
     consent_form_version = models.StringField(blank=True)
     consent_recorded_at = models.FloatField()
+    lab_site = models.StringField(blank=True)
 
 
 class Consent(Page):
@@ -57,9 +58,11 @@ class Consent(Page):
     def before_next_page(player: Player, timeout_happened):
         player.consent_form_version = C.CONSENT_FORM_VERSION
         player.consent_recorded_at = time.time()
+        player.lab_site = player.session.config.get('lab_site', 'unspecified')
         player.participant.vars['consent'] = player.consent
         player.participant.vars['consent_form_version'] = player.consent_form_version
         player.participant.vars['consent_recorded_at'] = player.consent_recorded_at
+        player.participant.vars['lab_site'] = player.lab_site
 
 
 class Instructions(Page):

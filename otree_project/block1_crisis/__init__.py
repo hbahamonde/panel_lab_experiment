@@ -66,7 +66,6 @@ def assign_matching_pools(subsession):
             player.participant.vars['matching_pool_id'] = 1
             player.participant.vars['matching_pool_uid'] = f'{subsession.session.code}-pool-1'
             player.participant.vars['matching_pool_size'] = 1
-            player.participant.vars['times_leader'] = 0
             subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
         subsession.set_group_matrix([[player]])
         player.matching_pool_id = 1
@@ -88,7 +87,6 @@ def assign_matching_pools(subsession):
                     f'{subsession.session.code}-pool-{pool_id}'
                 )
                 player.participant.vars['matching_pool_size'] = pool_size
-                player.participant.vars['times_leader'] = 0
 
         subsession.session.vars['block1_paying_round'] = random.randint(1, C.NUM_ROUNDS)
 
@@ -133,22 +131,13 @@ def choose_institution_and_leader(group):
         player = players[0]
         if player.round_number % 2:
             player.is_leader = True
-            player.participant.vars['times_leader'] = (
-                player.participant.vars.get('times_leader', 0) + 1
-            )
             group.leader_id = player.id_in_group
         else:
             group.leader_id = 0  # simulated leader; lets one-browser tests show approval
         return
 
-    minimum_count = min(p.participant.vars.get('times_leader', 0) for p in players)
-    eligible = [
-        p for p in players
-        if p.participant.vars.get('times_leader', 0) == minimum_count
-    ]
-    leader = random.choice(eligible)
+    leader = random.choice(players)
     leader.is_leader = True
-    leader.participant.vars['times_leader'] = minimum_count + 1
     group.leader_id = leader.id_in_group
 
 

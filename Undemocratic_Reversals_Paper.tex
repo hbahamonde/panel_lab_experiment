@@ -140,7 +140,7 @@ This literature mainly explains movement toward less constrained authority. Our 
 
 Public-good games supply the economic reason for weakening approval. Voluntary provision is vulnerable to free riding---keeping one's points while others fund the shared service---and declining cooperation, whereas centralized enforcement can coordinate contributions \parencites{FehrGachter2000,FischbacherGachter2010,Hamman2011}. Experiments also show that voting over institutions changes their performance \parencites{DalBo2010,SutterHaignerKocher2010,MarkussenPuttermanTyran2014}. Our experimental design joins these literatures by making citizen approval both institutionally meaningful and economically costly.
 
-In each round, five citizens begin with 20 points each and vote between two rules for managing a shared public-services fund. Under both rules, the software selects a leader only after the vote, choosing among those who have served least often and breaking ties randomly. The leader proposes how many points every citizen places in the fund and whether any collected points move to the leader's payoff. Fund points are multiplied and the resulting group return is divided equally.
+In each round, five citizens begin with 20 points each and vote between two rules for managing a shared public-services fund. Under both rules, the software selects one of the five citizens uniformly at random only after the vote, so each has the same one-in-five chance of leading that round. The leader proposes how many points every citizen places in the fund and whether any collected points move to the leader's payoff. Fund points are multiplied and the resulting group return is divided equally.
 
 Under the approval-constrained rule (\Dproc), at least three of the other four citizens must approve the complete proposal. Rejection returns the group to voluntary individual allocations. Under automatic implementation (\Aproc), the same proposal takes effect without that approval vote. A matching pool contains 10 or 15 citizens and is reshuffled into two or three temporary groups of five before each round. Thus, the democratic ballot selects an approval rule, not a known leader or proposal.
 
@@ -203,7 +203,7 @@ The recovery--persistence comparison identifies the total causal effect of struc
 
 \subsection{Overview}
 
-Each laboratory cohort completes one session lasting approximately 60 minutes, with two ten-round blocks. Subject to ethical review in September 2026, data collection at the PCRC Decision Laboratory is planned for 1--31 October 2026. Participants remain in matching pools of 10 or 15 and are reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly without forming stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
+Each laboratory cohort completes one session lasting approximately 60 minutes, with two ten-round blocks. Subject to ethical review in September 2026, data collection is planned for 1--31 October 2026 at the UTU Choice Lab decision-making laboratory and may also be conducted at Tampere University's Decision-making Laboratory (DMLab) to accelerate recruitment. UTU Choice Lab has 24 regular seats plus one accessible seat, while DMLab has 20; production rosters are capped at 20. Participants remain in matching pools of 10 or 15 and are reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly without forming stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
 
 \begin{figure}[H]
 \centering
@@ -287,32 +287,29 @@ Reversal is measured for individuals, but treatment ($T_g$) is assigned to pools
 
 \begin{table}[H]
 \centering
+\small
 \caption{Session formation from the completed laboratory roster}
 \label{tab:attendance-pools}
-\begin{tabular}{rrrr}
+\begin{tabular}{rcrrr}
 \toprule
-People who arrive & Matching pools & Participate & Released \\
+People who arrive & Matching pools & Five-person groups per round & Participate & Released \\
 \midrule
-30 & $10+10+10$ & 30 & 0 \\
-26--29 & $10+15$ & 25 & 1--4 \\
-25 & $10+15$ & 25 & 0 \\
-21--24 & $10+10$ & 20 & 1--4 \\
-20 & $10+10$ & 20 & 0 \\
-16--19 & $15$ & 15 & 1--4 \\
-15 & $15$ & 15 & 0 \\
-11--14 & $10$ & 10 & 1--4 \\
-10 & $10$ & 10 & 0 \\
-Fewer than 10 & --- & 0 & All \\
+20 & $10+10$ & $2+2=4$ & 20 & 0 \\
+16--19 & $15$ & 3 & 15 & 1--4 \\
+15 & $15$ & 3 & 15 & 0 \\
+11--14 & $10$ & 2 & 10 & 1--4 \\
+10 & $10$ & 2 & 10 & 0 \\
+Fewer than 10 & --- & --- & 0 & All \\
 \bottomrule
 \end{tabular}
-\begin{minipage}{0.89\textwidth}
-\footnotesize\textit{Notes:} The roster is fixed before Block 1. Ten-person pools are formed first; when the largest usable multiple of five ends in 15, one fifteen-person pool is formed. Participants never enter or change pools after paid play begins.
+\begin{minipage}{0.96\textwidth}
+\footnotesize\textit{Notes:} A matching pool is not a playing group. Each ten-person pool forms two temporary five-person groups per round; a fifteen-person pool forms three. At 20 participants, two separate ten-person pools each form two groups. Groups dissolve and are reshuffled after every round; participants never enter or change pools after paid play begins.
 \end{minipage}
 \end{table}
 
 \subsection{The institutional-choice public-good game}
 
-Each citizen starts with 20 points and privately votes between an approval-constrained rule (\Dproc) and automatic implementation (\Aproc). Let \(V_{i,b,r}\in\{\Dproc,\Aproc\}\) denote citizen \(i\)'s ballot in block \(b\) and round \(r\). Three votes select the binding rule. The software then selects a leader from those who have served least often, breaking ties randomly. Selection occurs under both rules and only after the institutional ballot.
+Each citizen starts with 20 points and privately votes between an approval-constrained rule (\Dproc) and automatic implementation (\Aproc). Let \(V_{i,b,r}\in\{\Dproc,\Aproc\}\) denote citizen \(i\)'s ballot in block \(b\) and round \(r\). Three votes select the binding rule. The software then selects each group's leader by an independent uniform draw among its five citizens. Selection occurs under both rules and only after the institutional ballot, giving every citizen the same ex ante chance in every round without making past service predict the next draw.
 
 \begin{table}[H]
 \centering
@@ -468,7 +465,7 @@ For each leader $i$, $t_{igbr}$ is the proposed allocation and $\rho_{igbr}$ the
 
 Immediate reversal \(R_i^{I}\) records the first response to the structural package, before Block-2 interaction (see \autoref{fig:decision-timeline}). The primary outcome \(R_i\) records Round 10 after nine completed rounds. Secondary outcomes include late-round automatic-implementation support and realized group-level restoration.
 
-Expected payoffs assess whether participants understood how recovery changed the rules' relative performance, while expected transfers trace beliefs about leader discretion. The final questionnaire checks perceived Block-1 crisis severity and Block-2 change, then records views on approval, equal allocation, and transfers. These measures assess the manipulation and aid interpretation; they do not by themselves identify why the treatment changed behavior.
+Expected payoffs assess whether participants understood how recovery changed the rules' relative performance, while expected transfers trace beliefs about leader discretion. After all paid choices, eleven process items check perceived crisis severity and recovery, expected institutional performance, and views on approval, equal allocation, and transfers. A separate optional twelve-item background module records age group, gender, education, household financial strain, party voted for in Finland's 2023 parliamentary election, left--right placement, whether democracy is preferable to other forms of government, satisfaction with democracy in Finland, evaluation of a strong leader unconstrained by parliament and elections, external political efficacy, generalized trust, and willingness to take risks. These prespecified measures capture partisan and ideological trade-offs, distinguish principled democratic support from evaluations of democratic performance, and benchmark cooperative and risk-related predispositions \parencites{GRAHAM2020,0b3bf,Claassen2020,Dohmen2011,Glaeser2000}. They are collected only after paid decisions and support precision and descriptive heterogeneity analyses; they do not alter the randomized estimand or independently identify a treatment mechanism.
 
 
 \begin{figure}[H]
@@ -544,7 +541,7 @@ The planned sample comprises 300 completed participants in 28--30 matching pools
 
 Power depends on Block-1 endpoint support for \Aproc{}, the persistence-group reversal rate, the similarity of outcomes within pools, and the realized mix of pool sizes. With 300 participants, the design yields 28--30 independent treatment assignments---approximately 14--15 pools per condition---because a larger pool supplies more individual outcomes but still receives only one treatment draw. Repeated rounds improve measurement and reveal trajectories; they do not create additional independent assignments.
 
-Pilot estimates will inform simulations spanning 28--30 pools and the observed number eligible to reverse. The primary randomization test reproduces the actual paired and unmatched assignments. Regression estimates cluster uncertainty by pool, adjust for the prespecified pool-size indicator, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. Each oTree session remains a separate interaction and randomization cohort.
+Pilot estimates will inform simulations spanning 28--30 pools and the observed number eligible to reverse. The primary randomization test reproduces the actual paired and unmatched assignments. Regression estimates cluster uncertainty by pool, adjust for prespecified pool-size and laboratory-site indicators, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. Each oTree session remains a separate interaction and randomization cohort.
 
 Strategic decisions do not time out automatically. The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The laboratory manager monitors the session and prompts delayed participants to complete the current decision so the group can advance.
 
@@ -573,7 +570,7 @@ Repeated play reveals whether institutional choices persist after participants e
 
 \paragraph{Reputation and reciprocity.} Fixed five-person groups would allow personal histories to drive votes and contributions. Anonymous rematching within 10- or 15-person pools breaks stable bilateral relationships while keeping treatment exposure and synchronized interaction feasible. Participants never receive persistent identities.
 
-\paragraph{Leader-role expectations.} Leader selection occurs after the institutional ballot and uses the same balanced rule under both procedures. Participants therefore cannot vote knowing whether they will make the proposal.
+\paragraph{Leader-role expectations.} Leader selection occurs after the institutional ballot and uses an independent uniform draw among the five citizens under both procedures. Each citizen therefore has a one-in-five chance in every round, cannot vote knowing whether they will make the proposal, and cannot use prior service to predict the next leader.
 
 \paragraph{Endogenous institutional experience.} Groups that never elect one procedure receive less experience with it. Instructions and practice expose everyone to both payoff rules, and realized experience is recorded.\footnote{We follow \textcite{Bigoni:2012} and implement a short and effective set of instructions.} Treatment effects will be reported by prior exposure, but the primary randomized comparison will not condition on a post-treatment institutional path.
 
@@ -587,7 +584,7 @@ These safeguards preserve experience with institutional consequences while limit
 
 The experiment makes action without approval materially effective but avoids moral labels. Instructions use ``Group approval required'' and ``Decision takes effect directly,'' disclose every rule, and reserve explicit questions about democratic constraints until paid choices are complete.
 
-TOKA registration covers PCRC's general laboratory rules and privacy notice. Before practice, the interface presents study-specific information on the session, interaction, anonymity, payment, data linkage, and the importance of remaining for the full task, then records affirmative consent to this study. Participants who do not consent are handled by the laboratory manager before the group task begins. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports should replace participant labels with study IDs and store the linkage key separately.
+Registration through the host laboratory's participant system covers that laboratory's general rules and privacy notice. Before practice, the interface presents study-specific information on the session, interaction, anonymity, payment, data linkage, and the importance of remaining for the full task, then records affirmative consent to this study. Participants who do not consent are handled by the laboratory manager before the group task begins. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports use coded study IDs; the host laboratory keeps any temporary payment linkage separate and does not give it to the research team.
 
 The Finnish setting strengthens the case for a hypothetical, incentive-based task. Participants do not judge Finnish officials; they face a fictional crisis and transparent, consequential rules. Recovery is the joint improvement in that environment and the approval-constrained production rate.
 

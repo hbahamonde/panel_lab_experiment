@@ -8,6 +8,16 @@ SESSION_CONFIGS = [
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=False,
         flexible_matching_pools=True,
+        lab_site='utu_choice_lab',
+    ),
+    dict(
+        name='panel_lab_experiment_tampere',
+        display_name='Group decisions and public services — Tampere DMLab',
+        num_demo_participants=10,
+        app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
+        allow_optional_responses=False,
+        flexible_matching_pools=True,
+        lab_site='tampere_dmlab',
     ),
     dict(
         name='panel_lab_demo',
@@ -16,6 +26,7 @@ SESSION_CONFIGS = [
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
         flexible_matching_pools=True,
+        lab_site='development',
     ),
     dict(
         name='panel_lab_solo_recovery',
@@ -26,6 +37,7 @@ SESSION_CONFIGS = [
         matching_pool_size=1,
         solo_testing=True,
         solo_treatment='recovery',
+        lab_site='development',
     ),
     dict(
         name='panel_lab_solo_persistence',
@@ -36,6 +48,7 @@ SESSION_CONFIGS = [
         matching_pool_size=1,
         solo_testing=True,
         solo_treatment='persistence',
+        lab_site='development',
     )
 ]
 
@@ -54,7 +67,7 @@ SESSION_CONFIG_DEFAULTS = dict(
         'One synchronized laboratory session with two ten-round blocks, '
         'anonymous rematching in 10- or 15-person pools, leader proposals with or '
         'without group approval, post-Block-1 pool randomization, and one '
-        'randomly selected payoff round per block.'
+        'randomly selected payoff round per block, implemented at either host laboratory.'
     ),
 )
 

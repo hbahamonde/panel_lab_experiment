@@ -193,22 +193,13 @@ def choose_institution_and_leader(group):
         player = players[0]
         if player.round_number % 2:
             player.is_leader = True
-            player.participant.vars['times_leader'] = (
-                player.participant.vars.get('times_leader', 0) + 1
-            )
             group.leader_id = player.id_in_group
         else:
             group.leader_id = 0
         return
 
-    minimum_count = min(p.participant.vars.get('times_leader', 0) for p in players)
-    eligible = [
-        p for p in players
-        if p.participant.vars.get('times_leader', 0) == minimum_count
-    ]
-    leader = random.choice(eligible)
+    leader = random.choice(players)
     leader.is_leader = True
-    leader.participant.vars['times_leader'] = minimum_count + 1
     group.leader_id = leader.id_in_group
 
 
@@ -327,6 +318,70 @@ class C(BaseConstants):
         [1, 'Much worse'], [2, 'Somewhat worse'], [3, 'No change'],
         [4, 'Somewhat better'], [5, 'Much better'],
     ]
+    AGE_GROUP_CHOICES = [
+        ['18-24', '18--24'], ['25-34', '25--34'], ['35-44', '35--44'],
+        ['45-54', '45--54'], ['55-64', '55--64'], ['65+', '65 or older'],
+        ['prefer_not', 'Prefer not to answer'],
+    ]
+    GENDER_CHOICES = [
+        ['woman', 'Woman'], ['man', 'Man'], ['another', 'Another gender'],
+        ['prefer_not', 'Prefer not to answer'],
+    ]
+    EDUCATION_CHOICES = [
+        ['basic', 'Basic or lower-secondary education'],
+        ['upper_general', 'General upper-secondary education'],
+        ['vocational', 'Vocational qualification'],
+        ['bachelor', 'Bachelor\'s degree or university of applied sciences degree'],
+        ['master', 'Master\'s degree'], ['doctorate', 'Doctoral degree'],
+        ['other', 'Other'], ['prefer_not', 'Prefer not to answer'],
+    ]
+    FINANCIAL_STRAIN_CHOICES = [
+        [1, 'Very difficult'], [2, 'Difficult'], [3, 'Neither difficult nor easy'],
+        [4, 'Easy'], [5, 'Very easy'], [-99, 'Prefer not to answer'],
+    ]
+    PARTY_VOTE_2023_CHOICES = [
+        ['ncp', 'National Coalition Party (Kokoomus)'],
+        ['finns', 'Finns Party (Perussuomalaiset)'],
+        ['sdp', 'Social Democratic Party (SDP)'],
+        ['centre', 'Centre Party (Keskusta)'],
+        ['greens', 'Green League (Vihreät)'],
+        ['left', 'Left Alliance (Vasemmistoliitto)'],
+        ['sfp', 'Swedish People\'s Party of Finland (RKP/SFP)'],
+        ['kd', 'Christian Democrats (KD)'],
+        ['movement_now', 'Movement Now (Liike Nyt)'],
+        ['other_party', 'Another party'], ['did_not_vote', 'I did not vote'],
+        ['not_eligible', 'I was not eligible to vote'],
+        ['prefer_not', 'Prefer not to answer'],
+    ]
+    LEFT_RIGHT_CHOICES = (
+        [[0, '0 — Left']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Right'], [-99, 'Prefer not to answer']]
+    )
+    DEMOCRACY_PREFERABLE_CHOICES = [
+        [1, 'Strongly disagree'], [2, 'Somewhat disagree'],
+        [3, 'Somewhat agree'], [4, 'Strongly agree'],
+        [-99, 'Prefer not to answer'],
+    ]
+    SATISFACTION_CHOICES = (
+        [[0, '0 — Completely dissatisfied']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Completely satisfied'], [-99, 'Prefer not to answer']]
+    )
+    STRONG_LEADER_CHOICES = [
+        [1, 'Very bad'], [2, 'Fairly bad'], [3, 'Fairly good'], [4, 'Very good'],
+        [-99, 'Prefer not to answer'],
+    ]
+    EXTERNAL_EFFICACY_CHOICES = [
+        [1, 'Strongly disagree'], [2, 'Disagree'], [3, 'Neither agree nor disagree'],
+        [4, 'Agree'], [5, 'Strongly agree'], [-99, 'Prefer not to answer'],
+    ]
+    TRUST_CHOICES = (
+        [[0, '0 — You cannot be too careful']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Most people can be trusted'], [-99, 'Prefer not to answer']]
+    )
+    RISK_CHOICES = (
+        [[0, '0 — Not at all willing']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Very willing'], [-99, 'Prefer not to answer']]
+    )
 class Subsession(BaseSubsession):
     pass
 
@@ -437,6 +492,60 @@ class Player(BasePlayer):
     constraint_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer requiring approval to letting a selected person implement an unwanted transfer.', blank=True)
     constraint_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Removing the approval vote creates risks that outweigh the current gains.', blank=True)
     constraint_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, selected decision-makers need more freedom to act without further approval.', blank=True)
+
+    background_age_group = models.StringField(
+        choices=C.AGE_GROUP_CHOICES, label='What is your age?', blank=True,
+    )
+    background_gender = models.StringField(
+        choices=C.GENDER_CHOICES, label='What is your gender?', blank=True,
+    )
+    background_education = models.StringField(
+        choices=C.EDUCATION_CHOICES,
+        label='What is the highest level of education you have completed?', blank=True,
+    )
+    background_financial_strain = models.IntegerField(
+        choices=C.FINANCIAL_STRAIN_CHOICES,
+        label='How easy or difficult is it for your household to make ends meet?', blank=True,
+    )
+    background_party_vote_2023 = models.StringField(
+        choices=C.PARTY_VOTE_2023_CHOICES,
+        label='Which party did you vote for in the 2023 Finnish parliamentary election?',
+        blank=True,
+    )
+    background_left_right = models.IntegerField(
+        choices=C.LEFT_RIGHT_CHOICES,
+        label='In politics, where would you place yourself on a scale from 0 (left) to 10 (right)?',
+        blank=True,
+    )
+    background_democracy_preferable = models.IntegerField(
+        choices=C.DEMOCRACY_PREFERABLE_CHOICES,
+        label='Democracy may have problems, but it is better than any other form of government.',
+        blank=True,
+    )
+    background_democracy_satisfaction = models.IntegerField(
+        choices=C.SATISFACTION_CHOICES,
+        label='On the whole, how satisfied are you with the way democracy works in Finland?',
+        blank=True,
+    )
+    background_strong_leader = models.IntegerField(
+        choices=C.STRONG_LEADER_CHOICES,
+        label='Would having a strong leader who does not have to bother with parliament and elections be a good or bad way of governing Finland?',
+        blank=True,
+    )
+    background_external_efficacy = models.IntegerField(
+        choices=C.EXTERNAL_EFFICACY_CHOICES,
+        label='Citizens\' opinions are taken into account in political decision making in Finland.',
+        blank=True,
+    )
+    background_generalized_trust = models.IntegerField(
+        choices=C.TRUST_CHOICES,
+        label='Generally speaking, would you say that most people can be trusted, or that you cannot be too careful?',
+        blank=True,
+    )
+    background_risk_willingness = models.IntegerField(
+        choices=C.RISK_CHOICES,
+        label='How willing are you to take risks in general?', blank=True,
+    )
 
     democratic_reversal = models.BooleanField(initial=False)
     immediate_democratic_reversal = models.BooleanField(initial=False)
@@ -852,6 +961,61 @@ class FinalQuestions(Page):
         return require_all(player, values, FinalQuestions.form_fields)
 
 
+class BackgroundQuestions1(Page):
+    form_model = 'player'
+    form_fields = [
+        'background_age_group', 'background_gender', 'background_education',
+        'background_financial_strain', 'background_party_vote_2023',
+        'background_left_right',
+    ]
+    template_name = 'block2_reversal/QuestionPage.html'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            page_title='Background questions (1 of 2)',
+            explanation=(
+                'All paid decisions are complete. These questions help us understand how '
+                'experimental choices vary across participants. Each question is optional, '
+                'and you may continue without answering it.'
+            ),
+            institution_vote_page=False,
+            slider_prefix='',
+            optional_responses=True,
+        )
+
+
+class BackgroundQuestions2(Page):
+    form_model = 'player'
+    form_fields = [
+        'background_democracy_preferable', 'background_democracy_satisfaction',
+        'background_strong_leader', 'background_external_efficacy',
+        'background_generalized_trust', 'background_risk_willingness',
+    ]
+    template_name = 'block2_reversal/QuestionPage.html'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            page_title='Background questions (2 of 2)',
+            explanation=(
+                'The remaining optional questions concern political attitudes, trust, and '
+                'risk preferences. You may continue without answering any item.'
+            ),
+            institution_vote_page=False,
+            slider_prefix='',
+            optional_responses=True,
+        )
+
+
 class StudyComplete(Page):
     @staticmethod
     def is_displayed(player):
@@ -885,5 +1049,7 @@ page_sequence = [
     DecisionWaitPage,
     RoundResults,
     FinalQuestions,
+    BackgroundQuestions1,
+    BackgroundQuestions2,
     StudyComplete,
 ]
