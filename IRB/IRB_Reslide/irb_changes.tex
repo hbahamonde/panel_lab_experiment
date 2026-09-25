@@ -1,0 +1,10 @@
+% Visible amendment mode for the ethics-committee supplement.
+% Set \IRBchangesfalse to prepare a clean submission copy.
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+\sethlcolor{yellow}
+\newif\ifIRBchanges
+\IRBchangestrue
+\newcommand{\irbadd}[1]{\ifIRBchanges\hl{#1}\else#1\fi}
+\newcommand{\irbdel}[1]{\ifIRBchanges{\color{red!70!black}\sout{#1}}\fi}
+\newcommand{\irbreplace}[2]{\ifIRBchanges\irbdel{#1}\,\irbadd{#2}\else#2\fi}

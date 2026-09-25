@@ -1032,6 +1032,7 @@ class StudyComplete(Page):
             performance_payment=player.participant.payoff.to_real_world_currency(player.session),
             participation_fee=player.session.config['participation_fee'],
             total_payment=player.participant.payoff_plus_participation_fee(),
+            participant_code=player.participant.code,
         )
 
 

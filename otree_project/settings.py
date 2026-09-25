@@ -11,15 +11,6 @@ SESSION_CONFIGS = [
         lab_site='utu_choice_lab',
     ),
     dict(
-        name='panel_lab_experiment_tampere',
-        display_name='Group decisions and public services — Tampere DMLab',
-        num_demo_participants=10,
-        app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
-        allow_optional_responses=False,
-        flexible_matching_pools=True,
-        lab_site='tampere_dmlab',
-    ),
-    dict(
         name='panel_lab_demo',
         display_name='Group decisions and public services (full-group testing)',
         num_demo_participants=10,
@@ -67,7 +58,7 @@ SESSION_CONFIG_DEFAULTS = dict(
         'One synchronized laboratory session with two ten-round blocks, '
         'anonymous rematching in 10- or 15-person pools, leader proposals with or '
         'without group approval, post-Block-1 pool randomization, and one '
-        'randomly selected payoff round per block, implemented at either host laboratory.'
+        'randomly selected payoff round per block, implemented at UTU Choice Lab.'
     ),
 )
 

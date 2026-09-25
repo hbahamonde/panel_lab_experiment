@@ -20,7 +20,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    CONSENT_FORM_VERSION = '2026-09-01-v4'
+    CONSENT_FORM_VERSION = '2026-09-24-v5'
     CONSENT_CHOICES = [[
         'accept',
         'I have read the information above and agree to take part in this study.',
