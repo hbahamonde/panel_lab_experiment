@@ -60,6 +60,52 @@ def assign_treatments_after_block1(subsession):
         subsession.session.vars['randomization_stratum_by_pool'] = {1: 1}
         return
 
+    # Participant-level copies are the durable source during recovery from an
+    # interrupted session. Once stored, treatment must never be redrawn.
+    stored_assignment_available = all(
+        'treatment' in player.participant.vars
+        and 'randomization_stratum' in player.participant.vars
+        for player in players
+    )
+    if stored_assignment_available:
+        treatment_by_pool = {}
+        stratum_by_pool = {}
+        for player in players:
+            pool_id = player.participant.vars['matching_pool_id']
+            treatment = player.participant.vars['treatment']
+            stratum = player.participant.vars['randomization_stratum']
+            if (
+                pool_id in treatment_by_pool
+                and treatment_by_pool[pool_id] != treatment
+            ):
+                raise RuntimeError('Stored treatments conflict within a matching pool.')
+            if pool_id in stratum_by_pool and stratum_by_pool[pool_id] != stratum:
+                raise RuntimeError('Stored randomization strata conflict within a pool.')
+            treatment_by_pool[pool_id] = treatment
+            stratum_by_pool[pool_id] = stratum
+            for round_player in player.in_all_rounds():
+                round_player.treatment = treatment
+                round_player.randomization_stratum = stratum
+        subsession.session.vars['treatment_by_pool'] = treatment_by_pool
+        subsession.session.vars['randomization_stratum_by_pool'] = stratum_by_pool
+        return
+
+    # Also reuse a session-level draw if assignment was stored before every
+    # participant-level copy was written.
+    existing_assignments = subsession.session.vars.get('treatment_by_pool')
+    if existing_assignments:
+        stratum_by_pool = subsession.session.vars['randomization_stratum_by_pool']
+        for player in players:
+            pool_id = player.participant.vars['matching_pool_id']
+            treatment = existing_assignments[pool_id]
+            stratum = stratum_by_pool[pool_id]
+            player.participant.vars['treatment'] = treatment
+            player.participant.vars['randomization_stratum'] = stratum
+            for round_player in player.in_all_rounds():
+                round_player.treatment = treatment
+                round_player.randomization_stratum = stratum
+        return
+
     pool_summaries = []
     pool_ids = sorted({p.participant.vars['matching_pool_id'] for p in players})
     for pool_id in pool_ids:
@@ -67,15 +113,25 @@ def assign_treatments_after_block1(subsession):
             p for p in players
             if p.participant.vars['matching_pool_id'] == pool_id
         ]
+        expected_pool_size = pool_players[0].participant.vars['matching_pool_size']
+        if len(pool_players) != expected_pool_size or expected_pool_size not in (10, 15):
+            raise RuntimeError(
+                f'Matching pool {pool_id} has an invalid production size.'
+            )
+        if any(
+            not p.participant.vars.get('block1_final_vote_observed', False)
+            for p in pool_players
+        ):
+            raise RuntimeError(
+                'A final Block-1 ballot is missing. Treatment assignment was not run.'
+            )
         observed_votes = [
             p.participant.vars.get('block1_final_vote')
             for p in pool_players
-            if p.participant.vars.get('block1_final_vote_observed', False)
         ]
-        automatic_share = (
-            sum(vote == C.AUTOMATIC for vote in observed_votes) / len(observed_votes)
-            if observed_votes else 0.5
-        )
+        automatic_share = sum(
+            vote == C.AUTOMATIC for vote in observed_votes
+        ) / len(observed_votes)
         pool_summaries.append((automatic_share, random.random(), pool_id))
 
     pool_summaries.sort()
@@ -182,6 +238,14 @@ def choose_institution_and_leader(group):
             other_automatic_votes if other_automatic_votes is not None else 2
         )
     else:
+        if len(players) != C.GROUP_SIZE:
+            raise RuntimeError(
+                f'Paid groups must contain exactly {C.GROUP_SIZE} participants.'
+            )
+        if any(p.field_maybe_none('institution_vote') is None for p in players):
+            raise RuntimeError(
+                'An institutional ballot is missing. No institutional choice was imputed.'
+            )
         automatic_votes = sum(
             p.field_maybe_none('institution_vote') == C.AUTOMATIC for p in players
         )
@@ -209,8 +273,16 @@ def record_proposal(group):
         group.proposed_transfer = 5
         return
     leader = group.get_player_by_id(group.leader_id)
-    group.proposed_allocation = leader.field_maybe_none('proposed_allocation') or 0
-    group.proposed_transfer = leader.field_maybe_none('proposed_transfer') or 0
+    allocation = leader.field_maybe_none('proposed_allocation')
+    transfer = leader.field_maybe_none('proposed_transfer')
+    if allocation is None or transfer is None:
+        raise RuntimeError('The selected person must submit a complete proposal.')
+    if not 0 <= allocation <= C.ENDOWMENT:
+        raise RuntimeError('The proposed allocation is outside the permitted range.')
+    if not 0 <= transfer <= min(C.MAX_PERSONAL_TRANSFER, C.GROUP_SIZE * allocation):
+        raise RuntimeError('The proposed transfer is outside the permitted range.')
+    group.proposed_allocation = allocation
+    group.proposed_transfer = transfer
 
 
 def decide_approval(group):
@@ -229,10 +301,15 @@ def decide_approval(group):
             simulated_approvals = leader.field_maybe_none('solo_other_approval_votes')
             group.approval_votes = simulated_approvals if simulated_approvals is not None else 3
     else:
+        nonleaders = [
+            p for p in group.get_players() if p.id_in_group != group.leader_id
+        ]
+        if len(nonleaders) != C.GROUP_SIZE - 1:
+            raise RuntimeError('The group does not have exactly four approval voters.')
+        if any(p.field_maybe_none('approval_vote') is None for p in nonleaders):
+            raise RuntimeError('An approval vote is missing. No approval was imputed.')
         group.approval_votes = sum(
-            p.field_maybe_none('approval_vote') == C.APPROVE
-            for p in group.get_players()
-            if p.id_in_group != group.leader_id
+            p.field_maybe_none('approval_vote') == C.APPROVE for p in nonleaders
         )
     group.proposal_approved = group.approval_votes >= C.APPROVAL_THRESHOLD
 
@@ -249,7 +326,12 @@ def calculate_round(group):
         if solo_testing(group):
             total = (players[0].field_maybe_none('contribution') or 0) + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION
         else:
-            total = sum(p.field_maybe_none('contribution') or 0 for p in players)
+            contributions = [p.field_maybe_none('contribution') for p in players]
+            if any(contribution is None for contribution in contributions):
+                raise RuntimeError(
+                    'An individual fund allocation is missing. No allocation was imputed.'
+                )
+            total = sum(contributions)
         group.total_contribution = total
         group.implemented_transfer = 0
         group.public_account = total
@@ -274,6 +356,9 @@ def calculate_round(group):
             if player.id_in_group == group.leader_id:
                 player.round_payoff += transfer
 
+    if any(not 0 <= player.round_payoff <= C.MAX_ROUND_PAYOFF for player in players):
+        raise RuntimeError('A calculated round payoff is outside the permitted range.')
+
 
 class C(BaseConstants):
     NAME_IN_URL = 'group_decisions_2'
@@ -286,6 +371,8 @@ class C(BaseConstants):
     APPROVAL_MULTIPLIER_RECOVERY = 2.50
     AUTOMATIC_MULTIPLIER = 2.50
     MAX_PERSONAL_TRANSFER = 20
+    MAX_ROUND_PAYOFF = 60
+    MAX_TOTAL_POINTS = 2 * MAX_ROUND_PAYOFF
     APPROVAL_THRESHOLD = 3
     SOLO_OTHER_CITIZENS = 4
     SOLO_OTHER_CONTRIBUTION = 10
@@ -1015,6 +1102,10 @@ class BackgroundQuestions2(Page):
             optional_responses=True,
         )
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.finished = True
+
 
 class StudyComplete(Page):
     @staticmethod
@@ -1023,6 +1114,8 @@ class StudyComplete(Page):
 
     @staticmethod
     def vars_for_template(player):
+        if not 0 <= float(player.participant.payoff) <= C.MAX_TOTAL_POINTS:
+            raise RuntimeError('The calculated performance payment is outside its cap.')
         return dict(
             paying_round=player.participant.vars['block2_paying_round'],
             selected_payoff=player.participant.vars['block2_selected_payoff'],
@@ -1034,6 +1127,23 @@ class StudyComplete(Page):
             total_payment=player.participant.payoff_plus_participation_fee(),
             participant_code=player.participant.code,
         )
+
+
+def custom_export(players):
+    """Export only the temporary code and amount needed to make payment."""
+    yield ['participant_code', 'total_payment_eur']
+    for player in players:
+        if player.round_number != C.NUM_ROUNDS:
+            continue
+        participant = player.participant
+        if not {
+            'block1_selected_payoff', 'block2_selected_payoff'
+        }.issubset(participant.vars):
+            continue
+        if not 0 <= float(participant.payoff) <= C.MAX_TOTAL_POINTS:
+            raise RuntimeError('The calculated performance payment is outside its cap.')
+        total_payment = participant.payoff_plus_participation_fee()
+        yield [participant.code, f'{float(total_payment):.2f}']
 
 
 page_sequence = [

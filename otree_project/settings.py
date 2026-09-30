@@ -62,7 +62,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     ),
 )
 
-PARTICIPANT_FIELDS = []
+PARTICIPANT_FIELDS = ['finished']
 SESSION_FIELDS = []
 
 # ISO-639 code

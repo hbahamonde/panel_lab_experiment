@@ -28,18 +28,19 @@ def solo_testing(obj):
 
 
 def flexible_pool_sizes(player_count):
-    """Prefer 10-person pools and use one 15-person pool for a remainder of five."""
-    if player_count < 10:
+    """Return the approved matching-pool structure for a production roster."""
+    approved_rosters = {
+        10: [10],
+        15: [15],
+        20: [10, 10],
+    }
+    try:
+        return approved_rosters[player_count]
+    except KeyError as exc:
         raise RuntimeError(
-            'Production sessions require at least 10 completed participants.'
-        )
-    if player_count % C.GROUP_SIZE != 0:
-        raise RuntimeError(
-            'The completed session roster must be divisible into five-person groups.'
-        )
-    if player_count % 10 == 0:
-        return [10] * (player_count // 10)
-    return [10] * ((player_count - 15) // 10) + [15]
+            'Production sessions require exactly 10, 15, or 20 participants. '
+            f'This session was created with {player_count}.'
+        ) from exc
 
 
 def start_decision_timer(player, decision_name):
@@ -121,6 +122,14 @@ def choose_institution_and_leader(group):
             other_automatic_votes if other_automatic_votes is not None else 2
         )
     else:
+        if len(players) != C.GROUP_SIZE:
+            raise RuntimeError(
+                f'Paid groups must contain exactly {C.GROUP_SIZE} participants.'
+            )
+        if any(p.field_maybe_none('institution_vote') is None for p in players):
+            raise RuntimeError(
+                'An institutional ballot is missing. No institutional choice was imputed.'
+            )
         automatic_votes = sum(
             p.field_maybe_none('institution_vote') == C.AUTOMATIC for p in players
         )
@@ -147,8 +156,16 @@ def record_proposal(group):
         group.proposed_transfer = 5
         return
     leader = group.get_player_by_id(group.leader_id)
-    group.proposed_allocation = leader.field_maybe_none('proposed_allocation') or 0
-    group.proposed_transfer = leader.field_maybe_none('proposed_transfer') or 0
+    allocation = leader.field_maybe_none('proposed_allocation')
+    transfer = leader.field_maybe_none('proposed_transfer')
+    if allocation is None or transfer is None:
+        raise RuntimeError('The selected person must submit a complete proposal.')
+    if not 0 <= allocation <= C.ENDOWMENT:
+        raise RuntimeError('The proposed allocation is outside the permitted range.')
+    if not 0 <= transfer <= min(C.MAX_PERSONAL_TRANSFER, C.GROUP_SIZE * allocation):
+        raise RuntimeError('The proposed transfer is outside the permitted range.')
+    group.proposed_allocation = allocation
+    group.proposed_transfer = transfer
 
 
 def decide_approval(group):
@@ -167,10 +184,15 @@ def decide_approval(group):
             simulated_approvals = leader.field_maybe_none('solo_other_approval_votes')
             group.approval_votes = simulated_approvals if simulated_approvals is not None else 3
     else:
+        nonleaders = [
+            p for p in group.get_players() if p.id_in_group != group.leader_id
+        ]
+        if len(nonleaders) != C.GROUP_SIZE - 1:
+            raise RuntimeError('The group does not have exactly four approval voters.')
+        if any(p.field_maybe_none('approval_vote') is None for p in nonleaders):
+            raise RuntimeError('An approval vote is missing. No approval was imputed.')
         group.approval_votes = sum(
-            p.field_maybe_none('approval_vote') == C.APPROVE
-            for p in group.get_players()
-            if p.id_in_group != group.leader_id
+            p.field_maybe_none('approval_vote') == C.APPROVE for p in nonleaders
         )
     group.proposal_approved = group.approval_votes >= C.APPROVAL_THRESHOLD
 
@@ -187,7 +209,12 @@ def calculate_round(group):
         if solo_testing(group):
             total = (players[0].field_maybe_none('contribution') or 0) + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION
         else:
-            total = sum(p.field_maybe_none('contribution') or 0 for p in players)
+            contributions = [p.field_maybe_none('contribution') for p in players]
+            if any(contribution is None for contribution in contributions):
+                raise RuntimeError(
+                    'An individual fund allocation is missing. No allocation was imputed.'
+                )
+            total = sum(contributions)
         group.total_contribution = total
         group.implemented_transfer = 0
         group.public_account = total
@@ -212,6 +239,9 @@ def calculate_round(group):
             if player.id_in_group == group.leader_id:
                 player.round_payoff += transfer
 
+    if any(not 0 <= player.round_payoff <= C.MAX_ROUND_PAYOFF for player in players):
+        raise RuntimeError('A calculated round payoff is outside the permitted range.')
+
 
 class C(BaseConstants):
     NAME_IN_URL = 'group_decisions_1'
@@ -224,6 +254,7 @@ class C(BaseConstants):
     APPROVAL_MULTIPLIER_RECOVERY = 2.50
     AUTOMATIC_MULTIPLIER = 2.50
     MAX_PERSONAL_TRANSFER = 20
+    MAX_ROUND_PAYOFF = 60
     APPROVAL_THRESHOLD = 3
     SOLO_OTHER_CITIZENS = 4
     SOLO_OTHER_CONTRIBUTION = 10

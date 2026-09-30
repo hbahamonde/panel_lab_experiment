@@ -94,7 +94,7 @@
   uniquelist=false
 ]{biblatex}
 \addbibresource{references.bib}
-\renewcommand*{\bibfont}{\small}
+\renewcommand*{\bibfont}{\footnotesize}
 
 \definecolor{DemBlue}{HTML}{264653}
 \definecolor{ExecOrange}{HTML}{E76F51}
@@ -123,7 +123,7 @@ Democratic backsliding often proceeds through lawful democratic choices that wea
 \vspace{2cm}
 
 \begin{center}
-\small\textbf{Experiment prototype (production phase):} \\ \url{https://panel-lab-experiment.onrender.com}
+\small\textbf{Development prototype (not used for live data):} \\ \url{https://panel-lab-experiment.onrender.com}
 \end{center}
 
 \clearpage
@@ -203,7 +203,7 @@ The recovery--persistence comparison identifies the total causal effect of struc
 
 \subsection{Overview}
 
-Each laboratory cohort completes one session lasting approximately 60 minutes, with two ten-round blocks. Subject to ethical review in September 2026, data collection is planned for 1--31 October 2026 at the UTU Choice Lab decision-making laboratory and may also be conducted at Tampere University's Decision-making Laboratory (DMLab) to accelerate recruitment. UTU Choice Lab has 24 regular seats plus one accessible seat, while DMLab has 20; production rosters are capped at 20. Participants remain in matching pools of 10 or 15 and are reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly without forming stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
+Each laboratory cohort completes one session lasting approximately 60 minutes, with two ten-round blocks. Following a favorable ethical-review statement from the University of Turku on 30 September 2026 (case TY/1722/2026), data collection is planned for 1--31 October 2026 at the UTU Choice Lab decision-making laboratory. Any later extension to another site will be submitted for ethical review as an amendment before data collection begins there. UTU Choice Lab has 24 regular seats plus one accessible seat; production rosters are capped at 20. Participants remain in matching pools of 10 or 15 and are reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly without forming stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
 
 \begin{figure}[H]
 \centering
@@ -541,9 +541,70 @@ The planned sample comprises 300 completed participants in 28--30 matching pools
 
 Power depends on Block-1 endpoint support for \Aproc{}, the persistence-group reversal rate, the similarity of outcomes within pools, and the realized mix of pool sizes. With 300 participants, the design yields 28--30 independent treatment assignments---approximately 14--15 pools per condition---because a larger pool supplies more individual outcomes but still receives only one treatment draw. Repeated rounds improve measurement and reveal trajectories; they do not create additional independent assignments.
 
-Pilot estimates will inform simulations spanning 28--30 pools and the observed number eligible to reverse. The primary randomization test reproduces the actual paired and unmatched assignments. Regression estimates cluster uncertainty by pool, adjust for prespecified pool-size and laboratory-site indicators, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. Each oTree session remains a separate interaction and randomization cohort.
+Pilot estimates will inform simulations spanning 28--30 pools and the observed number eligible to reverse. The primary randomization test reproduces the actual paired and unmatched assignments. Regression estimates cluster uncertainty by pool, adjust for the prespecified pool-size indicator, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. Each oTree session remains a separate interaction and randomization cohort.
 
-Strategic decisions do not time out automatically. The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The laboratory manager monitors the session and prompts delayed participants to complete the current decision so the group can advance.
+Strategic decisions do not time out automatically. The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The researcher or a trained research assistant monitors the session and prompts delayed participants to complete the current decision so the group can advance.
+
+\section{Implementation, Ethics, and Project Timeline}
+
+Implementation follows the approved protocol at UTU Choice Lab. Adults register through UTU RPP/TOKA, which manages recruitment and attendance separately from the experiment. Before practice, oTree presents study-specific information and records consent. Participants are told that the detailed research question will be explained after the paid task because advance disclosure could influence the institutional ballot; all task rules, payments, data processing, foreseeable risks, and the right to stop are disclosed beforehand. The full research purpose is explained immediately after paid decisions.
+
+The researcher or trained research assistant fixes a consenting roster of 10, 15, or 20 before paid play, forms the matching pools in \autoref{tab:attendance-pools}, and monitors synchronized progress. No participant enters or changes pools after paid play begins. A technical pilot will verify rematching, both Block-2 conditions, wait pages, response-time flags, browser recovery, data exports, and payments; a behavioral pilot will assess comprehension, duration, fatigue, choice distributions, and expected earnings. The protocol, analysis plan, and data dictionary will then be frozen before confirmatory collection.
+
+Live oTree data will be hosted on University of Turku IT servers in Finland; the public prototype will not collect research data, and no oTree artificial-intelligence functions will be used. UTU RPP/TOKA will not receive oTree codes, experimental responses, or payment information. The research team will make immediate payment using a temporary code-and-amount list; any named receipt will contain no oTree code. The temporary list will be destroyed after payment reconciliation and no later than 30 November 2026, after which the retained research dataset will be anonymized. Access before anonymization is limited to Janne Tukiainen, Hector Bahamonde, and authorized personnel.
+
+\begin{figure}[H]
+\centering
+\resizebox{0.98\linewidth}{!}{%
+\begin{tikzpicture}[
+  x=1.18cm,
+  y=0.72cm,
+  month/.style={font=\scriptsize\bfseries,align=center},
+  task/.style={font=\small,anchor=east,align=right},
+  grid/.style={draw=black!18,line width=0.35pt}
+]
+\def\xstart{4.85}
+
+\node[month] at ({\xstart+0.5},5.55) {Sep.\\2026};
+\node[month] at ({\xstart+1.5},5.55) {Oct.};
+\node[month] at ({\xstart+2.5},5.55) {Nov.};
+\node[month] at ({\xstart+3.5},5.55) {Dec.};
+\node[month] at ({\xstart+4.5},5.55) {Jan.\\2027};
+\node[month] at ({\xstart+5.5},5.55) {Feb.};
+\node[month] at ({\xstart+6.5},5.55) {Mar.};
+\node[month] at ({\xstart+7.5},5.55) {After\\reporting};
+
+\draw[grid] (\xstart,0.25) rectangle ({\xstart+8},5.10);
+\foreach \x in {1,...,7} {
+  \draw[grid] ({\xstart+\x},0.25) -- ({\xstart+\x},5.10);
+}
+\foreach \y in {1.00,1.80,2.60,3.40,4.20} {
+  \draw[grid] (\xstart,\y) -- ({\xstart+8},\y);
+}
+
+\node[task] at ({\xstart-0.18},4.60) {Ethics approval and final preparation};
+\node[task] at ({\xstart-0.18},3.80) {Recruitment and data collection};
+\node[task] at ({\xstart-0.18},3.00) {Payment reconciliation and anonymization};
+\node[task] at ({\xstart-0.18},2.20) {Data verification and analysis};
+\node[task] at ({\xstart-0.18},1.40) {Manuscript and replication materials};
+\node[task] at ({\xstart-0.18},0.60) {Compliant retention or archiving};
+
+\fill[DemBlue!82] ({\xstart+0.08},4.36) rectangle ({\xstart+0.92},4.84);
+\fill[ExecOrange!88] ({\xstart+1.08},3.56) rectangle ({\xstart+1.92},4.04);
+\fill[RecoveryGreen!82] ({\xstart+2.08},2.76) rectangle ({\xstart+2.92},3.24);
+\fill[PersistPurple!78] ({\xstart+2.08},1.96) rectangle ({\xstart+3.92},2.44);
+\fill[DemBlue!67] ({\xstart+4.08},1.16) rectangle ({\xstart+6.92},1.64);
+\fill[RecoveryGreen!65] ({\xstart+7.08},0.36) rectangle ({\xstart+7.92},0.84);
+\end{tikzpicture}%
+}
+\caption{Project timeline under the approved protocol.}
+\label{fig:project-timeline}
+\begin{minipage}{0.96\textwidth}
+\footnotesize\textit{Notes:} Data collection is planned for 1--31 October 2026 at UTU Choice Lab. Payment reconciliation and destruction of the temporary code-and-amount list will be completed no later than 30 November 2026. Reporting, disclosure review, and retention or archiving will follow the approved data-management plan.
+\end{minipage}
+\end{figure}
+
+The main outputs will be academic articles, presentations, and replication materials. Consistent with University open-science policy, documentation, code, and data that can be shared safely will be made as open as possible and as restricted as necessary.
 
 \FloatBarrier
 \printbibliography
@@ -558,7 +619,7 @@ Participants receive a EUR~10 show-up payment plus a points-based performance bo
 
 Both blocks are run during one synchronized session. The transition page is released only after every active participant has completed Block 1, so members of a matching pool encounter the new environment together. Participant codes, not names, link decisions across blocks, and all payments are made after Block 2.
 
-The operational protocol fixes the completed roster before Block 1 and forms the pool configuration in \autoref{tab:attendance-pools}. No participant enters or changes pools after paid play begins. Strategic decisions do not time out automatically: the software records response time and flags delays beyond 90 seconds without generating an answer. The laboratory manager monitors these flags and prompts delayed participants to complete the current decision. The session log must document late arrival, browser failure, early departure, manual intervention, and payment exceptions. Exclusion rules should be preregistered and should never depend on treatment-consistent behavior.
+The operational protocol fixes the completed roster before Block 1 and forms the pool configuration in \autoref{tab:attendance-pools}. No participant enters or changes pools after paid play begins. Strategic decisions do not time out automatically: the software records response time and flags delays beyond 90 seconds without generating an answer. The researcher or trained research assistant monitors these flags and prompts delayed participants to complete the current decision. The session log must document late arrival, browser failure, early departure, manual intervention, and payment exceptions. Exclusion rules should be preregistered and should never depend on treatment-consistent behavior.
 
 Before launch, two pilots are required. A technical pilot should test 10- and 15-person pools, mixed-pool sessions, both treatment branches, wait pages, rematching, delayed-response monitoring, refresh persistence, and payment calculations. A behavioral pilot should estimate duration, comprehension, Block-1 \Aproc{} support, approval, rejection, transfers, fatigue, and payoff distributions. Parameters should be frozen after that pilot and before confirmatory registration.
 
@@ -584,7 +645,7 @@ These safeguards preserve experience with institutional consequences while limit
 
 The experiment makes action without approval materially effective but avoids moral labels. Instructions use ``Group approval required'' and ``Decision takes effect directly,'' disclose every rule, and reserve explicit questions about democratic constraints until paid choices are complete.
 
-Registration through the host laboratory's participant system covers that laboratory's general rules and privacy notice. Before practice, the interface presents study-specific information on the session, interaction, anonymity, payment, data linkage, and the importance of remaining for the full task, then records affirmative consent to this study. Participants who do not consent are handled by the laboratory manager before the group task begins. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports use coded study IDs; the host laboratory keeps any temporary payment linkage separate and does not give it to the research team.
+Registration through UTU RPP/TOKA covers the laboratory's general rules and privacy notice. Before practice, the interface presents study-specific information on the session, interaction, anonymity, payment, data handling, and the importance of remaining for the full task, then records affirmative consent to this study. Participants who do not consent are handled by the researcher or trained research assistant before the group task begins. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports use coded study IDs. UTU RPP/TOKA does not receive oTree codes, experimental responses, or payment data; the research team uses a separate temporary code-and-amount list for immediate payment and destroys it after reconciliation.
 
 The Finnish setting strengthens the case for a hypothetical, incentive-based task. Participants do not judge Finnish officials; they face a fictional crisis and transparent, consequential rules. Recovery is the joint improvement in that environment and the approval-constrained production rate.
 
