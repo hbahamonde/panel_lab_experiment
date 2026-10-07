@@ -1,0 +1,10 @@
+"curve","label","risk_difference","eligible_share","persistence_rate","intrapool_correlation","participants_for_80_power"
+"Treatment effect","10 percentage points",0.1,0.5,0.2,0.05,1520
+"Treatment effect","15 percentage points",0.15,0.5,0.2,0.05,740
+"Treatment effect","20 percentage points",0.2,0.5,0.2,0.05,460
+"Treatment effect","25 percentage points",0.25,0.5,0.2,0.05,340
+"Treatment effect","30 percentage points",0.3,0.5,0.2,0.05,260
+"Assumption scenario at 20-point effect","Central",0.2,0.5,0.2,0.05,460
+"Assumption scenario at 20-point effect","Higher eligibility, lower clustering",0.2,0.6,0.2,0.02,360
+"Assumption scenario at 20-point effect","Higher persistence reversal",0.2,0.5,0.35,0.05,540
+"Assumption scenario at 20-point effect","Lower eligibility, higher clustering",0.2,0.4,0.2,0.1,640

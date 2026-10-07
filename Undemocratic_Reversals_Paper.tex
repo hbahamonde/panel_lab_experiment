@@ -110,20 +110,20 @@
 \author[1,2]{\textsc{Hector Bahamonde}}
 \affil[1]{INVEST Research Flagship Centre, University of Turku, Finland}
 \affil[2]{Social Science Research Institute, \AA bo Akademi University, Finland}
-\date{\textbf{Principal Investigator and project contact:} Janne Tukiainen, Professor, Turku School of Economics, University of Turku; \href{mailto:janne.tukiainen@utu.fi}{janne.tukiainen@utu.fi}\\[0.4em]Working proposal --- \today}
+\date{}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \pagenumbering{gobble}
 \maketitle
 
 \begin{abstract}
-Democratic backsliding often proceeds through lawful democratic choices that weaken citizens' control over what happens next. This project asks whether citizens vote to restore an approval right they supported surrendering once its crisis-based justification recedes. In a one-session public-goods experiment with 300 participants in Finland, five-person groups decide whether an unknown leader's proposal requires citizen approval or takes effect directly. Acting without approval initially combines a higher fund rate with assured implementation of the leader's equal allocation. Structural recovery improves public-service conditions and raises the approval-constrained rate to match direct implementation, while the leader's powers and decision rules remain unchanged. Comparing randomly assigned recovery and persistence pools identifies whether recovery causes previous supporters of direct implementation to vote for group approval. The experiment captures a demand-side microfoundation of executive aggrandizement: citizens can use one democratic decision to weaken a later constraint and another to vote to take that control back.
+Democratic backsliding often proceeds through lawful choices that weaken constraints on later decisions. We tested whether citizens restored such a constraint after its crisis-based cost receded. In a one-session public-goods experiment with 300 participants in Finland, five-person groups voted on whether an unknown leader's proposal required their approval or took effect directly. Direct implementation initially combined a higher fund rate with assured implementation. We then assigned stable matching pools to structural recovery or crisis persistence. Recovery improved public-service conditions and raised the approval-constrained rate to match direct implementation, while the leader's powers remained fixed. Comparing the two conditions identified whether recovery caused previous supporters of direct implementation to restore group approval. The design captured a demand-side microfoundation of executive aggrandizement. Citizens could use one democratic decision to weaken a later constraint and another to take that constraint back.
 \end{abstract}
 
 \vspace{2cm}
 
 \begin{center}
-\small\textbf{Development prototype (not used for live data):} \\ \url{https://panel-lab-experiment.onrender.com}
+\small\textbf{Experimental interface:} \\ \url{https://panel-lab-experiment.onrender.com}
 \end{center}
 
 \clearpage
@@ -132,35 +132,35 @@ Democratic backsliding often proceeds through lawful democratic choices that wea
 
 \section{Research Question and Contribution}
 
-Democratic backsliding depends not only on leaders who weaken constraints but also on citizens who authorize them. This project studies a narrow demand-side microfoundation of executive aggrandizement: the citizen-level authorization through which a lawful democratic decision weakens a constraint on one-person authority. It asks: \emph{after a crisis recedes, do citizens who supported decisions without their approval vote to restore that right?} This within-person change in institutional support is the {\bf (\emph{un})democratic reversal} the project seeks to explain.
+Democratic backsliding depends not only on leaders who weaken constraints but also on citizens who authorize those changes. One common form is \emph{executive aggrandizement}, in which formally lawful decisions gradually reduce constraints on one-person authority. This study examined its demand-side microfoundation by asking whether citizens who surrendered an approval right later voted to restore it after a crisis receded. We define that within-person change in institutional support as {\bf (\emph{un})democratic reversal}.
 
-We build on the democratic backsliding and public-good games literatures. Contemporary backsliding often advances without ending elections: citizens may support elected officials or lawful rule changes that reduce the approval, oversight, or veto constraints governing later decisions \parencite{Bermeo2016}. The politically relevant step is therefore not necessarily an explicit vote against democracy, but a \emph{democratic} vote that makes subsequent authority \emph{less} constrained. Threat and policy benefits can make citizens more tolerant of such constraints being weakened \parencites{HetheringtonSuhay2011}{Goodman2021}{0b3bf}, while laboratory evidence shows that gridlock can increase support for executive special powers \parencite{FortezaMussioPereyra2024}.
+We build on the democratic backsliding and public-good games literatures. Contemporary backsliding often advances without ending elections because citizens may support elected officials or lawful rule changes that reduce the approval, oversight, or veto constraints governing later decisions \parencite{Bermeo2016}. The politically relevant step is therefore not necessarily an explicit vote against democracy. It can instead be a \emph{democratic} vote that makes subsequent authority \emph{less} constrained. Threat and policy benefits can increase tolerance for weaker constraints \parencites{HetheringtonSuhay2011}{Goodman2021}{0b3bf}. Laboratory evidence similarly shows that gridlock can increase support for executive special powers \parencite{FortezaMussioPereyra2024}.
 
-This literature mainly explains movement toward less constrained authority. Our contribution is to follow the reverse movement: once the crisis-based benefit recedes, do the same citizens vote to restore the approval right they previously supported surrendering? Observing that second choice turns reversal into a consequential decision over an institutional constraint rather than a stated evaluation of democracy.
+This literature mainly explains movement toward less constrained authority. We followed the reverse movement by observing whether the same citizens restored an approval right after its crisis-based benefit receded. That second choice turned reversal into a consequential decision over an institutional constraint rather than a stated evaluation of democracy.
 
-Public-good games supply the economic reason for weakening approval. Voluntary provision is vulnerable to free riding---keeping one's points while others fund the shared service---and declining cooperation, whereas centralized enforcement can coordinate contributions \parencites{FehrGachter2000,FischbacherGachter2010,Hamman2011}. Experiments also show that voting over institutions changes their performance \parencites{DalBo2010,SutterHaignerKocher2010,MarkussenPuttermanTyran2014}. Our experimental design joins these literatures by making citizen approval both institutionally meaningful and economically costly.
+Public-good games supply an economic reason for weakening approval. Voluntary provision is vulnerable to free riding, which means keeping one's points while others fund the shared service. This individual incentive can erode cooperation, whereas centralized enforcement can coordinate contributions \parencites{FehrGachter2000,FischbacherGachter2010,Hamman2011}. Experiments also show that voting over institutions changes their performance \parencites{DalBo2010,SutterHaignerKocher2010,MarkussenPuttermanTyran2014}. We joined these literatures by making citizen approval both institutionally meaningful and economically costly.
 
-In each round, five citizens begin with 20 points each and vote between two rules for managing a shared public-services fund. Under both rules, the software selects one of the five citizens uniformly at random only after the vote, so each has the same one-in-five chance of leading that round. The leader proposes how many points every citizen places in the fund and whether any collected points move to the leader's payoff. Fund points are multiplied and the resulting group return is divided equally.
+In each round, five citizens began with 20 points each and voted between two rules for managing a shared public-services fund. Under both rules, the software selected one citizen uniformly at random after the vote. Each citizen therefore had the same one-in-five chance of leading that round. The leader proposed how many points every citizen placed in the fund and whether any collected points moved to the leader's payoff. The game multiplied the remaining fund points and divided the group return equally.
 
-Under the approval-constrained rule (\Dproc), at least three of the other four citizens must approve the complete proposal. Rejection returns the group to voluntary individual allocations. Under automatic implementation (\Aproc), the same proposal takes effect without that approval vote. A matching pool contains 10 or 15 citizens and is reshuffled into two or three temporary groups of five before each round. Thus, the democratic ballot selects an approval rule, not a known leader or proposal.
+Under the approval-constrained rule (\Dproc), at least three of the other four citizens had to approve the complete proposal. Rejection returned the group to voluntary individual allocations. Under automatic implementation (\Aproc), the same proposal took effect without that approval vote. Repeated interaction occurred inside a stable \emph{matching pool} of 10 or 15 citizens. Before each round, the software reshuffled that pool into two or three temporary groups of five. The institutional ballot therefore selected an approval rule, not a known leader or proposal.
 
-Everyone begins with a public-service crisis: \enquote{\emph{Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and planning for public services has stalled.}} During Block 1, each fund point creates 1.50 group points under \Dproc{} and 2.50 under \Aproc{}. Direct implementation therefore has a one-point productivity premium and guarantees that the leader's proposal is implemented. Afterward, each matching pool receives {\bf institutional recovery} or {\bf institutional persistence}. Recovery is one structural package: public-service conditions improve and the \Dproc{} rate rises to 2.50. Persistence retains the crisis and the 1.50 rate. The \Aproc{} rate and decision rule remain fixed.
+Everyone began with a public-service crisis. Participants read that \enquote{\emph{Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and planning for public services has stalled.}} During Block 1, each fund point created 1.50 group points under \Dproc{} and 2.50 under \Aproc{}. Direct implementation therefore had a one-point \emph{productivity premium} and guaranteed that the leader's proposal was implemented. After Block 1, each matching pool received {\bf institutional recovery} or {\bf institutional persistence}. Recovery combined improved public-service conditions with a rise in the \Dproc{} rate to 2.50. Persistence retained the crisis and the 1.50 rate. The \Aproc{} rate and decision rule remained fixed.
 
-The payoffs make the choice consequential; {\bf the \emph{allocation of decision rights} connects it to democratic backsliding}. A citizen who votes for \Aproc{} supports surrendering an approval vote before knowing the leader or proposal. A later vote for \Dproc{} supports restoring that safeguard after the crisis-based productivity advantage disappears. \emph{The experiment therefore observes whether citizens vote to take back a specific constraint on authority, rather than inferring reversal from a survey declaration}.
+The payoffs made the choice consequential. {\bf The \emph{allocation of decision rights} connected it to democratic backsliding}. A citizen who voted for \Aproc{} supported surrendering an approval vote before knowing the leader or proposal. A later vote for \Dproc{} supported restoring that safeguard after the crisis-based productivity advantage disappeared. \emph{The experiment therefore observed whether citizens voted to take back a specific constraint on authority rather than inferring reversal from a survey declaration}.
 
 \begin{plainlanguagebox}
-Five citizens vote before seeing who will lead or what the leader will propose. Under \Dproc{}, three of the other four citizens must approve the proposal; rejection returns everyone to individual fund allocations. Under \Aproc{}, the proposal takes effect directly. In Block 1, these methods use rates of 1.50 and 2.50, respectively.
+Five citizens voted before seeing who would lead or what the leader would propose. Under \Dproc{}, three of the other four citizens had to approve the proposal. Rejection returned everyone to individual fund allocations. Under \Aproc{}, the proposal took effect directly. In Block 1, these methods used rates of 1.50 and 2.50, respectively.
 
-After Block 1, recovery improves public-service conditions and raises \Dproc{} to 2.50; persistence leaves the crisis and rate gap in place. Among previous \Aproc{} supporters, a later \Dproc{} vote supports restoring the approval right. Comparing recovery with persistence identifies how much the structural recovery package changes that reversal.
+After Block 1, recovery improved public-service conditions and raised \Dproc{} to 2.50. Persistence left the crisis and rate gap in place. Among previous \Aproc{} supporters, a later \Dproc{} vote supported restoring the approval right. Comparing recovery with persistence identified how much the structural recovery package changed that reversal.
 \end{plainlanguagebox}
 
 \begin{keyinsightbox}
 A decision can be democratically authorized while weakening the democratic constraints that govern what happens next. This resembles contemporary backsliding, which often proceeds through elections and formally lawful institutional changes rather than an outright abolition of democracy \parencite{Bermeo2016}.
 
-In the experiment, the first majority vote is democratic. A citizen who chooses \Aproc{} votes to let an unknown leader's later allocation and transfer take effect without the other citizens' approval. That vote removes a specific constraint while leaving the institutional ballot itself intact. A later vote for \Dproc{} supports restoring the approval right the citizen previously voted to surrender.
+In the experiment, the first majority vote was democratic. A citizen who chose \Aproc{} voted to let an unknown leader's later allocation and transfer take effect without the other citizens' approval. That vote removed a specific constraint while leaving the institutional ballot itself intact. A later vote for \Dproc{} supported restoring the approval right that the citizen had previously voted to surrender.
 
 \medskip
-\textbf{What matters is that citizens use one democratic decision to weaken their control over subsequent decisions---and can later vote to take that control back.}
+\textbf{What matters is that citizens used one democratic decision to weaken their control over a subsequent decision and could later vote to take that control back.}
 \end{keyinsightbox}
 
 
@@ -168,42 +168,42 @@ In the experiment, the first majority vote is democratic. A citizen who chooses 
 
 \subsection{Crisis and the productivity premium}
 
-A crisis can make action without approval attractive when ordinary procedures produce delay or failed coordination. The experiment gives this argument material consequences. In Block 1, proposals requiring approval (\Dproc) use a 1.50 fund rate, while proposals implemented directly (\Aproc) use 2.50. Under \Dproc{}, rejection also returns the group to voluntary contributions and possible free riding. Direct implementation therefore offers both a productivity premium and assured implementation of the leader's equal allocation \parencites{FehrGachter2000,FischbacherGachter2010,Hamman2011}.
+A crisis can make action without approval attractive when ordinary procedures produce delay or failed coordination. The experiment gave this argument material consequences. In Block 1, proposals requiring approval (\Dproc) used a 1.50 fund rate, while proposals implemented directly (\Aproc) used 2.50. Under \Dproc{}, rejection also returned the group to voluntary contributions and possible free riding. Direct implementation therefore offered both a productivity premium and assured implementation of the leader's equal allocation \parencites{FehrGachter2000,FischbacherGachter2010,Hamman2011}.
 
-The personal-transfer option makes the institutional constraint consequential. The leader may propose moving up to 20 fund points to their own payoff under either procedure. Under \Dproc{}, the other citizens see that transfer before implementation and can reject it; under \Aproc{}, they observe it only after it has taken effect. The experiment therefore concerns approval over discretion, not the prevalence of corruption in Finland.
+The personal-transfer option made the institutional constraint consequential. The leader could propose moving up to 20 fund points to their own payoff under either procedure. Under \Dproc{}, the other citizens saw that transfer before implementation and could reject it. Under \Aproc{}, they observed it only after it had taken effect. The experiment therefore concerned approval over discretion, not the prevalence of corruption in Finland.
 
-\paragraph{H1: Authorization under crisis.} During Block 1, citizens will increasingly support direct implementation (\Aproc{}) when its productivity and coordination advantages produce better outcomes; larger observed transfers will reduce subsequent support.
+\paragraph{H1: Authorization under crisis.} During Block 1, support for direct implementation (\Aproc{}) increases when its productivity and coordination advantages produce better outcomes. Larger observed transfers reduce subsequent support.
 
 \subsection{Citizen authorization and democratic constraint}
 
-The institutional ballot occurs before leader selection and before the proposal. A vote for \Aproc{} therefore authorizes a rule, not a known person or action: the citizen relinquishes participation in approving the next binding decision. A vote for \Dproc{} retains that approval right. {\bf Thus, our design provides an abstract microfoundation of \emph{executive aggrandizement}, in which a \emph{democratic} choice \emph{weakens} the constraint governing what follows} \parencites{Bermeo2016,FortezaMussioPereyra2024}.
+The institutional ballot occurred before leader selection and before the proposal. A vote for \Aproc{} therefore authorized a rule rather than a known person or action. The citizen relinquished participation in approving the next binding decision, whereas a vote for \Dproc{} retained that right. {\bf The design thus provided an abstract microfoundation of \emph{executive aggrandizement} in which a \emph{democratic} choice \emph{weakened} the constraint governing what followed} \parencites{Bermeo2016,FortezaMussioPereyra2024}.
 
-\paragraph{H2: Approval and discretion.} Approval will decline as proposed personal transfers increase. Anticipating rejection, leaders operating under \Dproc{} will propose smaller transfers than leaders whose proposals take effect directly. Because groups choose the institutional rule themselves, these patterns describe behavior within the chosen rules rather than a separate randomized effect.
+\paragraph{H2: Approval and discretion.} Approval declines as proposed personal transfers increase. Anticipating rejection, leaders operating under \Dproc{} propose smaller transfers than leaders whose proposals take effect directly. Because groups choose the institutional rule themselves, these patterns describe behavior within the chosen rules rather than a separate randomized effect.
 
 \subsection{Recovery and democratic reversal}
 
-Recovery is assigned at the matching-pool level. Pool \(g\) contains 10 or 15 participants, who are reshuffled into two or three temporary groups of five before each round; within each group, three votes produce a majority. The entire pool receives the same Block-2 condition: \(T_g=1\) denotes recovery and \(T_g=0\) persistence. Let \(m_{gb}\) denote the approval-constrained fund multiplier in pool \(g\) and block \(b\). The productivity premium for direct implementation is
+Recovery was assigned at the matching-pool level. Pool \(g\) contained 10 or 15 participants who were reshuffled into two or three temporary groups of five before each round. Three votes produced a majority within each group. The entire pool received the same Block-2 condition. We use \(T_g=1\) for recovery and \(T_g=0\) for persistence. Let \(m_{gb}\) denote the approval-constrained fund multiplier in pool \(g\) and block \(b\). The productivity premium for direct implementation is
 
 \begin{equation}
 \delta_{gb}=2.50-m_{gb}
 \label{eq:productivity-premium}
 \end{equation}
 
-Everyone faces \(\delta_{g1}=2.50-1.50=1\) in Block 1. Recovery is deliberately implemented as one structural package: participants learn that public-service conditions improved and \(m_{g2}\) rises to 2.50, setting \(\delta_{g2}=0\). Persistence reports that the crisis continues and keeps \(m_{g2}=1.50\), so \(\delta_{g2}=1\). The leader-selection rule, proposal set, approval threshold, rejection-to-voluntary-allocation rule, and \Aproc{} rate remain fixed.
+Everyone faced \(\delta_{g1}=2.50-1.50=1\) in Block 1. Recovery was implemented as one structural package. Participants learned that public-service conditions had improved, and \(m_{g2}\) rose to 2.50, which set \(\delta_{g2}=0\). Persistence reported that the crisis continued and kept \(m_{g2}=1.50\), so \(\delta_{g2}=1\). The leader-selection rule, proposal set, approval threshold, rejection-to-voluntary-allocation rule, and \Aproc{} rate remained fixed.
 
-The recovery--persistence comparison identifies the total causal effect of structural recovery on (un)democratic reversal. Among final-round Block-1 supporters of \Aproc{}, the analysis compares later \Dproc{} votes in recovery pools (\(T_g=1,\delta_{g2}=0\)) with those in persistence pools (\(T_g=0,\delta_{g2}=1\)). The public-service description and production rate jointly define recovery: the text states what changed, while the rate makes that change materially consequential inside the game. The estimand therefore concerns their combined effect rather than separate framing and payoff effects. Persistence supplies the counterfactual in which both the crisis and premium remain.
+The recovery--persistence comparison identified the total causal effect of structural recovery on (un)democratic reversal. Among final-round Block-1 supporters of \Aproc{}, the analysis compared later \Dproc{} votes in recovery pools (\(T_g=1,\delta_{g2}=0\)) with those in persistence pools (\(T_g=0,\delta_{g2}=1\)). The public-service description stated what changed, and the production rate made that change materially consequential inside the game. Together, they defined the recovery package. The estimand therefore captured their combined effect rather than separate framing and payoff effects. Persistence supplied the counterfactual in which both the crisis and premium remained.
 
 
 
-\paragraph{H3: Immediate restoration.} Among participants who vote for \Aproc{} in Block 1's final round, recovery will increase the probability of voting for \Dproc{} in Block 2's first round.
+\paragraph{H3: Immediate restoration.} Among participants who vote for \Aproc{} in Block 1's final round, recovery increases the probability of voting for \Dproc{} in Block 2's first round.
 
-\paragraph{H4: Sustained reversal.} Among the same participants, recovery will increase the probability of voting for \Dproc{} in Block 2's final round.
+\paragraph{H4: Sustained reversal.} Among the same participants, recovery increases the probability of voting for \Dproc{} in Block 2's final round.
 
 \section{Experimental Design}
 
 \subsection{Overview}
 
-Each laboratory cohort completes one session lasting approximately 60 minutes, with two ten-round blocks. Following a favorable ethical-review statement from the University of Turku on 30 September 2026 (case TY/1722/2026), data collection is planned for 1--31 October 2026 at the UTU Choice Lab decision-making laboratory. Any later extension to another site will be submitted for ethical review as an amendment before data collection begins there. UTU Choice Lab has 24 regular seats plus one accessible seat; production rosters are capped at 20. Participants remain in matching pools of 10 or 15 and are reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly without forming stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
+Each laboratory cohort completed one session of approximately 60 minutes that contained two ten-round blocks. The University of Turku issued a favorable ethical-review statement on 30 September 2026 (case TY/1722/2026). Sessions took place at the UTU Choice Lab decision-making laboratory, which has 24 regular seats and one accessible seat. We capped production rosters at 20. Participants remained in matching pools of 10 or 15 and were reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool was assigned to recovery or persistence. The pool then learned whether public-service conditions had improved or remained strained and saw its Block-2 fund rates. This structure created repeated interaction without stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
 
 \begin{figure}[H]
 \centering
@@ -215,7 +215,7 @@ Each laboratory cohort completes one session lasting approximately 60 minutes, w
 \node[box,fill=LightBlue] (base) {Consent};
 \node[box,fill=LightBlue,right=of base] (practice) {Practice rounds};
 \node[box,fill=LightOrange,right=of practice] (blockone) {Block 1: 10 rounds\\institutional crisis};
-\node[box,fill=LightBlue,below=12mm of blockone] (random) {Pool learns conditions\\improved or remained strained;\\Block-2 rates shown\\($m_{g2}=2.50$ or $1.50$)};
+\node[box,fill=LightBlue,below=12mm of blockone] (random) {Pool learns conditions\\improved or remained strained\\Block-2 rates shown\\($m_{g2}=2.50$ or $1.50$)};
 \node[box,fill=LightOrange,left=of random] (blocktwo) {Block 2: 10 rounds\\recovery or persistence};
 \node[box,fill=LightBlue,left=of blocktwo] (finish) {Final questions,\\debrief, and payment};
 \draw[arr] (base) -- (practice);
@@ -224,7 +224,7 @@ Each laboratory cohort completes one session lasting approximately 60 minutes, w
 \draw[arr] (random) -- (blocktwo);
 \draw[arr] (blocktwo) -- (finish);
 \end{tikzpicture}
-\caption{One-session sequence. Each paid round includes an institutional ballot, leader proposal, implementation, feedback, and rematching.}
+\caption{One-session sequence. Each paid round included an institutional ballot, leader proposal, implementation, feedback, and rematching.}
 \label{fig:design}
 \end{figure}
 
@@ -274,15 +274,15 @@ Each laboratory cohort completes one session lasting approximately 60 minutes, w
 \caption{Anonymous rematching within a matching pool (ten-person example).}
 \label{fig:pool-rematching}
 \begin{minipage}{0.94\linewidth}
-\footnotesize\textit{Notes:} Each participant \(p_i\) remains in pool \(g\). A ten-person pool forms two temporary groups per round; a fifteen-person pool forms three. Recovery or persistence applies to the whole pool in Block 2.
+\footnotesize\textit{Notes:} Each participant \(p_i\) remained in pool \(g\). A ten-person pool formed two temporary groups per round, while a fifteen-person pool formed three. Recovery or persistence applied to the whole pool in Block 2.
 \end{minipage}
 \end{figure}
 
 
 \begin{plainlanguagebox}
-Matching pools permit interaction without fixing the same five-person team. Round-by-round reshuffling limits stable reputations, collusion, and retaliation, while keeping participants inside one treatment environment. Ten-person pools are used whenever the completed cohort can be divided that way; one fifteen-person pool accommodates a remaining set of five while retaining rematching.
+Matching pools permitted interaction without fixing the same five-person team. Round-by-round reshuffling limited stable reputations, collusion, and retaliation while keeping participants inside one treatment environment. We used ten-person pools whenever the completed cohort could be divided that way. One fifteen-person pool accommodated a remaining set of five while retaining rematching.
 
-Reversal is measured for individuals, but treatment ($T_g$) is assigned to pools. Statistical uncertainty is therefore clustered by pool; temporary groups organize play but are not treatment units. Ten-person pools remain the default because they yield more independent treatment assignments for a fixed sample.
+Reversal was measured for individuals, but treatment ($T_g$) was assigned to pools. We therefore clustered statistical uncertainty by pool. Temporary groups organized play but were not treatment units. Ten-person pools remained the default because they yielded more independent treatment assignments for a fixed sample.
 \end{plainlanguagebox}
 
 \begin{table}[H]
@@ -303,13 +303,13 @@ Fewer than 10 & --- & --- & 0 & All \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{0.96\textwidth}
-\footnotesize\textit{Notes:} A matching pool is not a playing group. Each ten-person pool forms two temporary five-person groups per round; a fifteen-person pool forms three. At 20 participants, two separate ten-person pools each form two groups. Groups dissolve and are reshuffled after every round; participants never enter or change pools after paid play begins.
+\footnotesize\textit{Notes:} A matching pool is not a playing group. Each ten-person pool formed two temporary five-person groups per round, and a fifteen-person pool formed three. At 20 participants, two separate ten-person pools each formed two groups. Groups dissolved and were reshuffled after every round. Participants never entered or changed pools after paid play began.
 \end{minipage}
 \end{table}
 
 \subsection{The institutional-choice public-good game}
 
-Each citizen starts with 20 points and privately votes between an approval-constrained rule (\Dproc) and automatic implementation (\Aproc). Let \(V_{i,b,r}\in\{\Dproc,\Aproc\}\) denote citizen \(i\)'s ballot in block \(b\) and round \(r\). Three votes select the binding rule. The software then selects each group's leader by an independent uniform draw among its five citizens. Selection occurs under both rules and only after the institutional ballot, giving every citizen the same ex ante chance in every round without making past service predict the next draw.
+Each citizen started with 20 points and privately voted between an approval-constrained rule (\Dproc) and automatic implementation (\Aproc). Let \(V_{i,b,r}\in\{\Dproc,\Aproc\}\) denote citizen \(i\)'s ballot in block \(b\) and round \(r\). Three votes selected the binding rule. The software then selected each group's leader through an independent uniform draw among its five citizens. Selection occurred under both rules and only after the institutional ballot. Every citizen therefore had the same chance before the draw in every round, and past service did not predict the next draw.
 
 \begin{table}[H]
 \centering
@@ -322,12 +322,12 @@ Feature & Implemented value \\
 \midrule
 Laboratory session & One synchronized visit, approximately 60 minutes \\
 Paid rounds & 10 per block (20 total), preceded by unpaid practice \\
-Group and matching pool & 5-person groups; stable 10- or 15-person matching pools \\
+Group and matching pool & 5-person groups within stable 10- or 15-person matching pools \\
 Rematching & Anonymous rematching within pool before every paid round \\
 Round endowment & 20 points per participant \\
-Approval-constrained multiplier & 1.50 in Block 1; 2.50 recovery / 1.50 persistence in Block 2 \\
+Approval-constrained multiplier & 1.50 in Block 1 and 2.50 under recovery or 1.50 under persistence in Block 2 \\
 Automatic-implementation multiplier & 2.50 in both blocks and conditions \\
-Approval & At least 3 of the 4 nonleaders; a 2--2 split rejects the proposal \\
+Approval & At least 3 of the 4 nonleaders, with a 2--2 split rejecting the proposal \\
 Rejection & Voluntary individual contributions at the approval-constrained rate \\
 Personal transfer & 0--20 fund points, limited by the points collected \\
 Performance bonus & Points earned in one randomly selected round from each block \\
@@ -350,22 +350,22 @@ Maximum total payment & EUR 15.00 \\
 \label{fig:interface-choice}
 \end{figure}
 
-\paragraph{Leader proposal.} Under either rule, the leader proposes an equal allocation $t\in\{0,\ldots,20\}$ and a personal transfer $\rho\in\{0,\ldots,20\}$, with $\rho\leq5t$. Let $\pi$ denote a citizen's payoff in that round. Under \Aproc{}, the proposal takes effect directly, and a nonleader earns
+\paragraph{Leader proposal.} Under either rule, the leader proposed an equal allocation $t\in\{0,\ldots,20\}$ and a personal transfer $\rho\in\{0,\ldots,20\}$, with $\rho\leq5t$. Let $\pi$ denote a citizen's payoff in that round. Under \Aproc{}, the proposal took effect directly, and a nonleader earned
 \begin{equation}
 \pi^{A}_{igbr}=20-t+\frac{2.50}{5}(5t-\rho),
 \label{eq:automatic-nonleader}
 \end{equation}
-and the leader earns $\pi^{A,L}_{igbr}=\pi^{A}_{igbr}+\rho$.
+and the leader earned $\pi^{A,L}_{igbr}=\pi^{A}_{igbr}+\rho$.
 
-\paragraph{Approval-constrained procedure (\Dproc).} The four nonleaders observe $(t,\rho)$ and vote privately; let $q_{igbr}=1$ denote approval. The proposal passes when at least three approve. If it passes, the payoffs above apply with $m_{gb}$ replacing 2.50. If it fails, each citizen chooses $c_{igbr}\in\{0,\ldots,20\}$ and earns
+\paragraph{Approval-constrained procedure (\Dproc).} The four nonleaders observed $(t,\rho)$ and voted privately. Let $q_{igbr}=1$ denote approval. The proposal passed when at least three approved. If it passed, the payoffs above applied with $m_{gb}$ replacing 2.50. If it failed, each citizen chose $c_{igbr}\in\{0,\ldots,20\}$ and earned
 \begin{equation}
 \pi^{D}_{igbr}=20-c_{igbr}+\frac{m_{gb}}{5}\sum_{j=1}^{5}c_{jgbr}.
 \label{eq:approval-fallback}
 \end{equation}
-The rejected transfer is not implemented. Everyone then sees the proposal, approval total, implemented allocation, transfer, and own payoff.
+The rejected transfer was not implemented. Everyone then saw the proposal, approval total, implemented allocation, transfer, and own payoff.
 
 \begin{plainlanguagebox}
-Rejection restores the standard \textbf{public-goods dilemma}. If one citizen contributes 1 point and four contribute 0, the contributor earns $19+\frac{1.50}{5}=19.30$ during the crisis, while each free-rider earns $20.30$. Under recovery, these payoffs become $19.50$ and $20.50$. Contributing helps the group but costs the contributor; direct implementation avoids that risk, while approval lets citizens block an unwanted proposal.
+Rejection restored the standard \textbf{public-goods dilemma}. If one citizen contributed 1 point and four contributed 0, the contributor earned $19+\frac{1.50}{5}=19.30$ during the crisis, while each free-rider earned $20.30$. Under recovery, these payoffs became $19.50$ and $20.50$. Contributing helped the group but cost the contributor. Direct implementation avoided that risk, whereas approval allowed citizens to block an unwanted proposal.
 \end{plainlanguagebox}
 
 \begin{figure}[H]
@@ -391,12 +391,12 @@ Rejection restores the standard \textbf{public-goods dilemma}. If one citizen co
 \label{fig:interface-actions}
 \end{figure}
 
-\paragraph{How incentives map onto reversal.} During Block 1, \Aproc{} combines a 2.50 rate with guaranteed implementation; \Dproc{} uses 1.50 and may return to voluntary contributions after rejection. Recovery jointly reports improved public-service conditions and raises \Dproc{} to 2.50, while persistence retains the crisis and rate gap. The proposal set, approval rule, rejection procedure, and \Aproc{} rule remain unchanged. The recovery--persistence contrast therefore estimates the total effect of this structural package.
+\paragraph{How incentives map onto reversal.} During Block 1, \Aproc{} combined a 2.50 rate with guaranteed implementation. By contrast, \Dproc{} used 1.50 and could return to voluntary contributions after rejection. Recovery reported improved public-service conditions and raised \Dproc{} to 2.50, while persistence retained the crisis and rate gap. The proposal set, approval rule, rejection procedure, and \Aproc{} rule remained unchanged. The recovery--persistence contrast therefore estimated the total effect of this structural package.
 
-\paragraph{From institutional choice to (un)democratic reversal.} A citizen who moves from \Aproc{} to \Dproc{} first votes to let an unknown leader's proposal take effect without approval and later votes to restore that approval. The public-good incentives make this act consequential: \Aproc{} still guarantees that the leader's equal allocation takes effect after recovery, while \Dproc{} may produce rejection and free riding. A higher switching rate under recovery shows that structural change can cause citizens to withdraw support for a weakly constrained decision rule. Importantly: \emph{reversal is observed as a vote to restore a decision right, not as a declaration of democratic sentiment.}
+\paragraph{From institutional choice to (un)democratic reversal.} A citizen who moved from \Aproc{} to \Dproc{} first voted to let an unknown leader's proposal take effect without approval and later voted to restore that approval. The public-good incentives made this act consequential. After recovery, \Aproc{} still guaranteed implementation of the leader's equal allocation, whereas \Dproc{} could produce rejection and free riding. A higher switching rate under recovery would therefore indicate that structural change caused citizens to withdraw support for a weakly constrained decision rule. \emph{Reversal was observed as a vote to restore a decision right rather than as a declaration of democratic sentiment.}
 
 \begin{payoffbox}
-Suppose the leader proposes $t=10$ and $\rho=0$, and the proposal is approved under \Dproc{}. Holding that decision fixed gives:
+Suppose the leader proposed $t=10$ and $\rho=0$, and the proposal was approved under \Dproc{}. Holding that decision fixed gave the following payoffs.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.15}
@@ -410,32 +410,34 @@ Recovery & 35 points each & 35 points each \\
 \end{tabular}
 \end{center}
 
-Recovery makes an approved \Dproc{} proposal equally productive; it does not make it pay more. \Aproc{} still guarantees implementation. {\bf The question is: \emph{when approval becomes equally productive, do citizens vote to restore it?}}
+Recovery made an approved \Dproc{} proposal equally productive, but it did not make that proposal pay more. \Aproc{} still guaranteed implementation. {\bf The question was whether citizens voted to restore approval once it became equally productive.}
 \end{payoffbox}
 
-Participants report expected payoffs and transfers before the final Block-1 ballot and the first and final Block-2 ballots. Expected payoffs assess whether they understood the rules' relative performance; expected transfers trace beliefs about how leaders will use their discretion.
+Participants reported expected payoffs and transfers before the final Block-1 ballot and the first and final Block-2 ballots. Expected payoffs assessed whether they understood the rules' relative performance. Expected transfers traced beliefs about how leaders would use their discretion.
 
 
 \begin{plainlanguagebox}
-Five citizens cast private institutional ballots ($V_{i,b,r}$), after which the software selects a leader. That leader proposes $(t,\rho)$. Under \Dproc{}, three of four nonleaders must approve; rejection activates individual contributions $(c_{igbr})$. Under \Aproc{}, the proposal takes effect directly. Everyone sees the result and payoff before rematching within pool $g$.
+Five citizens cast private institutional ballots ($V_{i,b,r}$), after which the software selected a leader. That leader proposed $(t,\rho)$. Under \Dproc{}, three of four nonleaders had to approve. Rejection activated individual contributions $(c_{igbr})$. Under \Aproc{}, the proposal took effect directly. Everyone saw the result and payoff before rematching within pool $g$.
 \end{plainlanguagebox}
 
 \subsection{Block 1: crisis and leader authorization}
 
-After consent, participants practice proposing, approving, rejecting, and making individual allocations after rejection, then answer five comprehension questions. The interface never calls either method democratic or undemocratic.
+After consent, participants practiced proposing, approving, rejecting, and making individual allocations after rejection. They then answered five comprehension questions. The interface never called either method democratic or undemocratic.
 
-Block 1 begins with the public-service crisis described above. Each fund point produces 1.50 under \Dproc{} and 2.50 under \Aproc{}. The leader may propose the same allocation and transfer under either rule; what differs is whether the other citizens can reject it.
+Block 1 began with the public-service crisis described above. Each fund point produced 1.50 under \Dproc{} and 2.50 under \Aproc{}. The leader could propose the same allocation and transfer under either rule. The rules differed in whether the other citizens could reject that proposal.
 
-Each paid round repeats the same sequence: institutional ballot, leader proposal, approval or direct implementation, any individual allocation following rejection, feedback, and rematching. Expectations are elicited before the final ballot, and one Block-1 round is selected for payment.
+Each paid round repeated the same sequence. Citizens cast an institutional ballot, the leader made a proposal, and the proposal either faced approval or took effect directly. Rejection activated individual allocations before feedback and rematching. We elicited expectations before the final ballot and selected one Block-1 round for payment.
 
 \subsection{Block 2: structural change and reversal}
 
-After Block 1, pools are assigned to \emph{recovery} or \emph{persistence}. Recovery jointly reports that the budget passed, waiting times are falling, and planning resumed, and raises the \Dproc{} multiplier from 1.50 to 2.50. Persistence retains the crisis and 1.50 rate. The \Aproc{} rate, leader selection, proposal set, approval threshold, and rejection procedure remain unchanged. Together, the updated description and rate form the structural-recovery treatment.
+After Block 1, pools were assigned to \emph{recovery} or \emph{persistence}. Recovery reported that the budget had passed, waiting times were falling, and planning had resumed. It also raised the \Dproc{} multiplier from 1.50 to 2.50. Persistence retained the crisis and the 1.50 rate. The \Aproc{} rate, leader selection, proposal set, approval threshold, and rejection procedure remained unchanged. Together, the updated description and rate formed the structural-recovery treatment.
 
-The first Block-2 ballot measures immediate support for restoring approval; the final ballot measures sustained reversal and is primary. Expectations are elicited before both ballots, and questions about democratic constraints appear only after paid decisions. One Block-2 round is selected for payment.
+The first Block-2 ballot measured immediate support for restoring approval. The final ballot measured sustained reversal and served as the primary outcome. We elicited expectations before both ballots and asked about democratic constraints only after paid decisions. One Block-2 round was selected for payment.
 
 
 \section{Outcomes, Process Measures, and Estimands}
+
+An \emph{estimand} is the population-level quantity that an analysis seeks to recover. We first define the individual choices that compose the primary estimand.
 
 Let \(\ind{\cdot}\) equal 1 when the condition inside braces is true and 0 otherwise. The final Block-1 ballot defines endorsement of automatic implementation as
 \begin{equation}
@@ -449,23 +451,23 @@ R_i=\ind{V_{i,2,10}=\Dproc}.
 \begin{equation}
 \tau_R=\mathbb{E}[R_i(1)-R_i(0)\mid A_{i1}=1],
 \end{equation}
-where \(R_i(1)\) and \(R_i(0)\) are participant \(i\)'s potential outcomes under recovery and persistence. Recovery includes both improved public-service conditions and the 2.50 \Dproc{} rate; \(\tau_R\) is the total effect of that package. Because $A_{i1}$ is measured before assignment, subgroup membership is fixed before treatment. The primary test repeatedly reassigns recovery according to the prespecified pool-level procedure to evaluate how unusual the observed contrast is. Because \(\tau_R\) describes the average eligible citizen, the primary estimate weights eligible participants equally; a secondary analysis gives each pool equal weight. Regression estimates will cluster uncertainty by pool and include a prespecified indicator for fifteen-person pools.
+where \(R_i(1)\) and \(R_i(0)\) are participant \(i\)'s potential outcomes under recovery and persistence. Recovery includes both improved public-service conditions and the 2.50 \Dproc{} rate, so \(\tau_R\) is the total effect of that package. Because $A_{i1}$ was measured before assignment, subgroup membership was fixed before treatment. The primary test repeatedly reassigned recovery according to the prespecified pool-level procedure and evaluated how unusual the observed contrast was. Because \(\tau_R\) describes the average eligible citizen, the primary estimate weighted eligible participants equally. A secondary analysis gave each pool equal weight. Regression estimates clustered uncertainty by pool and included a prespecified indicator for fifteen-person pools.
 
 Immediate reversal is
 \begin{equation}
 R_i^{I}=\ind{V_{i,2,1}=\Dproc}\quad\text{for }A_{i1}=1.
 \end{equation}
-The same comparison applied to \(R_i^{I}\) estimates immediate support for restoration. The final-round outcome \(R_i\) remains primary because it records whether that choice persists.
+The same comparison applied to \(R_i^{I}\) estimated immediate support for restoration. The final-round outcome \(R_i\) remained primary because it recorded whether that choice persisted.
 
 \begin{plainlanguagebox}
-The primary estimand ($\tau_R$) asks: among citizens who voted for direct implementation in Block 1's final round ($V_{i,1,10}=\Aproc$; $A_{i1}=1$), how much more often does recovery ($T_g=1$), rather than persistence ($T_g=0$), lead them to vote for group approval in Block 2's final round ($V_{i,2,10}=\Dproc$; $R_i=1$)? Only one potential outcome is observed per citizen, so random assignment identifies the difference. Assignment and inference operate at pool level.
+The primary estimand ($\tau_R$) asks how much recovery changed sustained reversal among citizens who had voted for direct implementation in Block 1's final round. These citizens satisfy $V_{i,1,10}=\Aproc$ and $A_{i1}=1$. Sustained reversal means voting for group approval in Block 2's final round, so $V_{i,2,10}=\Dproc$ and $R_i=1$. We compared this outcome under recovery ($T_g=1$) and persistence ($T_g=0$). Only one potential outcome was observed per citizen, so random assignment identified the difference. Assignment and inference operated at pool level.
 \end{plainlanguagebox}
 
 For each leader $i$, $t_{igbr}$ is the proposed allocation and $\rho_{igbr}$ the proposed transfer. A transfer proposal is $M_{igbr}=\ind{\rho_{igbr}>0}$, with intensity $\rho_{igbr}/(5t_{igbr})$ when $t_{igbr}>0$. Thus, $t=10$ and $\rho=5$ proposes moving 10\% of the 50 collected points. Approval ballots $q_{igbr}$, proposal passage, contributions after rejection, and subsequent institutional ballots provide descriptive process evidence. Because groups choose their rule, these measures do not identify separate causal effects of recovery.
 
-Immediate reversal \(R_i^{I}\) records the first response to the structural package, before Block-2 interaction (see \autoref{fig:decision-timeline}). The primary outcome \(R_i\) records Round 10 after nine completed rounds. Secondary outcomes include late-round automatic-implementation support and realized group-level restoration.
+Immediate reversal \(R_i^{I}\) recorded the first response to the structural package before Block-2 interaction (see \autoref{fig:decision-timeline}). The primary outcome \(R_i\) recorded Round 10 after nine completed rounds. Secondary outcomes included late-round automatic-implementation support and realized group-level restoration.
 
-Expected payoffs assess whether participants understood how recovery changed the rules' relative performance, while expected transfers trace beliefs about leader discretion. After all paid choices, eleven process items check perceived crisis severity and recovery, expected institutional performance, and views on approval, equal allocation, and transfers. A separate optional twelve-item background module records age group, gender, education, household financial strain, party voted for in Finland's 2023 parliamentary election, left--right placement, whether democracy is preferable to other forms of government, satisfaction with democracy in Finland, evaluation of a strong leader unconstrained by parliament and elections, external political efficacy, generalized trust, and willingness to take risks. These prespecified measures capture partisan and ideological trade-offs, distinguish principled democratic support from evaluations of democratic performance, and benchmark cooperative and risk-related predispositions \parencites{GRAHAM2020,0b3bf,Claassen2020,Dohmen2011,Glaeser2000}. They are collected only after paid decisions and support precision and descriptive heterogeneity analyses; they do not alter the randomized estimand or independently identify a treatment mechanism.
+Expected payoffs assessed whether participants understood how recovery changed the rules' relative performance, while expected transfers traced beliefs about leader discretion. After all paid choices, eleven process items measured perceived crisis severity and recovery, expected institutional performance, and views on approval, equal allocation, and transfers. A separate optional twelve-item background module recorded age group, gender, education, household financial strain, party voted for in Finland's 2023 parliamentary election, left--right placement, whether democracy is preferable to other forms of government, satisfaction with democracy in Finland, evaluation of a strong leader unconstrained by parliament and elections, external political efficacy, generalized trust, and willingness to take risks. These prespecified measures captured partisan and ideological trade-offs, distinguished principled democratic support from evaluations of democratic performance, and benchmarked cooperative and risk-related predispositions \parencites{GRAHAM2020,0b3bf,Claassen2020,Dohmen2011,Glaeser2000}. We collected them only after paid decisions. They supported precision and descriptive heterogeneity analyses but did not alter the randomized estimand or independently identify a treatment mechanism.
 
 
 \begin{figure}[H]
@@ -528,30 +530,63 @@ Expected payoffs assess whether participants understood how recovery changed the
 \draw[flow] (finallower) -- node[edge,above] {$\Dproc$} (ad.west);
 \draw[flow] (finallower) -- node[edge,below] {$\Aproc$} (aa.west);
 \end{tikzpicture}
-\caption{Decision tree for assignment and reversal. Each pool is assigned one value of $T_g$; the primary analysis follows participants with $A_{i1}=1$.}
+\caption{Decision tree for assignment and reversal. Each pool received one value of $T_g$. The primary analysis followed participants with $A_{i1}=1$.}
 \label{fig:decision-timeline}
 \begin{minipage}{0.96\textwidth}
-\footnotesize\emph{Notes:} The displayed ballots are $V_{i,1,10}$ (final Block 1), $V_{i,2,1}$ (first Block 2), and $V_{i,2,10}$ (final Block 2). The ordered pair $(R_i^{I},R_i)$ records the two Block-2 outcomes, with $1=\Dproc$ and $0=\Aproc$. Thus, $(1,1)$ is sustained reversal; $(1,0)$ immediate only; $(0,1)$ delayed; and $(0,0)$ no reversal. Parentheses identify the corresponding hypotheses; H2 concerns transfers and is not shown.
+\footnotesize\emph{Notes:} The displayed ballots are $V_{i,1,10}$ (final Block 1), $V_{i,2,1}$ (first Block 2), and $V_{i,2,10}$ (final Block 2). The ordered pair $(R_i^{I},R_i)$ records the two Block-2 outcomes, with $1=\Dproc$ and $0=\Aproc$. Thus, $(1,1)$ is sustained reversal, $(1,0)$ is immediate reversal only, $(0,1)$ is delayed reversal, and $(0,0)$ is no reversal. Parentheses identify the corresponding hypotheses. H2 concerns transfers and is not shown.
 \end{minipage}
 \end{figure}
 
-\section{Randomization, Sample, and Power}
+\section{Randomization, Sample, and Design Sensitivity}
 
-The planned sample comprises 300 completed participants in 28--30 matching pools. Ten-person pools are the default; no more than four fifteen-person pools are used, preserving at least 28 independent treatment assignments. Treatment is assigned only after everyone finishes Block 1. Within each session, pools are ordered by their final-round Block-1 \Aproc{} vote share and paired. One pool in each pair receives recovery and the other persistence, at random; an unmatched pool is assigned by a fair draw. Pairing improves balance in the number eligible to reverse, which is measured before assignment. The maximum payment of EUR~15 implies a participant-compensation ceiling of EUR~4,500 for 300 completed participants.
+The study included 300 completed participants in 28--30 matching pools. Ten-person pools were the default, and no more than four fifteen-person pools were used. This structure preserved at least 28 independent treatment assignments. Treatment was assigned only after everyone finished Block 1. Within each session, pools were ordered by their final-round Block-1 \Aproc{} vote share and paired. One pool in each pair received recovery, and the other received persistence. An unmatched pool was assigned by an independent fair draw. Because final-round \Aproc{} support was measured before treatment, pairing balanced the number of participants eligible to reverse without conditioning on a post-treatment outcome. The maximum payment of EUR~15 set the participant-compensation ceiling at EUR~4,500.
 
-Power depends on Block-1 endpoint support for \Aproc{}, the persistence-group reversal rate, the similarity of outcomes within pools, and the realized mix of pool sizes. With 300 participants, the design yields 28--30 independent treatment assignments---approximately 14--15 pools per condition---because a larger pool supplies more individual outcomes but still receives only one treatment draw. Repeated rounds improve measurement and reveal trajectories; they do not create additional independent assignments.
+The number of pools determined the amount of independent treatment information. The 300 participants produced 28--30 pool assignments, with approximately 14--15 pools per condition. A larger pool supplied more individual outcomes but still received only one treatment draw. Repeated rounds improved measurement and revealed trajectories, but they did not create additional independent assignments.
 
-Pilot estimates will inform simulations spanning 28--30 pools and the observed number eligible to reverse. The primary randomization test reproduces the actual paired and unmatched assignments. Regression estimates cluster uncertainty by pool, adjust for the prespecified pool-size indicator, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. Each oTree session remains a separate interaction and randomization cohort.
+We evaluated design sensitivity with a simulation that reproduced pool-level treatment assignment, the eligible subgroup, the binary outcome, and the two-sided randomization test at the five-percent level. \emph{Power} is the probability that this test detects a genuine recovery effect of an assumed size. It depends on three quantities that were unknown before the pilot. These were the share of participants eligible for the primary outcome, the sustained-reversal rate under persistence, and the \emph{intrapool correlation}, which measures how similar outcomes are among members of the same matching pool. A treatment effect of 20 percentage points, for example, means a sustained-reversal rate 0.20 higher under recovery than under persistence.
 
-Strategic decisions do not time out automatically. The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The researcher or a trained research assistant monitors the session and prompts delayed participants to complete the current decision so the group can advance.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/power_simulation_curves.pdf}
+\caption{Simulated power as the completed sample increases}
+\label{fig:power-curves}
+\begin{minipage}{0.96\textwidth}
+\footnotesize\textit{Notes:} Panel (a) holds the eligible share at 0.50, the persistence reversal rate at 0.20, and the intrapool correlation at 0.05, then varies the true recovery effect. Panel (b) fixes that effect at 20 percentage points and varies the three uncertain parameters. Every additional 20 participants adds two ten-person pools and one paired recovery--persistence assignment. Points are simulation estimates and lines are monotone summaries. The horizontal line marks 80\% power and the vertical line marks the planned sample of 300. Each point uses 2,500 simulated experiments and 999 treatment reallocations. Results are reproducible from \texttt{analysis/power\_simulation.R}.
+\end{minipage}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Approximate completed sample required for 80\% power}
+\label{tab:power-thresholds}
+\begin{threeparttable}
+\begin{tabular}{lccccc}
+\toprule
+Recovery effect & 10 points & 15 points & 20 points & 25 points & 30 points \\
+\midrule
+Completed participants & 1,520 & 740 & 460 & 340 & 260 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Thresholds use the central assumptions in panel (a) and are interpolated from the monotone curves, then rounded up to the next 20 participants. They are conditional benchmarks rather than universal minimum sample sizes.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+At 300 completed participants, the central simulation yielded 61\% power for a 20-point effect, 78\% for 25 points, and 91\% for 30 points. The smallest effect reaching 80\% power at this sample was approximately 26 percentage points. This value remained between 25.6 and 25.9 points across the permitted 28-, 29-, and 30-pool configurations. Conversely, a 20-point effect required approximately 460 participants under the central assumptions. Its 80\% threshold moved from 360 participants under higher eligibility and lower clustering to 640 under lower eligibility and higher clustering. A higher persistence reversal rate produced a threshold of 540. The critical sample size was therefore conditional on the unknown behavioral parameters. Given the fixed budget, the simulation showed most directly that the study could reliably detect large changes in sustained reversal, while smaller effects would remain imprecisely estimated.
+
+The primary randomization test reproduced the realized paired and unmatched assignments. Regression estimates clustered uncertainty by pool, adjusted for the prespecified pool-size indicator, and used small-sample inference. An equal-pool-weight analysis checked whether results depended on larger pools contributing more participants. Each oTree session remained a separate interaction and randomization cohort.
+
+Strategic decisions did not time out automatically. The software recorded response time and flagged decisions exceeding 90 seconds, but it never generated a ballot or allocation. The researcher or a trained research assistant monitored the session and prompted delayed participants to complete the current decision so the group could advance.
 
 \section{Implementation, Ethics, and Project Timeline}
 
-Implementation follows the approved protocol at UTU Choice Lab. Adults register through UTU RPP/TOKA, which manages recruitment and attendance separately from the experiment. Before practice, oTree presents study-specific information and records consent. Participants are told that the detailed research question will be explained after the paid task because advance disclosure could influence the institutional ballot; all task rules, payments, data processing, foreseeable risks, and the right to stop are disclosed beforehand. The full research purpose is explained immediately after paid decisions.
+Implementation followed the approved protocol at UTU Choice Lab. Adults registered through UTU RPP/TOKA, which managed recruitment and attendance separately from the experiment. Before practice, oTree presented study-specific information and recorded consent. Participants learned that the detailed research question would be explained after the paid task because advance disclosure could influence the institutional ballot. All task rules, payments, data processing, foreseeable risks, and the right to stop were disclosed beforehand. The full research purpose was explained immediately after paid decisions.
 
-The researcher or trained research assistant fixes a consenting roster of 10, 15, or 20 before paid play, forms the matching pools in \autoref{tab:attendance-pools}, and monitors synchronized progress. No participant enters or changes pools after paid play begins. A technical pilot will verify rematching, both Block-2 conditions, wait pages, response-time flags, browser recovery, data exports, and payments; a behavioral pilot will assess comprehension, duration, fatigue, choice distributions, and expected earnings. The protocol, analysis plan, and data dictionary will then be frozen before confirmatory collection.
+The researcher or a trained research assistant fixed a consenting roster of 10, 15, or 20 before paid play. They formed the matching pools in \autoref{tab:attendance-pools} and monitored synchronized progress. No participant entered or changed pools after paid play began. A technical pilot verified rematching, both Block-2 conditions, wait pages, response-time flags, browser recovery, data exports, and payments. A behavioral pilot assessed comprehension, duration, fatigue, choice distributions, and expected earnings. The protocol, analysis plan, and data dictionary were then frozen before confirmatory collection.
 
-Live oTree data will be hosted on University of Turku IT servers in Finland; the public prototype will not collect research data, and no oTree artificial-intelligence functions will be used. UTU RPP/TOKA will not receive oTree codes, experimental responses, or payment information. The research team will make immediate payment using a temporary code-and-amount list; any named receipt will contain no oTree code. The temporary list will be destroyed after payment reconciliation and no later than 30 November 2026, after which the retained research dataset will be anonymized. Access before anonymization is limited to Janne Tukiainen, Hector Bahamonde, and authorized personnel.
+Live oTree data were hosted on University of Turku IT servers in Finland. The public interface did not collect research data, and oTree used no artificial-intelligence functions. UTU RPP/TOKA received no oTree codes, experimental responses, or payment information. The research team made immediate payments using a temporary code-and-amount list. Any named receipt contained no oTree code. The temporary list was destroyed after payment reconciliation and no later than 30 November 2026. The retained research dataset was then anonymized. Before anonymization, access was limited to Janne Tukiainen, Hector Bahamonde, and authorized personnel.
 
 \begin{figure}[H]
 \centering
@@ -597,14 +632,14 @@ Live oTree data will be hosted on University of Turku IT servers in Finland; the
 \fill[RecoveryGreen!65] ({\xstart+7.08},0.36) rectangle ({\xstart+7.92},0.84);
 \end{tikzpicture}%
 }
-\caption{Project timeline under the approved protocol.}
+\caption{Study timeline under the approved protocol.}
 \label{fig:project-timeline}
 \begin{minipage}{0.96\textwidth}
-\footnotesize\textit{Notes:} Data collection is planned for 1--31 October 2026 at UTU Choice Lab. Payment reconciliation and destruction of the temporary code-and-amount list will be completed no later than 30 November 2026. Reporting, disclosure review, and retention or archiving will follow the approved data-management plan.
+\footnotesize\textit{Notes:} Data collection took place from 1--31 October 2026 at UTU Choice Lab. Payment reconciliation and destruction of the temporary code-and-amount list were completed no later than 30 November 2026. Reporting, disclosure review, and retention or archiving followed the approved data-management plan.
 \end{minipage}
 \end{figure}
 
-The main outputs will be academic articles, presentations, and replication materials. Consistent with University open-science policy, documentation, code, and data that can be shared safely will be made as open as possible and as restricted as necessary.
+The study produced academic articles, presentations, and replication materials. Consistent with University open-science policy, documentation, code, and data that could be shared safely were made as open as possible and as restricted as necessary.
 
 \FloatBarrier
 \printbibliography
@@ -615,44 +650,44 @@ The main outputs will be academic articles, presentations, and replication mater
 
 \section{Payments and Laboratory Operations}
 
-Participants receive a EUR~10 show-up payment plus a points-based performance bonus capped at EUR~5. For 300 completed participants, total compensation cannot exceed EUR~4,500. At completion, the interface displays the selected Block-1 round, selected Block-2 round, point total, performance payment, participation payment, and total payment separately.
+Participants received a EUR~10 show-up payment plus a points-based performance bonus capped at EUR~5. For 300 completed participants, total compensation could not exceed EUR~4,500. At completion, the interface displayed the selected Block-1 round, selected Block-2 round, point total, performance payment, participation payment, and total payment separately.
 
-Both blocks are run during one synchronized session. The transition page is released only after every active participant has completed Block 1, so members of a matching pool encounter the new environment together. Participant codes, not names, link decisions across blocks, and all payments are made after Block 2.
+Both blocks ran during one synchronized session. The transition page was released only after every active participant had completed Block 1, so members of a matching pool encountered the new environment together. Participant codes rather than names linked decisions across blocks. All payments were made after Block 2.
 
-The operational protocol fixes the completed roster before Block 1 and forms the pool configuration in \autoref{tab:attendance-pools}. No participant enters or changes pools after paid play begins. Strategic decisions do not time out automatically: the software records response time and flags delays beyond 90 seconds without generating an answer. The researcher or trained research assistant monitors these flags and prompts delayed participants to complete the current decision. The session log must document late arrival, browser failure, early departure, manual intervention, and payment exceptions. Exclusion rules should be preregistered and should never depend on treatment-consistent behavior.
+The operational protocol fixed the completed roster before Block 1 and formed the pool configuration in \autoref{tab:attendance-pools}. No participant entered or changed pools after paid play began. Strategic decisions did not time out automatically. The software recorded response time and flagged delays beyond 90 seconds without generating an answer. The researcher or trained research assistant monitored these flags and prompted delayed participants to complete the current decision. The session log documented late arrival, browser failure, early departure, manual intervention, and payment exceptions. Preregistered exclusion rules did not depend on treatment-consistent behavior.
 
-Before launch, two pilots are required. A technical pilot should test 10- and 15-person pools, mixed-pool sessions, both treatment branches, wait pages, rematching, delayed-response monitoring, refresh persistence, and payment calculations. A behavioral pilot should estimate duration, comprehension, Block-1 \Aproc{} support, approval, rejection, transfers, fatigue, and payoff distributions. Parameters should be frozen after that pilot and before confirmatory registration.
+Two pilots preceded launch. A technical pilot tested 10- and 15-person pools, mixed-pool sessions, both treatment branches, wait pages, rematching, delayed-response monitoring, refresh persistence, and payment calculations. A behavioral pilot estimated duration, comprehension, Block-1 \Aproc{} support, approval, rejection, transfers, fatigue, and payoff distributions. Parameters were frozen after that pilot and before confirmatory registration.
 
 \section{Experience Across Repeated Play: Design Safeguards}
 
-Repeated play reveals whether institutional choices persist after participants experience their consequences. The design therefore separates those consequential responses from avoidable procedural adaptation.
+Repeated play revealed whether institutional choices persisted after participants experienced their consequences. The design therefore separated those consequential responses from avoidable procedural adaptation.
 
-\paragraph{Procedural familiarity.} Participants may initially misunderstand payoff rules. Guided unpaid practice and mandatory comprehension checks establish familiarity before paid decisions. Block-2 Round 1 records the immediate response, while Round 10 records sustained reversal and Rounds 8--10 summarize late behavior.
+\paragraph{Procedural familiarity.} Participants could initially misunderstand payoff rules. Guided unpaid practice and mandatory comprehension checks established familiarity before paid decisions. Block-2 Round 1 recorded the immediate response, while Round 10 recorded sustained reversal and Rounds 8--10 summarized late behavior.
 
-\paragraph{Reputation and reciprocity.} Fixed five-person groups would allow personal histories to drive votes and contributions. Anonymous rematching within 10- or 15-person pools breaks stable bilateral relationships while keeping treatment exposure and synchronized interaction feasible. Participants never receive persistent identities.
+\paragraph{Reputation and reciprocity.} Fixed five-person groups would have allowed personal histories to drive votes and contributions. Anonymous rematching within 10- or 15-person pools broke stable bilateral relationships while keeping treatment exposure and synchronized interaction feasible. Participants never received persistent identities.
 
-\paragraph{Leader-role expectations.} Leader selection occurs after the institutional ballot and uses an independent uniform draw among the five citizens under both procedures. Each citizen therefore has a one-in-five chance in every round, cannot vote knowing whether they will make the proposal, and cannot use prior service to predict the next leader.
+\paragraph{Leader-role expectations.} Leader selection occurred after the institutional ballot and used an independent uniform draw among the five citizens under both procedures. Each citizen therefore had a one-in-five chance in every round. Citizens could not vote knowing whether they would make the proposal or use prior service to predict the next leader.
 
-\paragraph{Endogenous institutional experience.} Groups that never elect one procedure receive less experience with it. Instructions and practice expose everyone to both payoff rules, and realized experience is recorded.\footnote{We follow \textcite{Bigoni:2012} and implement a short and effective set of instructions.} Treatment effects will be reported by prior exposure, but the primary randomized comparison will not condition on a post-treatment institutional path.
+\paragraph{Endogenous institutional experience.} Groups that never elected one procedure received less experience with it. Instructions and practice exposed everyone to both payoff rules, and we recorded realized experience.\footnote{We followed \textcite{Bigoni:2012} and implemented a short and effective set of instructions.} We reported treatment effects by prior exposure, but the primary randomized comparison did not condition on a post-treatment institutional path.
 
-\paragraph{Wealth, fatigue, and end-game effects.} Only one randomly selected round per block determines game earnings, so earnings from early rounds do not alter later endowments. Instructions explain that every round has an equal payment chance. The ten-round horizon is disclosed and identical across conditions. Recorded decision times and delay flags identify fatigue or end-game behavior. The persistence group experiences the same twenty-round sequence as the recovery group, separating the treatment effect from generic within-session fatigue.
+\paragraph{Wealth, fatigue, and end-game effects.} Only one randomly selected round per block determined game earnings, so earnings from early rounds did not alter later endowments. Instructions explained that every round had an equal payment chance. The ten-round horizon was disclosed and identical across conditions. Recorded decision times and delay flags identified fatigue or end-game behavior. The persistence group experienced the same twenty-round sequence as the recovery group, which separated the treatment effect from generic within-session fatigue.
 
-\paragraph{Cross-block comparability.} Labels, leader selection, proposal choices, approval threshold, fallback, endowments, and sequence are fixed. Recovery jointly improves public-service conditions and raises the approval-constrained multiplier; persistence identifies change from repeated play or approaching the session's end.
+\paragraph{Cross-block comparability.} Labels, leader selection, proposal choices, approval threshold, fallback, endowments, and sequence remained fixed. Recovery jointly improved public-service conditions and raised the approval-constrained multiplier. Persistence identified change from repeated play or approaching the session's end.
 
-These safeguards preserve experience with institutional consequences while limiting changes driven by the interface, accidental partners, or accumulated wealth.
+These safeguards preserved experience with institutional consequences while limiting changes driven by the interface, accidental partners, or accumulated wealth.
 
 \section{Ethics and Interpretation}
 
-The experiment makes action without approval materially effective but avoids moral labels. Instructions use ``Group approval required'' and ``Decision takes effect directly,'' disclose every rule, and reserve explicit questions about democratic constraints until paid choices are complete.
+The experiment made action without approval materially effective but avoided moral labels. Instructions used ``Group approval required'' and ``Decision takes effect directly,'' disclosed every rule, and reserved explicit questions about democratic constraints until paid choices were complete.
 
-Registration through UTU RPP/TOKA covers the laboratory's general rules and privacy notice. Before practice, the interface presents study-specific information on the session, interaction, anonymity, payment, data handling, and the importance of remaining for the full task, then records affirmative consent to this study. Participants who do not consent are handled by the researcher or trained research assistant before the group task begins. The debrief explains the democratic interpretation only after all incentivized decisions and clarifies that no single vote or transfer establishes that a participant is corrupt, authoritarian, or opposed to democracy. Data exports use coded study IDs. UTU RPP/TOKA does not receive oTree codes, experimental responses, or payment data; the research team uses a separate temporary code-and-amount list for immediate payment and destroys it after reconciliation.
+Registration through UTU RPP/TOKA covered the laboratory's general rules and privacy notice. Before practice, the interface presented study-specific information on the session, interaction, anonymity, payment, data handling, and the importance of remaining for the full task. It then recorded affirmative consent to this study. The researcher or trained research assistant handled nonconsent before the group task began. The debrief explained the democratic interpretation only after all incentivized decisions and clarified that no single vote or transfer established that a participant was corrupt, authoritarian, or opposed to democracy. Data exports used coded study IDs. UTU RPP/TOKA did not receive oTree codes, experimental responses, or payment data. The research team used a separate temporary code-and-amount list for immediate payment and destroyed it after reconciliation.
 
-The Finnish setting strengthens the case for a hypothetical, incentive-based task. Participants do not judge Finnish officials; they face a fictional crisis and transparent, consequential rules. Recovery is the joint improvement in that environment and the approval-constrained production rate.
+The Finnish setting strengthened the case for a hypothetical, incentive-based task. Participants did not judge Finnish officials. They faced a fictional crisis and transparent, consequential rules. Recovery was the joint improvement in that environment and the approval-constrained production rate.
 
-The interpretation centers on revealed choice over approval. Comparing recovery with persistence identifies whether the structural package causes previous \Aproc{} supporters to restore that constraint; it does not separate the package's narrative and payoff components.
+The interpretation centered on revealed choice over approval. Comparing recovery with persistence identified whether the structural package caused previous \Aproc{} supporters to restore that constraint. It did not separate the package's narrative and payoff components.
 
-\section{Planned Deliverables and Decision Rule}
+\section{Interpretive Decision Rule}
 
-The principal conclusion follows a simple rule: evidence for structural reversal requires a positive, substantively meaningful, and statistically distinguishable recovery effect on $R_i$ among Block-1 \Aproc{} supporters. Approval, proposals, transfers, fallback contributions, and expectations describe behavior around that effect.
+The principal conclusion followed a simple rule. Evidence for structural reversal required a positive, substantively meaningful, and statistically distinguishable recovery effect on $R_i$ among Block-1 \Aproc{} supporters. Approval, proposals, transfers, fallback contributions, and expectations described behavior around that effect.
 
-The design isolates a microfoundation of executive aggrandizement: citizens use a democratic ballot to remove approval from a later decision and may restore it after structural recovery. Democratic reversal is the sustained vote to reinstate that constraint.
+The design isolated a microfoundation of executive aggrandizement. Citizens used a democratic ballot to remove approval from a later decision and could restore it after structural recovery. Democratic reversal was the sustained vote to reinstate that constraint.

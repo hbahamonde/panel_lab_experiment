@@ -1,0 +1,7 @@
+"scenario","design","mde_80"
+"Central","28 pools",0.258417508417508
+"Central","29 pools",0.255610795454545
+"Central","30 pools",0.258858858858859
+"Higher eligibility, lower clustering","30 pools",0.218390052356021
+"Higher persistence reversal","30 pools",0.272044917257683
+"Lower eligibility, higher clustering","30 pools",0.306825938566553
