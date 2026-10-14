@@ -105,24 +105,41 @@
 \newcommand{\Dproc}{\textsf{D}}
 \newcommand{\Aproc}{\textsf{A}}
 \newcommand{\ind}[1]{\mathbb{1}\{#1\}}
+\newcommand{\equalcontribmark}{\textsuperscript{*}}
+\renewcommand{\Authfont}{\normalsize}
 
 \title{\textbf{\input{title.txt}\unskip}}
-\author[1,2]{\textsc{Hector Bahamonde}}
+\author[1,2]{\textsc{Hector Bahamonde}\equalcontribmark}
+\author[2]{\textsc{Inga Saikkonen}\equalcontribmark}
+\author[3]{\textsc{Janne Tukiainen}\equalcontribmark}
+\author[4]{\textsc{\AA sa von Schoultz}\equalcontribmark}
 \affil[1]{INVEST Research Flagship Centre, University of Turku, Finland}
 \affil[2]{Social Science Research Institute, \AA bo Akademi University, Finland}
-\date{}
+\affil[3]{Turku School of Economics, University of Turku, Finland}
+\affil[4]{Faculty of Social Sciences, University of Helsinki, Finland}
+\date{\small
+\href{mailto:hector.bahamonde@utu.fi}{hector.bahamonde@utu.fi}\quad
+\href{mailto:inga.saikkonen@abo.fi}{inga.saikkonen@abo.fi}\\[0.2em]
+\href{mailto:janne.tukiainen@utu.fi}{janne.tukiainen@utu.fi}\quad
+\href{mailto:asa.vonschoultz@helsinki.fi}{asa.vonschoultz@helsinki.fi}}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \pagenumbering{gobble}
 \maketitle
+\begingroup
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\footnotetext[1]{All authors are listed in alphabetical order and contributed equally to the paper.}
+\endgroup
 
 \begin{abstract}
 Democratic backsliding often proceeds through lawful choices that weaken constraints on later decisions. We tested whether citizens restored such a constraint after its crisis-based cost receded. In a one-session public-goods experiment with 300 participants in Finland, five-person groups voted on whether an unknown leader's proposal required their approval or took effect directly. Direct implementation initially combined a higher fund rate with assured implementation. We then assigned stable matching pools to structural recovery or crisis persistence. Recovery improved public-service conditions and raised the approval-constrained rate to match direct implementation, while the leader's powers remained fixed. Comparing the two conditions identified whether recovery caused previous supporters of direct implementation to restore group approval. The design captured a demand-side microfoundation of executive aggrandizement. Citizens could use one democratic decision to weaken a later constraint and another to take that constraint back.
 \end{abstract}
 
-\vspace{2cm}
+\vspace{1.2cm}
 
 \begin{center}
+\small\textbf{Latest version:} \\
+\href{https://github.com/hbahamonde/panel_lab_experiment/blob/main/Undemocratic_Reversals_Paper.pdf?raw=1}{Download the latest version of the paper}\\[0.6em]
 \small\textbf{Experimental interface:} \\ \url{https://panel-lab-experiment.onrender.com}
 \end{center}
 
