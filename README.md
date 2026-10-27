@@ -50,6 +50,20 @@ The two method badges use **R** and **P**, the initials of the Finnish labels.
 The paper's research notation remains **D** for required approval and **A** for
 direct implementation.
 
+## Browser-testing prototype
+
+The public prototype is at <https://panel-lab-experiment.onrender.com>.
+For testing alone, use either direct link:
+
+- [Conditions improve](https://panel-lab-experiment.onrender.com/demo/panel_lab_solo_recovery)
+- [Conditions remain unchanged](https://panel-lab-experiment.onrender.com/demo/panel_lab_solo_persistence)
+
+Each creates a separate demonstration with one tester and four simulated
+citizens, so there is no need to advance other participants. Use dummy answers
+only. Render is for technical browser testing, not research data collection or
+the laboratory pre-test. Test data are disposable and may disappear on restarts
+or redeployments. Research sessions and their data use the UTU server.
+
 ## Start a clean development server
 
 On macOS, double-click `start_otree_dev.command` in Finder. The launcher:

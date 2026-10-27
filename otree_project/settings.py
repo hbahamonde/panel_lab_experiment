@@ -74,6 +74,7 @@ SESSION_FIELDS = []
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
+# Participant language only; variable names and stored response codes stay English.
 LANGUAGE_CODE = 'fi'
 
 # e.g. EUR, GBP, CNY, JPY
