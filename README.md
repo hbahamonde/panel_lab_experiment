@@ -16,8 +16,9 @@ Strategic choice pages display a 90-second countdown and remind participants to 
 
 ## Interface language and English reference
 
-The participant interface is in Finnish. Variable names, stored response codes,
-analysis scripts, and researcher-facing configuration names remain in English.
+The participant interface and public test menu are in Finnish. Variable names,
+stored response codes, analysis scripts, and technical configuration names remain
+in English.
 The paper and its English screenshots also remain in English.
 
 The final English interface and accompanying paper are preserved by the Git tag
@@ -59,7 +60,8 @@ For testing alone, use either direct link:
 - [Conditions remain unchanged](https://panel-lab-experiment.onrender.com/demo/panel_lab_solo_persistence)
 
 Each creates a separate demonstration with one tester and four simulated
-citizens, so there is no need to advance other participants. Use dummy answers
+citizens. Open the P1 link on the newly created session-links screen to begin.
+There is no need to advance other participants. Use dummy answers
 only. Render is for technical browser testing, not research data collection or
 the laboratory pre-test. Test data are disposable and may disappear on restarts
 or redeployments. Research sessions and their data use the UTU server.

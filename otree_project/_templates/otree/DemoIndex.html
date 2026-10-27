@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap5/css/bootstrap.min.css' %}">
+    <style>
+        body { background: #f4f6f8; color: #243342; }
+        main { max-width: 760px; margin: 3rem auto; padding: 2rem; background: white; border-radius: 12px; }
+        h1 { font-size: 1.9rem; margin-bottom: 1rem; }
+        .session-config { padding: 1rem; margin-top: .75rem; border: 1px solid #cbd5e1; border-radius: 8px !important; }
+        .session-config:hover { background: #eaf4ff; border-color: #2774b8; }
+        details { margin-top: 2rem; }
+        @media (max-width: 800px) { main { margin: 1rem; padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+<main>
+    <h1>{{ title }}</h1>
+    <p>Tällä sivustolla voit kokeilla tutkimuksen kulkua. Sivusto on tarkoitettu vain tekniseen testaamiseen. Käytä keksittyjä vastauksia. Testistä ei makseta palkkiota, eikä vastauksia käytetä tutkimusaineistona.</p>
+    <p>Valitse jompikumpi alla olevista vaihtoehdoista. Voit testata koko tehtävän yksin, sillä muut neljä kansalaista simuloidaan.</p>
+    <p>Kun testi on luotu, avaa seuraavalla sivulla <strong>P1</strong>-linkki aloittaaksesi. Molemmissa vaihtoehdoissa on 10 kierrosta ensimmäisessä osiossa ja 5 toisessa.</p>
+    <div class="list-group">
+        {% for s in session_info %}
+            {% if s.name == 'panel_lab_solo_recovery' or s.name == 'panel_lab_solo_persistence' %}
+                <a class="list-group-item list-group-item-action session-config" href="{{ s.url }}">{{ s.display_name }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <details>
+        <summary>Ryhmätestaus</summary>
+        <p class="mt-2">Nämä vaihtoehdot vaativat kymmenen osallistujan päätösten tekemistä. Käytä yllä olevia vaihtoehtoja, jos testaat yksin.</p>
+        {% for s in session_info %}
+            {% if s.name == 'panel_lab_experiment' or s.name == 'panel_lab_demo' %}
+                <a class="list-group-item list-group-item-action session-config" href="{{ s.url }}">{{ s.display_name }}</a>
+            {% endif %}
+        {% endfor %}
+    </details>
+    <p class="text-muted small mt-4 mb-0">Varsinainen tutkimus ja laboratoriossa tehtävä esitesti toteutetaan Turun yliopiston palvelimella. Tämän sivuston testivastaukset ovat tilapäisiä ja voivat poistua.</p>
+</main>
+</body>
+</html>

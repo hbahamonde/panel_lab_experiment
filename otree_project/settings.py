@@ -3,7 +3,7 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name='panel_lab_experiment',
-        display_name='Group decisions and public services',
+        display_name='Ryhmäpäätökset ja julkiset palvelut',
         num_demo_participants=10,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=False,
@@ -14,7 +14,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='panel_lab_demo',
-        display_name='Group decisions and public services (full-group testing)',
+        display_name='Ryhmäpäätökset ja julkiset palvelut (ryhmätesti)',
         num_demo_participants=10,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
@@ -24,7 +24,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='panel_lab_solo_recovery',
-        display_name='Solo test: conditions improve',
+        display_name='Testaa yksin: olosuhteet paranevat',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
@@ -35,7 +35,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='panel_lab_solo_persistence',
-        display_name='Solo test: conditions remain unchanged',
+        display_name='Testaa yksin: olosuhteet pysyvät ennallaan',
         num_demo_participants=1,
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
@@ -86,6 +86,7 @@ ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
+DEMO_PAGE_TITLE = 'Tutkimuksen testiversio'
 DEMO_PAGE_INTRO_HTML = """ """
 
 ROOMS = [
