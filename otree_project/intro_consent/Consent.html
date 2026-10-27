@@ -9,7 +9,7 @@
     <strong>Payment:</strong> {{ participation_fee }} plus a decision-based bonus of up to {{ bonus_cap }}
 </div>
 
-<p>You will make anonymous decisions about experimental points with other participants. There are two blocks of ten paid rounds. You remain in a matching pool of 10 or 15 participants, and the software reshuffles that pool into groups of five before each round. Other participants never see your identity.</p>
+<p>You will make anonymous decisions about experimental points with other participants. There are 10 paid rounds in the first block and five in the second. You remain in a matching pool of 5, 10, or 15 participants. In a five-person pool, the same five play throughout. Larger pools are reshuffled into groups of five before each round. The software does not display names or identities.</p>
 
 <p>The task rules, payment, data processing, foreseeable risks, and your right to stop are explained here before you decide. The detailed research question will be explained after the paid task, because knowing it in advance could influence the decisions being studied.</p>
 
@@ -18,6 +18,10 @@
 <p>UTU RPP/TOKA keeps your registration and attendance information separately. It does not receive your experimental responses, payment information, or oTree code. oTree creates the study code used in the task. The research team makes the immediate payment using a separate code-and-amount list; any named receipt does not contain your oTree code. After payment reconciliation, that temporary list is deleted. The coded research data are stored on University of Turku servers in Finland and may be retained in anonymised form for compatible future scientific research. No publication will identify you.</p>
 
 <p>After all paid decisions, you will see questions about the situation in the task and an optional background section. The background section asks about age group, gender, education, household financial situation, your vote in the 2023 Finnish parliamentary election, left--right placement, views about democracy and political influence, trust, and willingness to take risks. You may skip any background question.</p>
+
+{{ if pretest_feedback_enabled }}
+<p>This session also offers six optional feedback questions at the end, before the study explanation and payment. They ask about the instructions, screens, payment explanation, possible improvements, and what you think the study examines. Feedback uses a separate anonymous form with no study or payment code. It is not linked to your experimental answers, and answering or skipping it does not affect your payment. Please do not include names or identifying details.</p>
+{{ endif }}
 
 <p>Participation is voluntary. If you do not wish to take part, do not select the option below; instead, tell the researcher or trained research assistant. If you later decide to stop, notify them so the interactive session can be managed safely. Because other participants' progress depends on synchronized decisions, please remain for the full session if you agree to participate.</p>
 

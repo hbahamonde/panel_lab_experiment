@@ -7,7 +7,8 @@ from otree.api import *
 doc = """
 Block 1 of the one-session experiment: a common public-service crisis, ten
 repeated institutional-choice/public-good rounds and process measurement.
-Participants are anonymously rematched within 10- or 15-person pools.
+Participants play within stable pools of 5, 10, or 15. Larger pools are
+anonymously rematched into five-person groups before each round.
 """
 
 
@@ -30,6 +31,7 @@ def solo_testing(obj):
 def flexible_pool_sizes(player_count):
     """Return the approved matching-pool structure for a production roster."""
     approved_rosters = {
+        5: [5],
         10: [10],
         15: [15],
         20: [10, 10],
@@ -38,14 +40,20 @@ def flexible_pool_sizes(player_count):
         return approved_rosters[player_count]
     except KeyError as exc:
         raise RuntimeError(
-            'Production sessions require exactly 10, 15, or 20 participants. '
+            'Production sessions require exactly 5, 10, 15, or 20 participants. '
             f'This session was created with {player_count}.'
         ) from exc
 
 
 def start_decision_timer(player, decision_name):
     key = f'block1_round_{player.round_number}_{decision_name}_started_at'
-    player.participant.vars.setdefault(key, time.time())
+    started_at = player.participant.vars.setdefault(key, time.time())
+    return dict(decision_reminder=dict(
+        remaining_seconds=max(
+            0, C.DECISION_DELAY_THRESHOLD_SECONDS - (time.time() - started_at)
+        ),
+        guide_seconds=C.DECISION_DELAY_THRESHOLD_SECONDS,
+    ))
 
 
 def record_decision_time(player, decision_name, seconds_field, flag_field):
@@ -407,6 +415,7 @@ class Block1Intro(Page):
         return dict(
             rounds=C.NUM_ROUNDS,
             group_size=C.GROUP_SIZE,
+            fixed_five_person_pool=player.matching_pool_size == C.GROUP_SIZE,
         )
 
 
@@ -543,6 +552,11 @@ class InstitutionVote(Page):
     form_model = 'player'
     form_fields = ['institution_vote', 'solo_other_automatic_votes']
     template_name = 'block1_crisis/InstitutionChoice.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'institution_vote')
+
     @staticmethod
     def vars_for_template(player):
         start_decision_timer(player, 'institution_vote')
@@ -584,6 +598,10 @@ class VoteWaitPage(WaitPage):
 class LeaderProposal(Page):
     form_model = 'player'
     template_name = 'block1_crisis/QuestionPage.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'proposal')
 
     @staticmethod
     def get_form_fields(player):
@@ -652,6 +670,11 @@ class ApprovalVote(Page):
     form_model = 'player'
     form_fields = ['approval_vote']
     template_name = 'block1_crisis/QuestionPage.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'approval')
+
     @staticmethod
     def is_displayed(player):
         return (
@@ -703,6 +726,10 @@ class FallbackAllocation(Page):
     form_model = 'player'
     form_fields = ['contribution']
     template_name = 'block1_crisis/QuestionPage.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'fallback')
 
     @staticmethod
     def is_displayed(player):
@@ -771,6 +798,7 @@ class RoundResults(Page):
             public_account=group.public_account,
             per_capita_return=group.per_capita_return,
             round_payoff=player.round_payoff,
+            fixed_five_person_pool=player.matching_pool_size == C.GROUP_SIZE,
         )
 
     @staticmethod

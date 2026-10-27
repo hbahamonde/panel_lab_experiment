@@ -12,7 +12,20 @@ def study_details(session):
     return dict(
         participation_fee=f"€{session.config['participation_fee']:.2f}",
         bonus_cap=f"€{session.config['performance_bonus_cap']:.2f}",
+        pretest_feedback_enabled=session.config.get('pretest_feedback_enabled', False),
     )
+
+
+def creating_session(subsession):
+    if (
+        subsession.session.config.get('pretest_feedback_enabled', False)
+        and not subsession.session.config.get('solo_testing', False)
+        and len(subsession.get_players()) != 10
+    ):
+        raise RuntimeError(
+            'The pre-test feedback option requires a ten-person session. '
+            'Turn it off for subsequent production sessions.'
+        )
 
 
 class C(BaseConstants):
@@ -20,7 +33,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    CONSENT_FORM_VERSION = '2026-09-24-v5'
+    CONSENT_FORM_VERSION = '2026-10-20-v8'
     CONSENT_CHOICES = [[
         'accept',
         'I have read the information above and agree to take part in this study.',

@@ -114,7 +114,7 @@
 \author[1,2]{\textsc{Hector Bahamonde}}
 \affil[1]{INVEST Research Flagship Centre, University of Turku, Finland}
 \affil[2]{Social Science Research Institute, \AA bo Akademi University, Finland}
-\date{\textbf{Principal Investigator and project contact:} Janne Tukiainen, Professor, Turku School of Economics, University of Turku; \href{mailto:janne.tukiainen@utu.fi}{janne.tukiainen@utu.fi}\\[0.4em]Version 2.3 --- 24 September 2026}
+\date{\textbf{Principal Investigator and project contact:} Janne Tukiainen, Professor, Turku School of Economics, University of Turku; \href{mailto:janne.tukiainen@utu.fi}{janne.tukiainen@utu.fi}\\[0.4em]Version 2.6 --- proposed amendment --- 20 October 2026}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \pagenumbering{gobble}
@@ -146,7 +146,7 @@ Public-good games supply the economic reason for weakening approval. Voluntary p
 
 In each round, five citizens begin with 20 points each and vote between two rules for managing a shared public-services fund. Under both rules, the software selects one of the five citizens uniformly at random only after the vote, so each has the same one-in-five chance of leading that round. The leader proposes how many points every citizen places in the fund and whether any collected points move to the leader's payoff. Fund points are multiplied and the resulting group return is divided equally.
 
-Under the approval-constrained rule (\Dproc), at least three of the other four citizens must approve the complete proposal. Rejection returns the group to voluntary individual allocations. Under automatic implementation (\Aproc), the same proposal takes effect without that approval vote. A matching pool contains 10 or 15 citizens and is reshuffled into two or three temporary groups of five before each round. Thus, the democratic ballot selects an approval rule, not a known leader or proposal.
+Under the approval-constrained rule (\Dproc), at least three of the other four citizens must approve the complete proposal. Rejection returns the group to voluntary individual allocations. Under automatic implementation (\Aproc), the same proposal takes effect without that approval vote. A matching pool contains \irbreplace{10 or 15}{5, 10, or 15} citizens\irbreplace{ and is reshuffled into two or three temporary groups of five before each round}{. Larger pools are reshuffled into two or three groups of five before each round, while a five-person pool plays together throughout}. Thus, the democratic ballot selects an approval rule, not a known leader or proposal.
 
 Everyone begins with a public-service crisis: \enquote{\emph{Parliament has failed to pass a budget for eight months, healthcare waiting times have doubled, and planning for public services has stalled.}} During Block 1, each fund point creates 1.50 group points under \Dproc{} and 2.50 under \Aproc{}. Direct implementation therefore has a one-point productivity premium and guarantees that the leader's proposal is implemented. Afterward, each matching pool receives {\bf institutional recovery} or {\bf institutional persistence}. Recovery is one structural package: public-service conditions improve and the \Dproc{} rate rises to 2.50. Persistence retains the crisis and the 1.50 rate. The \Aproc{} rate and decision rule remain fixed.
 
@@ -161,7 +161,7 @@ After Block 1, recovery improves public-service conditions and raises \Dproc{} t
 \begin{keyinsightbox}
 A decision can be democratically authorized while weakening the democratic constraints that govern what happens next. This resembles contemporary backsliding, which often proceeds through elections and formally lawful institutional changes rather than an outright abolition of democracy \parencite{Bermeo2016}.
 
-In the experiment, the first majority vote is democratic. A citizen who chooses \Aproc{} votes to let an unknown leader's later allocation and transfer take effect without the other citizens' approval. That vote removes a specific constraint while leaving the institutional ballot itself intact. A later vote for \Dproc{} supports restoring the approval right the citizen previously voted to surrender.
+In the experiment, the first majority vote is democratic. A citizen who chooses \Aproc{} votes to let an unknown leader's later allocation and transfer take effect without the other citizens' approval. \irbreplace{That vote}{A majority for A} removes a specific constraint while leaving the institutional ballot itself intact. A later vote for \Dproc{} supports restoring the approval right the citizen previously voted to surrender.
 
 \medskip
 \textbf{What matters is that citizens use one democratic decision to weaken their control over subsequent decisions---and can later vote to take that control back.}
@@ -176,17 +176,17 @@ A crisis can make action without approval attractive when ordinary procedures pr
 
 The personal-transfer option makes the institutional constraint consequential. The leader may propose moving up to 20 fund points to their own payoff under either procedure. Under \Dproc{}, the other citizens see that transfer before implementation and can reject it; under \Aproc{}, they observe it only after it has taken effect. The experiment therefore concerns approval over discretion, not the prevalence of corruption in Finland.
 
-\paragraph{H1: Authorization under crisis.} During Block 1, citizens will increasingly support direct implementation (\Aproc{}) when its productivity and coordination advantages produce better outcomes; larger observed transfers will reduce subsequent support.
+\paragraph{H1: Authorization under crisis.} During Block 1, \irbreplace{citizens will increasingly support}{better outcomes under} direct implementation (\Aproc{}) \irbreplace{when its productivity and coordination advantages produce better outcomes;}{are associated with greater subsequent support, while} larger observed transfers \irbreplace{will reduce subsequent support}{are associated with lower support}. \irbadd{These are descriptive expectations about experience within the crisis environment.}
 
 \subsection{Citizen authorization and democratic constraint}
 
-The institutional ballot occurs before leader selection and before the proposal. A vote for \Aproc{} therefore authorizes a rule, not a known person or action: the citizen relinquishes participation in approving the next binding decision. A vote for \Dproc{} retains that approval right. {\bf Thus, our design provides an abstract microfoundation of \emph{executive aggrandizement}, in which a \emph{democratic} choice \emph{weakens} the constraint governing what follows} \parencites{Bermeo2016,FortezaMussioPereyra2024}.
+The institutional ballot occurs before leader selection and before the proposal. A vote for \Aproc{} therefore \irbreplace{authorizes}{supports} a rule, not a known person or action\irbreplace{: the citizen relinquishes}{. The ballot supports relinquishing} participation in approving the next binding decision. A vote for \Dproc{} \irbreplace{retains}{supports retaining} that approval right. {\bf Thus, our design provides an abstract microfoundation of \emph{executive aggrandizement}, in which a \emph{democratic} choice \emph{weakens} the constraint governing what follows} \parencites{Bermeo2016,FortezaMussioPereyra2024}.
 
-\paragraph{H2: Approval and discretion.} Approval will decline as proposed personal transfers increase. Anticipating rejection, leaders operating under \Dproc{} will propose smaller transfers than leaders whose proposals take effect directly. Because groups choose the institutional rule themselves, these patterns describe behavior within the chosen rules rather than a separate randomized effect.
+\paragraph{H2: Approval and discretion.} Approval will decline as proposed personal transfers increase. \irbreplace{Anticipating rejection, leaders operating under \Dproc{} will propose smaller transfers than leaders whose proposals take effect directly. Because groups choose the institutional rule themselves, these patterns describe behavior within the chosen rules rather than a separate randomized effect.}{When leaders expect citizens to reject transfers despite the earnings from an approved proposal, leaders under D will propose smaller transfers than those under direct implementation. These are behavioral expectations within endogenously chosen rules, not a separate randomized effect.}
 
 \subsection{Recovery and democratic reversal}
 
-Recovery is assigned at the matching-pool level. Pool \(g\) contains 10 or 15 participants, who are reshuffled into two or three temporary groups of five before each round; within each group, three votes produce a majority. The entire pool receives the same Block-2 condition: \(T_g=1\) denotes recovery and \(T_g=0\) persistence. Let \(m_{gb}\) denote the approval-constrained fund multiplier in pool \(g\) and block \(b\). The productivity premium for direct implementation is
+Recovery is assigned at the matching-pool level. Pool \(g\) contains \irbreplace{10 or 15}{5, 10, or 15} participants\irbreplace{, who are reshuffled into two or three temporary groups of five before each round}{. Larger pools are reshuffled into two or three temporary groups of five before each round, while a five-person pool remains together}; within each group, three votes produce a majority. The entire pool receives the same Block-2 condition: \(T_g=1\) denotes recovery and \(T_g=0\) persistence. Let \(m_{gb}\) denote the approval-constrained fund multiplier in pool \(g\) and block \(b\). The productivity premium for direct implementation is
 
 \begin{equation}
 \delta_{gb}=2.50-m_{gb}
@@ -201,13 +201,13 @@ The recovery--persistence comparison identifies the total causal effect of struc
 
 \paragraph{H3: Immediate restoration.} Among participants who vote for \Aproc{} in Block 1's final round, recovery will increase the probability of voting for \Dproc{} in Block 2's first round.
 
-\paragraph{H4: Sustained reversal.} Among the same participants, recovery will increase the probability of voting for \Dproc{} in Block 2's final round.
+\paragraph{H4: \irbreplace{Sustained reversal}{Short-run reversal}.} Among the same participants, recovery will increase the probability of voting for \Dproc{} in Block 2's final round\irbadd{ (Round 5)}.
 
 \section{Experimental Design}
 
 \subsection{Overview}
 
-Each laboratory cohort completes one session lasting approximately 60 minutes, with two ten-round blocks. Subject to ethical review in September 2026, data collection is planned for 1--31 October 2026 at the UTU Choice Lab decision-making laboratory\irbdel{ and may also be conducted at Tampere University's Decision-making Laboratory (DMLab) to accelerate recruitment}. UTU Choice Lab has 24 regular seats plus one accessible seat\irbdel{, while DMLab has 20}; production rosters are capped at 20. \irbadd{Any later extension of data collection to another site will be submitted for ethical review as an amendment before collection begins there.} Participants remain in matching pools of 10 or 15 and are reshuffled into anonymous five-person groups before every paid round. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly without forming stable five-person teams. In the figures, \(p_i\) identifies participant \(i\).
+Each laboratory cohort completes one session lasting approximately 60 minutes, with \irbreplace{two ten-round blocks}{ten paid rounds in Block 1 and five in Block 2}. \irbreplace{Subject to ethical review in September 2026}{Following the favorable ethical-review statement of 30 September 2026 (case TY/1722/2026), and subject to any required amendment review}, data collection is planned for 1--31 October 2026 at the UTU Choice Lab decision-making laboratory\irbdel{ and may also be conducted at Tampere University's Decision-making Laboratory (DMLab) to accelerate recruitment}. UTU Choice Lab has 24 regular seats plus one accessible seat\irbdel{, while DMLab has 20}; production rosters are capped at 20. \irbadd{Any later extension of data collection to another site will be submitted for ethical review as an amendment before collection begins there.} Participants remain in matching pools of \irbreplace{10 or 15}{5, 10, or 15}\irbreplace{ and are reshuffled into anonymous five-person groups before every paid round}{. Larger pools are reshuffled into anonymous five-person groups before every paid round; a five-person pool plays together throughout}. After Block 1, each entire pool is assigned to recovery or persistence, learns whether public-service conditions improved or remained strained, and sees its Block-2 fund rates. Participants therefore interact repeatedly\irbreplace{ without forming stable five-person teams}{, with rematching whenever the roster permits}. In the figures, \(p_i\) identifies participant \(i\).
 
 \begin{figure}[H]
 \centering
@@ -220,7 +220,7 @@ Each laboratory cohort completes one session lasting approximately 60 minutes, w
 \node[box,fill=LightBlue,right=of base] (practice) {Practice rounds};
 \node[box,fill=LightOrange,right=of practice] (blockone) {Block 1: 10 rounds\\institutional crisis};
 \node[box,fill=LightBlue,below=12mm of blockone] (random) {Pool learns conditions\\improved or remained strained;\\Block-2 rates shown\\($m_{g2}=2.50$ or $1.50$)};
-\node[box,fill=LightOrange,left=of random] (blocktwo) {Block 2: 10 rounds\\recovery or persistence};
+\node[box,fill=LightOrange,left=of random] (blocktwo) {Block 2: \irbreplace{10}{5} rounds\\recovery or persistence};
 \node[box,fill=LightBlue,left=of blocktwo] (finish) {Final questions,\\debrief, and payment};
 \draw[arr] (base) -- (practice);
 \draw[arr] (practice) -- (blockone);
@@ -228,7 +228,7 @@ Each laboratory cohort completes one session lasting approximately 60 minutes, w
 \draw[arr] (random) -- (blocktwo);
 \draw[arr] (blocktwo) -- (finish);
 \end{tikzpicture}
-\caption{One-session sequence. Each paid round includes an institutional ballot, leader proposal, implementation, feedback, and rematching.}
+\caption{One-session sequence. Each paid round includes an institutional ballot, leader proposal, implementation, feedback, and rematching\irbadd{ in larger pools}.}
 \label{fig:design}
 \end{figure}
 
@@ -278,15 +278,15 @@ Each laboratory cohort completes one session lasting approximately 60 minutes, w
 \caption{Anonymous rematching within a matching pool (ten-person example).}
 \label{fig:pool-rematching}
 \begin{minipage}{0.94\linewidth}
-\footnotesize\textit{Notes:} Each participant \(p_i\) remains in pool \(g\). A ten-person pool forms two temporary groups per round; a fifteen-person pool forms three. Recovery or persistence applies to the whole pool in Block 2.
+\footnotesize\textit{Notes:} Each participant \(p_i\) remains in pool \(g\). A ten-person pool forms two temporary groups per round; a fifteen-person pool forms three. \irbadd{A five-person pool retains the same playing group.} Recovery or persistence applies to the whole pool in Block 2.
 \end{minipage}
 \end{figure}
 
 
 \begin{plainlanguagebox}
-Matching pools permit interaction without fixing the same five-person team. Round-by-round reshuffling limits stable reputations, collusion, and retaliation, while keeping participants inside one treatment environment. Ten-person pools are used whenever the completed cohort can be divided that way; one fifteen-person pool accommodates a remaining set of five while retaining rematching.
+\irbreplace{Matching pools permit interaction without fixing the same five-person team}{Matching pools contain interaction within one treatment environment}. \irbreplace{Round-by-round reshuffling limits stable reputations, collusion, and retaliation, while keeping participants inside one treatment environment}{Larger pools are reshuffled each round, limiting stable-team histories}. \irbreplace{Ten-person pools are used whenever the completed cohort can be divided that way; one fifteen-person pool accommodates a remaining set of five while retaining rematching}{Ten participants form one ten-person pool, fifteen form one fifteen-person pool, and twenty form two ten-person pools. A five-person session remains feasible, with the same members playing throughout}.
 
-Reversal is measured for individuals, but treatment ($T_g$) is assigned to pools. Statistical uncertainty is therefore clustered by pool; temporary groups organize play but are not treatment units. Ten-person pools remain the default because they yield more independent treatment assignments for a fixed sample.
+Reversal is measured for individuals, but treatment ($T_g$) is assigned to pools. Statistical uncertainty is therefore clustered by pool\irbreplace{; temporary groups organize play but are not treatment units}{. Playing groups are not additional treatment units}. \irbreplace{Ten-person pools remain the default because they yield more independent treatment assignments for a fixed sample}{The analysis accounts for pool size and, where estimable, checks results excluding five-person pools, where shared histories may be stronger}.
 \end{plainlanguagebox}
 
 \begin{table}[H]
@@ -303,11 +303,13 @@ People who arrive & Matching pools & Five-person groups per round & Participate 
 15 & $15$ & 3 & 15 & 0 \\
 11--14 & $10$ & 2 & 10 & 1--4 \\
 10 & $10$ & 2 & 10 & 0 \\
-Fewer than 10 & --- & --- & 0 & All \\
+\irbadd{6--9} & \irbadd{5} & \irbadd{1} & \irbadd{5} & \irbadd{1--4} \\
+\irbadd{5} & \irbadd{5} & \irbadd{1} & \irbadd{5} & \irbadd{0} \\
+Fewer than \irbreplace{10}{5} & --- & --- & 0 & All \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{0.96\textwidth}
-\footnotesize\textit{Notes:} A matching pool is not a playing group. Each ten-person pool forms two temporary five-person groups per round; a fifteen-person pool forms three. At 20 participants, two separate ten-person pools each form two groups. Groups dissolve and are reshuffled after every round; participants never enter or change pools after paid play begins.
+\footnotesize\textit{Notes:} \irbreplace{A matching pool is not a playing group}{A matching pool contains one or more playing groups}. Each ten-person pool forms two temporary five-person groups per round; a fifteen-person pool forms three. At 20 participants, two separate ten-person pools each form two groups. \irbreplace{Groups dissolve and are reshuffled after every round}{Larger pools are reshuffled every round, while a five-person pool plays together throughout}; participants never enter or change pools after paid play begins.
 \end{minipage}
 \end{table}
 
@@ -325,23 +327,23 @@ Each citizen starts with 20 points and privately votes between an approval-const
 Feature & Implemented value \\
 \midrule
 Laboratory session & One synchronized visit, approximately 60 minutes \\
-Paid rounds & 10 per block (20 total), preceded by unpaid practice \\
-Group and matching pool & 5-person groups; stable 10- or 15-person matching pools \\
-Rematching & Anonymous rematching within pool before every paid round \\
+Paid rounds & \irbreplace{10 per block (20 total)}{10 in Block 1 and 5 in Block 2 (15 total)}, preceded by unpaid practice \\
+Group and matching pool & 5-person groups; stable \irbreplace{10- or 15-person}{5-, 10-, or 15-person} matching pools \\
+Rematching & Anonymous rematching within \irbreplace{pool}{larger pools} before every paid round\irbadd{; fixed membership in a five-person pool} \\
 Round endowment & 20 points per participant \\
 Approval-constrained multiplier & 1.50 in Block 1; 2.50 recovery / 1.50 persistence in Block 2 \\
 Automatic-implementation multiplier & 2.50 in both blocks and conditions \\
 Approval & At least 3 of the 4 nonleaders; a 2--2 split rejects the proposal \\
 Rejection & Voluntary individual contributions at the approval-constrained rate \\
 Personal transfer & 0--20 fund points, limited by the points collected \\
-Performance bonus & Points earned in one randomly selected round from each block \\
+Performance bonus & Points earned in one randomly selected round from each block\irbadd{ (one of 10 and one of 5)} \\
 Maximum performance bonus & EUR 5.00 \\
 Show-up payment & EUR 10.00 \\
 Maximum total payment & EUR 15.00 \\
 \bottomrule
 \end{tabularx}
 \begin{tablenotes}[flushleft]\footnotesize
-\item Selected-round points are converted linearly into money. Because a selected round can yield at most 60 points, the two selected rounds produce a bonus of at most EUR~5. Selecting one round from each block keeps every decision consequential without paying all rounds or encouraging participants to offset one decision with another.
+\item Selected-round points are converted linearly into money\irbadd{ at EUR~5 per 120 points}. Because a selected round can yield at most 60 points, the two selected rounds produce a bonus of at most EUR~5. \irbadd{Each Block-1 round has a one-in-ten payment chance; each Block-2 round has a one-in-five chance.} Selecting one round from each block keeps every decision consequential without paying all rounds or encouraging participants to offset one decision with another.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -367,6 +369,8 @@ and the leader earns $\pi^{A,L}_{igbr}=\pi^{A}_{igbr}+\rho$.
 \label{eq:approval-fallback}
 \end{equation}
 The rejected transfer is not implemented. Everyone then sees the proposal, approval total, implemented allocation, transfer, and own payoff.
+
+\irbadd{The monetary benchmark assumes participants maximise their own earnings and approve proposals that beat the 20-point free-riding fallback. A leader then chooses an allocation of 20 and a transfer of 20. An approved crisis proposal pays 44 to the leader and 24 to each nonleader; direct implementation pays 60 and 40. After recovery, approval pays the same 60 and 40. Thus, the transfer cap need not induce rejection under this benchmark, while recovery removes the earnings difference between the approved rules. Observed adaptation over five follow-up rounds is an empirical question rather than a predicted convergence speed.}
 
 \begin{plainlanguagebox}
 Rejection restores the standard \textbf{public-goods dilemma}. If one citizen contributes 1 point and four contribute 0, the contributor earns $19+\frac{1.50}{5}=19.30$ during the crisis, while each free-rider earns $20.30$. Under recovery, these payoffs become $19.50$ and $20.50$. Contributing helps the group but costs the contributor; direct implementation avoids that risk, while approval lets citizens block an unwanted proposal.
@@ -421,7 +425,7 @@ Participants report expected payoffs and transfers before the final Block-1 ball
 
 
 \begin{plainlanguagebox}
-Five citizens cast private institutional ballots ($V_{i,b,r}$), after which the software selects a leader. That leader proposes $(t,\rho)$. Under \Dproc{}, three of four nonleaders must approve; rejection activates individual contributions $(c_{igbr})$. Under \Aproc{}, the proposal takes effect directly. Everyone sees the result and payoff before rematching within pool $g$.
+Five citizens cast private institutional ballots ($V_{i,b,r}$), after which the software selects a leader. That leader proposes $(t,\rho)$. Under \Dproc{}, three of four nonleaders must approve; rejection activates individual contributions $(c_{igbr})$. Under \Aproc{}, the proposal takes effect directly. Everyone sees the result and payoff before \irbreplace{rematching within pool $g$}{the next round. Larger pools are then reshuffled within $g$}.
 \end{plainlanguagebox}
 
 \subsection{Block 1: crisis and leader authorization}
@@ -430,13 +434,13 @@ After consent, participants practice proposing, approving, rejecting, and making
 
 Block 1 begins with the public-service crisis described above. Each fund point produces 1.50 under \Dproc{} and 2.50 under \Aproc{}. The leader may propose the same allocation and transfer under either rule; what differs is whether the other citizens can reject it.
 
-Each paid round repeats the same sequence: institutional ballot, leader proposal, approval or direct implementation, any individual allocation following rejection, feedback, and rematching. Expectations are elicited before the final ballot, and one Block-1 round is selected for payment.
+Each paid round repeats the same sequence: institutional ballot, leader proposal, approval or direct implementation, any individual allocation following rejection, feedback, and rematching\irbadd{ in larger pools}. Expectations are elicited before the final ballot, and one Block-1 round is selected for payment.
 
 \subsection{Block 2: structural change and reversal}
 
 After Block 1, pools are assigned to \emph{recovery} or \emph{persistence}. Recovery jointly reports that the budget passed, waiting times are falling, and planning resumed, and raises the \Dproc{} multiplier from 1.50 to 2.50. Persistence retains the crisis and 1.50 rate. The \Aproc{} rate, leader selection, proposal set, approval threshold, and rejection procedure remain unchanged. Together, the updated description and rate form the structural-recovery treatment.
 
-The first Block-2 ballot measures immediate support for restoring approval; the final ballot measures sustained reversal and is primary. Expectations are elicited before both ballots, and questions about democratic constraints appear only after paid decisions. One Block-2 round is selected for payment.
+The first Block-2 ballot measures immediate support for restoring approval; the final ballot \irbreplace{measures sustained reversal}{records support after four completed Block-2 rounds} and is primary. \irbadd{Their joint pattern describes short-run persistence, delayed restoration, or abandonment of an immediate switch.} Expectations are elicited before both ballots, and questions about democratic constraints appear only after paid decisions. One Block-2 round is selected for payment.
 
 
 \section{Outcomes, Process Measures, and Estimands}
@@ -447,29 +451,29 @@ A_{i1}=\ind{V_{i,1,10}=\Aproc}.
 \end{equation}
 For the theoretically relevant subgroup with $A_{i1}=1$, reversal is
 \begin{equation}
-R_i=\ind{V_{i,2,10}=\Dproc}.
+R_i=\ind{V_{i,2,\text{\irbreplace{10}{5}}}=\Dproc}.
 \end{equation}
 {\bf The primary estimand is the average treatment effect of structural recovery among Block-1 supporters of automatic implementation}:
 \begin{equation}
 \tau_R=\mathbb{E}[R_i(1)-R_i(0)\mid A_{i1}=1],
 \end{equation}
-where \(R_i(1)\) and \(R_i(0)\) are participant \(i\)'s potential outcomes under recovery and persistence. Recovery includes both improved public-service conditions and the 2.50 \Dproc{} rate; \(\tau_R\) is the total effect of that package. Because $A_{i1}$ is measured before assignment, subgroup membership is fixed before treatment. The primary test repeatedly reassigns recovery according to the prespecified pool-level procedure to evaluate how unusual the observed contrast is. Because \(\tau_R\) describes the average eligible citizen, the primary estimate weights eligible participants equally; a secondary analysis gives each pool equal weight. Regression estimates cluster uncertainty by pool and include a prespecified indicator for fifteen-person pools.
+where \(R_i(1)\) and \(R_i(0)\) are participant \(i\)'s potential outcomes under recovery and persistence. Recovery includes both improved public-service conditions and the 2.50 \Dproc{} rate; \(\tau_R\) is the total effect of that package. Because $A_{i1}$ is measured before assignment, subgroup membership is fixed before treatment. The primary \irbadd{randomization }test \irbreplace{repeatedly reassigns recovery according to the prespecified pool-level procedure to evaluate how unusual the observed contrast is}{evaluates the sharp null of no recovery effect for any eligible citizen by reassigning treatment according to the prespecified pool-level procedure}. Because \(\tau_R\) describes the average eligible citizen, the primary estimate weights eligible participants equally; a secondary analysis gives each pool equal weight. Regression estimates cluster uncertainty by pool and include \irbreplace{a prespecified indicator for fifteen-person pools}{prespecified pool-size indicators}. \irbadd{Where estimable, a sensitivity analysis excludes five-person pools. Differences between fixed and rematched pools are descriptive because attendance, not randomization, determines pool size. Missing final ballots are reported by condition, with sensitivity checks retaining all randomized eligible citizens in the accounting.}
 
 Immediate reversal is
 \begin{equation}
 R_i^{I}=\ind{V_{i,2,1}=\Dproc}\quad\text{for }A_{i1}=1.
 \end{equation}
-The same comparison applied to \(R_i^{I}\) estimates immediate support for restoration. The final-round outcome \(R_i\) remains primary because it records whether that choice persists.
+The same comparison applied to \(R_i^{I}\) estimates immediate support for restoration. The final-round outcome \(R_i\) remains primary because it records \irbreplace{whether that choice persists}{support after experience with the assigned environment}. \irbadd{It includes both immediate switches maintained until Round 5 and switches made later.}
 
 \begin{plainlanguagebox}
-The primary estimand ($\tau_R$) asks: among citizens who voted for direct implementation in Block 1's final round ($V_{i,1,10}=\Aproc$; $A_{i1}=1$), how much more often does recovery ($T_g=1$), rather than persistence ($T_g=0$), lead them to vote for group approval in Block 2's final round ($V_{i,2,10}=\Dproc$; $R_i=1$)? Only one potential outcome is observed per citizen, so random assignment identifies the difference. Assignment and inference operate at pool level.
+The primary estimand ($\tau_R$) asks: among citizens who voted for direct implementation in Block 1's final round ($V_{i,1,10}=\Aproc$; $A_{i1}=1$), how much more often does recovery ($T_g=1$), rather than persistence ($T_g=0$), lead them to vote for group approval in Block 2's final round ($V_{i,2,\text{\irbreplace{10}{5}}}=\Dproc$; $R_i=1$)? Only one potential outcome is observed per citizen, so random assignment identifies the difference. Assignment and inference operate at pool level.
 \end{plainlanguagebox}
 
-For each leader $i$, $t_{igbr}$ is the proposed allocation and $\rho_{igbr}$ the proposed transfer. A transfer proposal is $M_{igbr}=\ind{\rho_{igbr}>0}$, with intensity $\rho_{igbr}/(5t_{igbr})$ when $t_{igbr}>0$. Thus, $t=10$ and $\rho=5$ proposes moving 10\% of the 50 collected points. Approval ballots $q_{igbr}$, proposal passage, contributions after rejection, and subsequent institutional ballots provide descriptive process evidence. Because groups choose their rule, these measures do not identify separate causal effects of recovery.
+For each leader $i$, $t_{igbr}$ is the proposed allocation and $\rho_{igbr}$ the proposed transfer. A transfer proposal is $M_{igbr}=\ind{\rho_{igbr}>0}$, with intensity $\rho_{igbr}/(5t_{igbr})$ when $t_{igbr}>0$. Thus, $t=10$ and $\rho=5$ proposes moving 10\% of the 50 collected points. Approval ballots $q_{igbr}$, proposal passage, contributions after rejection, and subsequent institutional ballots provide \irbdel{descriptive }process evidence. \irbreplace{Because groups choose their rule, these measures do not identify separate causal effects of recovery}{Comparisons between the endogenously chosen rules are descriptive and do not isolate the effect of requiring approval}.
 
-Immediate reversal \(R_i^{I}\) records the first response to the structural package, before Block-2 interaction (see \autoref{fig:decision-timeline}). The primary outcome \(R_i\) records Round 10 after nine completed rounds. Secondary outcomes include late-round automatic-implementation support and realized group-level restoration.
+Immediate reversal \(R_i^{I}\) records the first response to the structural package, before Block-2 interaction (see \autoref{fig:decision-timeline}). The primary outcome \(R_i\) records Round \irbreplace{10}{5} after \irbreplace{nine}{four} completed rounds. Secondary outcomes include late-round automatic-implementation support\irbadd{ (Rounds 3--5)} and realized group-level restoration. \irbadd{Persistence refers to choices within this session, not durability beyond it.}
 
-Expected payoffs assess whether participants understood how recovery changed the rules' relative performance, while expected transfers trace beliefs about leader discretion. After all paid choices, eleven process items check perceived crisis severity and recovery, expected institutional performance, and views on approval, equal allocation, and transfers. A separate optional twelve-item background module records age group, gender, education, household financial strain, party voted for in Finland's 2023 parliamentary election, left--right placement, whether democracy is preferable to other forms of government, satisfaction with democracy in Finland, evaluation of a strong leader unconstrained by parliament and elections, external political efficacy, generalized trust, and willingness to take risks. These prespecified measures capture partisan and ideological trade-offs, distinguish principled democratic support from evaluations of democratic performance, and benchmark cooperative and risk-related predispositions \parencites{GRAHAM2020,0b3bf,Claassen2020,Dohmen2011,Glaeser2000}. They are collected only after paid decisions and support precision and descriptive heterogeneity analyses; they do not alter the randomized estimand or independently identify a treatment mechanism.
+Expected payoffs assess whether participants understood how recovery changed the rules' relative performance, while expected transfers trace beliefs about leader discretion. After all paid choices, eleven process items check perceived crisis severity and recovery, expected institutional performance, and views on approval, equal allocation, and transfers. A separate optional twelve-item background module records age group, gender, education, household financial strain, party voted for in Finland's 2023 parliamentary election, left--right placement, whether democracy is preferable to other forms of government, satisfaction with democracy in Finland, evaluation of a strong leader unconstrained by parliament and elections, external political efficacy, generalized trust, and willingness to take risks. These prespecified measures capture partisan and ideological trade-offs, distinguish principled democratic support from evaluations of democratic performance, and benchmark cooperative and risk-related predispositions \parencites{GRAHAM2020,0b3bf,Claassen2020,Dohmen2011,Glaeser2000}. They are collected only after paid decisions and support \irbdel{precision and }descriptive heterogeneity analyses; they do not alter the randomized estimand or independently identify a treatment mechanism. \irbadd{Primary precision adjustment uses only prespecified characteristics fixed before treatment and Block-1 measures, not potentially treatment-responsive attitudes collected afterward.}
 
 
 \begin{figure}[H]
@@ -513,14 +517,14 @@ Expected payoffs assess whether participants understood how recovery changed the
 \node[font=\small\bfseries,anchor=west] at (0,2.80)
   {(b) Block-2 paths for $A_{i1}=1$ under either $T_g$};
 \node[font=\scriptsize,text=black!60] at (1.25,2.30) {Round 1};
-\node[font=\scriptsize,text=black!60] at (6.05,2.30) {Round 10};
+\node[font=\scriptsize,text=black!60] at (6.05,2.30) {Round \irbreplace{10}{5}};
 \node[font=\scriptsize,text=black!60] at (10.90,2.55) {$(R_i^{I},R_i)$};
 
 \node[choice,fill=LightBlue] (b2first) at (1.25,1.15) {$V_{i,2,1}$};
-\node[choice,fill=LightBlue] (finalupper) at (6.05,1.70) {$V_{i,2,10}$};
-\node[choice,fill=LightBlue] (finallower) at (6.05,0.60) {$V_{i,2,10}$};
+\node[choice,fill=LightBlue] (finalupper) at (6.05,1.70) {$V_{i,2,\text{\irbreplace{10}{5}}}$};
+\node[choice,fill=LightBlue] (finallower) at (6.05,0.60) {$V_{i,2,\text{\irbreplace{10}{5}}}$};
 
-\node[leaf] (dd) at (10.90,2.05) {$\Dproc:\ (1,1)$ sustained {\scriptsize(H3, H4)}};
+\node[leaf] (dd) at (10.90,2.05) {$\Dproc:\ (1,1)$ \irbreplace{sustained}{maintained} {\scriptsize(H3, H4)}};
 \node[leaf] (da) at (10.90,1.35) {$\Aproc:\ (1,0)$ immediate only {\scriptsize(H3)}};
 \node[leaf] (ad) at (10.90,0.65) {$\Dproc:\ (0,1)$ delayed {\scriptsize(H4)}};
 \node[leaf] (aa) at (10.90,-0.05) {$\Aproc:\ (0,0)$ no reversal};
@@ -535,27 +539,29 @@ Expected payoffs assess whether participants understood how recovery changed the
 \caption{Decision tree for assignment and reversal. Each pool is assigned one value of $T_g$; the primary analysis follows participants with $A_{i1}=1$.}
 \label{fig:decision-timeline}
 \begin{minipage}{0.96\textwidth}
-\footnotesize\emph{Notes:} The displayed ballots are $V_{i,1,10}$ (final Block 1), $V_{i,2,1}$ (first Block 2), and $V_{i,2,10}$ (final Block 2). The ordered pair $(R_i^{I},R_i)$ records the two Block-2 outcomes, with $1=\Dproc$ and $0=\Aproc$. Thus, $(1,1)$ is sustained reversal; $(1,0)$ immediate only; $(0,1)$ delayed; and $(0,0)$ no reversal. Parentheses identify the corresponding hypotheses; H2 concerns transfers and is not shown.
+\footnotesize\emph{Notes:} The displayed ballots are $V_{i,1,10}$ (final Block 1), $V_{i,2,1}$ (first Block 2), and $V_{i,2,\text{\irbreplace{10}{5}}}$ (final Block 2). The ordered pair $(R_i^{I},R_i)$ records the two Block-2 outcomes, with $1=\Dproc$ and $0=\Aproc$. Thus, $(1,1)$ is \irbreplace{sustained reversal}{an immediate switch maintained at the endpoint}; $(1,0)$ immediate only; $(0,1)$ delayed; and $(0,0)$ no reversal. Parentheses identify the corresponding hypotheses; H2 concerns transfers and is not shown.
 \end{minipage}
 \end{figure}
 
 \section{Randomization, Sample, and Power}
 
-The planned sample comprises 300 completed participants in 28--30 matching pools. Ten-person pools are the default; no more than four fifteen-person pools are used, preserving at least 28 independent treatment assignments. Treatment is assigned only after everyone finishes Block 1. Within each session, pools are ordered by their final-round Block-1 \Aproc{} vote share and paired. One pool in each pair receives recovery and the other persistence, at random; an unmatched pool is assigned by a fair draw. Pairing improves balance in the number eligible to reverse, which is measured before assignment. The maximum payment of EUR~15 implies a participant-compensation ceiling of EUR~4,500 for 300 completed participants.
+The planned sample comprises 300 completed participants in \irbreplace{28--30}{20--60} matching pools\irbadd{, depending on attendance}. \irbreplace{Ten-person pools are the default; no more than four fifteen-person pools are used, preserving at least 28 independent treatment assignments}{Recruitment aims for larger cohorts, with a five-person session available when attendance is low}. Treatment is assigned only after everyone finishes Block 1. \irbreplace{Within each session, pools are ordered by their final-round Block-1 \Aproc{} vote share and paired}{Within each pool size, consecutive pools across sessions enter four-pool randomization sets}. \irbreplace{One pool in each pair receives recovery and the other persistence, at random; an unmatched pool is assigned by a fair draw}{Each set contains two recovery and two persistence assignments in random order}. \irbreplace{Pairing improves balance in the number eligible to reverse, which is measured before assignment}{A persistent coded allocation record stores the set and position consumed after Block 1. Completed sets balance treatment within pool size; an incomplete final set retains its random prefix, so balance is not imposed within each session or guaranteed in the final sample}. The maximum payment of EUR~15 implies a participant-compensation ceiling of EUR~4,500 for 300 completed participants. \irbadd{One round is selected from each block, so the number of rounds does not determine the payment ceiling.}
 
-Power depends on Block-1 endpoint support for \Aproc{}, the persistence-group reversal rate, the similarity of outcomes within pools, and the realised mix of pool sizes. With 300 participants, the design yields 28--30 independent treatment assignments---approximately 14--15 pools per condition---because a larger pool supplies more individual outcomes but still receives only one treatment draw. Repeated rounds improve measurement and reveal trajectories; they do not create additional independent assignments.
+Power depends on Block-1 endpoint support for \Aproc{}, the persistence-group reversal rate, the similarity of outcomes within pools, and the realised mix of pool sizes. \irbreplace{With 300 participants, the design yields 28--30 independent treatment assignments---approximately 14--15 pools per condition---because a larger pool supplies more individual outcomes but still receives only one treatment draw}{The 300 participants provide 20--60 pool-level randomization units rather than 300, with approximately half in each condition. Five-person pools add units but may generate stronger dependence through shared group histories}. Repeated rounds improve measurement and reveal trajectories; they do not create additional independent assignments.
 
-Pilot estimates will inform simulations spanning 28--30 pools and the observed number eligible to reverse. The primary randomization test reproduces the actual paired and unmatched assignments. Regression estimates cluster uncertainty by pool, adjust for the prespecified pool-size indicator, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. Each oTree session remains a separate interaction and randomization cohort.
+\irbadd{At fixed eligibility, reversal rates, and within-pool dependence, endpoint power is unchanged by the number of follow-up rounds. Five Block-2 rounds instead limit how much post-assignment experience and within-session persistence can be observed; simulations of behavioral adjustment require explicit assumptions about its speed.}
 
-Strategic decisions do not time out automatically. The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The \irbreplace{laboratory manager}{researcher or trained research assistant} monitors the session and prompts delayed participants to complete the current decision so the group can advance.
+Pilot estimates will inform simulations spanning \irbreplace{28--30 pools}{mixed pool sizes and stronger dependence in five-person pools} and the observed number eligible to reverse. The primary randomization test reproduces the actual \irbreplace{paired and unmatched assignments}{four-pool sets and incomplete prefixes within each pool size}. Regression estimates cluster uncertainty by pool, adjust for \irbreplace{the prespecified pool-size indicator}{prespecified pool-size indicators}, and use small-sample inference; an equal-pool-weight analysis checks whether results depend on larger pools contributing more participants. \irbreplace{Each oTree session remains a separate interaction and randomization cohort}{Interactions remain confined to each matching pool, while treatment balancing spans sessions}. \irbadd{Where estimable, a sensitivity analysis excludes five-person pools without interpreting the fixed-versus-rematched comparison as causal.}
+
+Strategic decisions do not time out automatically. \irbadd{A visible 90-second countdown reminds participants to make a choice and click the confirmation button; at zero it remains a reminder and leaves the decision open.} The software records response time and flags decisions exceeding 90 seconds, but never generates a ballot or allocation. The \irbreplace{laboratory manager}{researcher or trained research assistant} monitors the session and prompts delayed participants to complete the current decision so the group can advance.
 
 \FloatBarrier
 
 \section{Implementation Plan}
 
-The study will be conducted after ethical approval at the UTU Choice Lab decision-making laboratory\irbdel{ and may also be run at Tampere University's Decision-making Laboratory (DMLab) to accelerate recruitment}. Adults register through \irbreplace{the host laboratory's participant system}{UTU RPP/TOKA} and receive its general rules and privacy information. \irbreplace{UTU Choice Lab uses UTU RPP/TOKA; DMLab uses ORSEE. At either site,}{At UTU Choice Lab,} oTree provides project-specific information and records a short affirmative study consent before practice. The \irbreplace{laboratory manager}{researcher or trained research assistant} then fixes a consenting roster of 10, 15, or 20, forms the matching pools shown in Table~\ref{tab:attendance-pools-irb}, and handles any surplus arrivals under the \irbreplace{host laboratory's}{study's} procedure. No participant enters or changes pools after paid play begins.
+The study will be conducted after ethical approval at the UTU Choice Lab decision-making laboratory\irbdel{ and may also be run at Tampere University's Decision-making Laboratory (DMLab) to accelerate recruitment}. Adults register through \irbreplace{the host laboratory's participant system}{UTU RPP/TOKA} and receive its general rules and privacy information. \irbreplace{UTU Choice Lab uses UTU RPP/TOKA; DMLab uses ORSEE. At either site,}{At UTU Choice Lab,} oTree provides project-specific information and records a short affirmative study consent before practice. The \irbreplace{laboratory manager}{researcher or trained research assistant} then fixes a consenting roster of \irbreplace{10, 15, or 20}{5, 10, 15, or 20}, forms the matching pools shown in Table~\ref{tab:attendance-pools-irb}, and handles any surplus arrivals under the \irbreplace{host laboratory's}{study's} procedure. No participant enters or changes pools after paid play begins.
 
-The protocol will be piloted before production. A technical pilot will test 10- and 15-person pools, mixed-pool sessions, both Block-2 conditions, wait pages, rematching, response-time flags, browser recovery, exports, and payment calculations. A behavioral pilot will assess comprehension, session length, choice distributions, fatigue, and expected earnings. The protocol, analysis plan, and data dictionary will then be frozen before confirmatory data collection.
+The protocol will be \irbreplace{piloted before production}{technically tested before data collection}. A technical pilot will test \irbreplace{10- and 15-person}{5-, 10-, and 15-person} pools, mixed-pool sessions, both Block-2 conditions, wait pages, \irbreplace{rematching}{fixed-five interaction and rematching in larger pools}, response-time flags, browser recovery, exports, and payment calculations. \irbreplace{A behavioral pilot}{The first complete ten-person session, included within the planned 300 participants,} will assess comprehension, session length, choice distributions, fatigue, and expected earnings. \irbadd{It offers an optional six-question feedback form after everyone has finished the paid decisions and main questionnaires, before the debrief and payment display. The pretest aims to obtain five to ten voluntary responses about clarity, usability, suggested improvements, and the perceived study purpose. The form uses a separate common address and stores only aggregate ratings and independent shuffled text lists, without participant codes or links to experimental responses. It is disabled after this pretest; its questions appear in Attachment 7.} The protocol, analysis plan, and data dictionary will \irbreplace{then be frozen before confirmatory data collection}{be versioned before collection. Any substantive revision will undergo the required review before use, and the analysis plan will specify how pretest observations are handled}.
 
 Production sessions will last approximately 60 minutes. The \irbreplace{laboratory manager}{researcher or trained research assistant} will monitor synchronized progress and prompt delayed participants; the software will record delays but will never generate a ballot, proposal, approval decision, or allocation. A structured session log will record late arrivals, early departures, technical interruptions, staff interventions, and payment exceptions. The research team will review the log before applying preregistered data-quality rules.
 
@@ -569,7 +575,7 @@ Participant compensation is EUR~10--15, with a ceiling of EUR~4,500 for 300 comp
 
 \section{Data Governance, Schedule, and Outputs}
 
-The experimental interface uses participant codes rather than names. The production oTree study and coded research data are hosted on University of Turku IT servers in Finland\irbdel{, including for sessions conducted at DMLab}. \irbreplace{Each host laboratory separately administers the identifying information needed for recruitment, attendance, and payment under its own privacy notice. The research team receives only coded experimental data and never receives any temporary identity-to-code link; the host laboratory removes that link after payment under its procedure.}{UTU RPP/TOKA separately administers recruitment and attendance under its own privacy notice. It does not assign oTree codes, receive experimental responses, or administer payment. The research team makes immediate payment with a separate code-and-amount list; any named payment record contains no oTree code. The list is destroyed after payment reconciliation and no later than 30 November 2026, after which the retained research dataset is anonymised.} Access to coded research data is limited to Janne Tukiainen, Hector Bahamonde, and authorised personnel. Reporting will use aggregate or de-identified data, while \irbreplace{coded}{anonymised} data may be retained for verification and compatible future research under the research privacy notice.
+The experimental interface uses participant codes rather than names. The production oTree study and coded research data are hosted on University of Turku IT servers in Finland\irbdel{, including for sessions conducted at DMLab}. \irbreplace{Each host laboratory separately administers the identifying information needed for recruitment, attendance, and payment under its own privacy notice. The research team receives only coded experimental data and never receives any temporary identity-to-code link; the host laboratory removes that link after payment under its procedure.}{UTU RPP/TOKA separately administers recruitment and attendance under its own privacy notice. It does not assign oTree codes, receive experimental responses, or administer payment. The research team makes immediate payment with a separate code-and-amount list; any named payment record contains no oTree code. The list is destroyed after payment reconciliation and no later than 30 November 2026. Anonymisation also requires removing or coarsening identifying combinations and a documented disclosure-risk review. Until that review confirms anonymisation, coded data remain restricted personal data.} Access to coded research data is limited to Janne Tukiainen, Hector Bahamonde, and authorised personnel. Reporting will use aggregate or de-identified data, while \irbreplace{coded}{anonymised} data may be retained for verification and compatible future research under the research privacy notice.
 
 \begin{table}[H]
 \centering
@@ -578,9 +584,9 @@ The experimental interface uses participant codes rather than names. The product
 \toprule
 Period & Main activities \\
 \midrule
-September 2026 & Ethical review, final programming and translation, technical and behavioral pilots, data-protection review, and preregistration. \\
-1--31 October 2026 & Recruitment and laboratory data collection at UTU Choice Lab. \\
-November--December 2026 & \irbadd{Payment reconciliation and anonymisation by 30 November, followed by} data verification, de-identification, reproducible cleaning, primary and secondary analyses, and robustness checks. \\
+September 2026 & Ethical review, final programming and translation, \irbreplace{technical and behavioral pilots}{technical testing}, data-protection review, and preregistration. \\
+1--31 October 2026 & Recruitment and laboratory data collection at UTU Choice Lab\irbadd{, including the first ten-person behavioral pretest}. \\
+November--December 2026 & \irbadd{Payment reconciliation and deletion of the temporary payment list by 30 November, followed by disclosure-risk review and} data verification, de-identification, reproducible cleaning, primary and secondary analyses, and robustness checks. \\
 January--March 2027 & Manuscript preparation and preparation of de-identified replication materials. \\
 After reporting & Retention, controlled archiving, or deletion in accordance with the approved data management plan and privacy notice. \\
 \bottomrule

@@ -1,7 +1,7 @@
 {{ block title }}Block 2: public-services fund rates{{ endblock }}
 
 {{ block content }}
-<p>The first ten rounds are complete. The same participants remain in your matching pool and will continue to be reshuffled into groups of five.</p>
+<p>The first ten rounds are complete. The same participants remain in your matching pool. {{ if fixed_five_person_pool }}The same five citizens continue playing together.{{ else }}The pool continues to be reshuffled into groups of five before each round.{{ endif }}</p>
 
 {{ if recovery }}
 <div class="alert alert-secondary">

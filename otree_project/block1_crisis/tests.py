@@ -54,6 +54,14 @@ class PlayerBot(Bot):
             p.matching_pool_id == self.player.matching_pool_id
             for p in self.group.get_players()
         )
+        if self.player.matching_pool_size == C.GROUP_SIZE:
+            assert {
+                p.participant.code for p in self.group.get_players()
+            } == {
+                p.participant.code
+                for p in self.subsession.get_players()
+                if p.matching_pool_uid == self.player.matching_pool_uid
+            }
         expected_real_leaders = 1 if (not is_solo or self.round_number % 2) else 0
         assert sum(p.is_leader for p in self.group.get_players()) == expected_real_leaders
 
@@ -102,6 +110,20 @@ class PlayerBot(Bot):
         else:
             assert group.proposal_implemented is True
             assert group.fallback_used is False
+
+        if group.fallback_used:
+            expected_total = (
+                (self.player.contribution + C.SOLO_OTHER_CITIZENS * C.SOLO_OTHER_CONTRIBUTION)
+                if is_solo else sum(p.contribution for p in group.get_players())
+            )
+            expected_payoff = (C.ENDOWMENT - self.player.contribution
+                               + C.APPROVAL_MULTIPLIER_CRISIS * expected_total / C.GROUP_SIZE)
+        else:
+            rate = (C.AUTOMATIC_MULTIPLIER if expected_method == C.AUTOMATIC
+                    else C.APPROVAL_MULTIPLIER_CRISIS)
+            expected_payoff = (C.ENDOWMENT - 10 + rate * (5 * 10 - 5) / 5
+                               + (5 if self.player.is_leader else 0))
+        assert abs(self.player.round_payoff - expected_payoff) < 1e-9
 
         yield RoundResults
 

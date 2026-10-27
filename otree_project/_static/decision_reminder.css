@@ -1,0 +1,26 @@
+.decision-reminder {
+    position: sticky;
+    top: .5rem;
+    z-index: 20;
+    margin: 0 0 1.25rem;
+    padding: .8rem 1rem;
+    border: 1px solid #bdcedd;
+    border-radius: 8px;
+    background: #f2f6fa;
+    color: #27394b;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 5%);
+}
+.decision-reminder-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.decision-reminder-clock {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+.decision-reminder p { margin: .25rem 0; }
+.decision-reminder small { color: #52606d; }
+.decision-reminder-due { background: #fff7e6; border-color: #d5b979; }
+.decision-next-reminder { outline: 3px solid #d5b979; outline-offset: 3px; }

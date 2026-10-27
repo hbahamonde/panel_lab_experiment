@@ -1,0 +1,9 @@
+"plan","n5","n10","n15","participants","pools","share_in_five"
+"Ten-person pools",0,30,0,300,30,0
+"10% in five-person pools",6,27,0,300,33,0.1
+"20% in five-person pools",12,24,0,300,36,0.2
+"40% in five-person pools",24,18,0,300,42,0.4
+"Five-, ten-, and fifteen-person mix",12,18,4,300,34,0.2
+"Fifteen-heavy mix",6,18,6,300,30,0.1
+"Fifteen-person pools",0,0,20,300,20,0
+"Five-person pools",60,0,0,300,60,1

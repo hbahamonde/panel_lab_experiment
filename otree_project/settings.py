@@ -8,6 +8,8 @@ SESSION_CONFIGS = [
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=False,
         flexible_matching_pools=True,
+        treatment_allocation_namespace=environ.get(
+            'TREATMENT_ALLOCATION_NAMESPACE', 'reslide_2026'),
         lab_site='utu_choice_lab',
     ),
     dict(
@@ -17,6 +19,7 @@ SESSION_CONFIGS = [
         app_sequence=['intro_consent', 'block1_crisis', 'block2_reversal'],
         allow_optional_responses=True,
         flexible_matching_pools=True,
+        treatment_allocation_namespace='development',
         lab_site='development',
     ),
     dict(
@@ -49,14 +52,18 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
+    # Enable only for the initial ten-person pre-test session, then switch off.
+    pretest_feedback_enabled=environ.get('PRETEST_FEEDBACK_ENABLED') == '1',
     # Two selected payoff rounds can yield at most 120 points in total.
     # This linear conversion therefore keeps the performance bonus at EUR 5 or less.
     real_world_currency_per_point=5.00 / 120,
     participation_fee=10.00,
     performance_bonus_cap=5.00,
     doc=(
-        'One synchronized laboratory session with two ten-round blocks, '
-        'anonymous rematching in 10- or 15-person pools, leader proposals with or '
+        'One synchronized laboratory session with ten Block-1 rounds and five '
+        'Block-2 rounds, '
+        'stable five-person pools or anonymous rematching in 10- or 15-person pools, '
+        'size-stratified treatment allocation in four-pool blocks, leader proposals with or '
         'without group approval, post-Block-1 pool randomization, and one '
         'randomly selected payoff round per block, implemented at UTU Choice Lab.'
     ),
@@ -89,4 +96,5 @@ ROOMS = [
     ),
 ]
 
-SECRET_KEY = '4102785174378'
+# The fallback is for development. Set a distinct OTREE_SECRET_KEY on the live host.
+SECRET_KEY = environ.get('OTREE_SECRET_KEY', '4102785174378')

@@ -3,7 +3,10 @@
 {{ block content }}
 {{ if explanation }}<p>{{ explanation }}</p>{{ endif }}
 {{ formfields }}
+<p class="text-muted small">Choose your answer, then click <strong>Next</strong> to send it.</p>
 {{ next_button }}
+<link rel="stylesheet" href="{{ static 'decision_reminder.css' }}">
+<script src="{{ static 'decision_reminder.js' }}"></script>
 
 {{ if slider_prefix }}
 <style>
@@ -49,11 +52,15 @@
         ends.className = 'slider-ends';
         ends.innerHTML = '<span>1 — Strongly disagree</span><span>7 — Strongly agree</span>';
 
-        slider.addEventListener('input', function () {
+        function recordAnswer() {
             slider.name = select.name;
             status.textContent = slider.value;
             sliderBox.classList.add('answered');
-        });
+        }
+        slider.addEventListener('input', recordAnswer);
+        slider.addEventListener('change', recordAnswer);
+        // Clicking the initial midpoint is an answer even when its value stays 4.
+        slider.addEventListener('click', recordAnswer);
 
         sliderBox.appendChild(status);
         sliderBox.appendChild(slider);

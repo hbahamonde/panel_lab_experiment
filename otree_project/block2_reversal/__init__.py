@@ -2,12 +2,13 @@ import random
 import time
 
 from otree.api import *
+from treatment_allocation import AllocationStore
 
 
 doc = """
-Block 2: a pool-randomized structural recovery or persistence condition, ten
+Block 2: a pool-randomized structural recovery or persistence condition, five
 repeated institutional-choice rounds, and individual ballots for immediate
-and sustained democratic reversal.
+and short-run democratic reversal.
 """
 
 
@@ -29,7 +30,13 @@ def solo_testing(obj):
 
 def start_decision_timer(player, decision_name):
     key = f'block2_round_{player.round_number}_{decision_name}_started_at'
-    player.participant.vars.setdefault(key, time.time())
+    started_at = player.participant.vars.setdefault(key, time.time())
+    return dict(decision_reminder=dict(
+        remaining_seconds=max(
+            0, C.DECISION_DELAY_THRESHOLD_SECONDS - (time.time() - started_at)
+        ),
+        guide_seconds=C.DECISION_DELAY_THRESHOLD_SECONDS,
+    ))
 
 
 def record_decision_time(player, decision_name, seconds_field, flag_field):
@@ -40,8 +47,30 @@ def record_decision_time(player, decision_name, seconds_field, flag_field):
     setattr(player, flag_field, elapsed > C.DECISION_DELAY_THRESHOLD_SECONDS)
 
 
+def restore_allocation_metadata(subsession, players):
+    """Reconcile metadata copies without consuming another allocation."""
+    metadata_by_pool = dict(subsession.session.vars.get('treatment_allocation_by_pool', {}))
+    for player in players:
+        pool_id = player.participant.vars['matching_pool_id']
+        metadata = player.participant.vars.get('treatment_allocation')
+        if metadata:
+            if pool_id in metadata_by_pool and metadata_by_pool[pool_id] != metadata:
+                raise RuntimeError('Stored allocation metadata conflict within a pool.')
+            metadata_by_pool[pool_id] = metadata
+    for player in players:
+        metadata = metadata_by_pool.get(player.participant.vars['matching_pool_id'])
+        if metadata:
+            if (metadata['treatment'] != player.participant.vars['treatment']
+                    or metadata['block_number'] != player.participant.vars['randomization_stratum']
+                    or metadata['pool_size'] != player.participant.vars['matching_pool_size']):
+                raise RuntimeError('Stored treatment and allocation metadata conflict.')
+            player.participant.vars['treatment_allocation'] = metadata
+    if metadata_by_pool:
+        subsession.session.vars['treatment_allocation_by_pool'] = metadata_by_pool
+
+
 def assign_treatments_after_block1(subsession):
-    """Randomize pools after Block 1, pairing pools on pretreatment leader support."""
+    """Consume size-stratified four-pool blocks only after all Block-1 ballots."""
     players = subsession.get_players()
 
     if solo_testing(subsession):
@@ -88,6 +117,7 @@ def assign_treatments_after_block1(subsession):
                 round_player.randomization_stratum = stratum
         subsession.session.vars['treatment_by_pool'] = treatment_by_pool
         subsession.session.vars['randomization_stratum_by_pool'] = stratum_by_pool
+        restore_allocation_metadata(subsession, players)
         return
 
     # Also reuse a session-level draw if assignment was stored before every
@@ -104,9 +134,10 @@ def assign_treatments_after_block1(subsession):
             for round_player in player.in_all_rounds():
                 round_player.treatment = treatment
                 round_player.randomization_stratum = stratum
+        restore_allocation_metadata(subsession, players)
         return
 
-    pool_summaries = []
+    pool_definitions = []
     pool_ids = sorted({p.participant.vars['matching_pool_id'] for p in players})
     for pool_id in pool_ids:
         pool_players = [
@@ -114,7 +145,7 @@ def assign_treatments_after_block1(subsession):
             if p.participant.vars['matching_pool_id'] == pool_id
         ]
         expected_pool_size = pool_players[0].participant.vars['matching_pool_size']
-        if len(pool_players) != expected_pool_size or expected_pool_size not in (10, 15):
+        if len(pool_players) != expected_pool_size or expected_pool_size not in (5, 10, 15):
             raise RuntimeError(
                 f'Matching pool {pool_id} has an invalid production size.'
             )
@@ -125,43 +156,29 @@ def assign_treatments_after_block1(subsession):
             raise RuntimeError(
                 'A final Block-1 ballot is missing. Treatment assignment was not run.'
             )
-        observed_votes = [
-            p.participant.vars.get('block1_final_vote')
-            for p in pool_players
-        ]
-        automatic_share = sum(
-            vote == C.AUTOMATIC for vote in observed_votes
-        ) / len(observed_votes)
-        pool_summaries.append((automatic_share, random.random(), pool_id))
+        pool_definitions.append((
+            pool_players[0].participant.vars['matching_pool_uid'], expected_pool_size,
+        ))
 
-    pool_summaries.sort()
-    ordered_pool_ids = [pool_id for _, _, pool_id in pool_summaries]
-    treatment_by_pool = {}
-    randomization_pairs = []
-    stratum_by_pool = {}
+    namespace = subsession.session.config['treatment_allocation_namespace']
+    allocations = AllocationStore.from_environment().assign_pools(namespace, pool_definitions)
+    metadata_by_pool = {
+        pool_id: allocations[f'{subsession.session.code}-pool-{pool_id}']
+        for pool_id in pool_ids
+    }
+    treatment_by_pool = {
+        pool_id: metadata['treatment'] for pool_id, metadata in metadata_by_pool.items()
+    }
+    stratum_by_pool = {
+        pool_id: metadata['block_number'] for pool_id, metadata in metadata_by_pool.items()
+    }
 
-    for pair_number, pair_start in enumerate(
-        range(0, len(ordered_pool_ids) - 1, 2), start=1
-    ):
-        first_pool, second_pool = ordered_pool_ids[pair_start:pair_start + 2]
-        if random.choice([True, False]):
-            recovery_pool, persistence_pool = first_pool, second_pool
-        else:
-            recovery_pool, persistence_pool = second_pool, first_pool
-        treatment_by_pool[recovery_pool] = C.TREATMENT_RECOVERY
-        treatment_by_pool[persistence_pool] = C.TREATMENT_PERSISTENCE
-        randomization_pairs.append([first_pool, second_pool])
-        stratum_by_pool[first_pool] = pair_number
-        stratum_by_pool[second_pool] = pair_number
-
-    unmatched_pools = []
-    if len(ordered_pool_ids) % 2:
-        unmatched_pool = ordered_pool_ids[-1]
-        treatment_by_pool[unmatched_pool] = random.choice(
-            [C.TREATMENT_RECOVERY, C.TREATMENT_PERSISTENCE]
-        )
-        unmatched_pools.append(unmatched_pool)
-        stratum_by_pool[unmatched_pool] = len(randomization_pairs) + 1
+    # The independent ledger is committed first. A crash before oTree commits
+    # can therefore replay these exact UID assignments, never redraw them.
+    subsession.session.vars['treatment_allocation_by_pool'] = metadata_by_pool
+    subsession.session.vars['treatment_allocation_namespace'] = namespace
+    subsession.session.vars['treatment_by_pool'] = treatment_by_pool
+    subsession.session.vars['randomization_stratum_by_pool'] = stratum_by_pool
 
     for player in players:
         pool_id = player.participant.vars['matching_pool_id']
@@ -169,14 +186,14 @@ def assign_treatments_after_block1(subsession):
         stratum = stratum_by_pool[pool_id]
         player.participant.vars['treatment'] = treatment
         player.participant.vars['randomization_stratum'] = stratum
+        player.participant.vars['treatment_allocation'] = metadata_by_pool[pool_id]
         for round_player in player.in_all_rounds():
             round_player.treatment = treatment
             round_player.randomization_stratum = stratum
 
     subsession.session.vars['treatment_by_pool'] = treatment_by_pool
-    subsession.session.vars['treatment_randomization_pairs'] = randomization_pairs
-    subsession.session.vars['treatment_unmatched_pools'] = unmatched_pools
-    subsession.session.vars['randomization_stratum_by_pool'] = stratum_by_pool
+    subsession.session.vars['treatment_randomization_pairs'] = []
+    subsession.session.vars['treatment_unmatched_pools'] = []
 
 
 def group_within_matching_pools(subsession):
@@ -364,7 +381,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'group_decisions_2'
     PLAYERS_PER_GROUP = None
     GROUP_SIZE = 5
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 5
 
     ENDOWMENT = 20
     APPROVAL_MULTIPLIER_CRISIS = 1.50
@@ -661,6 +678,7 @@ class Block2Intro(Page):
             recovery=player.treatment == C.TREATMENT_RECOVERY,
             approval_multiplier=f'{approval_multiplier(player):.2f}',
             automatic_multiplier=f'{C.AUTOMATIC_MULTIPLIER:.2f}',
+            fixed_five_person_pool=player.matching_pool_size == C.GROUP_SIZE,
         )
 
 
@@ -701,6 +719,11 @@ class InstitutionVote(Page):
     form_model = 'player'
     form_fields = ['institution_vote', 'solo_other_automatic_votes']
     template_name = 'block2_reversal/QuestionPage.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'institution_vote')
+
     @staticmethod
     def vars_for_template(player):
         start_decision_timer(player, 'institution_vote')
@@ -770,6 +793,10 @@ class LeaderProposal(Page):
     template_name = 'block2_reversal/QuestionPage.html'
 
     @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'proposal')
+
+    @staticmethod
     def get_form_fields(player):
         fields = ['proposed_allocation', 'proposed_transfer']
         if solo_testing(player) and player.group.selected_institution == C.APPROVAL:
@@ -837,6 +864,11 @@ class ApprovalVote(Page):
     form_model = 'player'
     form_fields = ['approval_vote']
     template_name = 'block2_reversal/QuestionPage.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'approval')
+
     @staticmethod
     def is_displayed(player):
         return (
@@ -889,6 +921,10 @@ class FallbackAllocation(Page):
     form_model = 'player'
     form_fields = ['contribution']
     template_name = 'block2_reversal/QuestionPage.html'
+
+    @staticmethod
+    def js_vars(player):
+        return start_decision_timer(player, 'fallback')
 
     @staticmethod
     def is_displayed(player):
@@ -962,6 +998,7 @@ class RoundResults(Page):
                 if group.selected_institution == C.AUTOMATIC
                 else group.realized_approval_multiplier
             ),
+            fixed_five_person_pool=player.matching_pool_size == C.GROUP_SIZE,
         )
 
     @staticmethod
@@ -985,7 +1022,10 @@ class RoundResults(Page):
         )
         player.participant.vars['democratic_reversal_observed'] = final_votes_observed
         player.participant.vars['democratic_reversal'] = player.democratic_reversal
-        late_votes = [p.field_maybe_none('institution_vote') for p in player.in_rounds(8, 10)]
+        late_votes = [
+            p.field_maybe_none('institution_vote')
+            for p in player.in_rounds(C.NUM_ROUNDS - 2, C.NUM_ROUNDS)
+        ]
         player.participant.vars['block2_late_automatic_share'] = sum(
             vote == C.AUTOMATIC for vote in late_votes
         ) / 3
@@ -1107,6 +1147,26 @@ class BackgroundQuestions2(Page):
         player.participant.finished = True
 
 
+def pretest_feedback_enabled(player):
+    return player.session.config.get('pretest_feedback_enabled', False)
+
+
+class PretestFeedbackReady(WaitPage):
+    wait_for_all_groups = True
+    title_text = 'Please wait'
+    body_text = 'Please wait until everyone has finished the final questions.'
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS and pretest_feedback_enabled(player)
+
+
+class PretestFeedbackInvite(Page):
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS and pretest_feedback_enabled(player)
+
+
 class StudyComplete(Page):
     @staticmethod
     def is_displayed(player):
@@ -1162,5 +1222,7 @@ page_sequence = [
     FinalQuestions,
     BackgroundQuestions1,
     BackgroundQuestions2,
+    PretestFeedbackReady,
+    PretestFeedbackInvite,
     StudyComplete,
 ]

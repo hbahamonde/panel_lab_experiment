@@ -25,6 +25,6 @@
 </table>
 
 {{ if is_leader }}<p>You were the selected person in this round.</p>{{ endif }}
-<p class="text-muted">Only group totals are shown. Participants are reshuffled anonymously before the next round.</p>
+<p class="text-muted">Only group totals are shown. {{ if fixed_five_person_pool }}The same five citizens play throughout this session.{{ else }}Participants are reshuffled anonymously within their matching pool before the next round.{{ endif }}</p>
 {{ next_button }}
 {{ endblock }}

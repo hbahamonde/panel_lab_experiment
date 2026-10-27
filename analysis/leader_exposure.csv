@@ -1,0 +1,4 @@
+"phase","rounds","expected_leader_rounds","probability_never_leader"
+"Block 1",10,2,0.1073741824
+"Block 2",5,1,0.32768
+"Whole session",15,3,0.035184372088832

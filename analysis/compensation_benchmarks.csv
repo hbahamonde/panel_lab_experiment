@@ -1,0 +1,5 @@
+"scenario","participants","selected_block1_points","selected_block2_points","showup_eur","total_per_person_eur","total_eur"
+"A in Block 1, D in Block 2 under persistence",300,44,28,10,13,3900
+"Selfish institution-choice benchmark, either condition",300,44,44,10,13.6666666666667,4100
+"Illustration: half B2 D-persistence, half B2 equal-productivity",300,44,36,10,13.3333333333333,4000
+"Maximum compensation",300,60,60,10,15,4500

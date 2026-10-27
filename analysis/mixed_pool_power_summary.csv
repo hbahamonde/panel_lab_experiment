@@ -1,0 +1,21 @@
+"plan","assumption","participants","pools","n5","n10","n15","share_in_five","outcome_icc_five","type1_error","power_20pp","power_25pp","power_30pp","mde_80","simulations","random_assignments"
+"10% in five-person pools","Equal similarity",300,33,6,27,0,0.1,0.05,0.051,0.6454,0.8084,0.9184,0.246687697160883,5000,1999
+"20% in five-person pools","Equal similarity",300,36,12,24,0,0.2,0.05,0.044,0.6396,0.8112,0.9244,0.246056338028169,5000,1999
+"40% in five-person pools","Equal similarity",300,42,24,18,0,0.4,0.05,0.0552,0.6694,0.8312,0.9334,0.238495575221239,5000,1999
+"Fifteen-heavy mix","Equal similarity",300,30,6,18,6,0.1,0.05,0.0434,0.632,0.7984,0.9082,0.250606060606061,5000,1999
+"Fifteen-person pools","Equal similarity",300,20,0,0,20,0,0.05,0.047,0.5754,0.7422,0.8728,0.269422043010753,5000,1999
+"Five-, ten-, and fifteen-person mix","Equal similarity",300,34,12,18,4,0.2,0.05,0.049,0.6524,0.8174,0.9208,0.244041095890411,5000,1999
+"Five-person pools","Equal similarity",300,60,60,0,0,1,0.05,0.0512,0.7026,0.867,0.9574,0.224948770491803,5000,1999
+"Ten-person pools","Equal similarity",300,30,0,30,0,0,0.05,0.044,0.6478,0.8098,0.9128,0.247259507829978,5000,1999
+"10% in five-person pools","Greater fixed-group similarity",300,33,6,27,0,0.1,0.1,0.0454,0.6274,0.8048,0.9298,0.248208955223881,5000,1999
+"20% in five-person pools","Greater fixed-group similarity",300,36,12,24,0,0.2,0.1,0.0448,0.6364,0.8136,0.9262,0.244985250737463,5000,1999
+"40% in five-person pools","Greater fixed-group similarity",300,42,24,18,0,0.4,0.1,0.0496,0.6526,0.818,0.9264,0.243869209809264,5000,1999
+"Fifteen-heavy mix","Greater fixed-group similarity",300,30,6,18,6,0.1,0.1,0.0482,0.6248,0.7974,0.9076,0.251079734219269,5000,1999
+"Five-, ten-, and fifteen-person mix","Greater fixed-group similarity",300,34,12,18,4,0.2,0.1,0.0526,0.6218,0.8042,0.9162,0.2486328125,5000,1999
+"Five-person pools","Greater fixed-group similarity",300,60,60,0,0,1,0.1,0.046,0.676,0.8356,0.9404,0.239225181598063,5000,1999
+"10% in five-person pools","Strong fixed-group similarity",300,33,6,27,0,0.1,0.2,0.0494,0.6244,0.8036,0.9116,0.248809523809524,5000,1999
+"20% in five-person pools","Strong fixed-group similarity",300,36,12,24,0,0.2,0.2,0.0506,0.6334,0.8046,0.9076,0.24842032967033,5000,1999
+"40% in five-person pools","Strong fixed-group similarity",300,42,24,18,0,0.4,0.2,0.0556,0.6236,0.793,0.907,0.252822580645161,5000,1999
+"Fifteen-heavy mix","Strong fixed-group similarity",300,30,6,18,6,0.1,0.2,0.0494,0.6192,0.795,0.902,0.252289377289377,5000,1999
+"Five-, ten-, and fifteen-person mix","Strong fixed-group similarity",300,34,12,18,4,0.2,0.2,0.0424,0.617,0.793,0.9032,0.252916666666667,5000,1999
+"Five-person pools","Strong fixed-group similarity",300,60,60,0,0,1,0.2,0.0464,0.5994,0.7754,0.8926,0.258518005540166,5000,1999

@@ -1,0 +1,4 @@
+"rule","environment","multiplier","optimal_equal_allocation","optimal_transfer","leader_points","nonleader_points","expected_points_before_leader_draw","nonleader_gain_over_selfish_fallback"
+"Automatic implementation","Either",2.5,20,20,60,40,44,20
+"Approval required","Crisis/persistence",1.5,20,20,44,24,28,4
+"Approval required","Recovery",2.5,20,20,60,40,44,20

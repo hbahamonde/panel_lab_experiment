@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Optional feedback about the study</title>
+  <style>
+    body { font: 18px/1.55 system-ui, sans-serif; color: #243140; margin: 32px auto; max-width: 820px; padding: 0 24px; }
+    h1 { font-size: 1.7rem; } h2 { font-size: 1.15rem; margin-top: 1.8rem; }
+    .notice { background: #edf4f8; border-left: 4px solid #3b7394; padding: 16px 20px; }
+    label { display: block; margin: 9px 0; cursor: pointer; }
+    input { margin-right: 9px; } textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px; border: 1px solid #8a98a5; border-radius: 4px; }
+    button { font: inherit; color: white; background: #275f82; border: 0; border-radius: 5px; padding: 12px 22px; margin: 20px 0; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: default; } small { color: #586574; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Optional feedback about the study</h1>
+  <div class="notice">
+    <p>We are testing whether the instructions and screens are clear. Please tell us what worked and what could be improved. Critical comments are welcome.</p>
+    <p><strong>This form is separate from your game answers and payment.</strong> It does not collect your name, study code, seat number, or other identifying information. Ratings are combined across people, and written answers are mixed separately for each question. No record connects this feedback to your game record or links your answers across questions.</p>
+    <p>Please do not write your name, study code, seat number, or details that could identify you or someone else. Every question is optional. You can leave any blank or close this page. Your answers do not affect your payment or future participation.</p>
+  </div>
+  <form id="feedback-form">
+    <h2>1. How clear were the instructions?</h2>
+    <label><input type="radio" name="instructions" value="1">1 — Very unclear</label>
+    <label><input type="radio" name="instructions" value="2">2 — Unclear</label>
+    <label><input type="radio" name="instructions" value="3">3 — Neither unclear nor clear</label>
+    <label><input type="radio" name="instructions" value="4">4 — Clear</label>
+    <label><input type="radio" name="instructions" value="5">5 — Very clear</label>
+    <h2>2. How clear was the difference between the two decision methods?</h2>
+    <label><input type="radio" name="methods" value="1">1 — Very unclear</label>
+    <label><input type="radio" name="methods" value="2">2 — Unclear</label>
+    <label><input type="radio" name="methods" value="3">3 — Neither unclear nor clear</label>
+    <label><input type="radio" name="methods" value="4">4 — Clear</label>
+    <label><input type="radio" name="methods" value="5">5 — Very clear</label>
+    <h2>3. How clear was the explanation of your payment?</h2>
+    <label><input type="radio" name="payment" value="1">1 — Very unclear</label>
+    <label><input type="radio" name="payment" value="2">2 — Unclear</label>
+    <label><input type="radio" name="payment" value="3">3 — Neither unclear nor clear</label>
+    <label><input type="radio" name="payment" value="4">4 — Clear</label>
+    <label><input type="radio" name="payment" value="5">5 — Very clear</label>
+    <h2><label for="unclear">4. Was anything confusing or difficult to do on the screens? Please describe.</label></h2>
+    <textarea id="unclear" name="unclear" rows="3" maxlength="600"></textarea>
+    <h2><label for="improvement">5. What one change would most improve the experiment?</label></h2>
+    <textarea id="improvement" name="improvement" rows="3" maxlength="600"></textarea>
+    <h2><label for="purpose">6. What do you think this study is trying to understand?</label></h2>
+    <textarea id="purpose" name="purpose" rows="3" maxlength="600"></textarea>
+    <small>Up to 600 characters per written answer. Please leave out identifying details.</small>
+    <p><button type="submit" id="send-feedback">Send anonymous feedback</button></p>
+    <p id="feedback-error" role="alert" hidden></p>
+  </form>
+  <p id="feedback-thanks" role="status" hidden><strong>Thank you. Your anonymous feedback has been saved.</strong> You may close this page.</p>
+</main>
+<script>
+  const form = document.getElementById('feedback-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = document.getElementById('send-feedback');
+    const error = document.getElementById('feedback-error');
+    button.disabled = true;
+    error.hidden = true;
+    const fields = new FormData(form);
+    const answers = {};
+    for (const key of ['instructions', 'methods', 'payment', 'unclear', 'improvement', 'purpose']) {
+      answers[key] = fields.get(key) || '';
+    }
+    try {
+      const response = await fetch('/pilot-feedback', {
+        method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer',
+        headers: {'Content-Type': 'application/json'}, body: JSON.stringify(answers),
+      });
+      if (!response.ok) throw new Error('Please try again. Your feedback has not been saved.');
+      form.hidden = true;
+      document.getElementById('feedback-thanks').hidden = false;
+    } catch (problem) {
+      error.textContent = 'Your feedback could not be saved. Please try again.';
+      error.hidden = false;
+      button.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

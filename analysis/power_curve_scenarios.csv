@@ -1,101 +1,101 @@
-"design","pools","paired_strata","unmatched_pools","eligible_share","persistence_rate","outcome_icc","eligibility_icc","risk_difference","power","monte_carlo_se","mean_eligible","simulations","random_assignments","completed_participants","effect_label","scenario","power_monotone"
-"100 participants",10,5,0,0.5,0.2,0.05,0.05,0.2,0,0,49.8616,2500,999,100,"20 percentage points","Central",0
-"200 participants",20,10,0,0.5,0.2,0.05,0.05,0.2,0.3972,0.00978636112147922,99.67,2500,999,200,"20 percentage points","Central",0.3972
-"300 participants",30,15,0,0.5,0.2,0.05,0.05,0.2,0.6044,0.00977958363121866,150.1896,2500,999,300,"20 percentage points","Central",0.6044
-"400 participants",40,20,0,0.5,0.2,0.05,0.05,0.2,0.7532,0.0086229869534866,200.2908,2500,999,400,"20 percentage points","Central",0.7532
-"500 participants",50,25,0,0.5,0.2,0.05,0.05,0.2,0.8484,0.00717265473865848,250.0316,2500,999,500,"20 percentage points","Central",0.8484
-"600 participants",60,30,0,0.5,0.2,0.05,0.05,0.2,0.9068,0.00581425008062089,299.6056,2500,999,600,"20 percentage points","Central",0.9068
-"700 participants",70,35,0,0.5,0.2,0.05,0.05,0.2,0.9512,0.00430899338593133,350.5488,2500,999,700,"20 percentage points","Central",0.9512
-"800 participants",80,40,0,0.5,0.2,0.05,0.05,0.2,0.9736,0.00320643353275879,399.138,2500,999,800,"20 percentage points","Central",0.9736
-"900 participants",90,45,0,0.5,0.2,0.05,0.05,0.2,0.9808,0.00274454805022612,450.512,2500,999,900,"20 percentage points","Central",0.9808
-"1000 participants",100,50,0,0.5,0.2,0.05,0.05,0.2,0.9888,0.00210471470750788,500.3896,2500,999,1000,"20 percentage points","Central",0.9888
-"1100 participants",110,55,0,0.5,0.2,0.05,0.05,0.2,0.9928,0.00169093583556562,550.3668,2500,999,1100,"20 percentage points","Central",0.992800000000001
-"1200 participants",120,60,0,0.5,0.2,0.05,0.05,0.2,0.9976,0.000978619435735865,599.8064,2500,999,1200,"20 percentage points","Central",0.9976
-"1300 participants",130,65,0,0.5,0.2,0.05,0.05,0.2,0.998,0.000893532316147547,649.4124,2500,999,1300,"20 percentage points","Central",0.997999999999999
-"1400 participants",140,70,0,0.5,0.2,0.05,0.05,0.2,0.9996,0.000399919991998378,700.0112,2500,999,1400,"20 percentage points","Central",0.999600000000001
-"1500 participants",150,75,0,0.5,0.2,0.05,0.05,0.2,1,0,750.2412,2500,999,1500,"20 percentage points","Central",0.99992
-"1600 participants",160,80,0,0.5,0.2,0.05,0.05,0.2,1,0,800.148,2500,999,1600,"20 percentage points","Central",0.99992
-"1700 participants",170,85,0,0.5,0.2,0.05,0.05,0.2,1,0,849.0668,2500,999,1700,"20 percentage points","Central",0.99992
-"1800 participants",180,90,0,0.5,0.2,0.05,0.05,0.2,1,0,899.2288,2500,999,1800,"20 percentage points","Central",0.99992
-"1900 participants",190,95,0,0.5,0.2,0.05,0.05,0.2,0.9996,0.000399919991998378,949.3592,2500,999,1900,"20 percentage points","Central",0.99992
-"2000 participants",200,100,0,0.5,0.2,0.05,0.05,0.2,1,0,1000.0408,2500,999,2000,"20 percentage points","Central",1
-"2100 participants",210,105,0,0.5,0.2,0.05,0.05,0.2,1,0,1048.7196,2500,999,2100,"20 percentage points","Central",1
-"2200 participants",220,110,0,0.5,0.2,0.05,0.05,0.2,1,0,1099.8368,2500,999,2200,"20 percentage points","Central",1
-"2300 participants",230,115,0,0.5,0.2,0.05,0.05,0.2,1,0,1149.6092,2500,999,2300,"20 percentage points","Central",1
-"2400 participants",240,120,0,0.5,0.2,0.05,0.05,0.2,1,0,1201.4632,2500,999,2400,"20 percentage points","Central",1
-"2500 participants",250,125,0,0.5,0.2,0.05,0.05,0.2,1,0,1250.6556,2500,999,2500,"20 percentage points","Central",1
-"100 participants",10,5,0,0.6,0.2,0.02,0.02,0.2,0.018,0.00265902237673924,59.922,2500,999,100,"20 percentage points","Higher eligibility, lower clustering",0.018
-"200 participants",20,10,0,0.6,0.2,0.02,0.02,0.2,0.5124,0.00999692432701178,119.6948,2500,999,200,"20 percentage points","Higher eligibility, lower clustering",0.5124
-"300 participants",30,15,0,0.6,0.2,0.02,0.02,0.2,0.7332,0.00884573931336437,180.1596,2500,999,300,"20 percentage points","Higher eligibility, lower clustering",0.7332
-"400 participants",40,20,0,0.6,0.2,0.02,0.02,0.2,0.8648,0.00683874140467382,240.0004,2500,999,400,"20 percentage points","Higher eligibility, lower clustering",0.8648
-"500 participants",50,25,0,0.6,0.2,0.02,0.02,0.2,0.9328,0.005007360981595,300.0676,2500,999,500,"20 percentage points","Higher eligibility, lower clustering",0.9328
-"600 participants",60,30,0,0.6,0.2,0.02,0.02,0.2,0.9712,0.0033448802669154,359.5628,2500,999,600,"20 percentage points","Higher eligibility, lower clustering",0.9712
-"700 participants",70,35,0,0.6,0.2,0.02,0.02,0.2,0.986,0.00234980850283592,420.0248,2500,999,700,"20 percentage points","Higher eligibility, lower clustering",0.986
-"800 participants",80,40,0,0.6,0.2,0.02,0.02,0.2,0.994,0.00154453876610463,480.4628,2500,999,800,"20 percentage points","Higher eligibility, lower clustering",0.994
-"900 participants",90,45,0,0.6,0.2,0.02,0.02,0.2,0.9976,0.000978619435735865,539.7428,2500,999,900,"20 percentage points","Higher eligibility, lower clustering",0.9976
-"1000 participants",100,50,0,0.6,0.2,0.02,0.02,0.2,0.9992,0.000565459105506321,599.6752,2500,999,1000,"20 percentage points","Higher eligibility, lower clustering",0.9992
-"1100 participants",110,55,0,0.6,0.2,0.02,0.02,0.2,0.9996,0.000399919991998378,659.3012,2500,999,1100,"20 percentage points","Higher eligibility, lower clustering",0.999600000000001
-"1200 participants",120,60,0,0.6,0.2,0.02,0.02,0.2,1,0,720.456,2500,999,1200,"20 percentage points","Higher eligibility, lower clustering",1
-"1300 participants",130,65,0,0.6,0.2,0.02,0.02,0.2,1,0,780.1224,2500,999,1300,"20 percentage points","Higher eligibility, lower clustering",1
-"1400 participants",140,70,0,0.6,0.2,0.02,0.02,0.2,1,0,840.1204,2500,999,1400,"20 percentage points","Higher eligibility, lower clustering",1
-"1500 participants",150,75,0,0.6,0.2,0.02,0.02,0.2,1,0,899.9276,2500,999,1500,"20 percentage points","Higher eligibility, lower clustering",1
-"1600 participants",160,80,0,0.6,0.2,0.02,0.02,0.2,1,0,960.1336,2500,999,1600,"20 percentage points","Higher eligibility, lower clustering",1
-"1700 participants",170,85,0,0.6,0.2,0.02,0.02,0.2,1,0,1019.94,2500,999,1700,"20 percentage points","Higher eligibility, lower clustering",1
-"1800 participants",180,90,0,0.6,0.2,0.02,0.02,0.2,1,0,1079.6928,2500,999,1800,"20 percentage points","Higher eligibility, lower clustering",1
-"1900 participants",190,95,0,0.6,0.2,0.02,0.02,0.2,1,0,1140.2192,2500,999,1900,"20 percentage points","Higher eligibility, lower clustering",1
-"2000 participants",200,100,0,0.6,0.2,0.02,0.02,0.2,1,0,1199.9672,2500,999,2000,"20 percentage points","Higher eligibility, lower clustering",1
-"2100 participants",210,105,0,0.6,0.2,0.02,0.02,0.2,1,0,1260.3,2500,999,2100,"20 percentage points","Higher eligibility, lower clustering",1
-"2200 participants",220,110,0,0.6,0.2,0.02,0.02,0.2,1,0,1320.6188,2500,999,2200,"20 percentage points","Higher eligibility, lower clustering",1
-"2300 participants",230,115,0,0.6,0.2,0.02,0.02,0.2,1,0,1380.246,2500,999,2300,"20 percentage points","Higher eligibility, lower clustering",1
-"2400 participants",240,120,0,0.6,0.2,0.02,0.02,0.2,1,0,1441.1004,2500,999,2400,"20 percentage points","Higher eligibility, lower clustering",1
-"2500 participants",250,125,0,0.6,0.2,0.02,0.02,0.2,1,0,1499.7692,2500,999,2500,"20 percentage points","Higher eligibility, lower clustering",1
-"100 participants",10,5,0,0.5,0.35,0.05,0.05,0.2,0,0,50.3248,2500,999,100,"20 percentage points","Higher persistence reversal",0
-"200 participants",20,10,0,0.5,0.35,0.05,0.05,0.2,0.3608,0.00960465220609263,100.0508,2500,999,200,"20 percentage points","Higher persistence reversal",0.3608
-"300 participants",30,15,0,0.5,0.35,0.05,0.05,0.2,0.518,0.00999351789911841,149.82,2500,999,300,"20 percentage points","Higher persistence reversal",0.518
-"400 participants",40,20,0,0.5,0.35,0.05,0.05,0.2,0.6876,0.0092694388179652,199.818,2500,999,400,"20 percentage points","Higher persistence reversal",0.6876
-"500 participants",50,25,0,0.5,0.35,0.05,0.05,0.2,0.7804,0.00827951302915818,250.2388,2500,999,500,"20 percentage points","Higher persistence reversal",0.7804
-"600 participants",60,30,0,0.5,0.35,0.05,0.05,0.2,0.8656,0.00682163147641383,299.3508,2500,999,600,"20 percentage points","Higher persistence reversal",0.8656
-"700 participants",70,35,0,0.5,0.35,0.05,0.05,0.2,0.9164,0.00553573987828185,349.8812,2500,999,700,"20 percentage points","Higher persistence reversal",0.9164
-"800 participants",80,40,0,0.5,0.35,0.05,0.05,0.2,0.9412,0.00470499989373007,400.5756,2500,999,800,"20 percentage points","Higher persistence reversal",0.9412
-"900 participants",90,45,0,0.5,0.35,0.05,0.05,0.2,0.9524,0.0042583677624179,449.9404,2500,999,900,"20 percentage points","Higher persistence reversal",0.9524
-"1000 participants",100,50,0,0.5,0.35,0.05,0.05,0.2,0.9788,0.00288101093368283,499.6296,2500,999,1000,"20 percentage points","Higher persistence reversal",0.9788
-"1100 participants",110,55,0,0.5,0.35,0.05,0.05,0.2,0.9844,0.00247843821791062,549.7508,2500,999,1100,"20 percentage points","Higher persistence reversal",0.9844
-"1200 participants",120,60,0,0.5,0.35,0.05,0.05,0.2,0.9928,0.00169093583556562,599.8904,2500,999,1200,"20 percentage points","Higher persistence reversal",0.992800000000001
-"1300 participants",130,65,0,0.5,0.35,0.05,0.05,0.2,0.996,0.00126237870704476,649.8788,2500,999,1300,"20 percentage points","Higher persistence reversal",0.9958
-"1400 participants",140,70,0,0.5,0.35,0.05,0.05,0.2,0.9956,0.00132372806875128,699.8676,2500,999,1400,"20 percentage points","Higher persistence reversal",0.9958
-"1500 participants",150,75,0,0.5,0.35,0.05,0.05,0.2,0.998,0.000893532316147547,749.9156,2500,999,1500,"20 percentage points","Higher persistence reversal",0.997999999999999
-"1600 participants",160,80,0,0.5,0.35,0.05,0.05,0.2,0.9988,0.000692404506051189,800.4216,2500,999,1600,"20 percentage points","Higher persistence reversal",0.998799999999999
-"1700 participants",170,85,0,0.5,0.35,0.05,0.05,0.2,0.9992,0.000565459105506321,850.8188,2500,999,1700,"20 percentage points","Higher persistence reversal",0.9992
-"1800 participants",180,90,0,0.5,0.35,0.05,0.05,0.2,1,0,899.7624,2500,999,1800,"20 percentage points","Higher persistence reversal",0.9998
-"1900 participants",190,95,0,0.5,0.35,0.05,0.05,0.2,0.9996,0.000399919991998378,951.1736,2500,999,1900,"20 percentage points","Higher persistence reversal",0.9998
-"2000 participants",200,100,0,0.5,0.35,0.05,0.05,0.2,1,0,1000.1984,2500,999,2000,"20 percentage points","Higher persistence reversal",1
-"2100 participants",210,105,0,0.5,0.35,0.05,0.05,0.2,1,0,1049.5744,2500,999,2100,"20 percentage points","Higher persistence reversal",1
-"2200 participants",220,110,0,0.5,0.35,0.05,0.05,0.2,1,0,1099.4268,2500,999,2200,"20 percentage points","Higher persistence reversal",1
-"2300 participants",230,115,0,0.5,0.35,0.05,0.05,0.2,1,0,1150.1016,2500,999,2300,"20 percentage points","Higher persistence reversal",1
-"2400 participants",240,120,0,0.5,0.35,0.05,0.05,0.2,1,0,1199.8024,2500,999,2400,"20 percentage points","Higher persistence reversal",1
-"2500 participants",250,125,0,0.5,0.35,0.05,0.05,0.2,1,0,1249.8308,2500,999,2500,"20 percentage points","Higher persistence reversal",1
-"100 participants",10,5,0,0.4,0.2,0.1,0.1,0.2,0,0,39.6948,2500,999,100,"20 percentage points","Lower eligibility, higher clustering",0
-"200 participants",20,10,0,0.4,0.2,0.1,0.1,0.2,0.3212,0.00933874852429382,79.6928,2500,999,200,"20 percentage points","Lower eligibility, higher clustering",0.3212
-"300 participants",30,15,0,0.4,0.2,0.1,0.1,0.2,0.4748,0.00998729112422382,120.0552,2500,999,300,"20 percentage points","Lower eligibility, higher clustering",0.4748
-"400 participants",40,20,0,0.4,0.2,0.1,0.1,0.2,0.5856,0.00985236296529924,160.6408,2500,999,400,"20 percentage points","Lower eligibility, higher clustering",0.5856
-"500 participants",50,25,0,0.4,0.2,0.1,0.1,0.2,0.7036,0.00913339017013945,200.364,2500,999,500,"20 percentage points","Lower eligibility, higher clustering",0.7036
-"600 participants",60,30,0,0.4,0.2,0.1,0.1,0.2,0.7856,0.00820810916106749,239.3496,2500,999,600,"20 percentage points","Lower eligibility, higher clustering",0.7856
-"700 participants",70,35,0,0.4,0.2,0.1,0.1,0.2,0.8456,0.00722663517828318,279.8184,2500,999,700,"20 percentage points","Lower eligibility, higher clustering",0.8456
-"800 participants",80,40,0,0.4,0.2,0.1,0.1,0.2,0.8992,0.00602127428373762,320.6352,2500,999,800,"20 percentage points","Lower eligibility, higher clustering",0.8992
-"900 participants",90,45,0,0.4,0.2,0.1,0.1,0.2,0.9324,0.0050211648051025,360.098,2500,999,900,"20 percentage points","Lower eligibility, higher clustering",0.9324
-"1000 participants",100,50,0,0.4,0.2,0.1,0.1,0.2,0.9452,0.00455178909880499,399.444,2500,999,1000,"20 percentage points","Lower eligibility, higher clustering",0.9452
-"1100 participants",110,55,0,0.4,0.2,0.1,0.1,0.2,0.9648,0.00368569993352687,440.0296,2500,999,1100,"20 percentage points","Lower eligibility, higher clustering",0.9648
-"1200 participants",120,60,0,0.4,0.2,0.1,0.1,0.2,0.9828,0.00260031998031012,479.4156,2500,999,1200,"20 percentage points","Lower eligibility, higher clustering",0.9826
-"1300 participants",130,65,0,0.4,0.2,0.1,0.1,0.2,0.9824,0.00262984714384695,519.9596,2500,999,1300,"20 percentage points","Lower eligibility, higher clustering",0.9826
-"1400 participants",140,70,0,0.4,0.2,0.1,0.1,0.2,0.9904,0.00195016307010466,560.1668,2500,999,1400,"20 percentage points","Lower eligibility, higher clustering",0.990399999999999
-"1500 participants",150,75,0,0.4,0.2,0.1,0.1,0.2,0.9944,0.00149246641503252,600.558,2500,999,1500,"20 percentage points","Lower eligibility, higher clustering",0.994400000000001
-"1600 participants",160,80,0,0.4,0.2,0.1,0.1,0.2,0.9972,0.0010568178651026,639.328,2500,999,1600,"20 percentage points","Lower eligibility, higher clustering",0.997199999999999
-"1700 participants",170,85,0,0.4,0.2,0.1,0.1,0.2,0.9984,0.000799359743795006,680.3364,2500,999,1700,"20 percentage points","Lower eligibility, higher clustering",0.9984
-"1800 participants",180,90,0,0.4,0.2,0.1,0.1,0.2,0.9984,0.000799359743795006,719.278,2500,999,1800,"20 percentage points","Lower eligibility, higher clustering",0.9984
-"1900 participants",190,95,0,0.4,0.2,0.1,0.1,0.2,0.9992,0.000565459105506321,760.5248,2500,999,1900,"20 percentage points","Lower eligibility, higher clustering",0.9992
-"2000 participants",200,100,0,0.4,0.2,0.1,0.1,0.2,0.9996,0.000399919991998378,798.714,2500,999,2000,"20 percentage points","Lower eligibility, higher clustering",0.999599999999999
-"2100 participants",210,105,0,0.4,0.2,0.1,0.1,0.2,0.9996,0.000399919991998378,840.0944,2500,999,2100,"20 percentage points","Lower eligibility, higher clustering",0.999600000000001
-"2200 participants",220,110,0,0.4,0.2,0.1,0.1,0.2,1,0,880.5988,2500,999,2200,"20 percentage points","Lower eligibility, higher clustering",1
-"2300 participants",230,115,0,0.4,0.2,0.1,0.1,0.2,1,0,919.732,2500,999,2300,"20 percentage points","Lower eligibility, higher clustering",1
-"2400 participants",240,120,0,0.4,0.2,0.1,0.1,0.2,1,0,960.6124,2500,999,2400,"20 percentage points","Lower eligibility, higher clustering",1
-"2500 participants",250,125,0,0.4,0.2,0.1,0.1,0.2,1,0,1000.34,2500,999,2500,"20 percentage points","Lower eligibility, higher clustering",1
+"design","block1_rounds","block2_rounds","completed_posttreatment_rounds","pools","five_person_pools","ten_person_pools","fifteen_person_pools","collection_batches","allocation_block_size","eligible_share","persistence_rate","outcome_icc","eligibility_icc","eligible_share_five","outcome_icc_five","eligibility_icc_five","risk_difference_five","risk_difference","power","monte_carlo_se","mean_eligible","mean_zero_eligible_pools","simulations","invalid_experiments","mean_invalid_reallocations","random_assignments","completed_participants","effect_label","scenario","power_monotone"
+"100 participants",10,5,4,10,0,10,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.1784,0.00765698217315412,50.1,0.0376,2500,0,0,999,100,"20 percentage points","Central",0.1784
+"200 participants",10,5,4,20,0,20,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.4464,0.00994237476662392,100.0464,0.1028,2500,0,0,999,200,"20 percentage points","Central",0.4464
+"300 participants",10,5,4,30,0,30,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.6456,0.00956662197434392,150.3004,0.1524,2500,0,0,999,300,"20 percentage points","Central",0.6456
+"400 participants",10,5,4,40,0,40,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.7736,0.00837001887692017,199.992,0.1908,2500,0,0,999,400,"20 percentage points","Central",0.7736
+"500 participants",10,5,4,50,0,50,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.8528,0.00708610358377578,250.2424,0.256,2500,0,0,999,500,"20 percentage points","Central",0.8528
+"600 participants",10,5,4,60,0,60,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9164,0.00553573987828185,299.7368,0.3108,2500,0,0,999,600,"20 percentage points","Central",0.9164
+"700 participants",10,5,4,70,0,70,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9532,0.00422420454050227,349.7988,0.3412,2500,0,0,999,700,"20 percentage points","Central",0.9532
+"800 participants",10,5,4,80,0,80,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9772,0.00298530802430838,400.552,0.3856,2500,0,0,999,800,"20 percentage points","Central",0.9772
+"900 participants",10,5,4,90,0,90,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9852,0.0024150329190303,450.802,0.4464,2500,0,0,999,900,"20 percentage points","Central",0.9852
+"1000 participants",10,5,4,100,0,100,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.99,0.00198997487421324,500.0192,0.4524,2500,0,0,999,1000,"20 percentage points","Central",0.99
+"1100 participants",10,5,4,110,0,110,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9952,0.00138231110825314,550.582,0.5372,2500,0,0,999,1100,"20 percentage points","Central",0.9952
+"1200 participants",10,5,4,120,0,120,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9972,0.0010568178651026,599.8096,0.5908,2500,0,0,999,1200,"20 percentage points","Central",0.997199999999999
+"1300 participants",10,5,4,130,0,130,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,649.6932,0.6256,2500,0,0,999,1300,"20 percentage points","Central",0.9996
+"1400 participants",10,5,4,140,0,140,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9992,0.000565459105506321,700.0648,0.6804,2500,0,0,999,1400,"20 percentage points","Central",0.9996
+"1500 participants",10,5,4,150,0,150,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,749.7096,0.732,2500,0,0,999,1500,"20 percentage points","Central",0.9998
+"1600 participants",10,5,4,160,0,160,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,800.596,0.760799999999998,2500,0,0,999,1600,"20 percentage points","Central",0.9998
+"1700 participants",10,5,4,170,0,170,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,849.3904,0.8272,2500,0,0,999,1700,"20 percentage points","Central",0.9998
+"1800 participants",10,5,4,180,0,180,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9992,0.000565459105506321,899.4416,0.887199999999999,2500,0,0,999,1800,"20 percentage points","Central",0.9998
+"1900 participants",10,5,4,190,0,190,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,950.3784,0.938,2500,0,0,999,1900,"20 percentage points","Central",1
+"2000 participants",10,5,4,200,0,200,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1000.17,0.9632,2500,0,0,999,2000,"20 percentage points","Central",1
+"2100 participants",10,5,4,210,0,210,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1049.0592,0.9972,2500,0,0,999,2100,"20 percentage points","Central",1
+"2200 participants",10,5,4,220,0,220,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1100.2956,1.0788,2500,0,0,999,2200,"20 percentage points","Central",1
+"2300 participants",10,5,4,230,0,230,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1149.6456,1.0904,2500,0,0,999,2300,"20 percentage points","Central",1
+"2400 participants",10,5,4,240,0,240,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1200.4128,1.16,2500,0,0,999,2400,"20 percentage points","Central",1
+"2500 participants",10,5,4,250,0,250,0,1,4,0.5,0.2,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1249.0308,1.2212,2500,0,0,999,2500,"20 percentage points","Central",1
+"100 participants",10,5,4,10,0,10,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.2316,0.00843709523473571,59.8772,0.00359999999999996,2500,0,0,999,100,"20 percentage points","Higher eligibility, lower clustering",0.2316
+"200 participants",10,5,4,20,0,20,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.5464,0.00995684769392402,119.8448,0.00559999999999997,2500,0,0,999,200,"20 percentage points","Higher eligibility, lower clustering",0.5464
+"300 participants",10,5,4,30,0,30,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.7636,0.0084974123119924,179.5192,0.00960000000000008,2500,0,0,999,300,"20 percentage points","Higher eligibility, lower clustering",0.7636
+"400 participants",10,5,4,40,0,40,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.8972,0.00607394962112792,240.7444,0.0116000000000001,2500,0,0,999,400,"20 percentage points","Higher eligibility, lower clustering",0.8972
+"500 participants",10,5,4,50,0,50,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9356,0.00490928263598665,299.9032,0.012,2500,0,0,999,500,"20 percentage points","Higher eligibility, lower clustering",0.9356
+"600 participants",10,5,4,60,0,60,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9752,0.00311030287914216,359.7796,0.0203999999999998,2500,0,0,999,600,"20 percentage points","Higher eligibility, lower clustering",0.9752
+"700 participants",10,5,4,70,0,70,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9908,0.00190948788946146,420.0232,0.0236,2500,0,0,999,700,"20 percentage points","Higher eligibility, lower clustering",0.9908
+"800 participants",10,5,4,80,0,80,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9944,0.00149246641503252,479.9928,0.0283999999999999,2500,0,0,999,800,"20 percentage points","Higher eligibility, lower clustering",0.9944
+"900 participants",10,5,4,90,0,90,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9968,0.00112955920606226,540.4496,0.0256000000000001,2500,0,0,999,900,"20 percentage points","Higher eligibility, lower clustering",0.9968
+"1000 participants",10,5,4,100,0,100,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9996,0.000399919991998378,600.0932,0.0307999999999999,2500,0,0,999,1000,"20 percentage points","Higher eligibility, lower clustering",0.999599999999999
+"1100 participants",10,5,4,110,0,110,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,660.2336,0.0416000000000001,2500,0,0,999,1100,"20 percentage points","Higher eligibility, lower clustering",0.9998
+"1200 participants",10,5,4,120,0,120,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,0.9996,0.000399919991998378,719.966,0.0348,2500,0,0,999,1200,"20 percentage points","Higher eligibility, lower clustering",0.9998
+"1300 participants",10,5,4,130,0,130,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,780.7428,0.044,2500,0,0,999,1300,"20 percentage points","Higher eligibility, lower clustering",1
+"1400 participants",10,5,4,140,0,140,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,840.2344,0.0504000000000002,2500,0,0,999,1400,"20 percentage points","Higher eligibility, lower clustering",1
+"1500 participants",10,5,4,150,0,150,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,899.9432,0.0432,2500,0,0,999,1500,"20 percentage points","Higher eligibility, lower clustering",1
+"1600 participants",10,5,4,160,0,160,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,959.4952,0.0496000000000001,2500,0,0,999,1600,"20 percentage points","Higher eligibility, lower clustering",1
+"1700 participants",10,5,4,170,0,170,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1020.0292,0.0536,2500,0,0,999,1700,"20 percentage points","Higher eligibility, lower clustering",1
+"1800 participants",10,5,4,180,0,180,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1079.732,0.0544000000000001,2500,0,0,999,1800,"20 percentage points","Higher eligibility, lower clustering",1
+"1900 participants",10,5,4,190,0,190,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1140.3884,0.0611999999999999,2500,0,0,999,1900,"20 percentage points","Higher eligibility, lower clustering",1
+"2000 participants",10,5,4,200,0,200,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1200.1764,0.0631999999999999,2500,0,0,999,2000,"20 percentage points","Higher eligibility, lower clustering",1
+"2100 participants",10,5,4,210,0,210,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1259.17,0.0759999999999999,2500,0,0,999,2100,"20 percentage points","Higher eligibility, lower clustering",1
+"2200 participants",10,5,4,220,0,220,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1319.3192,0.0775999999999998,2500,0,0,999,2200,"20 percentage points","Higher eligibility, lower clustering",1
+"2300 participants",10,5,4,230,0,230,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1380.1084,0.064,2500,0,0,999,2300,"20 percentage points","Higher eligibility, lower clustering",1
+"2400 participants",10,5,4,240,0,240,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1439.9604,0.0867999999999999,2500,0,0,999,2400,"20 percentage points","Higher eligibility, lower clustering",1
+"2500 participants",10,5,4,250,0,250,0,1,4,0.6,0.2,0.02,0.02,0.6,0.02,0.02,0.2,0.2,1,0,1499.6884,0.0832000000000001,2500,0,0,999,2500,"20 percentage points","Higher eligibility, lower clustering",1
+"100 participants",10,5,4,10,0,10,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.1596,0.00732469357720854,50.1036,0.0444,2500,0,0,999,100,"20 percentage points","Higher persistence reversal",0.1596
+"200 participants",10,5,4,20,0,20,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.3712,0.00966251644241809,99.9956,0.104,2500,0,0,999,200,"20 percentage points","Higher persistence reversal",0.3712
+"300 participants",10,5,4,30,0,30,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.562,0.00992282217919882,149.9832,0.1492,2500,0,0,999,300,"20 percentage points","Higher persistence reversal",0.562
+"400 participants",10,5,4,40,0,40,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.7152,0.00902638266416841,199.6784,0.1824,2500,0,0,999,400,"20 percentage points","Higher persistence reversal",0.7152
+"500 participants",10,5,4,50,0,50,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.798,0.00802984433223957,249.6616,0.2508,2500,0,0,999,500,"20 percentage points","Higher persistence reversal",0.798
+"600 participants",10,5,4,60,0,60,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.8732,0.00665497588275119,300.1964,0.298,2500,0,0,999,600,"20 percentage points","Higher persistence reversal",0.8732
+"700 participants",10,5,4,70,0,70,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9112,0.00568909694064005,350.1056,0.3204,2500,0,0,999,700,"20 percentage points","Higher persistence reversal",0.9112
+"800 participants",10,5,4,80,0,80,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.948,0.00444054050764094,399.7156,0.396,2500,0,0,999,800,"20 percentage points","Higher persistence reversal",0.948
+"900 participants",10,5,4,90,0,90,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9668,0.00358316954664442,450.3808,0.45,2500,0,0,999,900,"20 percentage points","Higher persistence reversal",0.9668
+"1000 participants",10,5,4,100,0,100,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9768,0.00301076468691925,500.0892,0.4892,2500,0,0,999,1000,"20 percentage points","Higher persistence reversal",0.9768
+"1100 participants",10,5,4,110,0,110,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.988,0.00217770521421059,549.9744,0.5412,2500,0,0,999,1100,"20 percentage points","Higher persistence reversal",0.988
+"1200 participants",10,5,4,120,0,120,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9944,0.00149246641503252,600.4248,0.6056,2500,0,0,999,1200,"20 percentage points","Higher persistence reversal",0.994400000000001
+"1300 participants",10,5,4,130,0,130,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9964,0.00119783805249291,650.1812,0.612,2500,0,0,999,1300,"20 percentage points","Higher persistence reversal",0.9964
+"1400 participants",10,5,4,140,0,140,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9976,0.000978619435735865,701.0044,0.6956,2500,0,0,999,1400,"20 percentage points","Higher persistence reversal",0.9976
+"1500 participants",10,5,4,150,0,150,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9984,0.000799359743795006,749.7528,0.741600000000001,2500,0,0,999,1500,"20 percentage points","Higher persistence reversal",0.9984
+"1600 participants",10,5,4,160,0,160,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9992,0.000565459105506321,799.694,0.7872,2500,0,0,999,1600,"20 percentage points","Higher persistence reversal",0.9992
+"1700 participants",10,5,4,170,0,170,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,0.9996,0.000399919991998378,849.4448,0.8612,2500,0,0,999,1700,"20 percentage points","Higher persistence reversal",0.999600000000001
+"1800 participants",10,5,4,180,0,180,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,898.9216,0.884,2500,0,0,999,1800,"20 percentage points","Higher persistence reversal",1
+"1900 participants",10,5,4,190,0,190,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,951.0564,0.9136,2500,0,0,999,1900,"20 percentage points","Higher persistence reversal",1
+"2000 participants",10,5,4,200,0,200,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1000.3456,1.01,2500,0,0,999,2000,"20 percentage points","Higher persistence reversal",1
+"2100 participants",10,5,4,210,0,210,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1051.2596,1.0284,2500,0,0,999,2100,"20 percentage points","Higher persistence reversal",1
+"2200 participants",10,5,4,220,0,220,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1100.372,1.0616,2500,0,0,999,2200,"20 percentage points","Higher persistence reversal",1
+"2300 participants",10,5,4,230,0,230,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1149.7696,1.0976,2500,0,0,999,2300,"20 percentage points","Higher persistence reversal",1
+"2400 participants",10,5,4,240,0,240,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1199.9788,1.1672,2500,0,0,999,2400,"20 percentage points","Higher persistence reversal",1
+"2500 participants",10,5,4,250,0,250,0,1,4,0.5,0.35,0.05,0.05,0.5,0.05,0.05,0.2,0.2,1,0,1250.6464,1.2376,2500,0,0,999,2500,"20 percentage points","Higher persistence reversal",1
+"100 participants",10,5,4,10,0,10,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.1304,0.00673485976097498,39.9904,0.3644,2500,0,0,999,100,"20 percentage points","Lower eligibility, higher clustering",0.1304
+"200 participants",10,5,4,20,0,20,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.342,0.00948759189678814,80.1928,0.7096,2500,0,0,999,200,"20 percentage points","Lower eligibility, higher clustering",0.342
+"300 participants",10,5,4,30,0,30,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.486,0.00999607923137867,120.7676,1.0404,2500,0,0,999,300,"20 percentage points","Lower eligibility, higher clustering",0.486
+"400 participants",10,5,4,40,0,40,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.6156,0.00972906244198278,159.82,1.504,2500,0,0,999,400,"20 percentage points","Lower eligibility, higher clustering",0.6156
+"500 participants",10,5,4,50,0,50,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.7244,0.00893632228604139,200.1092,1.8128,2500,0,0,999,500,"20 percentage points","Lower eligibility, higher clustering",0.7244
+"600 participants",10,5,4,60,0,60,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.794,0.00808860927477647,239.9988,2.1496,2500,0,0,999,600,"20 percentage points","Lower eligibility, higher clustering",0.794
+"700 participants",10,5,4,70,0,70,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.8512,0.00711782438670694,279.754,2.4916,2500,0,0,999,700,"20 percentage points","Lower eligibility, higher clustering",0.8512
+"800 participants",10,5,4,80,0,80,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.8896,0.00626775366459149,320.2148,2.9076,2500,0,0,999,800,"20 percentage points","Lower eligibility, higher clustering",0.8896
+"900 participants",10,5,4,90,0,90,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.932,0.00503491807281906,359.9304,3.1836,2500,0,0,999,900,"20 percentage points","Lower eligibility, higher clustering",0.932
+"1000 participants",10,5,4,100,0,100,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9564,0.00408406855965959,399.8452,3.5984,2500,0,0,999,1000,"20 percentage points","Lower eligibility, higher clustering",0.9564
+"1100 participants",10,5,4,110,0,110,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9732,0.00322996965930023,440.0228,3.988,2500,0,0,999,1100,"20 percentage points","Lower eligibility, higher clustering",0.9732
+"1200 participants",10,5,4,120,0,120,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9788,0.00288101093368283,480.0504,4.312,2500,0,0,999,1200,"20 percentage points","Lower eligibility, higher clustering",0.9788
+"1300 participants",10,5,4,130,0,130,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9888,0.00210471470750788,519.8524,4.6872,2500,0,0,999,1300,"20 percentage points","Lower eligibility, higher clustering",0.9888
+"1400 participants",10,5,4,140,0,140,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.992,0.00178168459610561,559.8308,5.0756,2500,0,0,999,1400,"20 percentage points","Lower eligibility, higher clustering",0.991999999999999
+"1500 participants",10,5,4,150,0,150,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9928,0.00169093583556562,598.5744,5.4808,2500,0,0,999,1500,"20 percentage points","Lower eligibility, higher clustering",0.992800000000001
+"1600 participants",10,5,4,160,0,160,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9972,0.0010568178651026,640.502,5.7528,2500,0,0,999,1600,"20 percentage points","Lower eligibility, higher clustering",0.997199999999999
+"1700 participants",10,5,4,170,0,170,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.998,0.000893532316147547,679.5628,6.0608,2500,0,0,999,1700,"20 percentage points","Lower eligibility, higher clustering",0.997999999999999
+"1800 participants",10,5,4,180,0,180,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9992,0.000565459105506321,720.1352,6.4748,2500,0,0,999,1800,"20 percentage points","Lower eligibility, higher clustering",0.99896
+"1900 participants",10,5,4,190,0,190,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9992,0.000565459105506321,760.6684,6.8724,2500,0,0,999,1900,"20 percentage points","Lower eligibility, higher clustering",0.99896
+"2000 participants",10,5,4,200,0,200,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9992,0.000565459105506321,799.4872,7.2796,2500,0,0,999,2000,"20 percentage points","Lower eligibility, higher clustering",0.99896
+"2100 participants",10,5,4,210,0,210,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9984,0.000799359743795006,839.6112,7.6676,2500,0,0,999,2100,"20 percentage points","Lower eligibility, higher clustering",0.99896
+"2200 participants",10,5,4,220,0,220,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9988,0.000692404506051189,878.6612,7.9588,2500,0,0,999,2200,"20 percentage points","Lower eligibility, higher clustering",0.99896
+"2300 participants",10,5,4,230,0,230,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,0.9996,0.000399919991998378,920.4504,8.3588,2500,0,0,999,2300,"20 percentage points","Lower eligibility, higher clustering",0.999600000000001
+"2400 participants",10,5,4,240,0,240,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,1,0,959.6132,8.6348,2500,0,0,999,2400,"20 percentage points","Lower eligibility, higher clustering",1
+"2500 participants",10,5,4,250,0,250,0,1,4,0.4,0.2,0.1,0.1,0.4,0.1,0.1,0.2,0.2,1,0,999.2952,9.0236,2500,0,0,999,2500,"20 percentage points","Lower eligibility, higher clustering",1

@@ -7,4 +7,4 @@
 \IRBchangestrue
 \newcommand{\irbadd}[1]{\ifIRBchanges\hl{#1}\else#1\fi}
 \newcommand{\irbdel}[1]{\ifIRBchanges{\color{red!70!black}\sout{#1}}\fi}
-\newcommand{\irbreplace}[2]{\ifIRBchanges\irbdel{#1}\,\irbadd{#2}\else#2\fi}
+\newcommand{\irbreplace}[2]{\ifIRBchanges\irbdel{#1}\allowbreak\,\irbadd{#2}\else#2\fi}

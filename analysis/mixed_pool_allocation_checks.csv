@@ -1,0 +1,6 @@
+"pools_in_size_stream","minimum_recovery","maximum_recovery","mean_recovery","first_slot_recovery_probability","probability_all_prefix_recovery"
+1,0,1,0.50235,0.50235,0.50235
+2,0,2,1.0021,0.505,0.16835
+3,1,2,1.5021,0.4997,0
+4,2,2,2,0.49735,0
+6,2,4,3.00125,0.50595,0

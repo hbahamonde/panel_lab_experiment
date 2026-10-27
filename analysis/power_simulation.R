@@ -1,21 +1,27 @@
 #!/usr/bin/env Rscript
 
-# Design-based power simulation for the primary sustained-reversal outcome.
+# Design-based power simulation for final-round restoration of approval.
 #
 # The simulation mirrors the implemented design:
-#   * 300 completed participants in 28, 29, or 30 matching pools
-#   * 10- or 15-person pools and five-person playing groups
+#   * five-person playing groups inside 5-, 10-, or 15-person matching pools
 #   * recovery assigned to whole pools after Block 1
-#   * paired assignment when a 20-person session contains two 10-person pools
-#   * a fair independent draw for a session containing one unmatched pool
+#   * treatment balanced across sessions within exact matching-pool size
 #   * analysis restricted to final-round Block-1 supporters of direct
 #     implementation
+#   * Block 1 has 10 rounds; the primary Block-2 ballot is Round 5, after
+#     four completed rounds in the assigned condition
 #   * a two-sided randomization-inference test using the actual assignment rule
 #
 # Power is necessarily conditional on quantities that are unknown before the
 # pilot: eligibility for the primary subgroup, the persistence reversal rate,
 # and within-pool similarity in reversal. The script therefore reports a
 # sensitivity analysis rather than a single unconditional power number.
+# The sample-size curves hold pool size at ten. mixed_pool_power.R separately
+# varies the realized attendance mix and similarity within fixed groups of five.
+# This terminal-binary-outcome simulation does not posit a learning trajectory.
+# Conditional on the same endpoint rates and correlations, changing the number
+# of preceding rounds does not change power. The separate round_horizon_checks.R
+# script evaluates illustrative adjustment speeds without treating them as data.
 
 options(stringsAsFactors = FALSE)
 
@@ -25,6 +31,8 @@ randomization_reps <- as.integer(Sys.getenv("POWER_NPERM", "1999"))
 curve_simulation_reps <- as.integer(Sys.getenv("POWER_CURVE_NSIM", "2500"))
 curve_randomization_reps <- as.integer(Sys.getenv("POWER_CURVE_NPERM", "999"))
 alpha_level <- 0.05
+block1_rounds <- 10L
+block2_rounds <- 5L
 
 if (
   simulation_reps < 100 || randomization_reps < 199 ||
@@ -38,23 +46,16 @@ set.seed(seed)
 make_design <- function(label) {
   if (label == "30 pools") {
     pool_size <- rep(10L, 30L)
-    stratum <- rep(seq_len(15L), each = 2L)
   } else if (label == "29 pools") {
-    # Thirteen 20-person sessions, one 10-person session, and two 15-person
-    # sessions. The last three pools are independently randomized.
     pool_size <- c(rep(10L, 27L), 15L, 15L)
-    stratum <- c(rep(seq_len(13L), each = 2L), 14L, 15L, 16L)
   } else if (label == "28 pools") {
-    # Twelve 20-person sessions and four 15-person sessions. The last four
-    # pools are independently randomized.
     pool_size <- c(rep(10L, 24L), rep(15L, 4L))
-    stratum <- c(rep(seq_len(12L), each = 2L), 13L:16L)
   } else {
     stop("Unknown design label: ", label)
   }
 
   stopifnot(sum(pool_size) == 300L)
-  list(label = label, pool_size = pool_size, stratum = stratum)
+  list(label = label, pool_size = pool_size)
 }
 
 make_balanced_design <- function(completed_participants) {
@@ -67,23 +68,37 @@ make_balanced_design <- function(completed_participants) {
   pools <- completed_participants / 10L
   list(
     label = paste(completed_participants, "participants"),
-    pool_size = rep(10L, pools),
-    stratum = rep(seq_len(pools / 2L), each = 2L)
+    pool_size = rep(10L, pools)
   )
 }
 
-draw_assignments <- function(n_draws, stratum) {
-  z <- matrix(0L, nrow = n_draws, ncol = length(stratum))
-  for (s in unique(stratum)) {
-    idx <- which(stratum == s)
-    if (length(idx) == 2L) {
-      first_treated <- rbinom(n_draws, 1L, 0.5)
-      z[, idx[1L]] <- first_treated
-      z[, idx[2L]] <- 1L - first_treated
-    } else if (length(idx) == 1L) {
-      z[, idx] <- rbinom(n_draws, 1L, 0.5)
-    } else {
-      stop("Every randomization stratum must contain one or two pools.")
+draw_assignments <- function(
+  n_draws,
+  pool_size,
+  allocation_block_size = 4L,
+  collection_batch = rep("study", length(pool_size))
+) {
+  if (allocation_block_size %% 2L != 0L || allocation_block_size < 2L) {
+    stop("Allocation blocks require an even number of pools.")
+  }
+  stopifnot(length(collection_batch) == length(pool_size))
+  z <- matrix(0L, nrow = n_draws, ncol = length(pool_size))
+  stream <- interaction(collection_batch, pool_size, drop = TRUE)
+  for (id in unique(stream)) {
+    chronological <- which(stream == id)
+    for (start in seq.int(1L, length(chronological), allocation_block_size)) {
+      end <- min(start + allocation_block_size - 1L, length(chronological))
+      idx <- chronological[start:end]
+      # Draw a fresh balanced block and use its chronological prefix when
+      # recruitment ends before all slots are used. Incomplete blocks are not
+      # retrospectively rebalanced or discarded.
+      slots <- rbind(
+        rep(0L, allocation_block_size / 2L),
+        rep(1L, allocation_block_size / 2L)
+      )
+      labels <- as.integer(slots)
+      draws <- replicate(n_draws, sample(labels, length(labels)))
+      z[, idx] <- t(draws[seq_along(idx), , drop = FALSE])
     }
   }
   z
@@ -121,38 +136,50 @@ simulate_power <- function(
   effect,
   outcome_icc,
   eligibility_icc = 0.05,
+  eligible_share_five = eligible_share,
+  outcome_icc_five = outcome_icc,
+  eligibility_icc_five = eligibility_icc,
+  effect_five = effect,
   n_sim = simulation_reps,
   n_perm = randomization_reps,
   alpha = alpha_level
 ) {
-  if (persistence_rate + effect >= 1) {
+  if (persistence_rate + max(effect, effect_five) >= 1) {
     stop("The persistence rate plus the risk difference must be below one.")
   }
 
   j <- length(design$pool_size)
-  z_observed <- draw_assignments(n_sim, design$stratum)
-  z_random <- draw_assignments(n_perm, design$stratum)
+  batches <- design$collection_batch
+  if (is.null(batches)) batches <- rep("study", j)
+  z_observed <- draw_assignments(n_sim, design$pool_size,
+                               collection_batch = batches)
+  z_random <- draw_assignments(n_perm, design$pool_size,
+                             collection_batch = batches)
 
   eligible <- matrix(0L, nrow = n_sim, ncol = j)
   reversals <- matrix(0L, nrow = n_sim, ncol = j)
 
   for (pool in seq_len(j)) {
+    is_five <- design$pool_size[pool] == 5L
+    this_eligible <- if (is_five) eligible_share_five else eligible_share
+    this_eligibility_icc <- if (is_five) eligibility_icc_five else eligibility_icc
+    this_outcome_icc <- if (is_five) outcome_icc_five else outcome_icc
+    this_effect <- if (is_five) effect_five else effect
     eligible[, pool] <- draw_beta_binomial_counts(
       n_sim,
       design$pool_size[pool],
-      eligible_share,
-      eligibility_icc
+      this_eligible,
+      this_eligibility_icc
     )
 
     latent_rank <- runif(n_sim)
-    arm_mean <- persistence_rate + effect * z_observed[, pool]
     probability <- numeric(n_sim)
     for (arm in c(0L, 1L)) {
       idx <- which(z_observed[, pool] == arm)
       probability[idx] <- cluster_probability(
         latent_rank[idx],
-        persistence_rate + effect * arm,
-        outcome_icc
+        persistence_rate + this_effect * arm,
+        this_outcome_icc
       )
     }
     reversals[, pool] <- rbinom(n_sim, eligible[, pool], probability)
@@ -186,29 +213,46 @@ simulate_power <- function(
 
   perm_stat <- perm_treated_y / perm_treated_n -
     perm_control_y / perm_control_n
+  finite_permutation <- is.finite(perm_stat)
   exceed <- sweep(abs(perm_stat), 2L, abs(observed_stat), FUN = ">=")
-  p_value <- (1 + colSums(exceed, na.rm = TRUE)) / (n_perm + 1)
+  p_value <- (1 + colSums(exceed & finite_permutation, na.rm = TRUE)) /
+    (1 + colSums(finite_permutation))
   valid <- is.finite(observed_stat) & is.finite(p_value)
   power <- mean(p_value[valid] < alpha)
 
   data.frame(
     design = design$label,
+    block1_rounds = block1_rounds,
+    block2_rounds = block2_rounds,
+    completed_posttreatment_rounds = block2_rounds - 1L,
     pools = j,
-    paired_strata = sum(table(design$stratum) == 2L),
-    unmatched_pools = sum(table(design$stratum) == 1L),
+    five_person_pools = sum(design$pool_size == 5L),
+    ten_person_pools = sum(design$pool_size == 10L),
+    fifteen_person_pools = sum(design$pool_size == 15L),
+    collection_batches = length(unique(batches)),
+    allocation_block_size = 4L,
     eligible_share = eligible_share,
     persistence_rate = persistence_rate,
     outcome_icc = outcome_icc,
     eligibility_icc = eligibility_icc,
+    eligible_share_five = eligible_share_five,
+    outcome_icc_five = outcome_icc_five,
+    eligibility_icc_five = eligibility_icc_five,
+    risk_difference_five = effect_five,
     risk_difference = effect,
     power = power,
     monte_carlo_se = sqrt(power * (1 - power) / sum(valid)),
     mean_eligible = mean(total_n[valid]),
+    mean_zero_eligible_pools = mean(rowSums(eligible == 0L)),
     simulations = sum(valid),
+    invalid_experiments = sum(!valid),
+    mean_invalid_reallocations = mean(colSums(!finite_permutation)),
     random_assignments = n_perm,
     stringsAsFactors = FALSE
   )
 }
+
+if (Sys.getenv("POWER_FUNCTIONS_ONLY", "0") != "1") {
 
 designs <- lapply(c("30 pools", "29 pools", "28 pools"), make_design)
 
@@ -274,10 +318,17 @@ all_results <- rbind(
   sensitivity_results[sensitivity_results$scenario != "Central", ]
 )
 all_results <- all_results[, c(
-  "scenario", "design", "pools", "paired_strata", "unmatched_pools",
+  "scenario", "design", "block1_rounds", "block2_rounds",
+  "completed_posttreatment_rounds", "pools", "five_person_pools",
+  "ten_person_pools", "fifteen_person_pools", "allocation_block_size",
+  "collection_batches",
   "eligible_share", "persistence_rate", "outcome_icc", "eligibility_icc",
+  "eligible_share_five", "outcome_icc_five", "eligibility_icc_five",
+  "risk_difference_five",
   "risk_difference", "power", "monte_carlo_se", "mean_eligible",
-  "simulations", "random_assignments"
+  "mean_zero_eligible_pools",
+  "simulations", "invalid_experiments", "mean_invalid_reallocations",
+  "random_assignments"
 )]
 
 # Resolve the output directory from the script path when run with Rscript.
@@ -331,11 +382,10 @@ mde <- do.call(
 mde_file <- file.path(output_dir, "power_simulation_mde.csv")
 write.csv(mde, mde_file, row.names = FALSE)
 
-# Sample-size curves use the cleanest scaling path for this design: every
-# additional 20 completed participants create two new 10-person pools and one
-# additional paired treatment assignment. This isolates the statistical value
-# of adding independent pools from the incidental mix of 10- and 15-person
-# pools in the fixed 300-participant design.
+# Sample-size curves hold pool size at ten. Allocation remains blocked within
+# exact pool size across sessions. Mixed attendance is considered separately
+# in mixed_pool_power.R rather than assigning a fixed attendance composition
+# to each point on this reference curve.
 sample_grid <- seq(100L, 2500L, by = 100L)
 curve_effects <- c(0.10, 0.15, 0.20, 0.25, 0.30)
 
@@ -628,3 +678,5 @@ print(mde, row.names = FALSE)
 cat("\nSample-size thresholds written to", threshold_file, "\n\n")
 print(rbind(effect_thresholds, scenario_thresholds), row.names = FALSE)
 cat("\nPower figure written to", figure_pdf, "\n")
+
+}
