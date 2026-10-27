@@ -1,18 +1,18 @@
-{{ block title }}Try it: make a proposal{{ endblock }}
+{{ block title }}Harjoittele: tee ehdotus{{ endblock }}
 
 {{ block content }}
-<p>The software has selected you to make a proposal. Every citizen has 20 points. Propose how many points everyone should put in the public-services fund and whether any fund points should move to your own payoff.</p>
+<p>Ohjelmisto on arponut sinut tekemään ehdotuksen. Jokaisella kansalaisella on 20 pistettä. Ehdota, kuinka monta pistettä jokaisen pitäisi laittaa julkisten palvelujen rahastoon ja siirretäänkö rahastopisteitä omaan ansioosi.</p>
 
-<p>You may propose moving up to 20 points, but never more than the group would put in the fund. Whether the proposal requires approval depends on the method chosen for the round.</p>
+<p>Voit ehdottaa enintään 20 pisteen siirtoa, mutta et enempää kuin ryhmä laittaisi rahastoon. Kierrokselle valittu menettely ratkaisee, vaatiiko ehdotus hyväksynnän.</p>
 
 {{ formfields }}
 
 <div class="card card-body bg-light mb-3" id="decision-maker-preview" aria-live="polite">
-    Enter both amounts above to see the result.
+    Näet tuloksen, kun olet antanut molemmat pistemäärät yllä.
 </div>
 
-<p class="text-muted">This practice choice is not paid and is not included in the analysis.</p>
-<p>Choose your answers, then click <strong>Next</strong> to send them.</p>
+<p class="text-muted">Tämä harjoitusvalinta ei vaikuta palkkioon eikä sitä sisällytetä analyysiin.</p>
+<p>Valitse vastauksesi ja lähetä ne napsauttamalla <strong>Seuraava</strong>.</p>
 {{ next_button }}
 
 <script>
@@ -24,14 +24,14 @@
 
     function updatePreview() {
         if (requiredInput.value === '' || movedInput.value === '') {
-            preview.textContent = 'Enter both amounts above to see the result.';
+            preview.textContent = 'Näet tuloksen, kun olet antanut molemmat pistemäärät yllä.';
             return;
         }
         const requiredAmount = Number(requiredInput.value);
         const movedAmount = Number(movedInput.value);
         const collected = 5 * requiredAmount;
         if (movedAmount > collected) {
-            preview.innerHTML = '<strong>The selected person cannot move more points than the group would put in the fund.</strong>';
+            preview.innerHTML = '<strong>Valittu henkilö ei voi siirtää enempää pisteitä kuin ryhmä laittaisi rahastoon.</strong>';
             return;
         }
         const fundTotal = collected - movedAmount;
@@ -39,11 +39,11 @@
         const citizenPayoff = 20 - requiredAmount + sharedReturn;
         const decisionMakerPayoff = citizenPayoff + movedAmount;
         preview.innerHTML =
-            '<strong>Result with your choices</strong><br>' +
-            'Points left in the fund: ' + fundTotal.toFixed(0) + '<br>' +
-            'Group points received by each member: ' + sharedReturn.toFixed(2) + '<br>' +
-            'Payoff of each other citizen if implemented directly at the 2.50 rate: ' + citizenPayoff.toFixed(2) + ' points<br>' +
-            'Your payoff as selected person: <strong>' + decisionMakerPayoff.toFixed(2) + ' points</strong>';
+            '<strong>Valintojesi tulos</strong><br>' +
+            'Rahastoon jäävät pisteet: ' + fundTotal.toFixed(0) + '<br>' +
+            'Kullekin kansalaiselle jaetut ryhmäpisteet: ' + sharedReturn.toFixed(2).replace('.', ',') + '<br>' +
+            'Jokaisen muun kansalaisen ansio, jos ehdotus toteutetaan suoraan kertoimella 2,50: ' + citizenPayoff.toFixed(2).replace('.', ',') + ' pistettä<br>' +
+            'Oma ansiosi valittuna henkilönä: <strong>' + decisionMakerPayoff.toFixed(2).replace('.', ',') + ' pistettä</strong>';
     }
 
     requiredInput.addEventListener('input', updatePreview);

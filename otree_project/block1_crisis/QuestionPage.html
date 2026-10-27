@@ -3,7 +3,7 @@
 {{ block content }}
 {{ if explanation }}<p>{{ explanation }}</p>{{ endif }}
 {{ formfields }}
-<p class="text-muted small">Choose your answer, then click <strong>Next</strong> to send it.</p>
+<p class="text-muted small">Valitse vastauksesi ja lähetä se napsauttamalla <strong>Seuraava</strong>.</p>
 {{ next_button }}
 <link rel="stylesheet" href="{{ static 'decision_reminder.css' }}">
 <script src="{{ static 'decision_reminder.js' }}"></script>
@@ -26,7 +26,7 @@
     const firstWrapper = selects[0].closest('.mb-3') || selects[0].parentElement;
     const note = document.createElement('div');
     note.className = 'agreement-note';
-    note.innerHTML = '<strong>For the following statements, 1 means strongly disagree and 7 means strongly agree.</strong>';
+    note.innerHTML = '<strong>Seuraavissa väittämissä 1 tarkoittaa täysin eri mieltä ja 7 täysin samaa mieltä.</strong>';
     firstWrapper.parentNode.insertBefore(note, firstWrapper);
 
     selects.forEach(function (select) {
@@ -36,7 +36,7 @@
 
         const status = document.createElement('output');
         status.className = 'slider-status';
-        status.textContent = currentValue ? currentValue : 'Not answered';
+        status.textContent = currentValue ? currentValue : 'Ei vastattu';
 
         const slider = document.createElement('input');
         slider.type = 'range';
@@ -45,12 +45,12 @@
         slider.step = '1';
         slider.value = currentValue || '4';
         slider.id = select.id;
-        slider.setAttribute('aria-label', select.labels && select.labels[0] ? select.labels[0].textContent : 'Agreement');
+        slider.setAttribute('aria-label', select.labels && select.labels[0] ? select.labels[0].textContent : 'Samaa vai eri mieltä');
         if (currentValue) slider.name = select.name;
 
         const ends = document.createElement('div');
         ends.className = 'slider-ends';
-        ends.innerHTML = '<span>1 — Strongly disagree</span><span>7 — Strongly agree</span>';
+        ends.innerHTML = '<span>1 — Täysin eri mieltä</span><span>7 — Täysin samaa mieltä</span>';
 
         function recordAnswer() {
             slider.name = select.name;

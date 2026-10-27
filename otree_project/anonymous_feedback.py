@@ -195,7 +195,7 @@ class FeedbackGateway:
             return
         # Do not use or retain cookies, source IP, or referrer information.
         if not self.enabled or scope.get('query_string'):
-            await respond(send, 404, 'This feedback form is not available.')
+            await respond(send, 404, 'Tämä palautelomake ei ole käytettävissä.')
             return
         method = scope.get('method')
         if method == 'GET':
@@ -203,11 +203,11 @@ class FeedbackGateway:
             await respond(send, 200, html, 'text/html; charset=utf-8')
             return
         if method != 'POST':
-            await respond(send, 405, 'Use the feedback form.')
+            await respond(send, 405, 'Käytä palautelomaketta.')
             return
         content_type = dict(scope.get('headers', [])).get(b'content-type', b'')
         if content_type.split(b';', 1)[0].strip().lower() != b'application/json':
-            await respond(send, 415, 'Send feedback using the form.')
+            await respond(send, 415, 'Lähetä palaute lomakkeella.')
             return
         body = bytearray()
         while True:
@@ -216,22 +216,22 @@ class FeedbackGateway:
                 return
             body.extend(message.get('body', b''))
             if len(body) > MAX_BODY_BYTES:
-                await respond(send, 413, 'The answers are too long.')
+                await respond(send, 413, 'Vastaukset ovat liian pitkiä.')
                 return
             if not message.get('more_body', False):
                 break
         try:
             answers = validate_answers(json.loads(body))
         except (ValueError, TypeError, UnicodeDecodeError):
-            await respond(send, 400, 'Please check your answers and try again.')
+            await respond(send, 400, 'Tarkista vastauksesi ja yritä uudelleen.')
             return
         try:
             self.store.submit(answers)
         except Exception:
             # A traceback/request report could disclose the submitted free text.
-            await respond(send, 503, 'Feedback could not be saved. Please try again later.')
+            await respond(send, 503, 'Palautetta ei voitu tallentaa. Yritä myöhemmin uudelleen.')
             return
-        await respond(send, 200, 'Thank you. Your anonymous feedback has been saved.')
+        await respond(send, 200, 'Kiitos. Anonyymi palautteesi on tallennettu.')
 
 
 if __name__ == '__main__':

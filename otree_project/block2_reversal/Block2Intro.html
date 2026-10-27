@@ -1,25 +1,25 @@
-{{ block title }}Block 2: public-services fund rates{{ endblock }}
+{{ block title }}Osio 2: julkisten palvelujen rahaston kertoimet{{ endblock }}
 
 {{ block content }}
-<p>The first ten rounds are complete. The same participants remain in your matching pool. {{ if fixed_five_person_pool }}The same five citizens continue playing together.{{ else }}The pool continues to be reshuffled into groups of five before each round.{{ endif }}</p>
+<p>Ensimmäiset kymmenen kierrosta ovat päättyneet. Samat osallistujat pysyvät osallistujajoukossasi. {{ if fixed_five_person_pool }}Samat viisi kansalaista jatkavat pelaamista yhdessä.{{ else }}Joukko jaetaan edelleen uudelleen viiden hengen ryhmiin ennen jokaista kierrosta.{{ endif }}</p>
 
 {{ if recovery }}
 <div class="alert alert-secondary">
-    <h5>Public-service conditions have improved</h5>
-    <p>Parliament has passed a budget, healthcare waiting times are falling, and planning for public services has resumed.</p>
-    <p class="mb-0">As part of this recovery, every fund point under <strong>Group approval required</strong> now creates <strong>{{ approval_multiplier }} group points</strong>. Under <strong>Decision takes effect directly</strong>, every point left in the fund creates <strong>{{ automatic_multiplier }} group points</strong>.</p>
+    <h5>Julkisten palvelujen olosuhteet ovat parantuneet</h5>
+    <p>Parlamentti on hyväksynyt talousarvion, terveydenhuollon jonotusajat lyhenevät ja julkisten palvelujen suunnittelu on jatkunut.</p>
+    <p class="mb-0">Osana tätä elpymistä jokainen rahastopiste tuottaa nyt <strong>{{ approval_multiplier }} ryhmäpistettä</strong> menettelyssä <strong>Ryhmän hyväksyntä vaaditaan</strong>. Menettelyssä <strong>Päätös tulee voimaan suoraan</strong> jokainen rahastoon jäävä piste tuottaa <strong>{{ automatic_multiplier }} ryhmäpistettä</strong>.</p>
 </div>
 {{ else }}
 <div class="alert alert-secondary">
-    <h5>Public-service conditions remain under strain</h5>
-    <p>Parliament has still not passed a budget, healthcare waiting times remain high, and planning for public services remains stalled.</p>
-    <p class="mb-0">The fund rates therefore remain the same. Under <strong>Group approval required</strong>, every fund point creates <strong>{{ approval_multiplier }} group points</strong>. Under <strong>Decision takes effect directly</strong>, every point left in the fund creates <strong>{{ automatic_multiplier }} group points</strong>.</p>
+    <h5>Julkisten palvelujen olosuhteet ovat edelleen vaikeat</h5>
+    <p>Parlamentti ei ole vieläkään hyväksynyt talousarviota, terveydenhuollon jonotusajat ovat edelleen pitkät ja julkisten palvelujen suunnittelu on yhä pysähdyksissä.</p>
+    <p class="mb-0">Rahaston kertoimet pysyvät siksi samoina. Menettelyssä <strong>Ryhmän hyväksyntä vaaditaan</strong> jokainen rahastopiste tuottaa <strong>{{ approval_multiplier }} ryhmäpistettä</strong>. Menettelyssä <strong>Päätös tulee voimaan suoraan</strong> jokainen rahastoon jäävä piste tuottaa <strong>{{ automatic_multiplier }} ryhmäpistettä</strong>.</p>
 </div>
 {{ endif }}
 
-<p>The decision rules remain the same. Under both methods, a randomly selected person proposes the allocation and any personal transfer. The proposal either requires three approvals from the other four citizens or takes effect directly. Rejection returns the group to individual allocations.</p>
+<p>Päätöksenteon säännöt pysyvät samoina. Molemmissa menettelyissä satunnaisesti valittu henkilö ehdottaa rahastoon laitettavaa pistemäärää ja mahdollista siirtoa omaan ansioonsa. Ehdotus joko vaatii kolmen muun kansalaisen hyväksynnän neljästä tai tulee voimaan suoraan. Hylkäämisen jälkeen jokainen valitsee itse rahastoon laittamansa pistemäärän.</p>
 
-<p>You will now complete <strong>{{ rounds }} additional paid rounds</strong>.</p>
+<p>Seuraavaksi teet vielä <strong>{{ rounds }} palkkiollista kierrosta</strong>.</p>
 
 {{ next_button }}
 {{ endblock }}

@@ -12,13 +12,13 @@
 
         const panel = document.createElement('aside');
         panel.className = 'decision-reminder';
-        panel.setAttribute('aria-label', 'Decision reminder');
+        panel.setAttribute('aria-label', 'Muistutus päätöksestä');
         panel.innerHTML =
             '<div class="decision-reminder-heading">' +
-            '<strong class="decision-reminder-title">Decision guide</strong>' +
+            '<strong class="decision-reminder-title">Päätösmuistutus</strong>' +
             '<span class="decision-reminder-clock" aria-hidden="true"></span></div>' +
-            '<p>Choose your answer, then click <strong>Next</strong> to send it.</p>' +
-            '<small>This timer is a guide. Your page stays open.</small>' +
+            '<p>Valitse vastauksesi ja lähetä se napsauttamalla <strong>Seuraava</strong>.</p>' +
+            '<small>Ajastin on vain ohjeellinen. Sivu pysyy auki.</small>' +
             '<span class="decision-reminder-status visually-hidden" role="status" aria-live="polite"></span>';
         form.prepend(panel);
 
@@ -37,8 +37,8 @@
             if (remaining > 0 || reminded) return;
             reminded = true;
             panel.classList.add('decision-reminder-due');
-            title.textContent = 'Please finish your decision';
-            status.textContent = 'Please choose your answer and click Next. Your page stays open.';
+            title.textContent = 'Viimeistele päätöksesi';
+            status.textContent = 'Valitse vastauksesi ja napsauta Seuraava. Sivu pysyy auki.';
             const nextButton = form.querySelector('.otree-btn-next');
             if (nextButton) nextButton.classList.add('decision-next-reminder');
             if (interval) clearInterval(interval);

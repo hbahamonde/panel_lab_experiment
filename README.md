@@ -14,14 +14,41 @@ Each round begins with 20 points per participant. One uniformly selected round o
 
 Strategic choice pages display a 90-second countdown and remind participants to choose an answer and click Next. At zero, the page stays open. The software records response time and flags delays, and the researcher or trained research assistant can help participants continue. It never generates a ballot or allocation.
 
-## English reference version
+## Interface language and English reference
+
+The participant interface is in Finnish. Variable names, stored response codes,
+analysis scripts, and researcher-facing configuration names remain in English.
+The paper and its English screenshots also remain in English.
 
 The final English interface and accompanying paper are preserved by the Git tag
-`english-final-2026-10-27`. This tag identifies the complete reference version
-without requiring a second project folder. The paper and its English screenshots
-remain in English. Interface translations must preserve variable names, stored
-response values, question scales, randomization, payoff rules, and payment exports.
-Finnish wording requires review by a Finnish-speaking researcher before lab use.
+[`english-final-2026-10-27`](https://github.com/hbahamonde/panel_lab_experiment/tree/english-final-2026-10-27).
+This is a complete reference version, not a second project folder. Changing
+`LANGUAGE_CODE` alone does not restore the English text. Use the tagged version
+to inspect the original wording without changing a live session.
+
+The translation preserves question order and scales, response codes, matching,
+randomization, payoff rules, and payment exports. Decimal commas are a display
+convention only. Before lab use, a Finnish-speaking researcher should review the
+consent, instructions, both condition descriptions, questionnaire wording and
+scale anchors, feedback form, and debrief against the English reference.
+Set the laboratory browser's interface language to Finnish. Native number-input
+validation prompts follow the browser's interface language, while oTree's
+server-side validation messages use Finnish.
+
+| English reference | Finnish participant label | Stored response code |
+| --- | --- | --- |
+| Group approval required | Ryhmän hyväksyntä vaaditaan | `approval` |
+| Decision takes effect directly | Päätös tulee voimaan suoraan | `automatic` |
+| Approve the proposal | Hyväksyn ehdotuksen | `approve` |
+| Reject the proposal | Hylkään ehdotuksen | `reject` |
+| Next | Seuraava | No response code |
+| Selected person | Valittu henkilö | No response code |
+| Public-services fund | Julkisten palvelujen rahasto | No response code |
+| Block / round | Osio / kierros | Existing numeric block and round fields |
+
+The two method badges use **R** and **P**, the initials of the Finnish labels.
+The paper's research notation remains **D** for required approval and **A** for
+direct implementation.
 
 ## Start a clean development server
 

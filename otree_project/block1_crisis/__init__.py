@@ -21,11 +21,16 @@ def require_all(player, values, field_names):
     if development_mode(player):
         return
     if any(values.get(field_name) in (None, '') for field_name in field_names):
-        return 'Please answer all questions before continuing.'
+        return 'Vastaa kaikkiin kysymyksiin ennen kuin jatkat.'
 
 
 def solo_testing(obj):
     return obj.session.config.get('solo_testing', False)
+
+
+def format_rate(value):
+    """Format a displayed rate without changing the numerical value used in play."""
+    return f'{value:.2f}'.replace('.', ',')
 
 
 def flexible_pool_sizes(player_count):
@@ -275,12 +280,12 @@ class C(BaseConstants):
     TREATMENT_PERSISTENCE = 'persistence'
     DECISION_DELAY_THRESHOLD_SECONDS = 90
     INSTITUTION_CHOICES = [
-        [APPROVAL, 'Group approval required'],
-        [AUTOMATIC, 'Decision takes effect directly'],
+        [APPROVAL, 'Ryhmän hyväksyntä vaaditaan'],
+        [AUTOMATIC, 'Päätös tulee voimaan suoraan'],
     ]
     APPROVAL_CHOICES = [
-        [APPROVE, 'Approve the proposal'],
-        [REJECT, 'Reject the proposal'],
+        [APPROVE, 'Hyväksyn ehdotuksen'],
+        [REJECT, 'Hylkään ehdotuksen'],
     ]
 
 class Subsession(BaseSubsession):
@@ -314,33 +319,33 @@ class Player(BasePlayer):
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES,
         widget=widgets.RadioSelect,
-        label='Should the selected person\'s proposal require group approval?',
+        label='Pitäisikö valitun henkilön ehdotuksen vaatia ryhmän hyväksyntä?',
         blank=True,
     )
     solo_other_automatic_votes = models.IntegerField(min=0, max=4, blank=True)
     solo_other_approval_votes = models.IntegerField(
         min=0, max=4, blank=True,
-        label='Solo test: how many of the four simulated citizens approve the proposal?',
+        label='Yhden henkilön testi: kuinka moni neljästä simuloidusta kansalaisesta hyväksyy ehdotuksen?',
     )
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT,
-        label='How many of your 20 points do you put in the public-services fund?',
+        label='Kuinka monta 20 pisteestäsi laitat julkisten palvelujen rahastoon?',
         blank=True,
     )
     proposed_allocation = models.IntegerField(
         min=0, max=C.ENDOWMENT,
-        label='How many points should every citizen put in the public-services fund?',
+        label='Kuinka monta pistettä jokaisen kansalaisen pitäisi laittaa julkisten palvelujen rahastoon?',
         blank=True,
     )
     proposed_transfer = models.IntegerField(
         min=0, max=C.MAX_PERSONAL_TRANSFER,
-        label='How many fund points should move to your own payoff?',
+        label='Kuinka monta rahastopistettä pitäisi siirtää omaan ansioosi?',
         blank=True,
     )
     approval_vote = models.StringField(
         choices=C.APPROVAL_CHOICES,
         widget=widgets.RadioSelect,
-        label='Do you approve or reject the selected person\'s proposal?',
+        label='Hyväksytkö vai hylkäätkö valitun henkilön ehdotuksen?',
         blank=True,
     )
     is_leader = models.BooleanField(initial=False)
@@ -355,53 +360,53 @@ class Player(BasePlayer):
     round_payoff = models.FloatField(initial=0)
     expected_payoff_citizens = models.IntegerField(
         min=0, max=60,
-        label='If group approval is required, how many points do you expect to earn?',
+        label='Jos ryhmän hyväksyntä vaaditaan, kuinka monta pistettä odotat ansaitsevasi?',
         blank=True,
     )
     expected_payoff_leader = models.IntegerField(
         min=0, max=60,
-        label='If the selected person\'s decision takes effect directly, how many points do you expect to earn?',
+        label='Jos valitun henkilön päätös tulee voimaan suoraan, kuinka monta pistettä odotat ansaitsevasi?',
         blank=True,
     )
     expected_leader_transfer = models.IntegerField(
         min=0, max=C.MAX_PERSONAL_TRANSFER,
-        label='How many fund points do you expect the selected person to propose moving to their own payoff?',
+        label='Kuinka monta rahastopistettä odotat valitun henkilön ehdottavan siirrettäväksi omaan ansioonsa?',
         blank=True,
     )
 
-    practice_contribution = models.IntegerField(min=0, max=20, label='How many of your 20 points do you put in the public-services fund?', blank=True)
-    practice_allocation = models.IntegerField(min=0, max=20, label='How many points should every citizen put in the public-services fund?', blank=True)
-    practice_transfer = models.IntegerField(min=0, max=20, label='How many fund points should move to your own payoff?', blank=True)
+    practice_contribution = models.IntegerField(min=0, max=20, label='Kuinka monta 20 pisteestäsi laitat julkisten palvelujen rahastoon?', blank=True)
+    practice_allocation = models.IntegerField(min=0, max=20, label='Kuinka monta pistettä jokaisen kansalaisen pitäisi laittaa julkisten palvelujen rahastoon?', blank=True)
+    practice_transfer = models.IntegerField(min=0, max=20, label='Kuinka monta rahastopistettä pitäisi siirtää omaan ansioosi?', blank=True)
     practice_approval = models.StringField(
         choices=C.APPROVAL_CHOICES, widget=widgets.RadioSelect,
-        label='Would you approve or reject this proposal?', blank=True,
+        label='Hyväksyisitkö vai hylkäisitkö tämän ehdotuksen?', blank=True,
     )
     comprehension_1 = models.StringField(
-        choices=[['same', 'A randomly selected person proposes the allocation under both methods'], ['different', 'A selected person is used only when the decision takes effect directly']],
+        choices=[['same', 'Satunnaisesti valittu henkilö ehdottaa pistemäärää molemmissa menettelyissä'], ['different', 'Valittua henkilöä käytetään vain, kun päätös tulee voimaan suoraan']],
         widget=widgets.RadioSelect,
-        label='Who proposes the equal allocation under the two methods?',
+        label='Kuka ehdottaa kaikille samaa pistemäärää näissä kahdessa menettelyssä?',
         blank=True,
     )
     comprehension_2 = models.StringField(
-        choices=[['three', 'At least three of the four other citizens'], ['two', 'At least two of the four other citizens'], ['all', 'All four other citizens']], widget=widgets.RadioSelect,
-        label='When group approval is required, how many of the four other citizens must approve?',
+        choices=[['three', 'Vähintään kolmen neljästä muusta kansalaisesta'], ['two', 'Vähintään kahden neljästä muusta kansalaisesta'], ['all', 'Kaikkien neljän muun kansalaisen']], widget=widgets.RadioSelect,
+        label='Kun ryhmän hyväksyntä vaaditaan, kuinka monen neljästä muusta kansalaisesta on hyväksyttävä ehdotus?',
         blank=True,
     )
     comprehension_3 = models.StringField(
-        choices=[['fallback', 'Everyone chooses their own fund allocation'], ['automatic', 'The proposal takes effect anyway']],
+        choices=[['fallback', 'Jokainen valitsee itse rahastoon laittamansa pistemäärän'], ['automatic', 'Ehdotus tulee silti voimaan']],
         widget=widgets.RadioSelect,
-        label='What happens when a proposal requiring group approval is rejected?',
+        label='Mitä tapahtuu, jos ryhmän hyväksyntää vaativa ehdotus hylätään?',
         blank=True,
     )
     comprehension_4 = models.StringField(
-        choices=[['yes', 'Yes'], ['no', 'No']], widget=widgets.RadioSelect,
-        label='When a decision takes effect directly, can the other citizens reject the proposal before it is implemented?',
+        choices=[['yes', 'Kyllä'], ['no', 'Eivät']], widget=widgets.RadioSelect,
+        label='Kun päätös tulee voimaan suoraan, voivatko muut kansalaiset hylätä ehdotuksen ennen sen toteuttamista?',
         blank=True,
     )
     comprehension_5 = models.StringField(
-        choices=[['all', 'Every round'], ['selected', 'Only the randomly selected round'], ['last', 'Only Round 10']],
+        choices=[['all', 'Kaikki kierrokset'], ['selected', 'Vain satunnaisesti valittu kierros'], ['last', 'Vain kierros 10']],
         widget=widgets.RadioSelect,
-        label='Which paid round determines your game earnings from Block 1?',
+        label='Mikä kierros määrää ensimmäisen osion peliansiosi?',
         blank=True,
     )
 
@@ -455,7 +460,7 @@ class PracticeGroupChoice(Page):
             return missing
         if values.get('practice_transfer') is not None and values.get('practice_allocation') is not None:
             if values['practice_transfer'] > C.GROUP_SIZE * values['practice_allocation']:
-                return 'The selected person cannot move more points than the group would put in the public-services fund.'
+                return 'Valittu henkilö ei voi siirtää enempää pisteitä kuin ryhmä laittaisi julkisten palvelujen rahastoon.'
 
 
 class PracticeApproval(Page):
@@ -470,12 +475,12 @@ class PracticeApproval(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Try it: group approval',
+            page_title='Harjoittele: ryhmän hyväksyntä',
             explanation=(
-                'Suppose the selected person proposes that every citizen put 10 points '
-                'in the fund and that 5 fund points move to that person\'s own payoff. '
-                'When group approval is required, the other four citizens see the full '
-                'proposal and decide whether to approve or reject it.'
+                'Oletetaan, että valittu henkilö ehdottaa jokaisen kansalaisen laittavan '
+                'rahastoon 10 pistettä ja 5 rahastopisteen siirtämistä omaan ansioonsa. '
+                'Kun ryhmän hyväksyntä vaaditaan, muut neljä kansalaista näkevät koko '
+                'ehdotuksen ja päättävät, hyväksyvätkö vai hylkäävätkö he sen.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -504,17 +509,17 @@ class Comprehension(Page):
             return
         errors = []
         if values['comprehension_1'] != 'same':
-            errors.append('The software selects a person to propose the allocation under both methods.')
+            errors.append('Ohjelmisto valitsee ehdotuksen tekijän molemmissa menettelyissä.')
         if values['comprehension_2'] != 'three':
-            errors.append('At least three of the four other citizens must approve the proposal.')
+            errors.append('Vähintään kolmen neljästä muusta kansalaisesta on hyväksyttävä ehdotus.')
         if values['comprehension_3'] != 'fallback':
-            errors.append('After rejection, every citizen chooses their own fund allocation.')
+            errors.append('Hylkäyksen jälkeen jokainen kansalainen valitsee itse rahastoon laittamansa pistemäärän.')
         if values['comprehension_4'] != 'no':
-            errors.append('A proposal that takes effect directly cannot be rejected before implementation.')
+            errors.append('Suoraan voimaan tulevaa ehdotusta ei voi hylätä ennen sen toteuttamista.')
         if values['comprehension_5'] != 'selected':
-            errors.append('One randomly selected round determines your Block-1 game earnings.')
+            errors.append('Yksi satunnaisesti valittu kierros määrää ensimmäisen osion peliansiosi.')
         if errors:
-            return 'Please review: ' + ' '.join(errors)
+            return 'Kertaa nämä säännöt: ' + ' '.join(errors)
 
 
 class StrategicExpectations(Page):
@@ -533,11 +538,11 @@ class StrategicExpectations(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='What do you expect in this round?',
+            page_title='Mitä odotat tältä kierrokselta?',
             explanation=(
-                'Before choosing, estimate what you would earn under each method and '
-                'what the selected decision-maker would do. Enter your best estimates; these answers do not '
-                'change your payoff.'
+                'Arvioi ennen valintaasi, kuinka monta pistettä ansaitsisit kummassakin '
+                'menettelyssä ja mitä valittu henkilö tekisi. Anna paras arviosi. '
+                'Nämä vastaukset eivät vaikuta ansioosi.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -563,8 +568,8 @@ class InstitutionVote(Page):
         return dict(
             round_number=player.round_number,
             total_rounds=C.NUM_ROUNDS,
-            approval_multiplier=f'{C.APPROVAL_MULTIPLIER_CRISIS:.2f}',
-            automatic_multiplier=f'{C.AUTOMATIC_MULTIPLIER:.2f}',
+            approval_multiplier=format_rate(C.APPROVAL_MULTIPLIER_CRISIS),
+            automatic_multiplier=format_rate(C.AUTOMATIC_MULTIPLIER),
             optional_responses=development_mode(player),
             selected_vote=player.field_maybe_none('institution_vote'),
             solo_testing=solo_testing(player),
@@ -591,7 +596,7 @@ class InstitutionVote(Page):
 
 
 class VoteWaitPage(WaitPage):
-    body_text = 'Waiting for the other members of this round\'s anonymous group.'
+    body_text = 'Odotetaan tämän kierroksen ryhmän muiden kansalaisten päätöksiä.'
     after_all_players_arrive = choose_institution_and_leader
 
 
@@ -617,17 +622,19 @@ class LeaderProposal(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'proposal')
         return dict(
-            page_title='You are the selected person for this round',
+            page_title='Sinut on arvottu tekemään tämän kierroksen ehdotus',
             explanation=(
-                'Propose how many points every citizen should put in the public-services fund '
-                f'and whether up to {C.MAX_PERSONAL_TRANSFER} fund points should move to your payoff. '
+                'Ehdota, kuinka monta pistettä jokaisen kansalaisen pitäisi laittaa julkisten '
+                f'palvelujen rahastoon ja siirretäänkö enintään {C.MAX_PERSONAL_TRANSFER} '
+                'rahastopistettä omaan ansioosi. '
                 + (
-                    f'If at least three of the other four citizens approve, the remaining fund uses '
-                    f'the {C.APPROVAL_MULTIPLIER_CRISIS:.2f} rate. If they reject, everyone chooses '
-                    'their own allocation.'
+                    'Jos vähintään kolme neljästä muusta kansalaisesta hyväksyy ehdotuksen, '
+                    'jokainen rahastoon jäävä piste tuottaa ryhmälle '
+                    f'{format_rate(C.APPROVAL_MULTIPLIER_CRISIS)} pistettä. Jos ehdotus '
+                    'hylätään, jokainen valitsee itse rahastoon laittamansa pistemäärän.'
                     if player.group.selected_institution == C.APPROVAL
-                    else f'Your proposal takes effect directly, and the remaining fund uses the '
-                         f'{C.AUTOMATIC_MULTIPLIER:.2f} rate.'
+                    else 'Ehdotuksesi tulee voimaan suoraan. Jokainen rahastoon jäävä piste '
+                         f'tuottaa ryhmälle {format_rate(C.AUTOMATIC_MULTIPLIER)} pistettä.'
                 )
             ),
             slider_prefix='',
@@ -643,7 +650,7 @@ class LeaderProposal(Page):
             return missing
         if values.get('proposed_transfer') is not None and values.get('proposed_allocation') is not None:
             if values['proposed_transfer'] > C.GROUP_SIZE * values['proposed_allocation']:
-                return 'You cannot move more points than the group would put in the public-services fund.'
+                return 'Et voi siirtää enempää pisteitä kuin ryhmä laittaisi julkisten palvelujen rahastoon.'
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -662,7 +669,7 @@ class LeaderProposal(Page):
 
 
 class ProposalWaitPage(WaitPage):
-    body_text = 'Waiting for the selected person\'s proposal.'
+    body_text = 'Odotetaan valitun henkilön ehdotusta.'
     after_all_players_arrive = record_proposal
 
 
@@ -686,13 +693,14 @@ class ApprovalVote(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'approval')
         return dict(
-            page_title='Approve or reject the proposal',
+            page_title='Hyväksy tai hylkää ehdotus',
             explanation=(
-                f'The selected person proposes that every citizen put '
-                f'{player.group.proposed_allocation} points in the fund and that '
-                f'{player.group.proposed_transfer} fund points move to their own payoff. '
-                f'At least three of the four other citizens must approve. If the proposal is '
-                'rejected, every citizen will choose their own fund allocation.'
+                'Valittu henkilö ehdottaa jokaisen kansalaisen laittavan rahastoon '
+                f'{player.group.proposed_allocation} pistettä ja '
+                f'{player.group.proposed_transfer} rahastopisteen siirtämistä omaan ansioonsa. '
+                'Vähintään kolmen neljästä muusta kansalaisesta on hyväksyttävä ehdotus. '
+                'Jos ehdotus hylätään, jokainen kansalainen valitsee itse rahastoon '
+                'laittamansa pistemäärän.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -713,7 +721,7 @@ class ApprovalVote(Page):
 
 
 class ApprovalWaitPage(WaitPage):
-    body_text = 'Waiting for the group\'s approval decisions.'
+    body_text = 'Odotetaan ryhmän hyväksyntä-äänestyksen vastauksia.'
 
     @staticmethod
     def is_displayed(player):
@@ -742,12 +750,12 @@ class FallbackAllocation(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'fallback')
         return dict(
-            page_title='The proposal was not approved',
+            page_title='Ehdotusta ei hyväksytty',
             explanation=(
-                'Each citizen now chooses how many of their own 20 points to put in the '
-                f'public-services fund. Each fund point creates '
-                f'{C.APPROVAL_MULTIPLIER_CRISIS:.2f} group points, shared equally. '
-                'Points you do not put in the fund remain yours.'
+                'Jokainen kansalainen valitsee nyt, kuinka monta omasta 20 pisteestään '
+                'laittaa julkisten palvelujen rahastoon. Jokainen rahastopiste tuottaa '
+                f'{format_rate(C.APPROVAL_MULTIPLIER_CRISIS)} ryhmäpistettä, jotka '
+                'jaetaan tasan. Pisteet, joita et laita rahastoon, jäävät sinulle.'
             ),
             slider_prefix='',
             optional_responses=development_mode(player),
@@ -768,7 +776,7 @@ class FallbackAllocation(Page):
 
 
 class DecisionWaitPage(WaitPage):
-    body_text = 'Waiting for all decisions in this round.'
+    body_text = 'Odotetaan kaikkia tämän kierroksen päätöksiä.'
     after_all_players_arrive = calculate_round
 
 

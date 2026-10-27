@@ -21,7 +21,7 @@ def require_all(player, values, field_names):
     if development_mode(player):
         return
     if any(values.get(field_name) in (None, '') for field_name in field_names):
-        return 'Please answer all questions before continuing.'
+        return 'Vastaa kaikkiin kysymyksiin ennen kuin jatkat.'
 
 
 def solo_testing(obj):
@@ -246,6 +246,11 @@ def approval_multiplier(player):
     return C.APPROVAL_MULTIPLIER_CRISIS
 
 
+def format_rate(value):
+    """Format a displayed fund rate without changing its numerical value."""
+    return f'{value:.2f}'.replace('.', ',')
+
+
 def choose_institution_and_leader(group):
     players = group.get_players()
     if solo_testing(group):
@@ -403,88 +408,93 @@ class C(BaseConstants):
     DECISION_DELAY_THRESHOLD_SECONDS = 90
 
     INSTITUTION_CHOICES = [
-        [APPROVAL, 'Group approval required'],
-        [AUTOMATIC, 'Decision takes effect directly'],
+        [APPROVAL, 'Ryhmän hyväksyntä vaaditaan'],
+        [AUTOMATIC, 'Päätös tulee voimaan suoraan'],
     ]
     APPROVAL_CHOICES = [
-        [APPROVE, 'Approve the proposal'],
-        [REJECT, 'Reject the proposal'],
+        [APPROVE, 'Hyväksyn ehdotuksen'],
+        [REJECT, 'Hylkään ehdotuksen'],
     ]
     AGREEMENT_CHOICES = [[i, str(i)] for i in range(1, 8)]
     FIVE_POINT_CHOICES = [
-        [1, 'Very low'], [2, 'Low'], [3, 'Moderate'], [4, 'High'], [5, 'Very high']
+        [1, 'Erittäin heikosti'], [2, 'Heikosti'], [3, 'Kohtalaisesti'],
+        [4, 'Hyvin'], [5, 'Erittäin hyvin']
+    ]
+    RISK_LEVEL_CHOICES = [
+        [1, 'Erittäin pieni'], [2, 'Pieni'], [3, 'Kohtalainen'],
+        [4, 'Suuri'], [5, 'Erittäin suuri']
     ]
     CRISIS_SERIOUSNESS_CHOICES = [
-        [1, 'Not serious'], [2, 'Slightly serious'], [3, 'Moderately serious'],
-        [4, 'Serious'], [5, 'Very serious'],
+        [1, 'Ei vakavalta'], [2, 'Hieman vakavalta'], [3, 'Kohtalaisen vakavalta'],
+        [4, 'Vakavalta'], [5, 'Erittäin vakavalta'],
     ]
     CONDITION_CHANGE_CHOICES = [
-        [1, 'Much worse'], [2, 'Somewhat worse'], [3, 'No change'],
-        [4, 'Somewhat better'], [5, 'Much better'],
+        [1, 'Paljon huonommalta'], [2, 'Hieman huonommalta'], [3, 'Samalta'],
+        [4, 'Hieman paremmalta'], [5, 'Paljon paremmalta'],
     ]
     AGE_GROUP_CHOICES = [
-        ['18-24', '18--24'], ['25-34', '25--34'], ['35-44', '35--44'],
-        ['45-54', '45--54'], ['55-64', '55--64'], ['65+', '65 or older'],
-        ['prefer_not', 'Prefer not to answer'],
+        ['18-24', '18–24'], ['25-34', '25–34'], ['35-44', '35–44'],
+        ['45-54', '45–54'], ['55-64', '55–64'], ['65+', '65 vuotta tai enemmän'],
+        ['prefer_not', 'En halua vastata'],
     ]
     GENDER_CHOICES = [
-        ['woman', 'Woman'], ['man', 'Man'], ['another', 'Another gender'],
-        ['prefer_not', 'Prefer not to answer'],
+        ['woman', 'Nainen'], ['man', 'Mies'], ['another', 'Muu sukupuoli'],
+        ['prefer_not', 'En halua vastata'],
     ]
     EDUCATION_CHOICES = [
-        ['basic', 'Basic or lower-secondary education'],
-        ['upper_general', 'General upper-secondary education'],
-        ['vocational', 'Vocational qualification'],
-        ['bachelor', 'Bachelor\'s degree or university of applied sciences degree'],
-        ['master', 'Master\'s degree'], ['doctorate', 'Doctoral degree'],
-        ['other', 'Other'], ['prefer_not', 'Prefer not to answer'],
+        ['basic', 'Perusaste'],
+        ['upper_general', 'Lukio'],
+        ['vocational', 'Ammatillinen tutkinto'],
+        ['bachelor', 'Alempi korkeakoulututkinto tai ammattikorkeakoulututkinto'],
+        ['master', 'Ylempi korkeakoulututkinto'], ['doctorate', 'Tohtorintutkinto'],
+        ['other', 'Muu'], ['prefer_not', 'En halua vastata'],
     ]
     FINANCIAL_STRAIN_CHOICES = [
-        [1, 'Very difficult'], [2, 'Difficult'], [3, 'Neither difficult nor easy'],
-        [4, 'Easy'], [5, 'Very easy'], [-99, 'Prefer not to answer'],
+        [1, 'Erittäin vaikeaa'], [2, 'Vaikeaa'], [3, 'Ei vaikeaa eikä helppoa'],
+        [4, 'Helppoa'], [5, 'Erittäin helppoa'], [-99, 'En halua vastata'],
     ]
     PARTY_VOTE_2023_CHOICES = [
-        ['ncp', 'National Coalition Party (Kokoomus)'],
-        ['finns', 'Finns Party (Perussuomalaiset)'],
-        ['sdp', 'Social Democratic Party (SDP)'],
-        ['centre', 'Centre Party (Keskusta)'],
-        ['greens', 'Green League (Vihreät)'],
-        ['left', 'Left Alliance (Vasemmistoliitto)'],
-        ['sfp', 'Swedish People\'s Party of Finland (RKP/SFP)'],
-        ['kd', 'Christian Democrats (KD)'],
-        ['movement_now', 'Movement Now (Liike Nyt)'],
-        ['other_party', 'Another party'], ['did_not_vote', 'I did not vote'],
-        ['not_eligible', 'I was not eligible to vote'],
-        ['prefer_not', 'Prefer not to answer'],
+        ['ncp', 'Kansallinen Kokoomus'],
+        ['finns', 'Perussuomalaiset'],
+        ['sdp', 'Suomen Sosialidemokraattinen Puolue'],
+        ['centre', 'Suomen Keskusta'],
+        ['greens', 'Vihreä liitto'],
+        ['left', 'Vasemmistoliitto'],
+        ['sfp', 'Suomen ruotsalainen kansanpuolue'],
+        ['kd', 'Suomen Kristillisdemokraatit'],
+        ['movement_now', 'Liike Nyt'],
+        ['other_party', 'Muu puolue'], ['did_not_vote', 'En äänestänyt'],
+        ['not_eligible', 'Minulla ei ollut äänioikeutta'],
+        ['prefer_not', 'En halua vastata'],
     ]
     LEFT_RIGHT_CHOICES = (
-        [[0, '0 — Left']] + [[i, str(i)] for i in range(1, 10)]
-        + [[10, '10 — Right'], [-99, 'Prefer not to answer']]
+        [[0, '0 — Vasemmisto']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Oikeisto'], [-99, 'En halua vastata']]
     )
     DEMOCRACY_PREFERABLE_CHOICES = [
-        [1, 'Strongly disagree'], [2, 'Somewhat disagree'],
-        [3, 'Somewhat agree'], [4, 'Strongly agree'],
-        [-99, 'Prefer not to answer'],
+        [1, 'Täysin eri mieltä'], [2, 'Jokseenkin eri mieltä'],
+        [3, 'Jokseenkin samaa mieltä'], [4, 'Täysin samaa mieltä'],
+        [-99, 'En halua vastata'],
     ]
     SATISFACTION_CHOICES = (
-        [[0, '0 — Completely dissatisfied']] + [[i, str(i)] for i in range(1, 10)]
-        + [[10, '10 — Completely satisfied'], [-99, 'Prefer not to answer']]
+        [[0, '0 — Täysin tyytymätön']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Täysin tyytyväinen'], [-99, 'En halua vastata']]
     )
     STRONG_LEADER_CHOICES = [
-        [1, 'Very bad'], [2, 'Fairly bad'], [3, 'Fairly good'], [4, 'Very good'],
-        [-99, 'Prefer not to answer'],
+        [1, 'Erittäin huono'], [2, 'Melko huono'], [3, 'Melko hyvä'], [4, 'Erittäin hyvä'],
+        [-99, 'En halua vastata'],
     ]
     EXTERNAL_EFFICACY_CHOICES = [
-        [1, 'Strongly disagree'], [2, 'Disagree'], [3, 'Neither agree nor disagree'],
-        [4, 'Agree'], [5, 'Strongly agree'], [-99, 'Prefer not to answer'],
+        [1, 'Täysin eri mieltä'], [2, 'Eri mieltä'], [3, 'Ei samaa eikä eri mieltä'],
+        [4, 'Samaa mieltä'], [5, 'Täysin samaa mieltä'], [-99, 'En halua vastata'],
     ]
     TRUST_CHOICES = (
-        [[0, '0 — You cannot be too careful']] + [[i, str(i)] for i in range(1, 10)]
-        + [[10, '10 — Most people can be trusted'], [-99, 'Prefer not to answer']]
+        [[0, '0 — Ei voi olla liian varovainen']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Useimpiin ihmisiin voi luottaa'], [-99, 'En halua vastata']]
     )
     RISK_CHOICES = (
-        [[0, '0 — Not at all willing']] + [[i, str(i)] for i in range(1, 10)]
-        + [[10, '10 — Very willing'], [-99, 'Prefer not to answer']]
+        [[0, '0 — En lainkaan halukas']] + [[i, str(i)] for i in range(1, 10)]
+        + [[10, '10 — Erittäin halukas'], [-99, 'En halua vastata']]
     )
 class Subsession(BaseSubsession):
     pass
@@ -519,29 +529,29 @@ class Player(BasePlayer):
     randomization_stratum = models.IntegerField(initial=0)
     institution_vote = models.StringField(
         choices=C.INSTITUTION_CHOICES, widget=widgets.RadioSelect,
-        label='Should the selected person\'s proposal require group approval?',
+        label='Pitäisikö valitun henkilön ehdotuksen vaatia ryhmän hyväksyntä?',
         blank=True,
     )
     solo_other_automatic_votes = models.IntegerField(min=0, max=4, blank=True)
     solo_other_approval_votes = models.IntegerField(
         min=0, max=4, blank=True,
-        label='Solo test: how many of the four simulated citizens approve the proposal?',
+        label='Yhden henkilön testi: kuinka moni neljästä simuloidusta kansalaisesta hyväksyy ehdotuksen?',
     )
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT, blank=True,
-        label='How many of your 20 points do you put in the public-services fund?',
+        label='Kuinka monta 20 pisteestäsi laitat julkisten palvelujen rahastoon?',
     )
     proposed_allocation = models.IntegerField(
         min=0, max=C.ENDOWMENT, blank=True,
-        label='How many points should every citizen put in the public-services fund?',
+        label='Kuinka monta pistettä jokaisen kansalaisen pitäisi laittaa julkisten palvelujen rahastoon?',
     )
     proposed_transfer = models.IntegerField(
         min=0, max=C.MAX_PERSONAL_TRANSFER, blank=True,
-        label='How many fund points should move to your own payoff?',
+        label='Kuinka monta rahastopistettä pitäisi siirtää omaan ansioosi?',
     )
     approval_vote = models.StringField(
         choices=C.APPROVAL_CHOICES, widget=widgets.RadioSelect,
-        label='Do you approve or reject the selected person\'s proposal?', blank=True,
+        label='Hyväksytkö vai hylkäätkö valitun henkilön ehdotuksen?', blank=True,
     )
     is_leader = models.BooleanField(initial=False)
     institution_vote_time_seconds = models.FloatField(initial=0)
@@ -555,100 +565,100 @@ class Player(BasePlayer):
     round_payoff = models.FloatField(initial=0)
     expected_payoff_citizens = models.IntegerField(
         min=0, max=60,
-        label='If group approval is required, how many points do you expect to earn?',
+        label='Jos ryhmän hyväksyntä vaaditaan, kuinka monta pistettä odotat ansaitsevasi?',
         blank=True,
     )
     expected_payoff_leader = models.IntegerField(
         min=0, max=60,
-        label='If the selected person\'s decision takes effect directly, how many points do you expect to earn?',
+        label='Jos valitun henkilön päätös tulee voimaan suoraan, kuinka monta pistettä odotat ansaitsevasi?',
         blank=True,
     )
     expected_leader_transfer = models.IntegerField(
         min=0, max=C.MAX_PERSONAL_TRANSFER,
-        label='How many fund points do you expect the selected person to propose moving to their own payoff?',
+        label='Kuinka monta rahastopistettä odotat valitun henkilön ehdottavan siirrettäväksi omaan ansioonsa?',
         blank=True,
     )
 
     block1_crisis_seriousness = models.IntegerField(
         choices=C.CRISIS_SERIOUSNESS_CHOICES, widget=widgets.RadioSelect,
-        label='How serious did the public-service situation in Block 1 seem?',
+        label='Kuinka vakavalta ensimmäisen osion julkisten palvelujen tilanne vaikutti?',
         blank=True,
     )
     block2_condition_change = models.IntegerField(
         choices=C.CONDITION_CHANGE_CHOICES, widget=widgets.RadioSelect,
-        label='Compared with Block 1, how did the public-service situation in Block 2 seem?',
+        label='Miltä toisen osion julkisten palvelujen tilanne vaikutti ensimmäiseen osioon verrattuna?',
         blank=True,
     )
     individual_method_effectiveness = models.IntegerField(
         choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After these rounds, how well can the group support public services when the selected person\'s proposal requires group approval?',
+        label='Kuinka hyvin ryhmä pystyy näiden kierrosten perusteella tukemaan julkisia palveluja, kun valitun henkilön ehdotus vaatii ryhmän hyväksynnän?',
         blank=True,
     )
     constraint_risk = models.IntegerField(
-        choices=C.FIVE_POINT_CHOICES, widget=widgets.RadioSelect,
-        label='After these rounds, how high is the risk that the usual limits on a leader\'s power will be seriously weakened?',
+        choices=C.RISK_LEVEL_CHOICES, widget=widgets.RadioSelect,
+        label='Näiden kierrosten perusteella, kuinka suuri on riski, että johtajan vallan tavanomaiset rajat heikkenevät vakavasti?',
         blank=True,
     )
-    constraint_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The current situation justifies allowing the selected person to act without group approval.', blank=True)
-    constraint_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='More effective public services are worth giving up the approval vote in the current situation.', blank=True)
-    constraint_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Citizens should retain an approval vote over binding group decisions, even if agreement can fail.', blank=True)
-    constraint_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='The leader should be allowed to require every citizen to put the same number of points in the public-services fund.', blank=True)
-    constraint_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='I prefer requiring approval to letting a selected person implement an unwanted transfer.', blank=True)
-    constraint_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Removing the approval vote creates risks that outweigh the current gains.', blank=True)
-    constraint_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='When public services work poorly, selected decision-makers need more freedom to act without further approval.', blank=True)
+    constraint_1 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Nykyinen tilanne oikeuttaa antamaan valitun henkilön toimia ilman ryhmän hyväksyntää.', blank=True)
+    constraint_2 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Tehokkaammat julkiset palvelut ovat sen arvoisia, että hyväksyntä-äänestä luovutaan nykyisessä tilanteessa.', blank=True)
+    constraint_3 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Kansalaisten tulisi säilyttää hyväksyntä-ääni sitoviin ryhmäpäätöksiin, vaikka yhteisymmärrys voi jäädä syntymättä.', blank=True)
+    constraint_4 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Johtajan pitäisi voida vaatia jokaista kansalaista laittamaan sama pistemäärä julkisten palvelujen rahastoon.', blank=True)
+    constraint_5 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Vaadin mieluummin hyväksynnän kuin annan valitun henkilön toteuttaa siirron, jota en halua.', blank=True)
+    constraint_6 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Hyväksyntä-äänen poistaminen aiheuttaa riskejä, jotka ovat nykyisiä hyötyjä suurempia.', blank=True)
+    constraint_7 = models.IntegerField(choices=C.AGREEMENT_CHOICES, label='Kun julkiset palvelut toimivat huonosti, valittujen päätöksentekijöiden on voitava toimia vapaammin ilman uutta hyväksyntää.', blank=True)
 
     background_age_group = models.StringField(
-        choices=C.AGE_GROUP_CHOICES, label='What is your age?', blank=True,
+        choices=C.AGE_GROUP_CHOICES, label='Mikä on ikäsi?', blank=True,
     )
     background_gender = models.StringField(
-        choices=C.GENDER_CHOICES, label='What is your gender?', blank=True,
+        choices=C.GENDER_CHOICES, label='Mikä on sukupuolesi?', blank=True,
     )
     background_education = models.StringField(
         choices=C.EDUCATION_CHOICES,
-        label='What is the highest level of education you have completed?', blank=True,
+        label='Mikä on korkein suorittamasi koulutus?', blank=True,
     )
     background_financial_strain = models.IntegerField(
         choices=C.FINANCIAL_STRAIN_CHOICES,
-        label='How easy or difficult is it for your household to make ends meet?', blank=True,
+        label='Kuinka helppoa tai vaikeaa kotitaloutesi on saada tulot riittämään menoihin?', blank=True,
     )
     background_party_vote_2023 = models.StringField(
         choices=C.PARTY_VOTE_2023_CHOICES,
-        label='Which party did you vote for in the 2023 Finnish parliamentary election?',
+        label='Mitä puoluetta äänestit vuoden 2023 eduskuntavaaleissa?',
         blank=True,
     )
     background_left_right = models.IntegerField(
         choices=C.LEFT_RIGHT_CHOICES,
-        label='In politics, where would you place yourself on a scale from 0 (left) to 10 (right)?',
+        label='Mihin sijoittaisit itsesi politiikassa asteikolla 0 (vasemmisto) – 10 (oikeisto)?',
         blank=True,
     )
     background_democracy_preferable = models.IntegerField(
         choices=C.DEMOCRACY_PREFERABLE_CHOICES,
-        label='Democracy may have problems, but it is better than any other form of government.',
+        label='Demokratialla voi olla ongelmia, mutta se on parempi kuin mikään muu hallitusmuoto.',
         blank=True,
     )
     background_democracy_satisfaction = models.IntegerField(
         choices=C.SATISFACTION_CHOICES,
-        label='On the whole, how satisfied are you with the way democracy works in Finland?',
+        label='Kuinka tyytyväinen olet kaiken kaikkiaan demokratian toimintaan Suomessa?',
         blank=True,
     )
     background_strong_leader = models.IntegerField(
         choices=C.STRONG_LEADER_CHOICES,
-        label='Would having a strong leader who does not have to bother with parliament and elections be a good or bad way of governing Finland?',
+        label='Olisiko vahva johtaja, jonka ei tarvitse välittää parlamentista ja vaaleista, hyvä vai huono tapa hallita Suomea?',
         blank=True,
     )
     background_external_efficacy = models.IntegerField(
         choices=C.EXTERNAL_EFFICACY_CHOICES,
-        label='Citizens\' opinions are taken into account in political decision making in Finland.',
+        label='Kansalaisten mielipiteet otetaan huomioon poliittisessa päätöksenteossa Suomessa.',
         blank=True,
     )
     background_generalized_trust = models.IntegerField(
         choices=C.TRUST_CHOICES,
-        label='Generally speaking, would you say that most people can be trusted, or that you cannot be too careful?',
+        label='Voiko mielestäsi useimpiin ihmisiin luottaa, vai eikö ihmisten suhteen voi olla liian varovainen?',
         blank=True,
     )
     background_risk_willingness = models.IntegerField(
         choices=C.RISK_CHOICES,
-        label='How willing are you to take risks in general?', blank=True,
+        label='Kuinka halukas olet yleensä ottamaan riskejä?', blank=True,
     )
 
     democratic_reversal = models.BooleanField(initial=False)
@@ -657,7 +667,8 @@ class Player(BasePlayer):
 
 class TreatmentAssignmentWaitPage(WaitPage):
     wait_for_all_groups = True
-    body_text = 'Waiting for all participants to complete Block 1.'
+    title_text = 'Odota hetki'
+    body_text = 'Odotetaan, että kaikki osallistujat suorittavat ensimmäisen osion loppuun.'
 
     @staticmethod
     def is_displayed(player):
@@ -676,8 +687,8 @@ class Block2Intro(Page):
         return dict(
             rounds=C.NUM_ROUNDS,
             recovery=player.treatment == C.TREATMENT_RECOVERY,
-            approval_multiplier=f'{approval_multiplier(player):.2f}',
-            automatic_multiplier=f'{C.AUTOMATIC_MULTIPLIER:.2f}',
+            approval_multiplier=format_rate(approval_multiplier(player)),
+            automatic_multiplier=format_rate(C.AUTOMATIC_MULTIPLIER),
             fixed_five_person_pool=player.matching_pool_size == C.GROUP_SIZE,
         )
 
@@ -697,13 +708,13 @@ class StrategicExpectations(Page):
 
     @staticmethod
     def vars_for_template(player):
-        timing = 'first' if player.round_number == 1 else 'final'
+        timing = 'ensimmäistä' if player.round_number == 1 else 'viimeistä'
         return dict(
-            page_title='What do you expect in this round?',
+            page_title='Mitä odotat tältä kierrokselta?',
             explanation=(
-                f'Before the {timing} Block-2 choice, estimate what you would earn under '
-                'each method and what the selected decision-maker would do. Enter your best '
-                'estimates; these answers do not change your payoff.'
+                f'Ennen toisen osion {timing} valintaa arvioi, kuinka paljon ansaitsisit '
+                'kummassakin menettelyssä ja mitä valittu henkilö tekisi. Anna paras '
+                'arviosi. Nämä vastaukset eivät vaikuta ansioosi.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -728,15 +739,15 @@ class InstitutionVote(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'institution_vote')
         return dict(
-            page_title=f'Block 2 — Round {player.round_number} of {C.NUM_ROUNDS}',
+            page_title=f'Osio 2 — Kierros {player.round_number} / {C.NUM_ROUNDS}',
             explanation=(
-                'The public-services fund works at the rates shown at the start of Block 2. '
-                'Under either method, the selected person may propose moving up to 20 fund '
-                'points to their own payoff. This round may be selected for payment.'
+                'Julkisten palvelujen rahastossa käytetään toisen osion alussa esitettyjä kertoimia. '
+                'Molemmissa menettelyissä valittu henkilö voi ehdottaa enintään 20 rahastopisteen '
+                'siirtämistä omaan ansioonsa. Tämä kierros voidaan valita palkkion laskentaan.'
             ),
             institution_vote_page=True,
-            approval_multiplier=f'{approval_multiplier(player):.2f}',
-            automatic_multiplier=f'{C.AUTOMATIC_MULTIPLIER:.2f}',
+            approval_multiplier=format_rate(approval_multiplier(player)),
+            automatic_multiplier=format_rate(C.AUTOMATIC_MULTIPLIER),
             optional_responses=development_mode(player),
             selected_vote=player.field_maybe_none('institution_vote'),
             slider_prefix='',
@@ -785,7 +796,8 @@ class InstitutionVote(Page):
 
 
 class VoteWaitPage(WaitPage):
-    body_text = 'Waiting for the other members of this round\'s anonymous group.'
+    title_text = 'Odota hetki'
+    body_text = 'Odotetaan tämän kierroksen muiden ryhmän jäsenten päätöksiä.'
     after_all_players_arrive = choose_institution_and_leader
 
 class LeaderProposal(Page):
@@ -810,17 +822,19 @@ class LeaderProposal(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'proposal')
         return dict(
-            page_title='You are the selected person for this round',
+            page_title='Sinut on arvottu tekemään tämän kierroksen ehdotus',
             explanation=(
-                'Propose how many points every citizen should put in the public-services fund '
-                f'and whether up to {C.MAX_PERSONAL_TRANSFER} fund points should move to your payoff. '
+                'Ehdota, kuinka monta pistettä jokaisen kansalaisen pitäisi laittaa julkisten '
+                f'palvelujen rahastoon ja siirretäänkö enintään {C.MAX_PERSONAL_TRANSFER} '
+                'rahastopistettä omaan ansioosi. '
                 + (
-                    f'If at least three of the other four citizens approve, the remaining fund uses '
-                    f'the {approval_multiplier(player):.2f} rate. If they reject, everyone chooses '
-                    'their own allocation.'
+                    'Jos vähintään kolme neljästä muusta kansalaisesta hyväksyy ehdotuksen, '
+                    'jokainen rahastoon jäävä piste tuottaa ryhmälle '
+                    f'{format_rate(approval_multiplier(player))} pistettä. Jos ehdotus '
+                    'hylätään, jokainen valitsee itse rahastoon laittamansa pistemäärän.'
                     if player.group.selected_institution == C.APPROVAL
-                    else f'Your proposal takes effect directly, and the remaining fund uses the '
-                         f'{C.AUTOMATIC_MULTIPLIER:.2f} rate.'
+                    else 'Ehdotuksesi tulee voimaan suoraan. Jokainen rahastoon jäävä piste '
+                         f'tuottaa ryhmälle {format_rate(C.AUTOMATIC_MULTIPLIER)} pistettä.'
                 )
             ),
             institution_vote_page=False,
@@ -837,7 +851,7 @@ class LeaderProposal(Page):
             return missing
         if values.get('proposed_transfer') is not None and values.get('proposed_allocation') is not None:
             if values['proposed_transfer'] > C.GROUP_SIZE * values['proposed_allocation']:
-                return 'You cannot move more points than the group would put in the public-services fund.'
+                return 'Et voi siirtää enempää pisteitä kuin ryhmä laittaisi julkisten palvelujen rahastoon.'
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -856,7 +870,8 @@ class LeaderProposal(Page):
 
 
 class ProposalWaitPage(WaitPage):
-    body_text = 'Waiting for the selected person\'s proposal.'
+    title_text = 'Odota hetki'
+    body_text = 'Odotetaan valitun henkilön ehdotusta.'
     after_all_players_arrive = record_proposal
 
 
@@ -880,13 +895,13 @@ class ApprovalVote(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'approval')
         return dict(
-            page_title='Approve or reject the proposal',
+            page_title='Hyväksy tai hylkää ehdotus',
             explanation=(
-                f'The selected person proposes that every citizen put '
-                f'{player.group.proposed_allocation} points in the fund and that '
-                f'{player.group.proposed_transfer} fund points move to their own payoff. '
-                f'At least three of the four other citizens must approve. If the proposal is '
-                'rejected, every citizen will choose their own fund allocation.'
+                f'Valittu henkilö ehdottaa, että jokainen kansalainen laittaa '
+                f'{player.group.proposed_allocation} pistettä rahastoon ja että '
+                f'{player.group.proposed_transfer} rahastopistettä siirretään hänen omaan ansioonsa. '
+                f'Vähintään kolmen neljästä muusta kansalaisesta on hyväksyttävä ehdotus. '
+                'Jos ehdotus hylätään, jokainen kansalainen valitsee oman rahastoon laittamansa pistemäärän.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -908,7 +923,8 @@ class ApprovalVote(Page):
 
 
 class ApprovalWaitPage(WaitPage):
-    body_text = 'Waiting for the group\'s approval decisions.'
+    title_text = 'Odota hetki'
+    body_text = 'Odotetaan ryhmän hyväksyntäpäätöksiä.'
 
     @staticmethod
     def is_displayed(player):
@@ -937,12 +953,12 @@ class FallbackAllocation(Page):
     def vars_for_template(player):
         start_decision_timer(player, 'fallback')
         return dict(
-            page_title='The proposal was not approved',
+            page_title='Ehdotusta ei hyväksytty',
             explanation=(
-                'Each citizen now chooses how many of their own 20 points to put in the '
-                f'public-services fund. Each fund point creates '
-                f'{approval_multiplier(player):.2f} group points, shared equally. '
-                'Points you do not put in the fund remain yours.'
+                'Jokainen kansalainen valitsee nyt, kuinka monta omista 20 pisteestään laittaa '
+                f'julkisten palvelujen rahastoon. Jokainen rahastopiste tuottaa '
+                f'{format_rate(approval_multiplier(player))} ryhmäpistettä, jotka jaetaan tasan. '
+                'Pisteet, joita et laita rahastoon, jäävät sinulle.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -964,7 +980,8 @@ class FallbackAllocation(Page):
 
 
 class DecisionWaitPage(WaitPage):
-    body_text = 'Waiting for all decisions in this round.'
+    title_text = 'Odota hetki'
+    body_text = 'Odotetaan kaikkia tämän kierroksen päätöksiä.'
     after_all_players_arrive = calculate_round
 
 class RoundResults(Page):
@@ -1073,10 +1090,10 @@ class FinalQuestions(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Final questions',
+            page_title='Loppukysymykset',
             explanation=(
-                'All paid decisions are complete. Please answer the following questions '
-                'about the situation you experienced.'
+                'Kaikki palkkiolliset päätökset on tehty. Vastaa seuraaviin kysymyksiin '
+                'kokemastasi tilanteesta.'
             ),
             institution_vote_page=False,
             slider_prefix='constraint_',
@@ -1104,11 +1121,11 @@ class BackgroundQuestions1(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Background questions (1 of 2)',
+            page_title='Taustakysymykset (1/2)',
             explanation=(
-                'All paid decisions are complete. These questions help us understand how '
-                'experimental choices vary across participants. Each question is optional, '
-                'and you may continue without answering it.'
+                'Kaikki palkkiolliset päätökset on tehty. Nämä kysymykset auttavat ymmärtämään, '
+                'miten kokeelliset valinnat vaihtelevat osallistujien välillä. Jokainen kysymys '
+                'on vapaaehtoinen, ja voit jatkaa vastaamatta siihen.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -1132,10 +1149,10 @@ class BackgroundQuestions2(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            page_title='Background questions (2 of 2)',
+            page_title='Taustakysymykset (2/2)',
             explanation=(
-                'The remaining optional questions concern political attitudes, trust, and '
-                'risk preferences. You may continue without answering any item.'
+                'Loput vapaaehtoiset kysymykset koskevat poliittisia asenteita, luottamusta '
+                'ja riskinottohalukkuutta. Voit jatkaa vastaamatta yhteenkään kysymykseen.'
             ),
             institution_vote_page=False,
             slider_prefix='',
@@ -1153,8 +1170,8 @@ def pretest_feedback_enabled(player):
 
 class PretestFeedbackReady(WaitPage):
     wait_for_all_groups = True
-    title_text = 'Please wait'
-    body_text = 'Please wait until everyone has finished the final questions.'
+    title_text = 'Odota hetki'
+    body_text = 'Odota, kunnes kaikki ovat vastanneet loppukysymyksiin.'
 
     @staticmethod
     def is_displayed(player):
@@ -1183,7 +1200,7 @@ class StudyComplete(Page):
             block1_selected_payoff=player.participant.vars.get('block1_selected_payoff', 0),
             total_payoff=player.participant.payoff,
             performance_payment=player.participant.payoff.to_real_world_currency(player.session),
-            participation_fee=player.session.config['participation_fee'],
+            participation_fee=f"{format_rate(player.session.config['participation_fee'])} €",
             total_payment=player.participant.payoff_plus_participation_fee(),
             participant_code=player.participant.code,
         )

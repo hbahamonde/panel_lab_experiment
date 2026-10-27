@@ -74,7 +74,7 @@ SESSION_FIELDS = []
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'fi'
 
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'EUR'
@@ -90,7 +90,7 @@ DEMO_PAGE_INTRO_HTML = """ """
 ROOMS = [
     dict(
         name='panel_lab_room',
-        display_name='Group Decisions Study',
+        display_name='Ryhmän päätökset',
         participant_label_file='_rooms/panel_lab_labels.txt',
         use_secure_urls=True,
     ),

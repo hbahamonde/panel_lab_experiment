@@ -1,34 +1,34 @@
-{{ block title }}Study complete{{ endblock }}
+{{ block title }}Tutkimus on päättynyt{{ endblock }}
 
 {{ block content }}
-<p>Thank you. All fifteen rounds and your answers have been recorded.</p>
+<p>Kiitos. Kaikki viisitoista kierrosta ja vastauksesi on tallennettu.</p>
 
 <table class="table table-bordered">
-    <tr><th>Block-1 selected payoff round</th><td>Round {{ block1_paying_round }}</td></tr>
-    <tr><th>Block-1 selected-round payoff</th><td>{{ block1_selected_payoff|to2 }} points</td></tr>
-    <tr><th>Block-2 selected payoff round</th><td>Round {{ paying_round }}</td></tr>
-    <tr><th>Block-2 selected-round payoff</th><td>{{ selected_payoff|to2 }} points</td></tr>
-    <tr class="table-light"><th>Total experimental points</th><td><strong>{{ total_payoff|to2 }}</strong></td></tr>
-    <tr><th>Performance payment</th><td>{{ performance_payment }}</td></tr>
-    <tr><th>Participation payment</th><td>{{ participation_fee }}</td></tr>
-    <tr class="table-success"><th>Total payment</th><td><strong>{{ total_payment }}</strong></td></tr>
+    <tr><th>Palkkioon valittu kierros osiosta 1</th><td>Kierros {{ block1_paying_round }}</td></tr>
+    <tr><th>Valitun kierroksen ansio osiossa 1</th><td>{{ block1_selected_payoff|to2 }} pistettä</td></tr>
+    <tr><th>Palkkioon valittu kierros osiosta 2</th><td>Kierros {{ paying_round }}</td></tr>
+    <tr><th>Valitun kierroksen ansio osiossa 2</th><td>{{ selected_payoff|to2 }} pistettä</td></tr>
+    <tr class="table-light"><th>Koepisteet yhteensä</th><td><strong>{{ total_payoff|to2 }}</strong></td></tr>
+    <tr><th>Lisäpalkkio</th><td>{{ performance_payment }}</td></tr>
+    <tr><th>Osallistumispalkkio</th><td>{{ participation_fee }}</td></tr>
+    <tr class="table-success"><th>Palkkio yhteensä</th><td><strong>{{ total_payment }}</strong></td></tr>
 </table>
 
-<p>Your experimental points are converted at the rate stated in the instructions and added to the fixed participation payment.</p>
+<p>Koepisteesi muutetaan rahaksi ohjeissa ilmoitetulla kertoimella, ja summa lisätään kiinteään osallistumispalkkioon.</p>
 
-<h4>Collecting your payment</h4>
-<p>Show this payment code to the researcher or trained research assistant:</p>
+<h4>Palkkion saaminen</h4>
+<p>Näytä tämä maksukoodi tutkijalle tai koulutetulle tutkimusavustajalle:</p>
 <div class="alert alert-light border text-center"><strong>{{ participant_code }}</strong></div>
-<p class="small text-muted">The payment list contains this code and the amount due only. Any named payment record is kept separately and does not contain this code.</p>
+<p class="small text-muted">Maksuluettelossa on vain tämä koodi ja maksettava summa. Mahdollinen nimellinen maksutieto säilytetään erillään, eikä siihen merkitä tätä koodia.</p>
 
-<h4>Debriefing</h4>
-<p>During the task, the two methods were described as <strong>Group approval required</strong> and <strong>Decision takes effect directly</strong>. The study examines whether people use a group ballot to remove approval over a later binding decision and whether they subsequently vote to restore that approval.</p>
+<h4>Jälkiselvitys</h4>
+<p>Tehtävässä käytettiin kahta menettelyä, <strong>Ryhmän hyväksyntä vaaditaan</strong> ja <strong>Päätös tulee voimaan suoraan</strong>. Tutkimuksessa tarkastellaan, käyttävätkö ihmiset ryhmä-äänestystä poistaakseen myöhempää sitovaa päätöstä koskevan hyväksyntäoikeuden ja äänestävätkö he myöhemmin sen palauttamisesta.</p>
 
-<p>For some matching pools, public-service conditions improved and the two fund rates became equal in Block 2. For other pools, the crisis continued and fund points under decisions implemented without approval continued to use the higher rate. Under both methods, the selected person could propose the same allocation and a personal transfer; what differed was whether the other citizens could reject the proposal.</p>
+<p>Joissakin osallistujajoukoissa julkisten palvelujen olosuhteet paranivat ja rahaston kertoimet tulivat samoiksi toisessa osiossa. Muissa joukoissa kriisi jatkui, ja ilman hyväksyntää toteutettavien päätösten rahastopisteet tuottivat edelleen enemmän ryhmäpisteitä. Valittu henkilö saattoi ehdottaa samaa pistemäärää ja omaan ansioon tehtävää siirtoa molemmissa menettelyissä. Ero oli siinä, saattoivatko muut kansalaiset hylätä ehdotuksen.</p>
 
-<p>The study therefore examines whether participants vote to restore group approval after its crisis-based productivity disadvantage disappears. No single choice is interpreted as evidence that a participant is corrupt, authoritarian, or opposed to democracy.</p>
+<p>Tutkimuksessa siis tarkastellaan, äänestävätkö osallistujat ryhmän hyväksynnän palauttamisesta sen jälkeen, kun kriisiin liittynyt ero pisteiden tuotossa poistuu. Yhtäkään valintaa ei tulkita osoitukseksi siitä, että osallistuja olisi korruptoitunut, autoritaarinen tai demokratian vastainen.</p>
 
-<p>Changing a choice is not treated as inconsistency. The study examines how institutional choices respond when public-service conditions and their material consequences change.</p>
+<p>Valinnan muuttamista ei pidetä epäjohdonmukaisuutena. Tutkimuksessa tarkastellaan, miten päätöksentekomenettelyjä koskevat valinnat muuttuvat julkisten palvelujen olosuhteiden ja niiden aineellisten seurausten muuttuessa.</p>
 
-<p>You may now close this window.</p>
+<p>Voit nyt sulkea tämän ikkunan.</p>
 {{ endblock }}

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="fi">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
-  <title>Optional feedback about the study</title>
+  <title>Vapaaehtoinen palaute tutkimuksesta</title>
   <style>
     body { font: 18px/1.55 system-ui, sans-serif; color: #243140; margin: 32px auto; max-width: 820px; padding: 0 24px; }
     h1 { font-size: 1.7rem; } h2 { font-size: 1.15rem; margin-top: 1.8rem; }
@@ -18,42 +18,42 @@
 </head>
 <body>
 <main>
-  <h1>Optional feedback about the study</h1>
+  <h1>Vapaaehtoinen palaute tutkimuksesta</h1>
   <div class="notice">
-    <p>We are testing whether the instructions and screens are clear. Please tell us what worked and what could be improved. Critical comments are welcome.</p>
-    <p><strong>This form is separate from your game answers and payment.</strong> It does not collect your name, study code, seat number, or other identifying information. Ratings are combined across people, and written answers are mixed separately for each question. No record connects this feedback to your game record or links your answers across questions.</p>
-    <p>Please do not write your name, study code, seat number, or details that could identify you or someone else. Every question is optional. You can leave any blank or close this page. Your answers do not affect your payment or future participation.</p>
+    <p>Testaamme, ovatko ohjeet ja näytöt selkeitä. Kerro, mikä toimi ja mitä voisi parantaa. Kriittiset kommentit ovat tervetulleita.</p>
+    <p><strong>Tämä lomake on erillään pelivastauksistasi ja palkkiostasi.</strong> Se ei kerää nimeäsi, tutkimuskoodiasi, istumapaikkasi numeroa tai muita tunnistavia tietoja. Arviot yhdistetään osallistujien kesken, ja tekstivastaukset sekoitetaan erikseen kunkin kysymyksen osalta. Palautetta ei yhdistetä pelitietoihisi, eikä eri kysymyksiin antamiasi vastauksia yhdistetä toisiinsa.</p>
+    <p>Älä kirjoita nimeäsi, tutkimuskoodiasi, istumapaikkasi numeroa tai muita tietoja, joista sinut tai joku muu voitaisiin tunnistaa. Jokainen kysymys on vapaaehtoinen. Voit jättää minkä tahansa kohdan tyhjäksi tai sulkea sivun. Vastauksesi eivät vaikuta palkkioosi tai myöhempään osallistumiseesi.</p>
   </div>
   <form id="feedback-form">
-    <h2>1. How clear were the instructions?</h2>
-    <label><input type="radio" name="instructions" value="1">1 — Very unclear</label>
-    <label><input type="radio" name="instructions" value="2">2 — Unclear</label>
-    <label><input type="radio" name="instructions" value="3">3 — Neither unclear nor clear</label>
-    <label><input type="radio" name="instructions" value="4">4 — Clear</label>
-    <label><input type="radio" name="instructions" value="5">5 — Very clear</label>
-    <h2>2. How clear was the difference between the two decision methods?</h2>
-    <label><input type="radio" name="methods" value="1">1 — Very unclear</label>
-    <label><input type="radio" name="methods" value="2">2 — Unclear</label>
-    <label><input type="radio" name="methods" value="3">3 — Neither unclear nor clear</label>
-    <label><input type="radio" name="methods" value="4">4 — Clear</label>
-    <label><input type="radio" name="methods" value="5">5 — Very clear</label>
-    <h2>3. How clear was the explanation of your payment?</h2>
-    <label><input type="radio" name="payment" value="1">1 — Very unclear</label>
-    <label><input type="radio" name="payment" value="2">2 — Unclear</label>
-    <label><input type="radio" name="payment" value="3">3 — Neither unclear nor clear</label>
-    <label><input type="radio" name="payment" value="4">4 — Clear</label>
-    <label><input type="radio" name="payment" value="5">5 — Very clear</label>
-    <h2><label for="unclear">4. Was anything confusing or difficult to do on the screens? Please describe.</label></h2>
+    <h2>1. Kuinka selkeät ohjeet olivat?</h2>
+    <label><input type="radio" name="instructions" value="1">1 — Erittäin epäselvät</label>
+    <label><input type="radio" name="instructions" value="2">2 — Epäselvät</label>
+    <label><input type="radio" name="instructions" value="3">3 — Eivät epäselvät eivätkä selkeät</label>
+    <label><input type="radio" name="instructions" value="4">4 — Selkeät</label>
+    <label><input type="radio" name="instructions" value="5">5 — Erittäin selkeät</label>
+    <h2>2. Kuinka selkeä kahden päätöksentekomenetelmän ero oli?</h2>
+    <label><input type="radio" name="methods" value="1">1 — Erittäin epäselvä</label>
+    <label><input type="radio" name="methods" value="2">2 — Epäselvä</label>
+    <label><input type="radio" name="methods" value="3">3 — Ei epäselvä eikä selkeä</label>
+    <label><input type="radio" name="methods" value="4">4 — Selkeä</label>
+    <label><input type="radio" name="methods" value="5">5 — Erittäin selkeä</label>
+    <h2>3. Kuinka selkeä palkkiosi määräytymistä koskeva selitys oli?</h2>
+    <label><input type="radio" name="payment" value="1">1 — Erittäin epäselvä</label>
+    <label><input type="radio" name="payment" value="2">2 — Epäselvä</label>
+    <label><input type="radio" name="payment" value="3">3 — Ei epäselvä eikä selkeä</label>
+    <label><input type="radio" name="payment" value="4">4 — Selkeä</label>
+    <label><input type="radio" name="payment" value="5">5 — Erittäin selkeä</label>
+    <h2><label for="unclear">4. Oliko näytöillä jotain epäselvää tai vaikeaa tehdä? Kuvaile lyhyesti.</label></h2>
     <textarea id="unclear" name="unclear" rows="3" maxlength="600"></textarea>
-    <h2><label for="improvement">5. What one change would most improve the experiment?</label></h2>
+    <h2><label for="improvement">5. Mikä yksi muutos parantaisi koetta eniten?</label></h2>
     <textarea id="improvement" name="improvement" rows="3" maxlength="600"></textarea>
-    <h2><label for="purpose">6. What do you think this study is trying to understand?</label></h2>
+    <h2><label for="purpose">6. Mitä luulet tämän tutkimuksen pyrkivän ymmärtämään?</label></h2>
     <textarea id="purpose" name="purpose" rows="3" maxlength="600"></textarea>
-    <small>Up to 600 characters per written answer. Please leave out identifying details.</small>
-    <p><button type="submit" id="send-feedback">Send anonymous feedback</button></p>
+    <small>Enintään 600 merkkiä tekstivastausta kohden. Älä sisällytä tunnistavia tietoja.</small>
+    <p><button type="submit" id="send-feedback">Lähetä anonyymi palaute</button></p>
     <p id="feedback-error" role="alert" hidden></p>
   </form>
-  <p id="feedback-thanks" role="status" hidden><strong>Thank you. Your anonymous feedback has been saved.</strong> You may close this page.</p>
+  <p id="feedback-thanks" role="status" hidden><strong>Kiitos. Anonyymi palautteesi on tallennettu.</strong> Voit sulkea tämän sivun.</p>
 </main>
 <script>
   const form = document.getElementById('feedback-form');
@@ -73,11 +73,11 @@
         method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer',
         headers: {'Content-Type': 'application/json'}, body: JSON.stringify(answers),
       });
-      if (!response.ok) throw new Error('Please try again. Your feedback has not been saved.');
+      if (!response.ok) throw new Error('Yritä uudelleen. Palautettasi ei ole tallennettu.');
       form.hidden = true;
       document.getElementById('feedback-thanks').hidden = false;
     } catch (problem) {
-      error.textContent = 'Your feedback could not be saved. Please try again.';
+      error.textContent = 'Palautettasi ei voitu tallentaa. Yritä uudelleen.';
       error.hidden = false;
       button.disabled = false;
     }

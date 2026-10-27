@@ -4,51 +4,51 @@
 {{ if explanation }}<p>{{ explanation }}</p>{{ endif }}
 
 {{ if institution_vote_page }}
-<p>You have 20 points. Points in the <strong>public-services fund</strong> create group points that are shared equally among all five members. Points you do not put in the fund remain yours.</p>
+<p>Sinulla on 20 pistettä. <strong>Julkisten palvelujen rahaston</strong> pisteet tuottavat ryhmäpisteitä, jotka jaetaan tasan kaikille viidelle kansalaiselle. Pisteet, joita et laita rahastoon, jäävät sinulle.</p>
 
-<p><strong>Should the selected person's proposal require approval?</strong> Click anywhere on one row.</p>
+<p><strong>Pitäisikö valitun henkilön ehdotuksen vaatia ryhmän hyväksyntä?</strong> Valitse napsauttamalla jompaakumpaa riviä.</p>
 
-<div class="choice-table" role="radiogroup" aria-label="Choose how the decision will be made">
+<div class="choice-table" role="radiogroup" aria-label="Valitse, miten päätös tehdään">
     <div class="choice-header" aria-hidden="true">
-        <div>Method</div><div>What happens to the proposal?</div><div>Fund rate</div><div>If citizens reject</div>
+        <div>Menettely</div><div>Mitä ehdotukselle tapahtuu?</div><div>Rahaston tuotto</div><div>Jos ehdotus hylätään</div>
     </div>
     <label class="choice-row approval-choice-row">
         <input type="radio" name="institution_vote" value="approval" {{ if selected_vote == 'approval' }}checked{{ endif }}>
-        <span class="choice-name"><span class="choice-mark">G</span><strong>Group approval required</strong></span>
-        <span><small>Approval</small>The other four citizens see the full proposal; at least three must approve</span>
-        <span><small>Fund rate</small>Each point left in the fund creates {{ approval_multiplier }} group points</span>
-        <span><small>If rejected</small>Everyone chooses their own fund allocation at the same rate</span>
+        <span class="choice-name"><span class="choice-mark">R</span><strong>Ryhmän hyväksyntä vaaditaan</strong></span>
+        <span><small>Hyväksyntä</small>Muut neljä kansalaista näkevät koko ehdotuksen. Vähintään kolmen on hyväksyttävä se</span>
+        <span><small>Rahaston tuotto</small>Jokainen rahastoon jäävä piste tuottaa {{ approval_multiplier }} ryhmäpistettä</span>
+        <span><small>Jos hylätään</small>Jokainen valitsee itse rahastoon laittamansa pistemäärän samalla kertoimella</span>
     </label>
     <label class="choice-row automatic-choice-row">
         <input type="radio" name="institution_vote" value="automatic" {{ if selected_vote == 'automatic' }}checked{{ endif }}>
-        <span class="choice-name"><span class="choice-mark">D</span><strong>Decision takes effect directly</strong></span>
-        <span><small>Approval</small>The proposal is implemented without an approval vote by the other citizens</span>
-        <span><small>Fund rate</small>Each point left in the fund creates {{ automatic_multiplier }} group points</span>
-        <span><small>If rejected</small>No rejection stage</span>
+        <span class="choice-name"><span class="choice-mark">P</span><strong>Päätös tulee voimaan suoraan</strong></span>
+        <span><small>Hyväksyntä</small>Ehdotus toteutetaan ilman muiden kansalaisten hyväksyntä-äänestystä</span>
+        <span><small>Rahaston tuotto</small>Jokainen rahastoon jäävä piste tuottaa {{ automatic_multiplier }} ryhmäpistettä</span>
+        <span><small>Jos hylätään</small>Ei hylkäysvaihetta</span>
     </label>
 </div>
 
 {{ if solo_testing }}
 <div class="solo-test-panel">
-    <label for="id_solo_other_automatic_votes"><strong>Solo test control</strong></label>
-    <p class="mb-2">How many of the four simulated citizens choose <strong>Decision takes effect directly</strong>?</p>
+    <label for="id_solo_other_automatic_votes"><strong>Yhden henkilön testin asetus</strong></label>
+    <p class="mb-2">Kuinka moni neljästä simuloidusta kansalaisesta valitsee menettelyn <strong>Päätös tulee voimaan suoraan</strong>?</p>
     <select class="form-select" id="id_solo_other_automatic_votes" name="solo_other_automatic_votes">
-        <option value="0" {{ if solo_other_automatic_votes == 0 }}selected{{ endif }}>0 of 4</option>
-        <option value="1" {{ if solo_other_automatic_votes == 1 }}selected{{ endif }}>1 of 4</option>
-        <option value="2" {{ if solo_other_automatic_votes == 2 }}selected{{ endif }}>2 of 4</option>
-        <option value="3" {{ if solo_other_automatic_votes == 3 }}selected{{ endif }}>3 of 4</option>
-        <option value="4" {{ if solo_other_automatic_votes == 4 }}selected{{ endif }}>4 of 4</option>
+        <option value="0" {{ if solo_other_automatic_votes == 0 }}selected{{ endif }}>0 neljästä</option>
+        <option value="1" {{ if solo_other_automatic_votes == 1 }}selected{{ endif }}>1 neljästä</option>
+        <option value="2" {{ if solo_other_automatic_votes == 2 }}selected{{ endif }}>2 neljästä</option>
+        <option value="3" {{ if solo_other_automatic_votes == 3 }}selected{{ endif }}>3 neljästä</option>
+        <option value="4" {{ if solo_other_automatic_votes == 4 }}selected{{ endif }}>4 neljästä</option>
     </select>
-    <p class="small text-muted mb-0 mt-2">Your choice is added to these four simulated choices. This control appears only in one-person test sessions.</p>
+    <p class="small text-muted mb-0 mt-2">Valintasi lisätään näihin neljään simuloituun valintaan. Tämä asetus näkyy vain yhden henkilön testikerroilla.</p>
 </div>
 {{ endif }}
 
-<p class="mt-3">At least three votes select a method. The leader is then selected at random; each citizen has a one-in-five chance. Other participants cannot see your ballot.</p>
+<p class="mt-3">Menettely valitaan vähintään kolmella äänellä. Sen jälkeen ohjelmisto arpoo valitun henkilön. Jokaisella kansalaisella on 20 prosentin mahdollisuus tulla valituksi. Muut osallistujat eivät näe ääntäsi.</p>
 {{ else }}
 {{ formfields }}
 {{ endif }}
 
-<p class="text-muted small">Choose your answer, then click <strong>Next</strong> to send it.</p>
+<p class="text-muted small">Valitse vastauksesi ja lähetä se napsauttamalla <strong>Seuraava</strong>.</p>
 {{ next_button }}
 <link rel="stylesheet" href="{{ static 'decision_reminder.css' }}">
 <script src="{{ static 'decision_reminder.js' }}"></script>
@@ -110,7 +110,7 @@ document.querySelectorAll('.choice-row input').forEach(function (input) {
     const firstWrapper = selects[0].closest('.mb-3') || selects[0].parentElement;
     const note = document.createElement('div');
     note.className = 'agreement-note';
-    note.innerHTML = '<strong>For the following statements, 1 means strongly disagree and 7 means strongly agree.</strong>';
+    note.innerHTML = '<strong>Seuraavissa väittämissä 1 tarkoittaa täysin eri mieltä ja 7 täysin samaa mieltä.</strong>';
     firstWrapper.parentNode.insertBefore(note, firstWrapper);
 
     selects.forEach(function (select) {
@@ -119,15 +119,15 @@ document.querySelectorAll('.choice-row input').forEach(function (input) {
         sliderBox.className = 'agreement-slider' + (currentValue ? ' answered' : '');
         const status = document.createElement('output');
         status.className = 'slider-status';
-        status.textContent = currentValue ? currentValue : 'Not answered';
+        status.textContent = currentValue ? currentValue : 'Ei vastattu';
         const slider = document.createElement('input');
         slider.type = 'range'; slider.min = '1'; slider.max = '7'; slider.step = '1';
         slider.value = currentValue || '4'; slider.id = select.id;
-        slider.setAttribute('aria-label', select.labels && select.labels[0] ? select.labels[0].textContent : 'Agreement');
+        slider.setAttribute('aria-label', select.labels && select.labels[0] ? select.labels[0].textContent : 'Samaa vai eri mieltä');
         if (currentValue) slider.name = select.name;
         const ends = document.createElement('div');
         ends.className = 'slider-ends';
-        ends.innerHTML = '<span>1 — Strongly disagree</span><span>7 — Strongly agree</span>';
+        ends.innerHTML = '<span>1 — Täysin eri mieltä</span><span>7 — Täysin samaa mieltä</span>';
         function recordAnswer() {
             slider.name = select.name;
             status.textContent = slider.value;

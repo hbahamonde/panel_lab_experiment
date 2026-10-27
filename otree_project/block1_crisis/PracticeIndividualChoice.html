@@ -1,18 +1,18 @@
-{{ block title }}Try it: allocation after rejection{{ endblock }}
+{{ block title }}Harjoittele: oma päätös hylkäyksen jälkeen{{ endblock }}
 
 {{ block content }}
-<p>Suppose a proposal requiring group approval was rejected. You have 20 points, and the other four citizens each put 10 points in the public-services fund. Choose your own allocation.</p>
+<p>Oletetaan, että ryhmän hyväksyntää vaativa ehdotus hylättiin. Sinulla on 20 pistettä, ja muut neljä kansalaista laittavat kukin 10 pistettä julkisten palvelujen rahastoon. Valitse oma rahastoon laitettava pistemääräsi.</p>
 
-<p>Every fund point creates 1.50 group points. These points are shared equally among all five members. Points you do not put in the fund remain yours.</p>
+<p>Jokainen rahastopiste tuottaa 1,50 ryhmäpistettä. Nämä pisteet jaetaan tasan kaikille viidelle kansalaiselle. Pisteet, joita et laita rahastoon, jäävät sinulle.</p>
 
 {{ formfields }}
 
 <div class="card card-body bg-light mb-3" id="citizen-preview" aria-live="polite">
-    Enter an amount above to see the result.
+    Näet tuloksen, kun olet antanut pistemäärän yllä.
 </div>
 
-<p class="text-muted">This practice choice is not paid and is not included in the analysis.</p>
-<p>Choose your answer, then click <strong>Next</strong> to send it.</p>
+<p class="text-muted">Tämä harjoitusvalinta ei vaikuta palkkioon eikä sitä sisällytetä analyysiin.</p>
+<p>Valitse vastauksesi ja lähetä se napsauttamalla <strong>Seuraava</strong>.</p>
 {{ next_button }}
 
 <script>
@@ -23,7 +23,7 @@
 
     function updatePreview() {
         if (input.value === '') {
-            preview.textContent = 'Enter an amount above to see the result.';
+            preview.textContent = 'Näet tuloksen, kun olet antanut pistemäärän yllä.';
             return;
         }
         const ownAmount = Number(input.value);
@@ -31,10 +31,10 @@
         const sharedReturn = 1.5 * fundTotal / 5;
         const ownPayoff = 20 - ownAmount + sharedReturn;
         preview.innerHTML =
-            '<strong>Result with your choice</strong><br>' +
-            'Total in the fund: ' + fundTotal.toFixed(0) + ' points<br>' +
-            'Group points received by each member: ' + sharedReturn.toFixed(2) + '<br>' +
-            'Your payoff: <strong>' + ownPayoff.toFixed(2) + ' points</strong>';
+            '<strong>Valintasi tulos</strong><br>' +
+            'Rahastossa yhteensä: ' + fundTotal.toFixed(0) + ' pistettä<br>' +
+            'Kullekin kansalaiselle jaetut ryhmäpisteet: ' + sharedReturn.toFixed(2).replace('.', ',') + '<br>' +
+            'Oma ansiosi: <strong>' + ownPayoff.toFixed(2).replace('.', ',') + ' pistettä</strong>';
     }
 
     input.addEventListener('input', updatePreview);

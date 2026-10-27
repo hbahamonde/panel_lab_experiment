@@ -10,8 +10,8 @@ Consent and instructions for the one-session interactive laboratory experiment.
 
 def study_details(session):
     return dict(
-        participation_fee=f"€{session.config['participation_fee']:.2f}",
-        bonus_cap=f"€{session.config['performance_bonus_cap']:.2f}",
+        participation_fee=f"{session.config['participation_fee']:.2f} €".replace('.', ','),
+        bonus_cap=f"{session.config['performance_bonus_cap']:.2f} €".replace('.', ','),
         pretest_feedback_enabled=session.config.get('pretest_feedback_enabled', False),
     )
 
@@ -33,10 +33,10 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    CONSENT_FORM_VERSION = '2026-10-20-v8'
+    CONSENT_FORM_VERSION = '2026-10-27-v9-fi'
     CONSENT_CHOICES = [[
         'accept',
-        'I have read the information above and agree to take part in this study.',
+        'Olen lukenut yllä olevat tiedot ja suostun osallistumaan tähän tutkimukseen.',
     ]]
 
 
@@ -52,7 +52,7 @@ class Player(BasePlayer):
     consent = models.StringField(
         choices=C.CONSENT_CHOICES,
         widget=widgets.RadioSelect,
-        label='Please confirm your participation:',
+        label='Vahvista osallistumisesi:',
     )
     consent_form_version = models.StringField(blank=True)
     consent_recorded_at = models.FloatField()
