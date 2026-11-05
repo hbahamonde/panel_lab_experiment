@@ -51,6 +51,7 @@ rubber.cache
 __pycache__/
 *.py[cod]
 *.sqlite3
+local_data/
 
 ## Build tool directories for auxiliary files
 # latexrun

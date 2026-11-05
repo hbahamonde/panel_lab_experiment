@@ -68,6 +68,13 @@ or redeployments. Research sessions and their data use the UTU server.
 
 ## Start a clean development server
 
+The `otree_project` folder contains the application, its lab/deployment
+configuration, and regression tests. Keep these files together when handing the
+code to the lab. Local data preserved outside the app are held in `local_data/`,
+which is excluded from Git and must not be included in a code handoff. Python
+cache files and SQLite databases are generated locally and are not part of the
+source package.
+
 On macOS, double-click `start_otree_dev.command` in Finder. The launcher:
 
 1. resets the local oTree database without prompting;
