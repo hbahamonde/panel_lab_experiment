@@ -1,152 +1,123 @@
-# Undemocratic Reversals Laboratory Experiment
+# Lab implementation
 
-This repository contains the proposal and oTree implementation for a one-session interactive laboratory experiment on crisis, public-good provision, weakly constrained authority, and democratic reversal.
+One laboratory session of about 60 minutes, with 10 rounds in Block 1 and five
+in Block 2. Participant screens are in Finnish. Variable names remain in English.
+Keep the whole `otree_project/` folder together.
 
-## Design
+## 1. Prepare the UTU server
 
-Participants complete 10 rounds in Block 1 followed by five rounds in Block 2 of a five-person institutional-choice public-good game, for 15 paid rounds in one session. In every round, they vote between **Group approval required** and **Decision takes effect directly**. The software then selects one citizen to propose an equal fund allocation and any personal transfer. Under the first method, three of the other four citizens must approve; rejection returns the group to voluntary contributions. Under the second, the proposal is implemented without an approval vote.
+Use the UTU server for the laboratory pretest and data collection. Install
+`otree_project/requirements.txt` in the lab's Python environment. Set private
+`OTREE_ADMIN_PASSWORD` and `OTREE_SECRET_KEY` values. Configure persistent
+storage with IT, using `DATABASE_URL` for PostgreSQL. Do not use the development
+secret key for collection.
 
-Participants remain in stable matching pools of 5, 10, or 15. A five-person session keeps the same five together throughout. Larger pools are anonymously reshuffled into five-person groups before every round. Rosters of 5, 10, 15, and 20 form pools of [5], [10], [15], and [10, 10], respectively. In Block 1, all pools face strained public-service conditions: each fund point creates 1.50 group points when approval is required and 2.50 when the proposal takes effect directly. Before Block 2, pools are randomized to recovery or persistence. Recovery jointly reports improved public-service conditions and raises the approval-required rate to 2.50; persistence keeps the crisis and 1.50 rate. The automatic procedure remains unchanged.
+Set `OTREE_PRODUCTION=1` and `OTREE_AUTH_LEVEL=STUDY` on UTU to hide debug
+panels and require administrator login.
 
-The recovery description and rate change form one structural package: the text states that public-service conditions improved, while the higher approval-required rate makes that improvement consequential inside the game. Reversal is measured from individual ballots: a supporter of direct implementation in Block 1, Round 10 later votes to restore group approval. Immediate reversal uses Block 2, Round 1; final reversal uses Block 2, Round 5, after four completed rounds in the assigned condition. The last-three-round summary uses Block-1 Rounds 8–10 and Block-2 Rounds 3–5. Whether the group actually adopts the approval rule is recorded separately.
+From `otree_project/`, run these as two separate processes, as specified in
+`Procfile`:
 
-Each round begins with 20 points per participant. One uniformly selected round out of 10 in Block 1 and one out of five in Block 2 determine a performance bonus capped at EUR 5, in addition to a EUR 10 participation payment. The selected-round points convert at 24 points = EUR 1. The two blocks carry equal payment weight. The maximum total is EUR 15 per participant, or EUR 4,500 for 300 completed participants. Payments depend on the two selected rounds rather than the sum across all rounds.
+```sh
+python study_server.py prodserver1of2
+otree prodserver2of2
+```
 
-Strategic choice pages display a 90-second countdown and remind participants to choose an answer and click Next. At zero, the page stays open. The software records response time and flags delays, and the researcher or trained research assistant can help participants continue. It never generates a ballot or allocation.
+Rehearse the full session on UTU using a separate test database and
+`TREATMENT_ALLOCATION_NAMESPACE=development`. Restore the study database and
+namespace before collection. Check database compatibility, payment exports,
+backups, protocol approval and Finnish wording. Use Finnish-language browsers
+and secure room links configured through `_rooms/panel_lab_labels.txt`.
 
-## Interface language and English reference
+## 2. Create the session
 
-The participant interface and public test menu are in Finnish. Variable names,
-stored response codes, analysis scripts, and technical configuration names remain
-in English.
-The paper and its English screenshots also remain in English.
+Confirm attendance, then create a new session using **`panel_lab_experiment`**.
 
-The final English interface and accompanying paper are preserved by the Git tag
-[`english-final-2026-10-27`](https://github.com/hbahamonde/panel_lab_experiment/tree/english-final-2026-10-27).
-This is a complete reference version, not a second project folder. Changing
-`LANGUAGE_CODE` alone does not restore the English text. Use the tagged version
-to inspect the original wording without changing a live session.
-
-The translation preserves question order and scales, response codes, matching,
-randomization, payoff rules, and payment exports. Decimal commas are a display
-convention only. Before lab use, a Finnish-speaking researcher should review the
-consent, instructions, both condition descriptions, questionnaire wording and
-scale anchors, feedback form, and debrief against the English reference.
-Set the laboratory browser's interface language to Finnish. Native number-input
-validation prompts follow the browser's interface language, while oTree's
-server-side validation messages use Finnish.
-
-| English reference | Finnish participant label | Stored response code |
+| Participants | Matching pools | Five-person groups per round |
 | --- | --- | --- |
-| Group approval required | Ryhmän hyväksyntä vaaditaan | `approval` |
-| Decision takes effect directly | Päätös tulee voimaan suoraan | `automatic` |
-| Approve the proposal | Hyväksyn ehdotuksen | `approve` |
-| Reject the proposal | Hylkään ehdotuksen | `reject` |
-| Next | Seuraava | No response code |
-| Selected person | Valittu henkilö | No response code |
-| Public-services fund | Julkisten palvelujen rahasto | No response code |
-| Block / round | Osio / kierros | Existing numeric block and round fields |
+| 5 | One pool of 5 | 1 |
+| 10 | One pool of 10 | 2 |
+| 15 | One pool of 15 | 3 |
+| 20 | Two pools of 10 | 4 |
 
-The two method badges use **R** and **P**, the initials of the Finnish labels.
-The paper's research notation remains **D** for required approval and **A** for
-direct implementation.
+For other attendance numbers, use the largest listed roster that does not exceed
+attendance. Fewer than five cannot start. Do not add or replace participants
+after paid play begins.
 
-## Browser-testing prototype
+Five-person pools stay together. Larger pools reshuffle before each round.
+The software handles leader selection and assigns recovery or persistence
+after Block 1. Everyone in a pool receives the same condition. Do not assign
+conditions manually or redraw them to balance an individual session.
 
-The public prototype is at <https://panel-lab-experiment.onrender.com>.
-For testing alone, use either direct link:
+## 3. During the session
 
-- [Conditions improve](https://panel-lab-experiment.onrender.com/demo/panel_lab_solo_recovery)
-- [Conditions remain unchanged](https://panel-lab-experiment.onrender.com/demo/panel_lab_solo_persistence)
+Each round starts with a vote. Three of the five votes select the method.
+The software then randomly selects a person to propose an allocation and
+personal transfer. When approval is required, at least three of the other four
+must approve. A 2–2 tie rejects the proposal, and everyone then chooses their
+own fund allocation. Under direct implementation, the proposal goes ahead
+without an approval vote.
 
-Each creates a separate demonstration with one tester and four simulated
-citizens. Open the P1 link on the newly created session-links screen to begin.
-There is no need to advance other participants. Use dummy answers
-only. Render is for technical browser testing, not research data collection or
-the laboratory pre-test. Test data are disposable and may disappear on restarts
-or redeployments. Research sessions and their data use the UTU server.
+The 90-second countdown is a reminder, not a deadline. It never submits or
+chooses an answer. The researcher or trained assistant monitors delays and
+helps participants continue without deciding for them.
 
-## Start a clean development server
+## 4. Payments and exports
 
-The `otree_project` folder contains the application, its lab/deployment
-configuration, and regression tests. Keep these files together when handing the
-code to the lab. Local data preserved outside the app are held in `local_data/`,
-which is excluded from Git and must not be included in a code handoff. Python
-cache files and SQLite databases are generated locally and are not part of the
-source package.
+Participants receive **€10 plus a bonus of up to €5**. The software randomly
+selects one paying round from each block. Their combined points convert at
+**24 points = €1**.
 
-On macOS, double-click `start_otree_dev.command` in Finder. The launcher:
+Use oTree's **`block2_reversal` custom export** for payments. It contains only
+`participant_code` and `total_payment_eur`. The participant shows their code to
+the person making payment. Keep named receipts separate, with no study code
+on the receipt. Export research responses separately.
 
-1. resets the local oTree database without prompting;
-2. starts the development server on port 8000; and
-3. opens `http://localhost:8000` in the default browser.
+## 5. Feedback in the first pretest
 
-Every launch erases local development sessions and responses. Keep the Terminal window open while testing and press Control-C to stop the server.
-The launcher refuses to reset a database when `DATABASE_URL` is set and forces the separate development allocation namespace.
+For the first **ten-person** pretest, set `PRETEST_FEEDBACK_ENABLED=1` before
+starting the server and creating the session. This adds six optional feedback
+questions at the end. If fewer than ten can start, disable this option first.
 
-## oTree configurations
+For later sessions, remove the variable or set it to `0`, then restart the
+server. Feedback is off by default.
 
-The production configuration is `panel_lab_experiment`. After the consenting roster is known, create the oTree session with exactly 5, 10, 15, or 20 participants. These rosters form one five-person pool, one ten-person pool, one fifteen-person pool, or two ten-person pools, respectively. Five-person pools keep their membership. Larger pools are reshuffled into groups of five every round. Start a fresh session for this protocol rather than continuing sessions created with earlier settings.
-
-### Treatment allocation and its audit file
-
-After everyone completes Block 1, treatment is drawn from independently shuffled four-pool randomization sets within each exact pool size (5, 10, and 15). Each complete set contains two recovery and two persistence pools. Incomplete sets can differ by up to two pools. All production cohorts use the same persistent study allocation namespace, `reslide_2026`, unless a different study-wide value is set with `TREATMENT_ALLOCATION_NAMESPACE` before collection. Do not change that value between sessions. Two ten-person pools in one session follow the same size-10 sequence and need not receive opposite assignments. Treatment does not depend on Block-1 choices.
-
-The ledger commits each assignment once, keyed by the unique matching-pool code. Reloading the page or restarting the server reuses it. It is protected against simultaneous allocation requests. Demos use a separate `development` namespace. Use a separate namespace and a disposable database when running automated production-configuration tests.
-
-On PostgreSQL, the ledger is kept in the study database specified by `DATABASE_URL`. On local SQLite installations, it is kept separately in `otree_project/treatment_allocation.sqlite3`, or the explicit path supplied by `TREATMENT_ALLOCATION_DB`. Keep and back up this file together with the oTree research database throughout collection. Resetting the oTree development database does not reset the allocation ledger. Do not remove or replace the production ledger during collection.
-
-The standard oTree export retains pool size, pool UID, and randomization-set number. The full allocation metadata are also stored in participant/session variables. Export the consumed-only allocation audit separately from payment records:
+The feedback form uses the shared `/pilot-feedback` address and is separate
+from participant records. Disable proxy and monitoring logs for its requests
+and bodies, and do not add analytics. Review feedback only after the session.
+From `otree_project/`, export it with:
 
 ```sh
-../.venv/bin/python treatment_allocation.py export --namespace reslide_2026
+python anonymous_feedback.py export
 ```
 
-The CSV identifies pool size, sequence position within that size, randomization-set number and position, assigned condition, and the unique randomization-set ID. Join it to research data by matching-pool UID. Never merge it with named payment receipts. It does not reveal unused assignments. Randomization inference must recreate two-of-four assignments separately within each size-specific set, including the appropriate marginal distribution for an incomplete set. The analysis accounts for pool size and, where estimable, checks results excluding fixed five-person pools.
+Answers are withheld until at least five forms have been submitted.
 
-Local allocation tests cover concurrent requests, restarts, and complete sessions using SQLite. Before collection on a PostgreSQL host, run the opt-in allocation integration test against a separate test database using `ALLOCATION_TEST_POSTGRES_URL`, then rehearse a complete session on the UTU setup. Do not use a research database for integration tests or change the production allocation namespace between cohorts.
+## 6. Preserve the data and treatment ledger
 
-The `panel_lab_demo` configuration runs a complete ten-participant test while allowing survey fields to be skipped. For testing alone, use `panel_lab_solo_recovery` or `panel_lab_solo_persistence`. These configurations create one human participant plus four simulated citizens. Testing controls set their method and approval ballots, allowing automatic implementation, approval, and rejection/fallback paths to be tested in one browser.
+Keep the same `TREATMENT_ALLOCATION_NAMESPACE` throughout collection.
+The default is `reslide_2026`. Never reset the research database or allocation
+ledger between sessions.
 
-The active app sequence is:
-
-1. `intro_consent`
-2. `block1_crisis`
-3. `block2_reversal`
-
-Before a live session, set `OTREE_ADMIN_PASSWORD` and a distinct, private
-`OTREE_SECRET_KEY`. The hard-coded key is a development fallback, not a live-study
-credential. Use the secure room URLs backed by `_rooms/panel_lab_labels.txt`. The
-label file provides sufficient room capacity for the planned 300 completed
-participants and technical testing.
-
-The ethics packet identifies protocol amendments separately from the favorable
-statement for the submitted study. Coauthor agreement does not replace any
-applicable ethics amendment. Before collecting research data, complete the UTU
-server rehearsal, verify payment exports and backups, and check that proxy logging
-is disabled for anonymous feedback.
-
-## Optional feedback in the first session
-
-The first ten-person session can offer six optional questions after all outcome and background questions and before the debriefing and payment screen. The questions cover instructions, the distinction between the methods, payment clarity, screen difficulties, improvements, and participants' understanding of the study's purpose. The debriefing remains part of every session.
-
-Set the server environment variable `PRETEST_FEEDBACK_ENABLED=1` before starting the server and creating this ten-person session. For a local solo rehearsal, start the development launcher with the same variable and use a solo configuration. For all subsequent sessions, remove the variable or set it to `0` and restart the server. Feedback is off by default. No changes to the questions or app sequence are needed to switch it off.
-If fewer than ten arrive for the intended pre-test, disable this option before creating a five-person session. The optional feedback protocol itself requires ten participants.
-
-Use the supplied server entry point so the separate feedback form is available:
+With PostgreSQL, the ledger is in `DATABASE_URL`. With local SQLite, back up
+`treatment_allocation.sqlite3`, `db.sqlite3`, and, if present,
+`pilot_feedback.sqlite3`. Export the allocation audit separately:
 
 ```sh
-../.venv/bin/python study_server.py prodserver1of2
+python treatment_allocation.py export --namespace reslide_2026
 ```
 
-The standard worker command remains `otree prodserver2of2`. The supplied `Procfile` and development launcher use the feedback-compatible entry point. The feedback form is at the same common `/pilot-feedback` address for everyone. The invitation sends no participant code or referrer and does not track whether a participant opens or completes the form.
+Use the actual namespace if IT configured a different study-wide value.
 
-Feedback is stored separately from oTree participant records. The three rating questions are pooled as counts, and the three written questions are stored as independent shuffled lists. Answers are not linked across questions. No study or session codes, payment details, IP addresses, timestamps, or submission sequence are stored with feedback. All items are optional and have no payment consequences. Participants are asked not to include names or identifying details.
+## 7. Technical testing only
 
-The server disables request access logs. Before using feedback at UTU, configure its reverse proxy and any monitoring service not to log `/pilot-feedback` requests or bodies. Check this during the technical rehearsal. Do not add analytics to the form. Export the pooled feedback from the server with:
+[Open the browser test menu](https://panel-lab-experiment.onrender.com).
+Choose either **Testaa yksin** option, then click **P1**. Four simulated
+citizens let one reviewer try the game alone. `panel_lab_demo` is the
+ten-person testing configuration. Never use these configurations for collection.
 
-```sh
-../.venv/bin/python anonymous_feedback.py export
-```
+Use dummy answers on Render. Its test data are disposable. Do not include
+`local_data/` or existing databases in the code handoff.
 
-Review pooled feedback only after the session. The feedback export withholds answers until at least five forms have been submitted. It is not included in oTree research or payment exports. A local development database reset does not erase the separate feedback store. Use a disposable project copy when rehearsing with dummy feedback. Any substantive protocol changes suggested by the pre-test need review and a prespecified decision about the pre-test observations before further collection.
+**The macOS `start_otree_dev.command` launcher deletes its working local
+database every time. Use it only for development, never data collection.**
