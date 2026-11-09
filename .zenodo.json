@@ -1,0 +1,21 @@
+{
+  "title": "To Renounce Liberty? oTree implementation of a public-goods experiment on (un)democratic reversal",
+  "upload_type": "software",
+  "description": "oTree application for a laboratory public-goods experiment in which groups vote between checked and unchecked rule under an institutional-crisis narrative (Block 1) and then face randomised changes in the crisis and in payoffs (Block 2), to study whether citizens restore democratic checks they waived. Includes treatment allocation, consent, anonymous feedback, tests and deployment instructions for the University of Turku laboratory. Participant screens are in Finnish.",
+  "creators": [
+    {
+      "name": "Bahamonde, Hector",
+      "affiliation": "INVEST Research Flagship Centre, University of Turku"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "oTree",
+    "public goods experiment",
+    "laboratory experiment",
+    "democratic backsliding",
+    "institutional crisis",
+    "experimental political science"
+  ],
+  "access_right": "open"
+}
